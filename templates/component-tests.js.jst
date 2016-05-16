@@ -1,0 +1,15 @@
+import React from 'react/addons';
+import expect from 'expect.js';
+
+import <%= className %> from './component';
+
+const {
+  TestUtils: {
+    renderIntoDocument,
+    findRenderedDOMComponentWithTag
+  }
+} = React.addons;
+
+describe("<%= className %>", function() {
+  it("renders");
+});

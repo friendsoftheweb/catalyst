@@ -1,0 +1,30 @@
+require('./styles.scss');
+
+import React from 'react';
+
+/**
+ * @class <%= className %>
+ * @constructor
+ * @extends React.Component
+ */
+class <%= className %> extends React.Component {
+  constructor(props) {
+    super(props)
+
+    this.state = {};
+  }
+
+  render() {
+    return (
+      <div className="<%= className %>">
+
+      </div>
+    );
+  }
+}
+
+<%= className %>.propTypes = {
+
+};
+
+export default <%= className %>;

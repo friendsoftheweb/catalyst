@@ -1,0 +1,50 @@
+var path = require('path');
+var webpack = require('webpack');
+var ExtractTextPlugin = require('extract-text-webpack-plugin');
+
+module.exports = {
+  context: __dirname,
+
+  entry: {
+    sample: [
+      'webpack-dev-server/client?http://localhost:8080',
+      './main.js'
+    ]
+  },
+
+  output: {
+    path: path.join(__dirname, 'build'),
+    filename: 'main.js',
+    publicPath: 'http://localhost:3000/'
+  },
+
+  resolve: {
+    extensions: ['', '.js'],
+    modulesDirectories: ['node_modules', 'bower_components']
+  },
+
+  plugins: [
+    new webpack.ResolverPlugin([
+      new webpack.ResolverPlugin.DirectoryDescriptionFilePlugin('.bower.json', ['main'])
+    ]),
+
+    new ExtractTextPlugin('main.css', {
+      allChunks: true
+    })
+  ],
+
+  module: {
+    loaders: [
+      {
+        test: /\.js$/,
+        loaders: ['react-hot', 'jsx', 'babel'],
+        exclude: /node_modules/
+      },
+
+      {
+        test: /\.scss$/,
+        loader: ExtractTextPlugin.extract('css!sass')
+      }
+    ]
+  }
+};

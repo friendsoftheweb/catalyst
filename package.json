@@ -1,0 +1,25 @@
+{
+  "name": "odin",
+  "version": "1.0.0",
+  "description": "Generates React components.",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Dan Martens",
+  "license": "ISC",
+  "preferGlobal": true,
+  "bin": {
+    "odin": "index.js"
+  },
+  "dependencies": {
+    "chalk": "^1.1.1",
+    "electron": "^0.4.1",
+    "eslint": "^1.5.0",
+    "lodash": "^3.10.1",
+    "markup-js": "^1.5.21",
+    "mkdirp": "^0.5.1",
+    "node-spinner": "0.0.4",
+    "rsvp": "^3.1.0",
+    "string": "^3.3.1"
+  }
+}
