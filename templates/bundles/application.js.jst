@@ -1,0 +1,10 @@
+require('es5-shim');
+require('es6-promise').polyfill();
+require('isomorphic-fetch');
+
+require('expose?React!react');
+require('expose?ReactDOM!react-dom');
+
+if (process.env.NODE_ENV !== 'production') {
+  window.Perf = require('react-addons-perf');
+}

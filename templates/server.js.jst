@@ -1,0 +1,47 @@
+/* eslint-disable no-console */
+
+const path = require('path');
+
+const webpack = require('webpack');
+const WebpackDevServer = require('webpack-dev-server');
+const chokidar = require('chokidar');
+
+const config = require('./webpack.config');
+
+
+const WATCH_PATHS = [];
+
+const compiler = webpack(config);
+
+const server = new WebpackDevServer(compiler, {
+  publicPath: config.output.publicPath,
+  historyApiFallback: true,
+  stats: {
+    colors: true,
+    hash: false,
+    version: false,
+    chunks: false,
+    children: false
+  }
+});
+
+server.listen(PORT, 'localhost', function(err) {
+  if (err) {
+    console.log(err);
+  }
+
+  console.log(`Listening at localhost:${PORT}`);
+});
+
+const watcher = chokidar.watch(WATCH_PATHS, {
+  ignored: /[\/\\]\./,
+  persistent: true
+});
+
+watcher.on('change', function() {
+  server.middleware.invalidate();
+});
+
+process.on('exit', function() {
+  watcher.close();
+});
