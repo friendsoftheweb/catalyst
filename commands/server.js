@@ -1,14 +1,30 @@
-var spawn = require('child_process').spawn;
+const path = require('path');
+const webpack = require('webpack');
+const WebpackDevServer = require('webpack-dev-server');
 
-var server = function() {
-  var cmd = spawn('./node_modules/webpack-dev-server/bin/webpack-dev-server.js', ['--colors']);
+function server() {
+  const config = require(path.join(process.cwd(), 'webpack.config.js'));
+  const compiler = webpack(config);
+  const devServerPort = process.env.WEBPACK_PORT || 8080;
 
-  cmd.stdout.on('data', function (data) {
-    console.log(data.toString());
+  const webpackServer = new WebpackDevServer(compiler, {
+    publicPath: config.output.publicPath,
+    historyApiFallback: true,
+    stats: {
+      colors: true,
+      hash: false,
+      version: false,
+      chunks: false,
+      children: false
+    }
   });
+  
+  webpackServer.listen(devServerPort, '0.0.0.0', function(err) {
+    if (err) {
+      console.log(err);
+    }
 
-  cmd.stderr.on('data', function (data) {
-    console.log(data.toString());
+    console.log(`Listening at localhost:${devServerPort}`);
   });
 };
 

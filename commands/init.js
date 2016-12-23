@@ -1,34 +1,51 @@
-var mkdirp = require('mkdirp');
-var chalk = require('chalk');
+const fs = require('fs');
+const mkdirp = require('mkdirp');
+const chalk = require('chalk');
 
-var spinnerSpawn = require('../utils/spinner-spawn');
-var writeFileFromTemplate = require('../utils/write-file-from-template');
+const spinnerSpawn = require('../utils/spinner-spawn');
+const writeFileFromTemplate = require('../utils/write-file-from-template');
 
-var init = function(options) {
-  const nodePackages = [
-    'babel-loader',
-    'css-loader',
-    'file-loader',
-    'jsx-loader',
-    'eslint',
-    'karma',
-    'karma-chrome-launcher',
-    'karma-cli',
-    'karma-mocha',
-    'karma-osx-reporter',
-    'karma-phantomjs-launcher',
-    'karma-webpack',
-    'expect.js',
-    'node-sass',
-    'nuclear-js',
-    'react',
-    'react-hot-loader',
-    'sass-loader',
-    'style-loader',
-    'extract-text-webpack-plugin',
-    'webpack',
-    'webpack-dev-server'
-  ];
+const nodePackages = [
+  'babel-loader',
+  'babel-jest',
+  'babel-polyfill',
+  'babel-preset-es2015',
+  'babel-preset-react',
+  'css-loader',
+  'es5-shim',
+  'es6-promise',
+  'expose-loader',
+  'extract-text-webpack-plugin',
+  'file-loader',
+  'isomorphic-fetch',
+  'jsx-loader',
+  'node-sass',
+  'react',
+  'react-dom',
+  'sass-loader',
+  'style-loader',
+  'webpack'
+];
+
+const nodePackagesDev = [
+  'eslint',
+  'jest',
+  'react-addons-perf',
+  'react-test-renderer',
+  'webpack-dev-server'
+];
+
+function init(options) {
+  if (fs.existsSync('package.json')) {
+    const package = JSON.parse(fs.readFileSync('package.json', 'utf8'));
+
+    if (typeof package.catalyst === 'object') {
+      console.log('This project already has a Catalyst configuration.');
+      process.exit(0);
+    }
+  } else {
+    writeFileFromTemplate('package.json', 'package.json.jst');
+  }
 
   mkdirp.sync('bundles');
   mkdirp.sync('app/components');
@@ -37,25 +54,30 @@ var init = function(options) {
   mkdirp.sync('assets/fonts');
   mkdirp.sync('assets/images');
 
-  writeFileFromTemplate('package.json', 'package.json.jst');
+  writeFileFromTemplate('.babelrc', '.babelrc.jst');
   writeFileFromTemplate('.eslintrc', '.eslintrc.jst');
   writeFileFromTemplate('webpack.config.js', 'webpack.config.js.jst');
-  writeFileFromTemplate('karma.conf.js', 'karma.conf.js.jst');
 
-  writeFileFromTemplate('server.js', 'server.js.jst');
   writeFileFromTemplate('bundles/application.js', 'bundles/application.js.jst');
-  // writeFileFromTemplate('reactor.js', 'reactor.js.jst');
 
-  spinnerSpawn(
-    'npm',
-    ['install', '--save-dev'].concat(nodePackages),
-    'Installing Packages'
-  ).then(function(code) {
+  installPackages(nodePackages).then(() => {
+    return installPackages(nodePackagesDev, true);
+  }).then((code) => {
     console.log(chalk.green('Done'));
-  }, function(code) {
+  }, (code) => {
     console.log(chalk.red('Failed'));
     process.exit(code);
   });
 };
+
+function installPackages(packages, development = false) {
+  const saveFlag = development ? '--save-dev' : '--save';
+
+  return spinnerSpawn(
+    'npm',
+    ['install', saveFlag].concat(packages),
+    'Installing Packages...'
+  );
+}
 
 module.exports = init;

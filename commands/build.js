@@ -1,14 +1,14 @@
-var spinnerSpawn = require('../utils/spinner-spawn');
+const { exitWithError } = require('../utils/logging');
+const spinnerSpawn = require('../utils/spinner-spawn');
 
-var build = function() {
+function build() {
   spinnerSpawn('./node_modules/webpack/bin/webpack.js', [
     '-d', '--display-reasons', '--display-chunks', '--bail'
-  ], 'Building')
-    .then(function(code) {
+  ], 'Building...')
+    .then((code) => {
       console.log(chalk.green('Build Succeeded'));
-    }, function(code) {
-      console.log(chalk.red('Build Failed'));
-      process.exit(code);
+    }, (code) => {
+      exitWithError('Build Failed!');
     });
 };
 

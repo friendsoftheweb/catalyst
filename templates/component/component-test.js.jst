@@ -1,0 +1,14 @@
+import React from 'react';
+import renderer from 'react-test-renderer';
+
+import <%= className %> from '<%= modulePath %>';
+
+test('<%= className %> renders correctly', () => {
+  const tree = renderer.create(
+    <<%= className %>>
+
+    </<%= className %>>
+  ).toJSON();
+
+  expect(tree).toMatchSnapshot();
+});

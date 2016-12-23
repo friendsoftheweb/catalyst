@@ -1,20 +1,18 @@
-var fs = require('fs');
-var path = require('path');
-var mkdirp = require('mkdirp');
-var _ = require('lodash');
+const fs = require('fs');
+const path = require('path');
+const mkdirp = require('mkdirp');
+const { template } = require('lodash');
 
-var logAction = require('../utils/log-action');
+const { logAction } = require('../utils/logging');
 
-var templateFromFile = function(filePath) {
-  var absoluteFilePath = path.resolve(__dirname, '../templates/' + filePath);
-  
-  return _.template(fs.readFileSync(absoluteFilePath, 'utf8'));
+function templateFromFile(filePath) {
+  const absoluteFilePath = path.resolve(__dirname, `../templates/${filePath}`);
+
+  return template(fs.readFileSync(absoluteFilePath, 'utf8'));
 };
 
-var writeFileFromTemplate = function(outputPath, templatePath, context) {
-  context || (context = {});
-
-  var outputDirname = path.dirname(outputPath);
+function writeFileFromTemplate(outputPath, templatePath, context = {}) {
+  const outputDirname = path.dirname(outputPath);
 
   if (outputDirname !== '.') {
     mkdirp.sync(outputDirname);

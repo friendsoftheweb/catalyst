@@ -1,16 +1,16 @@
 #! /usr/bin/env node
 
-var _ = require('lodash');
-var argv = require('electron').argv();
+const _ = require('lodash');
+const argv = require('electron').argv();
 
 _.templateSettings.interpolate = /<%=([\s\S]+?)%>/g;
 
-var init = require('./commands/init');
-var generate = require('./commands/generate');
-var server = require('./commands/server');
-var build = require('./commands/build');
-var test = require('./commands/test');
-var check = require('./commands/check');
+const init = require('./commands/init');
+const generate = require('./commands/generate');
+const server = require('./commands/server');
+const build = require('./commands/build');
+const test = require('./commands/test');
+const check = require('./commands/check');
 
 switch(argv.commands[0]) {
   case 'init':

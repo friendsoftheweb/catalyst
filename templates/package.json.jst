@@ -1,5 +1,5 @@
 {
-  "name": "webpack-test",
+  "name": "catalyst-test",
   "version": "1.0.0",
   "description": "== README",
   "main": "index.js",
@@ -7,7 +7,16 @@
     "test": "test"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "catalyst server",
+    "test": "catalyst test",
+    "build": "catalyst build"
+  },
+  "catalyst": {},
+  "jest": {
+    "modulePaths": ["app"],
+    "testPathIgnorePatterns": [
+      "<rootDir>/(node_modules)/"
+    ]
   },
   "author": "",
   "license": "ISC",

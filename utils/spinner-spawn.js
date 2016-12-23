@@ -1,16 +1,23 @@
-var RSVP = require('rsvp');
-var Spinner = require('node-spinner');
-var spawn = require('child_process').spawn;
+const RSVP = require('rsvp');
+const Spinner = require('node-spinner');
+const { spawn } = require('child_process');
 
-var spinnerSpawn = function(command, args, message) {
-  return new RSVP.Promise(function(resolve, reject) {
-    var spinner = Spinner();
+function spinnerSpawn(command, args, message) {
+  return new RSVP.Promise((resolve, reject) => {
+    const spinner = Spinner();
 
-    var spinnerInterval = setInterval(function(){
+    const spinnerInterval = setInterval(function(){
       process.stdout.write('\r \033[36m' + message + '\033[m ' + spinner.next());
     }, 100);
 
-    var cmd = spawn(command, args);
+    const cmd = spawn(command, args);
+
+    cmd.stdout.on('data', function (data) {
+      process.stdout.clearLine();
+      process.stdout.cursorTo(0);
+
+      console.log(data.toString());
+    });
 
     cmd.stderr.on('data', function (data) {
       process.stdout.clearLine();
