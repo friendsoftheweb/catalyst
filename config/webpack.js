@@ -51,6 +51,16 @@ function webpackConfig() {
           query: {
             presets: ['react', 'es2015', 'stage-2']
           }
+        },
+        {
+          test: /\.(jpe?g|gif|png|svg|woff|woff2)$/,
+          include: path.join(context, config.rootPath, 'assets'),
+          loader: 'file',
+          query: {
+            context: path.join(context, config.rootPath, 'assets'),
+            name: '[path][name]-[hash].[ext]',
+            publicPath: '/assets/'
+          }
         }
       ]
     },
