@@ -1,5 +1,8 @@
 const path = require('path');
 const webpack = require('webpack');
+const ManifestPlugin = require('webpack-manifest-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const autoprefixer = require('autoprefixer');
 
 const loadConfig = require('../utils/load-config');
 
@@ -29,10 +32,18 @@ function webpackConfig() {
       modulesDirectories: ['node_modules']
     },
 
-    plugins: generatePlugins(),
+    plugins: generatePlugins(context, config.buildPath),
 
     module: {
       loaders: [
+        {
+          test: /\.scss$/,
+          loader: ExtractTextPlugin.extract([
+            `css?root=${path.join(context, config.rootPath)}`,
+            'postcss-loader',
+            'sass'
+          ])
+        },
         {
           test: /\.js$/,
           include: path.join(context, config.rootPath),
@@ -42,6 +53,10 @@ function webpackConfig() {
           }
         }
       ]
+    },
+
+    postcss() {
+      return [autoprefixer];
     }
   };
 }
@@ -77,7 +92,11 @@ function generateOutput(context, buildPath) {
 }
 
 function generatePlugins() {
-  const plugins = [];
+  const plugins = [
+    new ExtractTextPlugin(path.join('[name]-[hash].css'), {
+      allChunks: true
+    })
+  ];
 
   if (productionBuild || testBuild) {
     plugins.push(
@@ -96,6 +115,12 @@ function generatePlugins() {
           warnings: false
         }
       })
+    );
+  }
+
+  if (productionBuild || testBuild) {
+    plugins.push(
+      new ManifestPlugin()
     );
   }
 

@@ -8,6 +8,7 @@ const spinnerSpawn = require('../utils/spinner-spawn');
 const writeFileFromTemplate = require('../utils/write-file-from-template');
 
 const nodePackages = [
+  'autoprefixer',
   'babel-loader',
   'babel-jest',
   'babel-polyfill',
@@ -24,6 +25,7 @@ const nodePackages = [
   'isomorphic-fetch',
   'jsx-loader',
   'node-sass',
+  'postcss-loader',
   'react',
   'react-dom',
   'react-redux',
@@ -31,7 +33,8 @@ const nodePackages = [
   'redux-saga',
   'sass-loader',
   'style-loader',
-  'webpack'
+  'webpack',
+  'webpack-manifest-plugin'
 ];
 
 const nodePackagesDev = [
@@ -67,6 +70,7 @@ function init(options) {
     mkdirp.sync(`${config.rootPath}/components`);
     mkdirp.sync(`${config.rootPath}/modules`);
     mkdirp.sync(`${config.rootPath}/records`);
+    mkdirp.sync(`${config.rootPath}/styles`);
     mkdirp.sync(`${config.rootPath}/assets/fonts`);
     mkdirp.sync(`${config.rootPath}/assets/images`);
 
@@ -79,6 +83,8 @@ function init(options) {
 
     writeFileFromTemplate(`${config.rootPath}/store.js`, 'store.js.jst');
     writeFileFromTemplate(`${config.rootPath}/provider.js`, 'provider.js.jst');
+
+    fs.writeFileSync(`${config.rootPath}/styles/application.scss`, '');
 
     installPackages(nodePackages).then(() => {
       return installPackages(nodePackagesDev, true);
