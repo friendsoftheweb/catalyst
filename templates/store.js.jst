@@ -1,0 +1,39 @@
+import { createStore, combineReducers, applyMiddleware } from 'redux';
+import createSagaMiddleware from 'redux-saga';
+
+const sagaMiddleware = createSagaMiddleware();
+
+/*
+  Example:
+
+  import * as currentOrder from '/modules/current-order';
+
+  const rootReducer = combineReducers({
+    currentOrder: currentOrder.reducer
+  });
+
+  function* rootSaga() {
+    yield [
+      currentOrder.saga()
+    ];
+  }
+*/
+
+const rootReducer = combineReducers({
+
+});
+
+function* rootSaga() {
+  yield [
+
+  ];
+}
+
+const store = createStore(
+  rootReducer,
+  applyMiddleware(sagaMiddleware)
+);
+
+sagaMiddleware.run(rootSaga);
+
+export default store;

@@ -17,11 +17,15 @@ const nodePackages = [
   'expose-loader',
   'extract-text-webpack-plugin',
   'file-loader',
+  'immutable',
   'isomorphic-fetch',
   'jsx-loader',
   'node-sass',
   'react',
   'react-dom',
+  'react-redux',
+  'redux',
+  'redux-saga',
   'sass-loader',
   'style-loader',
   'webpack'
@@ -59,6 +63,9 @@ function init(options) {
   writeFileFromTemplate('webpack.config.js', 'webpack.config.js.jst');
 
   writeFileFromTemplate('bundles/application.js', 'bundles/application.js.jst');
+
+  writeFileFromTemplate('app/store.js', 'store.js.jst');
+  writeFileFromTemplate('app/provider.js', 'provider.js.jst');
 
   installPackages(nodePackages).then(() => {
     return installPackages(nodePackagesDev, true);

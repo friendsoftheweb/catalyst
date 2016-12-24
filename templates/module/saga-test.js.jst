@@ -1,0 +1,18 @@
+import { put, call } from 'redux-saga/effects';
+
+import <%= lowerModuleName %>Saga from '../<%= moduleDirectory %>-saga';
+import * as actions from '../<%= moduleDirectory %>-actions';
+
+/*
+  Example:
+
+  test('<%= moduleName %> saga', () => {
+    const generator = <%= lowerModuleName %>Saga();
+
+    expect(
+      generator.next().value
+    ).toEqual(
+      put(actions.addLineItem())
+    );
+  });
+*/
