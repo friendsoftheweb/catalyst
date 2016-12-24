@@ -1,7 +1,9 @@
 const fs = require('fs');
 const mkdirp = require('mkdirp');
 const chalk = require('chalk');
+const inquirer = require('inquirer');
 
+const { exitWithError } = require('../utils/logging');
 const spinnerSpawn = require('../utils/spinner-spawn');
 const writeFileFromTemplate = require('../utils/write-file-from-template');
 
@@ -11,6 +13,7 @@ const nodePackages = [
   'babel-polyfill',
   'babel-preset-es2015',
   'babel-preset-react',
+  'babel-preset-stage-2',
   'css-loader',
   'es5-shim',
   'es6-promise',
@@ -44,36 +47,47 @@ function init(options) {
     const package = JSON.parse(fs.readFileSync('package.json', 'utf8'));
 
     if (typeof package.catalyst === 'object') {
-      console.log('This project already has a Catalyst configuration.');
-      process.exit(0);
+      exitWithError('This project already has a Catalyst configuration.');
     }
-  } else {
-    writeFileFromTemplate('package.json', 'package.json.jst');
   }
 
-  mkdirp.sync('bundles');
-  mkdirp.sync('app/components');
-  mkdirp.sync('app/modules');
-  mkdirp.sync('app/records');
-  mkdirp.sync('assets/fonts');
-  mkdirp.sync('assets/images');
+  inquirer.prompt([
+    {
+      name: 'rootPath',
+      message: 'Root path:',
+      default: 'client'
+    },
+    {
+      name: 'buildPath',
+      message: 'Build path:',
+      default: 'public/assets'
+    }
+  ]).then((config) => {
+    mkdirp.sync(`${config.rootPath}/bundles`);
+    mkdirp.sync(`${config.rootPath}/components`);
+    mkdirp.sync(`${config.rootPath}/modules`);
+    mkdirp.sync(`${config.rootPath}/records`);
+    mkdirp.sync(`${config.rootPath}/assets/fonts`);
+    mkdirp.sync(`${config.rootPath}/assets/images`);
 
-  writeFileFromTemplate('.babelrc', '.babelrc.jst');
-  writeFileFromTemplate('.eslintrc', '.eslintrc.jst');
-  writeFileFromTemplate('webpack.config.js', 'webpack.config.js.jst');
+    writeFileFromTemplate('package.json', 'package.json.jst', { config });
+    writeFileFromTemplate('.babelrc', '.babelrc.jst');
+    writeFileFromTemplate('.eslintrc', '.eslintrc.jst');
+    writeFileFromTemplate('webpack.config.js', 'webpack.config.js.jst');
 
-  writeFileFromTemplate('bundles/application.js', 'bundles/application.js.jst');
+    writeFileFromTemplate(`${config.rootPath}/bundles/application.js`, 'bundles/application.js.jst');
 
-  writeFileFromTemplate('app/store.js', 'store.js.jst');
-  writeFileFromTemplate('app/provider.js', 'provider.js.jst');
+    writeFileFromTemplate(`${config.rootPath}/store.js`, 'store.js.jst');
+    writeFileFromTemplate(`${config.rootPath}/provider.js`, 'provider.js.jst');
 
-  installPackages(nodePackages).then(() => {
-    return installPackages(nodePackagesDev, true);
-  }).then((code) => {
-    console.log(chalk.green('Done'));
-  }, (code) => {
-    console.log(chalk.red('Failed'));
-    process.exit(code);
+    installPackages(nodePackages).then(() => {
+      return installPackages(nodePackagesDev, true);
+    }).then((code) => {
+      console.log(chalk.green('Done'));
+    }, (code) => {
+      console.log(chalk.red('Failed'));
+      process.exit(code);
+    });
   });
 };
 

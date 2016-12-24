@@ -1,12 +1,15 @@
 const writeFileFromTemplate = require('../../utils/write-file-from-template');
+const loadConfig = require('../../utils/load-config');
 
 function generateComponent(moduleNameParts, options) {
+  const config = loadConfig();
+
   const className = moduleNameParts[moduleNameParts.length - 1];
 
   const moduleName = moduleNameParts.join('/');
 
-  const componentPathBase = 'app/components/' + moduleName + '/';
-  const testPathBase = 'app/components/__tests__/' + moduleName + '/';
+  const componentPathBase = `${config.rootPath}/components/${moduleName}/`;
+  const testPathBase = `${config.rootPath}/components/__tests__/${moduleName}/`;
 
   const filePath = componentPathBase + className + '.js';
   const modulePath = 'components/' + moduleName + '/' + className;

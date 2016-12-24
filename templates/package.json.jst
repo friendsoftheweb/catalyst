@@ -12,7 +12,11 @@
     "test:watch": "npm test -- --watch",
     "build": "catalyst build"
   },
-  "catalyst": {},
+  "catalyst": {
+    <%= Object.keys(config).map(function(key) {
+      return '"' + key + '": ' + JSON.stringify(config[key]);
+    }).join(",\n    ") %>
+  },
   "jest": {
     "modulePaths": ["app"],
     "testPathIgnorePatterns": [
