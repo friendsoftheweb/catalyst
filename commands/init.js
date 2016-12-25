@@ -101,8 +101,8 @@ function installPackages(packages, development = false) {
   const saveFlag = development ? '--save-dev' : '--save';
 
   return spinnerSpawn(
-    'npm',
-    ['install', saveFlag].concat(packages),
+    'yarn',
+    ['add', saveFlag].concat(packages),
     'Installing Packages...'
   );
 }
