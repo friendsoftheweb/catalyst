@@ -18,7 +18,7 @@
     }).join(",\n    ") %>
   },
   "jest": {
-    "modulePaths": ["app"],
+    "modulePaths": ["<%= config.rootPath %>"],
     "testPathIgnorePatterns": [
       "<rootDir>/(node_modules)/"
     ]

@@ -1,5 +1,6 @@
 const mkdirp = require('mkdirp');
-const { snakeCase, lowerFirst } = require('lodash');
+const { lowerFirst } = require('lodash');
+const { dasherize } = require('../../utils/formatting');
 
 const writeFileFromTemplate = require('../../utils/write-file-from-template');
 const loadConfig = require('../../utils/load-config');
@@ -28,10 +29,6 @@ function generateModule(moduleNameParts, options) {
 
   writeFileFromTemplate(`${filePathBase}/__tests__/${moduleDirectory}-reducer-test.js`, 'module/reducer-test.js.jst', context);
   writeFileFromTemplate(`${filePathBase}/__tests__/${moduleDirectory}-saga-test.js`, 'module/saga-test.js.jst', context);
-};
-
-function dasherize(string) {
-  return snakeCase(string).replace(/_/g, '-');
 };
 
 module.exports = generateModule;

@@ -1,31 +1,34 @@
 const writeFileFromTemplate = require('../../utils/write-file-from-template');
 const loadConfig = require('../../utils/load-config');
+const { dasherize } = require('../../utils/formatting');
 
 function generateComponent(moduleNameParts, options) {
   const config = loadConfig();
 
   const className = moduleNameParts[moduleNameParts.length - 1];
+  const moduleName = moduleNameParts.map(dasherize).join('/');
+  const fileNameBase = dasherize(className);
 
-  const moduleName = moduleNameParts.join('/');
+  const modulePathBase = `components/${moduleName}`;
+  const componentPathBase = `${config.rootPath}/${modulePathBase}`;
+  const testPathBase = `${config.rootPath}/components/__tests__/${moduleName}`;
 
-  const componentPathBase = `${config.rootPath}/components/${moduleName}/`;
-  const testPathBase = `${config.rootPath}/components/__tests__/${moduleName}/`;
-
-  const filePath = componentPathBase + className + '.js';
-  const modulePath = 'components/' + moduleName + '/' + className;
-  const testFilePath = testPathBase + className + '-test.js';
+  const componentFilePath = `${componentPathBase}/${fileNameBase}-component.js`;
+  const testFilePath = `${testPathBase}/${fileNameBase}-test.js`;
 
   const context = {
+    moduleName,
     className,
-    filePath,
-    modulePath
+    modulePathBase,
+    fileNameBase,
+    componentFilePath
   };
 
-  writeFileFromTemplate(filePath, 'component/component.js.jst', context);
+  writeFileFromTemplate(componentFilePath, 'component/component.js.jst', context);
   writeFileFromTemplate(testFilePath, 'component/component-test.js.jst', context);
 
   console.log('\nYou can import your component like this:\n');
-  console.log('import ' + className + ' from \'' + modulePath + '\';');
+  console.log('import ' + className + ' from \'' + modulePathBase + '-component\';');
 };
 
 module.exports = generateComponent;

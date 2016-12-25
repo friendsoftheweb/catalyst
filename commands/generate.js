@@ -1,13 +1,11 @@
-const { capitalize, camelCase, map } = require('lodash');
+const { map } = require('lodash');
 
+const { classify } = require('../utils/formatting');
 const { exitWithError } = require('../utils/logging');
 const writeFileFromTemplate = require('../utils/write-file-from-template');
+
 const generateComponent = require('./generate/component');
 const generateModule = require('./generate/module');
-
-function classify(string) {
-  return capitalize(camelCase(string));
-};
 
 function generate(type, moduleName, options) {
   type = type.replace(/\s/g, '');
