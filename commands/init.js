@@ -9,9 +9,10 @@ const writeFileFromTemplate = require('../utils/write-file-from-template');
 
 const nodePackages = [
   'autoprefixer',
+  'axios',
+  'babel-core',
   'babel-loader',
   'babel-jest',
-  'babel-polyfill',
   'babel-preset-es2015',
   'babel-preset-react',
   'babel-preset-stage-2',
@@ -22,7 +23,6 @@ const nodePackages = [
   'extract-text-webpack-plugin',
   'file-loader',
   'immutable',
-  'isomorphic-fetch',
   'jsx-loader',
   'node-sass',
   'postcss-loader',
@@ -98,7 +98,7 @@ function init(options) {
 };
 
 function installPackages(packages, development = false) {
-  const saveFlag = development ? '--save-dev' : '--save';
+  const saveFlag = development ? '--dev' : null;
 
   return spinnerSpawn(
     'yarn',
