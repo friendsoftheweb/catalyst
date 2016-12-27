@@ -1,7 +1,29 @@
-import { put, call } from 'redux-saga/effects';
+import { take, takeEvery, put, call } from 'redux-saga/effects';
 
 import * as actions from './<%= moduleDirectory %>-actions';
+import * as requests from './<%= moduleDirectory %>-requests';
 
 export default function* <%= lowerModuleName %>Saga(dispatch) {
 
 }
+
+/*
+  Example:
+
+  export default function* currentOrderSaga(dispatch) {
+    yield takeEvery('CREATE_LINE_ITEM_START', createLineItemSaga);
+  }
+
+  function* createLineItemSaga(action) {
+    const { variantId, quantity } = action;
+
+    try {
+      const response = yield call(requests.createLineItem, { variantId, quantity });
+
+      yield put(actions.createLineItemSuccess(response));
+    }
+    catch(error) {
+      yield put(actions.createLineItemError(error));
+    }
+  }
+*/

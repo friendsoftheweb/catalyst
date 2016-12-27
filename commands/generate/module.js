@@ -25,6 +25,7 @@ function generateModule(moduleNameParts, options) {
   writeFileFromTemplate(`${filePathBase}/${moduleDirectory}-reducer.js`, 'module/reducer.js.jst', context);
   writeFileFromTemplate(`${filePathBase}/${moduleDirectory}-saga.js`, 'module/saga.js.jst', context);
   writeFileFromTemplate(`${filePathBase}/${moduleDirectory}-actions.js`, 'module/actions.js.jst', context);
+  writeFileFromTemplate(`${filePathBase}/${moduleDirectory}-requests.js`, 'module/requests.js.jst', context);
   writeFileFromTemplate(`${filePathBase}/${moduleDirectory}-getters.js`, 'module/getters.js.jst', context);
 
   writeFileFromTemplate(`${filePathBase}/__tests__/${moduleDirectory}-reducer-test.js`, 'module/reducer-test.js.jst', context);

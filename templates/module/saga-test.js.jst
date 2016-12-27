@@ -2,17 +2,39 @@ import { put, call } from 'redux-saga/effects';
 
 import <%= lowerModuleName %>Saga from '../<%= moduleDirectory %>-saga';
 import * as actions from '../<%= moduleDirectory %>-actions';
+import * as requests from '../<%= moduleDirectory %>-requests';
+
+test('<%= moduleName %> saga', () => {
+  const generator = <%= lowerModuleName %>Saga();
+
+
+});
 
 /*
   Example:
 
-  test('<%= moduleName %> saga', () => {
-    const generator = <%= lowerModuleName %>Saga();
+  test('createLineItemSaga dispatches CREATE_LINE_ITEM_SUCCESS', () => {
+    const action = actions.createLineItemStart(123, 2);
+    const generator = createLineItemSaga(action);
+    const response = {};
+
+    let next = generator.next();
 
     expect(
-      generator.next().value
+      next.value
     ).toEqual(
-      put(actions.addLineItem())
+      call(requests.createLineItem, {
+        variantId: 123,
+        quantity: 2
+      })
+    );
+
+    next = generator.next(response);
+
+    expect(
+      next.value
+    ).toEqual(
+      put(actions.createLineItemSuccess(response))
     );
   });
 */

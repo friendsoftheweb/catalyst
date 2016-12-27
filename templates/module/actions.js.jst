@@ -1,10 +1,18 @@
 /*
   Example:
 
-  export function addTodo(text) {
+  export function createLineItemStart(variantId, quantity) {
     return {
-      type: 'ADD_TODO',
-      text
+      type: 'CREATE_LINE_ITEM_START',
+      variantId,
+      quantity
+    };
+  }
+
+  export function createLineItemSuccess(response) {
+    return {
+      type: 'CREATE_LINE_ITEM_SUCCESS',
+      ...response
     };
   }
 */
