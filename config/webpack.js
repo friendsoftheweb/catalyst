@@ -15,6 +15,8 @@ const devServerPort = process.env.WEBPACK_PORT || 8080;
 function webpackConfig() {
   const context = process.cwd();
   const config = loadConfig();
+  const rootPath = path.join(context, config.rootPath);
+  const buildPath = path.join(context, config.buildPath);
 
   return {
     context,
@@ -24,45 +26,30 @@ function webpackConfig() {
       application: generateEntry(`./${config.rootPath}/bundles/application.js`)
     },
 
-    output: generateOutput(context, config.buildPath),
+    output: generateOutput({
+      context,
+      rootPath,
+      buildPath
+    }),
 
     resolve: {
       extensions: ['', '.js'],
-      root: path.join(context, config.rootPath),
+      root: rootPath,
       modulesDirectories: ['node_modules']
     },
 
-    plugins: generatePlugins(context, config.buildPath),
+    plugins: generatePlugins({
+      context,
+      rootPath,
+      buildPath
+    }),
 
     module: {
-      loaders: [
-        {
-          test: /\.scss$/,
-          loader: ExtractTextPlugin.extract([
-            `css?root=${path.join(context, config.rootPath)}`,
-            'postcss-loader',
-            'sass'
-          ])
-        },
-        {
-          test: /\.js$/,
-          include: path.join(context, config.rootPath),
-          loader: 'babel',
-          query: {
-            presets: ['react', 'es2015', 'stage-2']
-          }
-        },
-        {
-          test: /\.(jpe?g|gif|png|svg|woff|woff2)$/,
-          include: path.join(context, config.rootPath, 'assets'),
-          loader: 'file',
-          query: {
-            context: path.join(context, config.rootPath, 'assets'),
-            name: '[path][name]-[hash].[ext]',
-            publicPath: '/assets/'
-          }
-        }
-      ]
+      loaders: generateLoaders({
+        context,
+        rootPath,
+        buildPath
+      })
     },
 
     postcss() {
@@ -83,18 +70,18 @@ function generateEntry(path) {
   return entry;
 }
 
-function generateOutput(context, buildPath) {
+function generateOutput({ context, buildPath }) {
   const output = {};
 
   if (productionBuild) {
-    output.path = path.join(context, buildPath);
+    output.path = buildPath;
     output.filename = '[name]-[hash].js';
   } else if (testBuild) {
-    output.path = path.join(context, buildPath);
+    output.path = buildPath;
     output.filename = '[name].js';
   } else {
     output.path = path.join(context, 'app', 'assets');
-    output.filename = 'javascripts/[name].js';
+    output.filename = '[name].js';
     output.publicPath = `http://localhost:${devServerPort}/`;
   }
 
@@ -102,8 +89,10 @@ function generateOutput(context, buildPath) {
 }
 
 function generatePlugins() {
+  const cssFileName = developmentBuild ? '[name].css' : '[name]-[hash].css';
+
   const plugins = [
-    new ExtractTextPlugin(path.join('[name]-[hash].css'), {
+    new ExtractTextPlugin(path.join(cssFileName), {
       allChunks: true
     })
   ];
@@ -135,6 +124,43 @@ function generatePlugins() {
   }
 
   return plugins;
+}
+
+function generateLoaders({ context, rootPath }) {
+  const loaders = [];
+
+  loaders.push({
+    test: /\.scss$/,
+    loader: ExtractTextPlugin.extract([
+      `css?root=${rootPath}`,
+      'postcss-loader',
+      'sass'
+    ])
+  });
+
+  loaders.push({
+    test: /\.js$/,
+    include: rootPath,
+    loader: 'babel',
+    query: {
+      presets: ['react', 'es2015', 'stage-2']
+    }
+  });
+
+  const assetFilePath = developmentBuild ? '[path][name].[ext]' : '[path][name]-[hash].[ext]';
+
+  loaders.push({
+    test: /\.(jpe?g|gif|png|svg|woff|woff2)$/,
+    include: path.join(rootPath, 'assets'),
+    loader: 'file',
+    query: {
+      context: path.join(rootPath, 'assets'),
+      name: assetFilePath,
+      publicPath: '/assets/'
+    }
+  });
+
+  return loaders;
 }
 
 module.exports = webpackConfig;
