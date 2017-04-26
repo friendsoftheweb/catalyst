@@ -1,9 +1,11 @@
+const path = require('path');
 const { exitWithError } = require('../utils/logging');
 const spinnerSpawn = require('../utils/spinner-spawn');
+const resolveModulePath = require('../utils/resolve-module-path');
 
 function build() {
   spinnerSpawn(
-    './node_modules/webpack/bin/webpack.js',
+    resolveModulePath('webpack/bin/webpack.js'),
     ['--hide-modules', '--bail'],
     'Building...'
   ).then(

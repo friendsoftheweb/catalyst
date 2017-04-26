@@ -1,6 +1,7 @@
 const path = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const environment = require('../../utils/environment');
+const resolveModulePath = require('../../utils/resolve-module-path');
 
 function generateRules({ context, rootPath }) {
   const env = environment();
@@ -12,20 +13,20 @@ function generateRules({ context, rootPath }) {
     use: ExtractTextPlugin.extract({
       use: [
         {
-          loader: 'css-loader',
+          loader: resolveModulePath('css-loader'),
           options: {
             root: rootPath
           }
         },
         {
-          loader: 'postcss-loader',
+          loader: resolveModulePath('postcss-loader'),
           options: {
             plugins: function() {
-              return [require('autoprefixer')];
+              return [require(resolveModulePath('autoprefixer'))];
             }
           }
         },
-        'sass-loader'
+        resolveModulePath('sass-loader')
       ]
     })
   });
@@ -35,22 +36,9 @@ function generateRules({ context, rootPath }) {
     include: rootPath,
     use: [
       {
-        loader: 'babel-loader',
+        loader: resolveModulePath('babel-loader'),
         options: {
-          plugins: babelPlugins,
-          presets: [
-            [
-              'env',
-              {
-                modules: false,
-                targets: {
-                  browsers: ['last 2 versions', 'not IE <= 10']
-                }
-              }
-            ],
-            'react',
-            'stage-2'
-          ]
+          cacheDirectory: true
         }
       }
     ]

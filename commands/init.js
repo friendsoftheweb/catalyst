@@ -7,43 +7,8 @@ const { exitWithError } = require('../utils/logging');
 const spinnerSpawn = require('../utils/spinner-spawn');
 const writeFileFromTemplate = require('../utils/write-file-from-template');
 
-const nodePackages = [
-  'autoprefixer',
-  'axios',
-  'babel-core',
-  'babel-loader',
-  'babel-jest',
-  'babel-preset-env',
-  'babel-preset-react',
-  'babel-preset-stage-2',
-  'css-loader',
-  'es5-shim',
-  'es6-promise',
-  'expose-loader',
-  'extract-text-webpack-plugin',
-  'file-loader',
-  'immutable',
-  'jsx-loader',
-  'node-sass',
-  'postcss-loader',
-  'react',
-  'react-dom',
-  'react-redux',
-  'redux',
-  'redux-saga',
-  'sass-loader',
-  'style-loader',
-  'webpack',
-  'webpack-manifest-plugin'
-];
-
-const nodePackagesDev = [
-  'eslint',
-  'jest',
-  'react-addons-perf',
-  'react-test-renderer',
-  'webpack-dev-server'
-];
+const nodePackages = ['axios', 'react', 'react-dom', 'react-redux', 'redux', 'redux-saga'];
+const nodePackagesDev = ['eslint', 'jest', 'react-addons-perf', 'react-test-renderer'];
 
 function init(options) {
   if (fs.existsSync('package.json')) {

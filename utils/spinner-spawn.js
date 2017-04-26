@@ -1,8 +1,11 @@
 const RSVP = require('rsvp');
 const Spinner = require('node-spinner');
 const { spawn } = require('child_process');
+const { compact } = require('lodash');
 
 function spinnerSpawn(command, args, message) {
+  args = compact(args);
+  
   return new RSVP.Promise((resolve, reject) => {
     const spinner = Spinner();
 
