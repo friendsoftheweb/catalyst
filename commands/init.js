@@ -7,7 +7,15 @@ const { exitWithError } = require('../utils/logging');
 const spinnerSpawn = require('../utils/spinner-spawn');
 const writeFileFromTemplate = require('../utils/write-file-from-template');
 
-const nodePackages = ['axios', 'react', 'react-dom', 'react-redux', 'redux', 'redux-saga'];
+const nodePackages = [
+  '@ftw/catalyst',
+  'axios',
+  'react',
+  'react-dom',
+  'react-redux',
+  'redux',
+  'redux-saga'
+];
 const nodePackagesDev = ['eslint', 'jest', 'react-addons-perf', 'react-test-renderer'];
 
 function init(options) {
