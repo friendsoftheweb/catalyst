@@ -24,7 +24,6 @@ function webpackConfig() {
   return {
     context,
     devtool: generateDevtool(),
-
     entry: reduce(
       bundlePaths,
       (entry, bundlePath) => {
@@ -35,24 +34,20 @@ function webpackConfig() {
       },
       {}
     ),
-
     output: generateOutput({
       context,
       rootPath,
       buildPath
     }),
-
     resolve: {
       extensions: ['.js'],
       modules: [rootPath, 'node_modules']
     },
-
     plugins: generatePlugins({
       context,
       rootPath,
       buildPath
     }),
-
     module: {
       loaders: generateRules({
         context,

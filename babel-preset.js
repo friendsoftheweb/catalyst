@@ -1,16 +1,3 @@
-const environment = require('./utils/environment');
-const resolveModulePath = require('./utils/resolve-module-path');
+const babelConfig = require('./config/babel');
 
-module.exports = {
-  presets: [
-    [
-      resolveModulePath('babel-preset-es2015'),
-      {
-        modules: false
-      }
-    ],
-    resolveModulePath('babel-preset-react'),
-    resolveModulePath('babel-preset-stage-2')
-  ],
-  plugins: []
-};
+module.exports = babelConfig();

@@ -1,11 +1,11 @@
 const path = require('path');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const environment = require('../../utils/environment');
 const resolveModulePath = require('../../utils/resolve-module-path');
+const ExtractTextPlugin = require(resolveModulePath('extract-text-webpack-plugin'));
+const babelConfig = require('../../config/babel');
 
 function generateRules({ context, rootPath }) {
   const env = environment();
-  const babelPlugins = [];
   const rules = [];
 
   rules.push({
@@ -37,9 +37,12 @@ function generateRules({ context, rootPath }) {
     use: [
       {
         loader: resolveModulePath('babel-loader'),
-        options: {
-          cacheDirectory: true
-        }
+        options: Object.assign(
+          {
+            cacheDirectory: true
+          },
+          babelConfig(false)
+        )
       }
     ]
   });
