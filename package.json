@@ -1,5 +1,5 @@
 {
-  "name": "catalyst",
+  "name": "@ftw/catalyst",
   "version": "0.0.1",
   "description": "Generates React components.",
   "engines": {
