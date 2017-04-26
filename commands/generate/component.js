@@ -13,8 +13,8 @@ function generateComponent(moduleNameParts, options) {
   const componentPathBase = `${config.rootPath}/${modulePathBase}`;
   const testPathBase = `${config.rootPath}/components/__tests__/${moduleName}`;
 
-  const componentFilePath = `${componentPathBase}/${fileNameBase}-component.js`;
-  const testFilePath = `${testPathBase}/${fileNameBase}-test.js`;
+  const componentFilePath = `${componentPathBase}/index.js`;
+  const testFilePath = `${testPathBase}/component-test.js`;
 
   const context = {
     moduleName,
@@ -28,7 +28,7 @@ function generateComponent(moduleNameParts, options) {
   writeFileFromTemplate(testFilePath, 'component/component-test.js.jst', context);
 
   console.log('\nYou can import your component like this:\n');
-  console.log('import ' + className + ' from \'' + modulePathBase + '-component\';');
-};
+  console.log('import ' + className + " from '" + modulePathBase + "';");
+}
 
 module.exports = generateComponent;

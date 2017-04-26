@@ -1,8 +1,8 @@
-import <%= lowerModuleName %>Reducer from '../<%= moduleDirectory %>-reducer';
-import * as actions from '../<%= moduleDirectory %>-actions';
+import <%= lowerModuleName %>Reducer from '../reducer';
+import * as actionCreators from '../action-creators';
 
 test('<%= moduleName %> reducer returns the initial state', () => {
   expect(
-    <%= lowerModuleName %>Reducer(undefined, {}).toJS()
+    <%= lowerModuleName %>Reducer(undefined, {})
   ).toEqual({});
 });

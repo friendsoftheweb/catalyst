@@ -1,0 +1,10 @@
+[ignore]
+.*/tmp/.*
+
+[include]
+
+[libs]
+
+[options]
+module.name_mapper='^\(.*\)$' -> '<PROJECT_ROOT>/<%= config.rootPath %>/\1'
+esproposal.decorators=ignore

@@ -1,8 +1,8 @@
 import { put, call } from 'redux-saga/effects';
 
-import <%= lowerModuleName %>Saga from '../<%= moduleDirectory %>-saga';
-import * as actions from '../<%= moduleDirectory %>-actions';
-import * as requests from '../<%= moduleDirectory %>-requests';
+import <%= lowerModuleName %>Saga from '../saga';
+import * as actionCreators from '../action-creators';
+import * as requests from '../requests';
 
 test('<%= moduleName %> saga', () => {
   const generator = <%= lowerModuleName %>Saga();
@@ -14,7 +14,7 @@ test('<%= moduleName %> saga', () => {
   Example:
 
   test('createLineItemSaga dispatches CREATE_LINE_ITEM_SUCCESS', () => {
-    const action = actions.createLineItemStart(123, 2);
+    const action = actionCreators.createLineItemStart(123, 2);
     const generator = createLineItemSaga(action);
     const response = {};
 
@@ -34,7 +34,7 @@ test('<%= moduleName %> saga', () => {
     expect(
       next.value
     ).toEqual(
-      put(actions.createLineItemSuccess(response))
+      put(actionCreators.createLineItemSuccess(response))
     );
   });
 */

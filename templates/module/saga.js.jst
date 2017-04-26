@@ -1,9 +1,11 @@
+// @flow
+
 import { take, takeEvery, put, call } from 'redux-saga/effects';
 
-import * as actions from './<%= moduleDirectory %>-actions';
-import * as requests from './<%= moduleDirectory %>-requests';
+import * as actionCreators from './action-creators';
+import * as requests from './requests';
 
-export default function* <%= lowerModuleName %>Saga(dispatch) {
+export default function* <%= lowerModuleName %>Saga(dispatch: Function): Generator<any, any, any> {
 
 }
 
@@ -20,10 +22,10 @@ export default function* <%= lowerModuleName %>Saga(dispatch) {
     try {
       const response = yield call(requests.createLineItem, { variantId, quantity });
 
-      yield put(actions.createLineItemSuccess(response));
+      yield put(actionCreators.createLineItemSuccess(response));
     }
     catch(error) {
-      yield put(actions.createLineItemError(error));
+      yield put(actionCreators.createLineItemError(error));
     }
   }
 */

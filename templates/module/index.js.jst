@@ -1,9 +1,11 @@
+// @flow
+
 import { connect } from 'react-redux';
 
-import reducer from './<%= moduleDirectory %>-reducer';
-import saga from './<%= moduleDirectory %>-saga';
-import * as actions from './<%= moduleDirectory %>-actions';
-import * as getters from './<%= moduleDirectory %>-getters';
+import reducer from './reducer';
+import saga from './saga';
+import * as actionCreators from './action-creators';
+import * as getters from './getters';
 
 function mapStateToProps(state) {
   return {};
@@ -20,6 +22,6 @@ export default <%= moduleName %>;
 export {
   reducer,
   saga,
-  actions,
+  actionCreators,
   getters
 }

@@ -10,13 +10,22 @@ const writeFileFromTemplate = require('../utils/write-file-from-template');
 const nodePackages = [
   '@ftw/catalyst',
   'axios',
+  'bind-decorator',
+  'classnames',
   'react',
   'react-dom',
   'react-redux',
   'redux',
   'redux-saga'
 ];
-const nodePackagesDev = ['eslint', 'jest', 'react-addons-perf', 'react-test-renderer'];
+const nodePackagesDev = [
+  'babel-eslint',
+  'eslint',
+  'flow-bin',
+  'jest',
+  'react-addons-perf',
+  'react-test-renderer'
+];
 
 function init(options) {
   if (fs.existsSync('package.json')) {
@@ -52,6 +61,7 @@ function init(options) {
       writeFileFromTemplate('package.json', 'package.json.jst', { config });
       writeFileFromTemplate('.babelrc', '.babelrc.jst');
       writeFileFromTemplate('.eslintrc', '.eslintrc.jst');
+      writeFileFromTemplate('.flowconfig', '.flowconfig.jst', { config });
       writeFileFromTemplate('webpack.config.js', 'webpack.config.js.jst');
 
       writeFileFromTemplate(

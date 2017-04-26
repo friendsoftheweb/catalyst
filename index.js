@@ -9,7 +9,6 @@ const init = require('./commands/init');
 const generate = require('./commands/generate');
 const server = require('./commands/server');
 const build = require('./commands/build');
-const check = require('./commands/check');
 
 program.version('0.0.1');
 
@@ -27,6 +26,5 @@ program
 program.command('server').alias('s').description('starts a development server').action(server);
 
 program.command('build').description('builds it').action(build);
-program.command('check').description('checks it').action(check);
 
 program.parse(process.argv);

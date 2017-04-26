@@ -1,8 +1,14 @@
-import { Map } from 'immutable';
+// @flow
 
-const initialState = Map();
+import type { <%= moduleName %>Action } from './action-creators';
+export type <%= moduleName %>State = {};
 
-function <%= lowerModuleName %>Reducer(state = initialState, action) {
+const initialState: <%= moduleName %>State = {};
+
+function <%= lowerModuleName %>Reducer(
+  state: <%= moduleName %>State = initialState, 
+  action: <%= moduleName %>Action
+): <%= moduleName %>State {
   switch (action.type) {
     default:
       return state;

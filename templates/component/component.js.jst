@@ -1,12 +1,28 @@
-import React, { PropTypes } from 'react';
+// @flow
+
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import bind from 'bind-decorator';
+import classNames from 'classnames';
+
+type Props = {
+
+};
+
+type State = {
+
+};
 
 /**
  * @class <%= className %>
  * @constructor
  * @extends React.Component
  */
-class <%= className %> extends React.Component {
-  constructor(props) {
+class <%= className %> extends Component {
+  props: Props;
+  state: State;
+
+  constructor(props: Props) {
     super(props);
 
     this.state = {};
@@ -21,8 +37,17 @@ class <%= className %> extends React.Component {
   }
 }
 
-<%= className %>.propTypes = {
+function mapStateToProps(state) {
+  return {
 
-};
+  };
+}
 
-export default <%= className %>;
+function mapDispatchToProps(dispatch) {
+  return {
+    
+  };
+}
+
+export { <%= className %> };
+export default connect(mapStateToProps, mapDispatchToProps)(<%= className %>);
