@@ -1,14 +1,12 @@
+const environment = require('./utils/environment');
 const resolveModulePath = require('./utils/resolve-module-path');
 
 module.exports = {
   presets: [
     [
-      resolveModulePath('babel-preset-env'),
+      resolveModulePath('babel-preset-es2015'),
       {
-        modules: false,
-        targets: {
-          browsers: ['last 2 versions', 'not IE <= 10']
-        }
+        modules: false
       }
     ],
     resolveModulePath('babel-preset-react'),

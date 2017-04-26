@@ -6,9 +6,9 @@ import ReactDOM from 'react-dom';
 // https://github.com/reactjs/react-rails/blob/e43aabbfc8e17b1f1ef253b9fad87f9cd1a99b28/lib/assets/javascripts/react_ujs_native.js
 
 // jQuery is optional. Use it to support legacy browsers.
-const $ = typeof window.jQuery !== 'undefined' && window.jQuery;
+var $ = typeof window.jQuery !== 'undefined' && window.jQuery;
 
-const ReactRailsUJS = {
+var ReactRailsUJS = {
   // This attribute holds the name of component which should be mounted
   // example: `data-react-class="MyApp.Items.EditForm"`
   CLASS_NAME_ATTR: 'data-react-class',
@@ -25,15 +25,23 @@ const ReactRailsUJS = {
 
     switch (typeof searchSelector) {
       case 'undefined':
-        selector = `[${ReactRailsUJS.CLASS_NAME_ATTR}]`;
+        selector = '[' + ReactRailsUJS.CLASS_NAME_ATTR + ']';
         parent = document;
         break;
       case 'object':
-        selector = `[${ReactRailsUJS.CLASS_NAME_ATTR}]`;
+        selector = '[' + ReactRailsUJS.CLASS_NAME_ATTR + ']';
         parent = searchSelector;
         break;
       case 'string':
-        selector = `${searchSelector}[${ReactRailsUJS.CLASS_NAME_ATTR}], ${searchSelector} [${ReactRailsUJS.CLASS_NAME_ATTR}]`;
+        selector =
+          searchSelector +
+          '[' +
+          ReactRailsUJS.CLASS_NAME_ATTR +
+          '], ' +
+          searchSelector +
+          ' [' +
+          ReactRailsUJS.CLASS_NAME_ATTR +
+          ']';
         parent = document;
         break;
       default:
