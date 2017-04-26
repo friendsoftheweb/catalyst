@@ -13,7 +13,7 @@ const nodePackages = [
   'babel-core',
   'babel-loader',
   'babel-jest',
-  'babel-preset-es2015',
+  'babel-preset-env',
   'babel-preset-react',
   'babel-preset-stage-2',
   'css-loader',
@@ -47,64 +47,70 @@ const nodePackagesDev = [
 
 function init(options) {
   if (fs.existsSync('package.json')) {
-    const package = JSON.parse(fs.readFileSync('package.json', 'utf8'));
+    const packageData = JSON.parse(fs.readFileSync('package.json', 'utf8'));
 
-    if (typeof package.catalyst === 'object') {
+    if (typeof packageData.catalyst === 'object') {
       exitWithError('This project already has a Catalyst configuration.');
     }
   }
 
-  inquirer.prompt([
-    {
-      name: 'rootPath',
-      message: 'Root path:',
-      default: 'client'
-    },
-    {
-      name: 'buildPath',
-      message: 'Build path:',
-      default: 'public/assets'
-    }
-  ]).then((config) => {
-    mkdirp.sync(`${config.rootPath}/bundles`);
-    mkdirp.sync(`${config.rootPath}/components`);
-    mkdirp.sync(`${config.rootPath}/modules`);
-    mkdirp.sync(`${config.rootPath}/records`);
-    mkdirp.sync(`${config.rootPath}/styles`);
-    mkdirp.sync(`${config.rootPath}/assets/fonts`);
-    mkdirp.sync(`${config.rootPath}/assets/images`);
+  inquirer
+    .prompt([
+      {
+        name: 'rootPath',
+        message: 'Root path:',
+        default: 'client'
+      },
+      {
+        name: 'buildPath',
+        message: 'Build path:',
+        default: 'public/assets'
+      }
+    ])
+    .then(config => {
+      mkdirp.sync(`${config.rootPath}/bundles`);
+      mkdirp.sync(`${config.rootPath}/components`);
+      mkdirp.sync(`${config.rootPath}/modules`);
+      mkdirp.sync(`${config.rootPath}/records`);
+      mkdirp.sync(`${config.rootPath}/styles`);
+      mkdirp.sync(`${config.rootPath}/assets/fonts`);
+      mkdirp.sync(`${config.rootPath}/assets/images`);
 
-    writeFileFromTemplate('package.json', 'package.json.jst', { config });
-    writeFileFromTemplate('.babelrc', '.babelrc.jst');
-    writeFileFromTemplate('.eslintrc', '.eslintrc.jst');
-    writeFileFromTemplate('webpack.config.js', 'webpack.config.js.jst');
+      writeFileFromTemplate('package.json', 'package.json.jst', { config });
+      writeFileFromTemplate('.babelrc', '.babelrc.jst');
+      writeFileFromTemplate('.eslintrc', '.eslintrc.jst');
+      writeFileFromTemplate('webpack.config.js', 'webpack.config.js.jst');
 
-    writeFileFromTemplate(`${config.rootPath}/bundles/application.js`, 'bundles/application.js.jst');
+      writeFileFromTemplate(
+        `${config.rootPath}/bundles/application.js`,
+        'bundles/application.js.jst'
+      );
 
-    writeFileFromTemplate(`${config.rootPath}/store.js`, 'store.js.jst');
-    writeFileFromTemplate(`${config.rootPath}/provider.js`, 'provider.js.jst');
+      writeFileFromTemplate(`${config.rootPath}/store.js`, 'store.js.jst');
+      writeFileFromTemplate(`${config.rootPath}/provider.js`, 'provider.js.jst');
 
-    fs.writeFileSync(`${config.rootPath}/styles/application.scss`, '');
+      fs.writeFileSync(`${config.rootPath}/styles/application.scss`, '');
 
-    installPackages(nodePackages).then(() => {
-      return installPackages(nodePackagesDev, true);
-    }).then((code) => {
-      console.log(chalk.green('Done'));
-    }, (code) => {
-      console.log(chalk.red('Failed'));
-      process.exit(code);
+      installPackages(nodePackages)
+        .then(() => {
+          return installPackages(nodePackagesDev, true);
+        })
+        .then(
+          code => {
+            console.log(chalk.green('Done'));
+          },
+          code => {
+            console.log(chalk.red('Failed'));
+            process.exit(code);
+          }
+        );
     });
-  });
-};
+}
 
 function installPackages(packages, development = false) {
   const saveFlag = development ? '--dev' : null;
 
-  return spinnerSpawn(
-    'yarn',
-    ['add', saveFlag].concat(packages),
-    'Installing Packages...'
-  );
+  return spinnerSpawn('yarn', ['add', saveFlag].concat(packages), 'Installing Packages...');
 }
 
 module.exports = init;

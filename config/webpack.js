@@ -2,7 +2,6 @@ const path = require('path');
 const webpack = require('webpack');
 const ManifestPlugin = require('webpack-manifest-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const autoprefixer = require('autoprefixer');
 
 const loadConfig = require('../utils/load-config');
 
@@ -33,9 +32,8 @@ function webpackConfig() {
     }),
 
     resolve: {
-      extensions: ['', '.js'],
-      root: rootPath,
-      modulesDirectories: ['node_modules']
+      extensions: ['.js'],
+      modules: [rootPath, 'node_modules']
     },
 
     plugins: generatePlugins({
@@ -45,27 +43,25 @@ function webpackConfig() {
     }),
 
     module: {
-      loaders: generateLoaders({
+      loaders: generateRules({
         context,
         rootPath,
         buildPath
       })
-    },
-
-    postcss() {
-      return [autoprefixer];
     }
   };
 }
 
-function generateEntry(path) {
+function generateEntry(entryPath) {
   const entry = [];
 
   if (developmentBuild) {
     entry.push(`webpack-dev-server/client?http://localhost:${devServerPort}`);
   }
 
-  entry.push(path);
+  entry.push('es5-shim', 'es6-promise/auto', path.resolve(__dirname, '../vendor/react-ujs'));
+
+  entry.push(entryPath);
 
   return entry;
 }
@@ -89,10 +85,11 @@ function generateOutput({ context, buildPath }) {
 }
 
 function generatePlugins() {
-  const cssFileName = developmentBuild ? '[name].css' : '[name]-[hash].css';
+  const cssFileName = developmentBuild ? '[name].css' : '[name]-[contenthash].css';
 
   const plugins = [
-    new ExtractTextPlugin(path.join(cssFileName), {
+    new ExtractTextPlugin({
+      filename: cssFileName,
       allChunks: true
     })
   ];
@@ -101,7 +98,7 @@ function generatePlugins() {
     plugins.push(
       new webpack.DefinePlugin({
         'process.env': {
-          'NODE_ENV': JSON.stringify('production')
+          NODE_ENV: JSON.stringify('production')
         }
       })
     );
@@ -118,49 +115,85 @@ function generatePlugins() {
   }
 
   if (productionBuild || testBuild) {
-    plugins.push(
-      new ManifestPlugin()
-    );
+    plugins.push(new ManifestPlugin());
   }
 
   return plugins;
 }
 
-function generateLoaders({ context, rootPath }) {
-  const loaders = [];
+function generateRules({ context, rootPath }) {
+  const babelPlugins = [];
+  const rules = [];
 
-  loaders.push({
+  rules.push({
     test: /\.scss$/,
-    loader: ExtractTextPlugin.extract([
-      `css?root=${rootPath}`,
-      'postcss-loader',
-      'sass'
-    ])
+    use: ExtractTextPlugin.extract({
+      use: [
+        {
+          loader: 'css-loader',
+          options: {
+            root: rootPath
+          }
+        },
+        {
+          loader: 'postcss-loader',
+          options: {
+            plugins: function() {
+              return [require('autoprefixer')];
+            }
+          }
+        },
+        'sass-loader'
+      ]
+    })
   });
 
-  loaders.push({
+  rules.push({
     test: /\.js$/,
     include: rootPath,
-    loader: 'babel',
-    query: {
-      presets: ['react', 'es2015', 'stage-2']
-    }
+    use: [
+      {
+        loader: 'babel-loader',
+        options: {
+          plugins: babelPlugins,
+          presets: [
+            [
+              'env',
+              {
+                modules: false,
+                targets: {
+                  browsers: ['last 2 versions', 'not IE <= 10']
+                }
+              }
+            ],
+            'react',
+            'stage-2'
+          ]
+        }
+      }
+    ]
   });
 
   const assetFilePath = developmentBuild ? '[path][name].[ext]' : '[path][name]-[hash].[ext]';
 
-  loaders.push({
+  rules.push({
     test: /\.(jpe?g|gif|png|svg|woff|woff2)$/,
     include: path.join(rootPath, 'assets'),
-    loader: 'file',
-    query: {
-      context: path.join(rootPath, 'assets'),
-      name: assetFilePath,
-      publicPath: '/assets/'
-    }
+    use: [
+      {
+        loader: 'file-loader',
+        options: {
+          query: {
+            context: path.join(rootPath, 'assets'),
+            name: assetFilePath,
+            publicPath: '/assets/'
+          }
+        }
+      }
+    ]
   });
 
-  return loaders;
+  return rules;
 }
 
 module.exports = webpackConfig;

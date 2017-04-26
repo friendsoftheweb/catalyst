@@ -1,7 +1,7 @@
 #! /usr/bin/env node
 
 const { templateSettings } = require('lodash');
-const argv = require('electron').argv();
+const program = require('commander');
 
 templateSettings.interpolate = /<%=([\s\S]+?)%>/g;
 
@@ -11,22 +11,22 @@ const server = require('./commands/server');
 const build = require('./commands/build');
 const check = require('./commands/check');
 
-switch(argv.commands[0]) {
-  case 'init':
-    init(argv.params);
-    break;
-  case 'generate':
-  case 'g':
-    generate(argv.commands[1], argv.commands[2], argv.params);
-    break;
-  case 'server':
-  case 's':
-    server();
-    break;
-  case 'build':
-    build();
-    break;
-  case 'check':
-    check();
-    break;
-};
+program.version('0.0.1');
+
+program
+  .command('init')
+  .description('creates a new package.json and directory structure')
+  .action(init);
+
+program
+  .command('generate [type] [name]')
+  .alias('g')
+  .description('generates a new set of files based on the type')
+  .action(generate);
+
+program.command('server').alias('s').description('starts a development server').action(server);
+
+program.command('build').description('builds it').action(build);
+program.command('check').description('checks it').action(check);
+
+program.parse(process.argv);
