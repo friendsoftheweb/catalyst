@@ -98,7 +98,7 @@ function installPackages(packages, development = false) {
 
   return spinnerSpawn(
     'yarn',
-    ['add', saveFlag, '--color'].concat(packages),
+    ['add'].concat(packages).concat([saveFlag, '--color']),
     'Installing Packages...'
   );
 }

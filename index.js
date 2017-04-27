@@ -10,7 +10,7 @@ const generate = require('./commands/generate');
 const server = require('./commands/server');
 const build = require('./commands/build');
 
-program.version('0.0.1');
+program.version(require('./package.json')['version']);
 
 program
   .command('init')
