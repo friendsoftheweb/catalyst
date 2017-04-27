@@ -40,6 +40,10 @@ function generatePlugins() {
     plugins.push(new ManifestPlugin({ fileName: 'manifest.json' }));
   }
 
+  if (env.development) {
+    plugins.push(new webpack.HotModuleReplacementPlugin());
+  }
+
   return plugins;
 }
 

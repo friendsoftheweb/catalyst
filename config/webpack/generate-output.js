@@ -1,8 +1,6 @@
 const path = require('path');
 const environment = require('../../utils/environment');
 
-const devServerPort = process.env.WEBPACK_PORT || 8080;
-
 function generateOutput({ context, buildPath }) {
   const env = environment();
   const output = {};
@@ -16,7 +14,7 @@ function generateOutput({ context, buildPath }) {
   } else {
     output.path = path.join(context, 'app', 'assets');
     output.filename = '[name].js';
-    output.publicPath = `http://localhost:${devServerPort}/`;
+    output.publicPath = `http://localhost:${env.devServerPort}/`;
   }
 
   return output;

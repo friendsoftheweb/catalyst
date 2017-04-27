@@ -8,28 +8,43 @@ function generateRules({ context, rootPath }) {
   const env = environment();
   const rules = [];
 
-  rules.push({
-    test: /\.scss$/,
-    use: ExtractTextPlugin.extract({
-      use: [
-        {
-          loader: resolveModulePath('css-loader'),
-          options: {
-            root: rootPath
-          }
-        },
-        {
-          loader: resolveModulePath('postcss-loader'),
-          options: {
-            plugins: function() {
-              return [require(resolveModulePath('autoprefixer'))];
-            }
-          }
-        },
-        resolveModulePath('sass-loader')
-      ]
-    })
-  });
+  const scssRules = [
+    {
+      loader: resolveModulePath('css-loader'),
+      options: {
+        root: rootPath,
+        sourceMap: true
+      }
+    },
+    {
+      loader: resolveModulePath('postcss-loader'),
+      options: {
+        plugins: function() {
+          return [require(resolveModulePath('autoprefixer'))];
+        }
+      }
+    },
+    {
+      loader: resolveModulePath('sass-loader'),
+      options: {
+        sourceMap: true
+      }
+    }
+  ];
+
+  if (env.development) {
+    rules.push({
+      test: /\.scss$/,
+      use: [resolveModulePath('style-loader'), ...scssRules]
+    });
+  } else {
+    rules.push({
+      test: /\.scss$/,
+      use: ExtractTextPlugin.extract({
+        use: scssRules
+      })
+    });
+  }
 
   rules.push({
     test: /\.js$/,

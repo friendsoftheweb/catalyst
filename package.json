@@ -1,6 +1,6 @@
 {
   "name": "@ftw/catalyst",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Generates React components.",
   "engines": {
     "node": ">= 6.5.0",
@@ -45,7 +45,10 @@
     "react-dom": ">=15.0.0",
     "regenerator-runtime": "^0.10.4",
     "sass-loader": "^6.0.3",
+    "sockjs-client": "^1.1.2",
     "string": "^3.3.1",
+    "style-loader": "^0.16.1",
+    "url": "^0.11.0",
     "webpack": ">=2.2.0",
     "webpack-dev-server": ">=2.2.0",
     "webpack-manifest-plugin": ">=1.1.0"
