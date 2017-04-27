@@ -1,6 +1,6 @@
 {
   "name": "@ftw/catalyst",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Generates React components.",
   "engines": {
     "node": ">= 6.5.0",
@@ -29,6 +29,7 @@
     "babel-preset-stage-2": "^6.24.1",
     "chalk": "^1.1.1",
     "commander": "^2.9.0",
+    "compression-webpack-plugin": "^0.4.0",
     "css-loader": "^0.28.0",
     "es5-shim": "^4.5.9",
     "es6-promise": "^4.1.0",

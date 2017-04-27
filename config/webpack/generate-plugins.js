@@ -3,6 +3,7 @@ const resolveModulePath = require('../../utils/resolve-module-path');
 const webpack = require(resolveModulePath('webpack'));
 const ExtractTextPlugin = require(resolveModulePath('extract-text-webpack-plugin'));
 const ManifestPlugin = require(resolveModulePath('webpack-manifest-plugin'));
+const CompressionPlugin = require(resolveModulePath('compression-webpack-plugin'));
 
 function generatePlugins() {
   const env = environment();
@@ -30,7 +31,8 @@ function generatePlugins() {
         compress: {
           warnings: false
         }
-      })
+      }),
+      new CompressionPlugin({ test: /\.(js|css)$/ })
     );
   }
 
