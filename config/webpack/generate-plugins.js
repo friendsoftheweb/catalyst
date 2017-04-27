@@ -7,7 +7,7 @@ const ManifestPlugin = require(resolveModulePath('webpack-manifest-plugin'));
 function generatePlugins() {
   const env = environment();
 
-  const cssFileName = env.development ? '[name].css' : '[name]-[contenthash].css';
+  const cssFileName = env.production ? '[name]-[contenthash].css' : '[name].css';
 
   const plugins = [
     new ExtractTextPlugin({
