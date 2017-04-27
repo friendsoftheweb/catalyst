@@ -19,8 +19,11 @@ const nodePackages = [
   'redux-saga'
 ];
 const nodePackagesDev = [
+  '@ftw/eslint-config-catalyst',
   'babel-eslint',
   'eslint',
+  'eslint-plugin-flowtype',
+  'eslint-plugin-react',
   'flow-bin',
   'jest',
   'react-addons-perf',
