@@ -96,7 +96,11 @@ function init(options) {
 function installPackages(packages, development = false) {
   const saveFlag = development ? '--dev' : null;
 
-  return spinnerSpawn('yarn', ['add', saveFlag].concat(packages), 'Installing Packages...');
+  return spinnerSpawn(
+    'yarn',
+    ['add', saveFlag, '--color'].concat(packages),
+    'Installing Packages...'
+  );
 }
 
 module.exports = init;
