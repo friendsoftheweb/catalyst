@@ -30,7 +30,7 @@ function webpackConfig() {
         const parts = bundlePath.split('/');
         const bundleName = parts[parts.length - 1].replace('.js', '');
 
-        return Object.assign({}, entry, { [bundleName]: bundlePath });
+        return Object.assign({}, entry, { [bundleName]: generateEntry(bundlePath) });
       },
       {}
     ),

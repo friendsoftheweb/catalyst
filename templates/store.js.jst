@@ -1,4 +1,4 @@
-import { createStore, combineReducers, applyMiddleware } from 'redux';
+import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 import createSagaMiddleware from 'redux-saga';
 
 const sagaMiddleware = createSagaMiddleware();
@@ -6,7 +6,7 @@ const sagaMiddleware = createSagaMiddleware();
 /*
   Example:
 
-  import * as currentOrder from '/modules/current-order';
+  import * as currentOrder from 'modules/current-order';
 
   const rootReducer = combineReducers({
     currentOrder: currentOrder.reducer
@@ -29,10 +29,8 @@ function* rootSaga() {
   ];
 }
 
-const store = createStore(
-  rootReducer,
-  applyMiddleware(sagaMiddleware)
-);
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const store = createStore(rootReducer, {}, composeEnhancers(applyMiddleware(sagaMiddleware)));
 
 sagaMiddleware.run(rootSaga);
 

@@ -70,7 +70,7 @@ function init(options) {
       );
 
       writeFileFromTemplate(`${config.rootPath}/store.js`, 'store.js.jst');
-      writeFileFromTemplate(`${config.rootPath}/provider.js`, 'provider.js.jst');
+      writeFileFromTemplate(`${config.rootPath}/store-provider.js`, 'store-provider.js.jst');
 
       fs.writeFileSync(`${config.rootPath}/styles/application.scss`, '');
 
