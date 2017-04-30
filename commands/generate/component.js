@@ -6,20 +6,21 @@ function generateComponent(moduleNameParts, options) {
   const config = loadConfig();
 
   const className = moduleNameParts[moduleNameParts.length - 1];
-  const moduleName = moduleNameParts.map(dasherize).join('/');
+  const modulePath = moduleNameParts.map(dasherize).join('/');
   const fileNameBase = dasherize(className);
 
-  const modulePathBase = `components/${moduleName}`;
+  const modulePathBase = `components/${modulePath}`;
   const componentPathBase = `${config.rootPath}/${modulePathBase}`;
-  const testPathBase = `${config.rootPath}/components/__tests__/${moduleName}`;
+  const testPathBase = `${config.rootPath}/components/__tests__/${modulePath}`;
 
   const componentFilePath = `${componentPathBase}/index.js`;
   const stylesFilePath = `${componentPathBase}/styles.scss`;
   const testFilePath = `${testPathBase}/component-test.js`;
 
   const context = {
-    moduleName,
+    moduleNameParts,
     className,
+    modulePath,
     modulePathBase,
     fileNameBase,
     componentFilePath
