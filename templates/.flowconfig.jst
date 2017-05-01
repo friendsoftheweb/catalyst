@@ -1,9 +1,7 @@
-[ignore]
-.*
-
 [include]
-./node_modules/.*
-./<%= config.rootPath %>/.*
+
+[ignore]
+./[^(<%= config.rootPath %>|node_modules)]/.*
 
 [libs]
 
