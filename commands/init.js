@@ -75,15 +75,18 @@ function init() {
 
         writeFileFromTemplate.bind(
           null,
-          `${config.rootPath}/bundles/application.js`,
-          'bundles/application.js.jst'
+          `${config.rootPath}/bundles/application/index.js`,
+          'bundles/bundle.js.jst'
         ),
-
-        writeFileFromTemplate.bind(null, `${config.rootPath}/store.js`, 'store.js.jst'),
         writeFileFromTemplate.bind(
           null,
-          `${config.rootPath}/store-provider.js`,
-          'store-provider.js.jst'
+          `${config.rootPath}/bundles/application/store.js`,
+          'bundles/store.js.jst'
+        ),
+        writeFileFromTemplate.bind(
+          null,
+          `${config.rootPath}/bundles/application/store-provider.js`,
+          'bundles/store-provider.js.jst'
         )
       ]).then(() => {
         fs.writeFileSync(`${config.rootPath}/styles/application.scss`, '');

@@ -65,7 +65,7 @@ function diffExisting(outputPath, fileContent) {
   if (/\.json$/.test(outputPath)) {
     diffFunction = jsdiff.diffJson;
   } else {
-    diffFunction = jsdiff.diffTrimmedLines;
+    diffFunction = jsdiff.diffLines;
   }
 
   return diffFunction(fs.readFileSync(outputPath, 'utf8').toString(), fileContent);

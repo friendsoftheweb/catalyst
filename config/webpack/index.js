@@ -18,8 +18,9 @@ function webpackConfig() {
 
   const bundlePaths = fs
     .readdirSync(bundlesPath)
-    .filter(bundlePath => /\.js$/.test(bundlePath))
-    .map(bundlePath => path.join(bundlesPath, bundlePath));
+    .map(bundlePath => path.join(bundlesPath, bundlePath))
+    .filter(bundlePath => fs.statSync(bundlePath).isDirectory())
+    .map(bundlePath => path.join(bundlePath, 'index.js'));
 
   return {
     context,
@@ -28,7 +29,7 @@ function webpackConfig() {
       bundlePaths,
       (entry, bundlePath) => {
         const parts = bundlePath.split('/');
-        const bundleName = parts[parts.length - 1].replace('.js', '');
+        const bundleName = parts[parts.length - 2];
 
         return Object.assign({}, entry, { [bundleName]: generateEntry(bundlePath) });
       },
