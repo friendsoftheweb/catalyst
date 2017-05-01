@@ -9,6 +9,7 @@ const init = require('./commands/init');
 const generate = require('./commands/generate');
 const server = require('./commands/server');
 const build = require('./commands/build');
+const examples = require('./commands/examples');
 
 program.version(require('./package.json')['version']);
 
@@ -23,8 +24,14 @@ program
   .description('generates a new set of files based on the type')
   .action(generate);
 
-program.command('server').alias('s').description('starts a development server').action(server);
+program
+  .command('server')
+  .alias('s')
+  .description('starts a development server')
+  .action(server);
 
 program.command('build').description('builds it').action(build);
+
+program.command('examples').action(examples);
 
 program.parse(process.argv);

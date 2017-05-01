@@ -1,0 +1,50 @@
+<html>
+
+<head>
+  <style>
+    html,
+    body {
+      height: 100%;
+    }
+    
+    body {
+      font-family: Helvetica, sans-serif;
+      display: flex;
+      margin: 0;
+    }
+    
+    iframe {
+      flex: 1;
+    }
+    
+    #navigation {
+      width: 200px;
+      background-color: #eeeeee;
+      margin: 0;
+      padding: 1em;
+      list-style: none;
+      overflow: scroll;
+    }
+    
+    #navigation a {
+      color: #333333;
+    }
+    
+    #navigation a:hover {
+      color: red;
+    }
+    
+    #navigation li.active a {
+      color: blue;
+    }
+  </style>
+
+  <script src="http://localhost:8080/examples.js"></script>
+</head>
+
+<body>
+  <ul id="navigation"></ul>
+  <iframe frameborder="0" src="/render?example=<%= exampleName %>"></iframe>
+</body>
+
+</html>
