@@ -30,7 +30,13 @@ const nodePackagesDev = [
   'react-test-renderer'
 ];
 
-function init(options) {
+function runInSeries(funcs) {
+  return funcs.reduce((promise, func) => {
+    return promise.then(() => func());
+  }, Promise.resolve());
+}
+
+function init() {
   if (fs.existsSync('package.json')) {
     const packageData = JSON.parse(fs.readFileSync('package.json', 'utf8'));
 
@@ -56,40 +62,46 @@ function init(options) {
       mkdirp.sync(`${config.rootPath}/bundles`);
       mkdirp.sync(`${config.rootPath}/components`);
       mkdirp.sync(`${config.rootPath}/modules`);
-      mkdirp.sync(`${config.rootPath}/records`);
       mkdirp.sync(`${config.rootPath}/styles`);
       mkdirp.sync(`${config.rootPath}/assets/fonts`);
       mkdirp.sync(`${config.rootPath}/assets/images`);
 
-      writeFileFromTemplate('package.json', 'package.json.jst', { config });
-      writeFileFromTemplate('.babelrc', '.babelrc.jst');
-      writeFileFromTemplate('.eslintrc', '.eslintrc.jst');
-      writeFileFromTemplate('.flowconfig', '.flowconfig.jst', { config });
-      writeFileFromTemplate('webpack.config.js', 'webpack.config.js.jst');
+      runInSeries([
+        writeFileFromTemplate.bind(null, 'package.json', 'package.json.jst', { config }),
+        writeFileFromTemplate.bind(null, '.babelrc', '.babelrc.jst'),
+        writeFileFromTemplate.bind(null, '.eslintrc', '.eslintrc.jst'),
+        writeFileFromTemplate.bind(null, '.flowconfig', '.flowconfig.jst', { config }),
+        writeFileFromTemplate.bind(null, 'webpack.config.js', 'webpack.config.js.jst'),
 
-      writeFileFromTemplate(
-        `${config.rootPath}/bundles/application.js`,
-        'bundles/application.js.jst'
-      );
+        writeFileFromTemplate.bind(
+          null,
+          `${config.rootPath}/bundles/application.js`,
+          'bundles/application.js.jst'
+        ),
 
-      writeFileFromTemplate(`${config.rootPath}/store.js`, 'store.js.jst');
-      writeFileFromTemplate(`${config.rootPath}/store-provider.js`, 'store-provider.js.jst');
+        writeFileFromTemplate.bind(null, `${config.rootPath}/store.js`, 'store.js.jst'),
+        writeFileFromTemplate.bind(
+          null,
+          `${config.rootPath}/store-provider.js`,
+          'store-provider.js.jst'
+        )
+      ]).then(() => {
+        fs.writeFileSync(`${config.rootPath}/styles/application.scss`, '');
 
-      fs.writeFileSync(`${config.rootPath}/styles/application.scss`, '');
-
-      installPackages(nodePackages)
-        .then(() => {
-          return installPackages(nodePackagesDev, true);
-        })
-        .then(
-          code => {
-            console.log(chalk.green('Done'));
-          },
-          code => {
-            console.log(chalk.red('Failed'));
-            process.exit(code);
-          }
-        );
+        installPackages(nodePackages)
+          .then(() => {
+            return installPackages(nodePackagesDev, true);
+          })
+          .then(
+            () => {
+              console.log(chalk.green('Done'));
+            },
+            code => {
+              console.log(chalk.red('Failed'));
+              process.exit(code);
+            }
+          );
+      });
     });
 }
 

@@ -5,10 +5,12 @@
     "jsx": true
   },
   "env": {
+    "node": true,
     "browser": true,
     "es6": true
   },
   "rules": {
-    "constructor-super": 1
+    "constructor-super": 1,
+    "no-console": 0
   }
 }

@@ -1,17 +1,25 @@
 const chalk = require('chalk');
+const { padStart } = require('lodash');
 
 function logAction(action, filePath) {
-  let prefix;
+  let color;
 
   switch (action) {
     case 'create':
-      prefix = chalk.green('  create ');
+    case 'identical':
+      color = chalk.green;
+      break;
+    case 'skip':
+      color = chalk.blue;
+      break;
+    case 'overwrite':
+      color = chalk.red;
       break;
     default:
-      throw new Error('Unknown action "' + action + '".');
+      color = chalk.grey;
   }
 
-  console.log(prefix + filePath);
+  console.log(`${color(padStart(action, 10))} ${filePath}`);
 }
 
 function exitWithError(message, code = 1) {
