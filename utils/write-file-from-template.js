@@ -72,6 +72,8 @@ function diffExisting(outputPath, fileContent) {
 }
 
 function resolveConflict(filePath, fileContent) {
+  process.stderr.write('\n');
+
   return new Promise((resolve, reject) => {
     inquirer
       .prompt([
@@ -97,8 +99,6 @@ function resolveConflict(filePath, fileContent) {
             const color = part.added ? 'green' : part.removed ? 'red' : 'white';
             process.stderr.write(part.value[color]);
           });
-
-          console.log();
 
           resolveConflict(filePath, fileContent).then(resolve, reject);
         } else {
