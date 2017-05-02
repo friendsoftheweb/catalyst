@@ -1,4 +1,5 @@
 const fs = require('fs');
+const { execSync } = require('child_process');
 const mkdirp = require('mkdirp');
 const chalk = require('chalk');
 const inquirer = require('inquirer');
@@ -36,12 +37,26 @@ function runInSeries(funcs) {
   }, Promise.resolve());
 }
 
+function modifiedFileCount() {
+  return parseInt(
+    execSync('git status --porcelain --untracked-files=no -- | wc -l | tr -d " "', {
+      stdio: ['pipe', 'pipe', 'ignore']
+    }).toString()
+  );
+}
+
 function init() {
+  const defaultConfig = { rootPath: 'client', buildPath: 'public/assets' };
+
+  if (modifiedFileCount() > 0) {
+    exitWithError('Please commit or stash any modified files before running `catalyst init`.');
+  }
+
   if (fs.existsSync('package.json')) {
     const packageData = JSON.parse(fs.readFileSync('package.json', 'utf8'));
 
     if (typeof packageData.catalyst === 'object') {
-      exitWithError('This project already has a Catalyst configuration.');
+      Object.assign(defaultConfig, packageData.catalyst);
     }
   }
 
@@ -50,12 +65,12 @@ function init() {
       {
         name: 'rootPath',
         message: 'Root path:',
-        default: 'client'
+        default: defaultConfig.rootPath
       },
       {
         name: 'buildPath',
         message: 'Build path:',
-        default: 'public/assets'
+        default: defaultConfig.buildPath
       }
     ])
     .then(config => {
