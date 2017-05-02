@@ -1,15 +1,14 @@
 const fs = require('fs');
-
 const { exitWithError } = require('./logging');
 
 function loadConfig() {
   if (fs.existsSync('package.json')) {
-    const package = JSON.parse(fs.readFileSync('package.json', 'utf8'));
+    const packageData = JSON.parse(fs.readFileSync('package.json', 'utf8'));
 
-    if (typeof package.catalyst === 'object') {
-      return package.catalyst;
+    if (typeof packageData.catalyst === 'object') {
+      return packageData.catalyst;
     } else {
-      exitWithError('package.json is missing a catalyst config.')
+      exitWithError('package.json is missing a catalyst config');
     }
   } else {
     exitWithError('Missing package.json');

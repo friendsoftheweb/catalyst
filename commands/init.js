@@ -77,6 +77,7 @@ function init() {
       mkdirp.sync(`${config.rootPath}/bundles`);
       mkdirp.sync(`${config.rootPath}/components`);
       mkdirp.sync(`${config.rootPath}/modules`);
+      mkdirp.sync(`${config.rootPath}/config`);
       mkdirp.sync(`${config.rootPath}/styles`);
       mkdirp.sync(`${config.rootPath}/assets/fonts`);
       mkdirp.sync(`${config.rootPath}/assets/images`);
@@ -86,7 +87,11 @@ function init() {
         writeFileFromTemplate.bind(null, '.babelrc', '.babelrc.jst'),
         writeFileFromTemplate.bind(null, '.eslintrc', '.eslintrc.jst'),
         writeFileFromTemplate.bind(null, '.flowconfig', '.flowconfig.jst', { config }),
-        writeFileFromTemplate.bind(null, 'webpack.config.js', 'webpack.config.js.jst'),
+        writeFileFromTemplate.bind(
+          null,
+          `${config.rootPath}/config/webpack.js`,
+          'webpack.config.js.jst'
+        ),
 
         writeFileFromTemplate.bind(
           null,
