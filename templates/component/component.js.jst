@@ -18,7 +18,7 @@ type State = {
  * @constructor
  * @extends React.Component
  */
-class <%= className %> extends Component {
+export class <%= className %> extends Component {
   props: Props;
   state: State;
 
@@ -49,5 +49,4 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export { <%= className %> };
 export default connect(mapStateToProps, mapDispatchToProps)(<%= className %>);
