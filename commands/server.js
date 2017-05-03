@@ -1,15 +1,18 @@
 const path = require('path');
 const webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
+const loadConfig = require('../utils/load-config');
 const environment = require('../utils/environment');
 
 function server() {
-  const config = require(path.join(process.cwd(), 'webpack.config.js'));
-  const compiler = webpack(config);
+  const config = loadConfig();
+
+  const webpackConfig = require(path.join(process.cwd(), config.rootPath, 'config/webpack.js'));
+  const compiler = webpack(webpackConfig);
   const { devServerPort } = environment();
 
   const webpackServer = new WebpackDevServer(compiler, {
-    publicPath: config.output.publicPath,
+    publicPath: webpackConfig.output.publicPath,
     historyApiFallback: true,
     hot: true,
     headers: { 'Access-Control-Allow-Origin': '*' },
