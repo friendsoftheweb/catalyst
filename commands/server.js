@@ -15,6 +15,7 @@ function server() {
     publicPath: webpackConfig.output.publicPath,
     historyApiFallback: true,
     hot: true,
+    disableHostCheck: true,
     headers: { 'Access-Control-Allow-Origin': '*' },
     stats: {
       colors: true,
