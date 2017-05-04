@@ -48,3 +48,23 @@ $ catalyst init
 └─ styles
    └─ index.scss
 </pre>
+
+## Starting the Development Server
+
+You can start the Webpack server with:
+
+```
+$ yarn start
+```
+
+By default, the server will be accessible at http://localhost:8080. You can override this by setting 
+`DEV_SERVER_HOST` and/or `DEV_SERVER_PORT` environment variables.
+
+If you want to be able to access your development server from other devices on your local network,
+you can start it like this:
+
+```
+$ DEV_SERVER_HOST=`ipconfig getifaddr en0` yarn start
+```
+
+Where `en0` is the network device you're using.

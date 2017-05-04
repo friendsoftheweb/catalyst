@@ -1,9 +1,7 @@
 const path = require('path');
 const environment = require('../../utils/environment');
 const resolveModulePath = require('../../utils/resolve-module-path');
-const ExtractTextPlugin = require(resolveModulePath(
-  'extract-text-webpack-plugin'
-));
+const ExtractTextPlugin = require(resolveModulePath('extract-text-webpack-plugin'));
 const babelConfig = require('../../config/babel');
 
 function generateRules({ context, rootPath }) {
@@ -67,9 +65,7 @@ function generateRules({ context, rootPath }) {
     ]
   });
 
-  const assetFilePath = env.development
-    ? '[path][name].[ext]'
-    : '[path][name]-[hash].[ext]';
+  const assetFilePath = env.development ? '[path][name].[ext]' : '[path][name]-[hash].[ext]';
 
   rules.push({
     test: /\.(jpe?g|gif|png|svg|woff|woff2)$/,
@@ -78,11 +74,9 @@ function generateRules({ context, rootPath }) {
       {
         loader: 'file-loader',
         options: {
-          query: {
-            context: path.join(rootPath, 'assets'),
-            name: assetFilePath,
-            publicPath: '/assets/'
-          }
+          context: path.join(rootPath, 'assets'),
+          name: assetFilePath,
+          publicPath: `http://${env.devServerHost}:${env.devServerPort}/`
         }
       }
     ]

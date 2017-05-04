@@ -9,13 +9,13 @@ function server() {
 
   const webpackConfig = require(path.join(process.cwd(), config.rootPath, 'config/webpack.js'));
   const compiler = webpack(webpackConfig);
-  const { devServerPort } = environment();
+  const { devServerHost, devServerPort } = environment();
 
   const webpackServer = new WebpackDevServer(compiler, {
     publicPath: webpackConfig.output.publicPath,
     historyApiFallback: true,
     hot: true,
-    disableHostCheck: true,
+    public: `${devServerHost}:${devServerPort}`,
     headers: { 'Access-Control-Allow-Origin': '*' },
     stats: {
       colors: true,

@@ -14,7 +14,7 @@ function generateOutput({ context, buildPath }) {
   } else {
     output.path = path.join(context, 'app', 'assets');
     output.filename = '[name].js';
-    output.publicPath = `http://localhost:${env.devServerPort}/`;
+    output.publicPath = `http://${env.devServerHost}:${env.devServerPort}/`;
   }
 
   return output;
