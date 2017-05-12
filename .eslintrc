@@ -12,5 +12,9 @@
   "rules": {
     "constructor-super": 1,
     "no-console": 0
+  },
+  "globals": {
+    "describe": true,
+    "it": true
   }
 }
