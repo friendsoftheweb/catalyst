@@ -7,7 +7,7 @@
     "npm": ">= 3.0.0"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha"
   },
   "author": "Dan Martens",
   "license": "MIT",
@@ -55,5 +55,9 @@
     "webpack-dev-server": ">=2.2.0",
     "webpack-manifest-plugin": ">=1.1.0"
   },
-  "main": "index.js"
+  "main": "index.js",
+  "devDependencies": {
+    "expect": "^1.20.2",
+    "mocha": "^3.3.0"
+  }
 }
