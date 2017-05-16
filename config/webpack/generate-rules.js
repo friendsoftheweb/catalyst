@@ -68,37 +68,32 @@ function generateRules({ context, rootPath }) {
   const assetFilePath = env.development ? '[path][name].[ext]' : '[path][name]-[hash].[ext]';
 
   rules.push(
-    {
-      test: /\.(jpe?g|gif|png|svg|woff2?|eot|ttf)$/,
-      include: path.join(rootPath, 'assets'),
-      use: [
-        {
-          loader: 'file-loader',
-          options: {
-            context: path.join(rootPath, 'assets'),
-            name: assetFilePath,
-            publicPath: `http://${env.devServerHost}:${env.devServerPort}/`
-          }
-        }
-      ]
-    },
-    {
-      test: /\.(jpe?g|gif|png|svg|woff2?|eot|ttf)$/,
-      include: path.join(context, 'node_modules'),
-      use: [
-        {
-          loader: 'file-loader',
-          options: {
-            context: path.join(context, 'node_modules'),
-            name: assetFilePath,
-            publicPath: `http://${env.devServerHost}:${env.devServerPort}/`
-          }
-        }
-      ]
-    }
+    generateFileLoaderRule(path.join(rootPath, 'assets')),
+    generateFileLoaderRule(path.join(context, 'node_modules'))
   );
 
   return rules;
+}
+
+function generateFileLoaderRule(basePath) {
+  const env = environment();
+  const name = env.development ? '[path][name].[ext]' : '[path][name]-[hash].[ext]';
+  const publicPath = env.development ? `http://${env.devServerHost}:${env.devServerPort}/` : '/';
+
+  return {
+    test: /\.(jpe?g|gif|png|svg|woff2?|eot|ttf)$/,
+    include: basePath,
+    use: [
+      {
+        loader: 'file-loader',
+        options: {
+          context: basePath,
+          name,
+          publicPath
+        }
+      }
+    ]
+  };
 }
 
 module.exports = generateRules;
