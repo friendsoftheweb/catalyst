@@ -13,7 +13,7 @@ function build() {
     exitWithError(
       [
         'Build environment must be one of: "production", "test".',
-        'Try setting the NODE_ENV environemnt variable.'
+        'Try setting the NODE_ENV environment variable.'
       ].join('\n')
     );
   }
@@ -23,11 +23,11 @@ function build() {
     [`--config=${config.rootPath}/config/webpack.js`, '--hide-modules', '--bail', '--color'],
     'Building...'
   ).then(
-    code => {
+    () => {
       console.log(chalk.green('Build Succeeded'));
     },
     code => {
-      exitWithError('Build Failed!');
+      exitWithError('Build Failed!', code);
     }
   );
 }
