@@ -34,12 +34,12 @@ function generateRules({ context, rootPath }) {
 
   if (env.development) {
     rules.push({
-      test: /\.scss$/,
+      test: /\.s?css$/,
       use: [resolveModulePath('style-loader'), ...scssRules]
     });
   } else {
     rules.push({
-      test: /\.scss$/,
+      test: /\.s?css$/,
       use: ExtractTextPlugin.extract({
         use: scssRules
       })
@@ -67,20 +67,36 @@ function generateRules({ context, rootPath }) {
 
   const assetFilePath = env.development ? '[path][name].[ext]' : '[path][name]-[hash].[ext]';
 
-  rules.push({
-    test: /\.(jpe?g|gif|png|svg|woff|woff2)$/,
-    include: path.join(rootPath, 'assets'),
-    use: [
-      {
-        loader: 'file-loader',
-        options: {
-          context: path.join(rootPath, 'assets'),
-          name: assetFilePath,
-          publicPath: `http://${env.devServerHost}:${env.devServerPort}/`
+  rules.push(
+    {
+      test: /\.(jpe?g|gif|png|svg|woff2?|eot|ttf)$/,
+      include: path.join(rootPath, 'assets'),
+      use: [
+        {
+          loader: 'file-loader',
+          options: {
+            context: path.join(rootPath, 'assets'),
+            name: assetFilePath,
+            publicPath: `http://${env.devServerHost}:${env.devServerPort}/`
+          }
         }
-      }
-    ]
-  });
+      ]
+    },
+    {
+      test: /\.(jpe?g|gif|png|svg|woff2?|eot|ttf)$/,
+      include: path.join(context, 'node_modules'),
+      use: [
+        {
+          loader: 'file-loader',
+          options: {
+            context: path.join(context, 'node_modules'),
+            name: assetFilePath,
+            publicPath: `http://${env.devServerHost}:${env.devServerPort}/`
+          }
+        }
+      ]
+    }
+  );
 
   return rules;
 }
