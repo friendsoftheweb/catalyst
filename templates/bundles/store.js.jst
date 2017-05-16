@@ -1,5 +1,8 @@
+// @flow
+
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 import createSagaMiddleware from 'redux-saga';
+import { all } from 'redux-saga/effects';
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -13,9 +16,9 @@ const sagaMiddleware = createSagaMiddleware();
   });
 
   function* rootSaga() {
-    yield [
+    yield all([
       currentOrder.saga()
-    ];
+    ]);
   }
 */
 
@@ -24,9 +27,9 @@ const rootReducer = combineReducers({
 });
 
 function* rootSaga() {
-  yield [
+  yield all([
 
-  ];
+  ]);
 }
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
