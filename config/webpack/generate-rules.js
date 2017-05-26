@@ -19,6 +19,7 @@ function generateRules({ context, rootPath }) {
     {
       loader: resolveModulePath('postcss-loader'),
       options: {
+        sourceMap: true,
         plugins: function() {
           return [require(resolveModulePath('autoprefixer'))];
         }
