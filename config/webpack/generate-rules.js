@@ -79,7 +79,9 @@ function generateRules({ context, rootPath }) {
 function generateFileLoaderRule(basePath) {
   const env = environment();
   const name = env.development ? '[path][name].[ext]' : '[path][name]-[hash].[ext]';
-  const publicPath = env.development ? `http://${env.devServerHost}:${env.devServerPort}/` : '/';
+  const publicPath = env.development
+    ? `http://${env.devServerHost}:${env.devServerPort}/`
+    : '/assets/';
 
   return {
     test: /\.(jpe?g|gif|png|svg|woff2?|eot|ttf)$/,
