@@ -56,6 +56,9 @@ function createOverlayContainer() {
 
         container.style.position = 'fixed';
         container.style.boxSizing = 'border-box';
+        container.style.display = 'flex';
+        container.style.alignItems = 'center';
+        container.style.justifyContent = 'center';
         container.style.left = 0;
         container.style.top = 0;
         container.style.right = 0;
@@ -101,35 +104,39 @@ function activityTemplate(message) {
     <style>
       @keyframes rotation {
         0% { transform: rotate(0); }
-        100% { transform: rotate(360deg); }
+        100% { transform: rotate(350deg); }
       }
 
       .activity {
         position: fixed;
-        left: calc(50vw - 5rem);
-        top: calc(50vh - 2rem);
-        background-color: #ffffff;
+        background-color: rgba(0,0,0,0.5);
         border-radius: 0.5rem;
         font-family: Lucida Grande, sans-serif;
-        line-height: 4rem;
-        width: 10rem;
-        height: 4rem;
+        padding: 0.75em 1em;
         text-align: center;
         vertical-align: middle;
       }
 
       .activity-indicator {
+        display: inline-block;
+        animation: rotation 0.85s infinite linear;
+        vertical-align: middle;
+
+        font-size: 17px;
         width: 1em;
         height: 1em;
-        background-color: black;
-        display: inline-block;
-        animation: rotation 1s infinite;
-        vertical-align: middle;
+
+        border: 2px solid rgba(255,255,255,0.25);
+        border-top-color: rgba(255,255,255,0.7);
+        border-radius: 50%;
       }
 
       .activity-message {
-        margin-left: 0.25em;
+        color: rgba(255,255,255,0.5);
+        margin-left: 0.4em;
+        padding-top: 0.25em;
         display: inline-block;
+        -webkit-font-smoothing: antialiased
       }
     </style>
 `;
