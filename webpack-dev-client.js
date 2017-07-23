@@ -29,6 +29,7 @@ function createOverlayFrame() {
     frame.style.border = 'none';
     frame.style.zIndex = 9999999999;
     frame.style.display = 'none';
+    frame.style.pointerEvents = 'none';
 
     frame.onload = () => {
       overlayFrameCreated = true;
@@ -109,7 +110,7 @@ function activityTemplate(message) {
 
       .activity {
         position: fixed;
-        background-color: rgba(0,0,0,0.5);
+        background-color: rgba(0,0,0,0.8);
         border-radius: 0.5rem;
         font-family: Lucida Grande, sans-serif;
         padding: 0.75em 1em;
@@ -142,12 +143,12 @@ function activityTemplate(message) {
 `;
 }
 
-function errorTemplate(message) {
+function compilationErrorTemplate(message) {
   return `
-    <div class="error"><div class="error-heading">Failed to compile.</div>${message}</div>
+    <div class="compilation-error"><div class="compilation-error-heading">Failed to compile.</div>${message}</div>
 
     <style>
-      .error {
+      .compilation-error {
         position: fixed;
         box-sizing: border-box;
         left: 0;
@@ -166,9 +167,37 @@ function errorTemplate(message) {
         overflow: auto;
       }
 
-      .error-heading {
+      .compilation-error-heading {
         color: #E36049;
         margin-bottom: 2em;
+      }
+    </style>
+`;
+}
+
+function runtimeErrorTemplate(message) {
+  return `
+    <div class="runtime-error">${message}</div>
+
+    <style>
+      .runtime-error {
+        position: fixed;
+        box-sizing: border-box;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width: 100vw;
+        height: 2.5em;
+        background-color: rgba(255,0,0,0.75);
+        font-size: 12px;
+        line-height: 2.5em;
+        text-align: center;
+        color: rgba(255,255,255,0.95);
+        font-family: Lucida Grande, sans-serif;
+        overflow: hidden;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        -webkit-font-smoothing: antialiased;
       }
     </style>
 `;
@@ -227,7 +256,7 @@ connection.onmessage = function(event) {
       break;
     case 'errors':
       showNotification(
-        errorTemplate(escapeErrorMessage(message.data.toString()))
+        compilationErrorTemplate(escapeErrorMessage(message.data.toString()))
       );
       break;
   }
@@ -243,3 +272,9 @@ function escapeErrorMessage(message) {
 document.addEventListener('DOMContentLoaded', () => {
   showNotification(activityTemplate('Loading...'));
 });
+
+window.onerror = function(message) {
+  if (window.outerHeight - window.innerHeight < 100) {
+    showNotification(runtimeErrorTemplate(message));
+  }
+};
