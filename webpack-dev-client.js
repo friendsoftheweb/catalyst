@@ -5,91 +5,203 @@ const SockJS = require('sockjs-client');
 const url = require('url');
 const environment = require('./utils/environment');
 
-const red = '#E36049';
-
 let isFirstCompilation = true;
-let overlayIframe = null;
-let overlayDiv = null;
-let lastOnOverlayDivReady = null;
+let runtimeErrorOccured = false;
 
-function createOverlayIframe(onIframeLoad) {
-  const iframe = document.createElement('iframe');
+let overlayFramePromise = null;
+let overlayFrameCreated = false;
 
-  iframe.src = 'about:blank';
-  iframe.style.position = 'fixed';
-  iframe.style.left = 0;
-  iframe.style.top = 0;
-  iframe.style.right = 0;
-  iframe.style.bottom = 0;
-  iframe.style.width = '100vw';
-  iframe.style.height = '100vh';
-  iframe.style.border = 'none';
-  iframe.style.zIndex = 9999999999;
-  iframe.onload = onIframeLoad;
-
-  return iframe;
-}
-
-function addOverlayDivTo(iframe) {
-  const div = iframe.contentDocument.createElement('div');
-
-  div.style.position = 'fixed';
-  div.style.boxSizing = 'border-box';
-  div.style.left = 0;
-  div.style.top = 0;
-  div.style.right = 0;
-  div.style.bottom = 0;
-  div.style.width = '100vw';
-  div.style.height = '100vh';
-  div.style.backgroundColor = '#fafafa';
-  div.style.color = '#333';
-  div.style.fontFamily = 'Menlo, Consolas, monospace';
-  div.style.fontSize = 'large';
-  div.style.padding = '2rem';
-  div.style.lineHeight = '1.2';
-  div.style.whiteSpace = 'pre-wrap';
-  div.style.overflow = 'auto';
-
-  iframe.contentDocument.body.appendChild(div);
-
-  return div;
-}
-
-function ensureOverlayDivExists(onOverlayDivReady) {
-  if (overlayDiv) {
-    // Everything is ready, call the callback right away.
-    onOverlayDivReady(overlayDiv);
-    return;
+function createOverlayFrame() {
+  if (overlayFramePromise != null) {
+    return overlayFramePromise;
   }
 
-  // Creating an iframe may be asynchronous so we'll schedule the callback.
-  // In case of multiple calls, last callback wins.
-  lastOnOverlayDivReady = onOverlayDivReady;
+  overlayFramePromise = new Promise((resolve, reject) => {
+    const frame = document.createElement('iframe');
 
-  if (overlayIframe) {
-    // We're already creating it.
-    return;
-  }
+    frame.src = 'about:blank';
+    frame.style.position = 'fixed';
+    frame.style.left = 0;
+    frame.style.top = 0;
+    frame.style.right = 0;
+    frame.style.bottom = 0;
+    frame.style.width = '100vw';
+    frame.style.height = '100vh';
+    frame.style.border = 'none';
+    frame.style.zIndex = 9999999999;
+    frame.style.display = 'none';
+    frame.style.pointerEvents = 'none';
 
-  // Create iframe and, when it is ready, a div inside it.
-  overlayIframe = createOverlayIframe(function onIframeLoad() {
-    overlayDiv = addOverlayDivTo(overlayIframe);
-    // Now we can talk!
-    lastOnOverlayDivReady(overlayDiv);
+    frame.onload = () => {
+      overlayFrameCreated = true;
+
+      resolve({ frame });
+    };
+
+    document.body.appendChild(frame);
   });
 
-  // Zalgo alert: onIframeLoad() will be called either synchronously
-  // or asynchronously depending on the browser.
-  // We delay adding it so `overlayIframe` is set when `onIframeLoad` fires.
-  document.body.appendChild(overlayIframe);
+  return overlayFramePromise;
 }
 
-function showErrorOverlay(message) {
-  ensureOverlayDivExists(function onOverlayDivReady(overlayDiv) {
-    // Make it look similar to our terminal.
-    overlayDiv.innerHTML =
-      '<span style="color: ' + red + '">Failed to compile.</span><br><br>' + message;
+let overlayContainerPromise = null;
+
+function createOverlayContainer() {
+  if (overlayContainerPromise != null) {
+    return overlayContainerPromise;
+  }
+
+  overlayContainerPromise = new Promise((resolve, reject) => {
+    createOverlayFrame()
+      .then(({ frame }) => {
+        const container = frame.contentDocument.createElement('div');
+
+        container.style.position = 'fixed';
+        container.style.boxSizing = 'border-box';
+        container.style.display = 'flex';
+        container.style.alignItems = 'center';
+        container.style.justifyContent = 'center';
+        container.style.left = 0;
+        container.style.top = 0;
+        container.style.right = 0;
+        container.style.bottom = 0;
+        container.style.width = '100vw';
+        container.style.height = '100vh';
+        container.style.backgroundColor = 'rgba(255,255,255,0.25)';
+
+        frame.contentDocument.body.appendChild(container);
+
+        resolve({ frame, container });
+      })
+      .catch(reject);
   });
+
+  return overlayContainerPromise;
+}
+
+function showNotification(template) {
+  return createOverlayContainer().then(({ frame, container }) => {
+    container.innerHTML = template;
+    frame.style.display = 'block';
+  });
+}
+
+function hideNotification() {
+  if (overlayFrameCreated) {
+    return createOverlayFrame().then(({ frame }) => {
+      frame.style.display = 'none';
+    });
+  } else {
+    return Promise.resolve(null);
+  }
+}
+
+function activityTemplate(message) {
+  return `
+    <div class="activity">
+      <div class="activity-indicator"></div>
+      <div class="activity-message">${message}</div>
+    </div>
+
+    <style>
+      @keyframes rotation {
+        0% { transform: rotate(0); }
+        100% { transform: rotate(350deg); }
+      }
+
+      .activity {
+        position: fixed;
+        background-color: rgba(0,0,0,0.8);
+        border-radius: 0.5rem;
+        font-family: Lucida Grande, sans-serif;
+        padding: 0.75em 1em;
+        text-align: center;
+        vertical-align: middle;
+      }
+
+      .activity-indicator {
+        display: inline-block;
+        animation: rotation 0.85s infinite linear;
+        vertical-align: middle;
+
+        font-size: 17px;
+        width: 1em;
+        height: 1em;
+
+        border: 2px solid rgba(255,255,255,0.25);
+        border-top-color: rgba(255,255,255,0.7);
+        border-radius: 50%;
+      }
+
+      .activity-message {
+        color: rgba(255,255,255,0.5);
+        margin-left: 0.4em;
+        padding-top: 0.25em;
+        display: inline-block;
+        -webkit-font-smoothing: antialiased
+      }
+    </style>
+`;
+}
+
+function compilationErrorTemplate(message) {
+  return `
+    <div class="compilation-error"><div class="compilation-error-heading">Failed to compile.</div>${message}</div>
+
+    <style>
+      .compilation-error {
+        position: fixed;
+        box-sizing: border-box;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        width: 100vw;
+        height: 100vh;
+        color: #333333;
+        background-color: #fafafa;
+        font-size: large;
+        font-family: Menlo, Consolas, monospace;
+        line-height: 1.2em;
+        padding: 2rem;
+        white-space: pre-wrap;
+        overflow: auto;
+      }
+
+      .compilation-error-heading {
+        color: #E36049;
+        margin-bottom: 2em;
+      }
+    </style>
+`;
+}
+
+function runtimeErrorTemplate(message) {
+  return `
+    <div class="runtime-error">${message}</div>
+
+    <style>
+      .runtime-error {
+        position: fixed;
+        box-sizing: border-box;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width: 100vw;
+        height: 2.5em;
+        background-color: rgba(255,0,0,0.75);
+        font-size: 12px;
+        line-height: 2.5em;
+        text-align: center;
+        color: rgba(255,255,255,0.95);
+        font-family: Lucida Grande, sans-serif;
+        overflow: hidden;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        -webkit-font-smoothing: antialiased;
+      }
+    </style>
+`;
 }
 
 function tryApplyUpdates() {
@@ -134,10 +246,39 @@ connection.onmessage = function(event) {
 
   switch (message.type) {
     case 'ok':
+      if (!runtimeErrorOccured) {
+        hideNotification();
+      }
       tryApplyUpdates();
       break;
-    case 'errors':
-      showErrorOverlay(message.data.toString().replace(/\[\d\d?m/g, ''));
+    case 'still-ok':
+      hideNotification();
       break;
+    case 'invalid':
+      showNotification(activityTemplate('Reloading...'));
+      break;
+    case 'errors':
+      showNotification(
+        compilationErrorTemplate(escapeErrorMessage(message.data.toString()))
+      );
+      break;
+  }
+};
+
+function escapeErrorMessage(message) {
+  return message
+    .replace(/\[\d\d?m/g, '')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  showNotification(activityTemplate('Loading...'));
+});
+
+window.onerror = function(message) {
+  if (window.outerHeight - window.innerHeight < 100) {
+    runtimeErrorOccured = true;
+    showNotification(runtimeErrorTemplate(message));
   }
 };
