@@ -6,6 +6,7 @@ const url = require('url');
 const environment = require('./utils/environment');
 
 let isFirstCompilation = true;
+let runtimeErrorOccured = false;
 
 let overlayFramePromise = null;
 let overlayFrameCreated = false;
@@ -85,7 +86,7 @@ function showNotification(template) {
   });
 }
 
-function hideNotification(template) {
+function hideNotification() {
   if (overlayFrameCreated) {
     return createOverlayFrame().then(({ frame }) => {
       frame.style.display = 'none';
@@ -245,7 +246,9 @@ connection.onmessage = function(event) {
 
   switch (message.type) {
     case 'ok':
-      hideNotification();
+      if (!runtimeErrorOccured) {
+        hideNotification();
+      }
       tryApplyUpdates();
       break;
     case 'still-ok':
@@ -275,6 +278,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 window.onerror = function(message) {
   if (window.outerHeight - window.innerHeight < 100) {
+    runtimeErrorOccured = true;
     showNotification(runtimeErrorTemplate(message));
   }
 };
