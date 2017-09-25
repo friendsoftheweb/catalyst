@@ -9,28 +9,32 @@ const generateRules = require('../config/webpack/generate-rules');
 
 const testProjectRoot = path.resolve(__dirname, './project');
 
-const options = { context: testProjectRoot, rootPath: 'client', buildPath: 'public/assets' };
+const options = {
+  context: testProjectRoot,
+  rootPath: 'client',
+  buildPath: 'public/assets'
+};
 
 describe('config', function() {
   describe('webpack', function() {
     it('generateDevtool', function() {
-      expect(generateDevtool(options)).toBeA('string');
+      expect(typeof generateDevtool(options)).toBe('string');
     });
 
     it('generateEntry', function() {
-      expect(generateEntry(options)).toBeAn(Array);
+      expect(generateEntry(options)).toBeInstanceOf(Array);
     });
 
     it('generateOutput', function() {
-      expect(generateOutput(options)).toBeAn(Object);
+      expect(generateOutput(options)).toBeInstanceOf(Object);
     });
 
     it('generatePlugins', function() {
-      expect(generatePlugins(options)).toBeAn(Array);
+      expect(generatePlugins(options)).toBeInstanceOf(Array);
     });
 
     it('generateRules', function() {
-      expect(generateRules(options)).toBeAn(Array);
+      expect(generateRules(options)).toBeInstanceOf(Array);
     });
   });
 });

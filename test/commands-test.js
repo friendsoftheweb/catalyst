@@ -34,7 +34,7 @@ describe('commands', function() {
         execSync('../../index.js generate component HelloWorld', {
           cwd: testProjectRoot
         });
-      }).toNotThrow();
+      }).not.toThrow();
     });
   });
 
@@ -57,7 +57,7 @@ describe('commands', function() {
         execSync('../../index.js generate module HelloWorld', {
           cwd: testProjectRoot
         });
-      }).toNotThrow();
+      }).not.toThrow();
     });
   });
 });
