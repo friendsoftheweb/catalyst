@@ -11,6 +11,7 @@ const writeFileFromTemplate = require('../utils/write-file-from-template');
 const nodePackages = [
   '@ftw/catalyst',
   'axios',
+  'babel-core',
   'bind-decorator',
   'classnames',
   'react',
