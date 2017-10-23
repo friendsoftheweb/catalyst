@@ -1,9 +1,5 @@
-const environment = require('../../utils/environment');
-
 function generateDevtool() {
-  const env = environment();
-
-  return env.development ? 'eval-source-map' : 'source-map';
+  return 'source-map';
 }
 
 module.exports = generateDevtool;
