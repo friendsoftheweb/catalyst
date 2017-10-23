@@ -1,6 +1,6 @@
 {
   "name": "@ftw/catalyst",
-  "version": "0.0.18",
+  "version": "0.0.19",
   "description": "Generates React components.",
   "engines": {
     "node": ">= 6.5.0",
