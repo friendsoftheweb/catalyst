@@ -1,7 +1,7 @@
 const resolveModulePath = require('../../utils/resolve-module-path');
 const environment = require('../../utils/environment');
 
-function babelConfig(modules = 'commonjs') {
+function babelConfig({ modules = false, useBuiltIns = 'usage' }) {
   const env = environment();
   const plugins = [
     resolveModulePath('babel-plugin-transform-flow-strip-types'),
@@ -17,9 +17,13 @@ function babelConfig(modules = 'commonjs') {
   return {
     presets: [
       [
-        resolveModulePath('babel-preset-es2015'),
+        resolveModulePath('babel-preset-env'),
         {
-          modules
+          modules,
+          useBuiltIns,
+          // Until UglifyJS supports ES6+ syntax, we must force transforms in
+          // the production environment.
+          forceAllTransforms: env.production
         }
       ],
       resolveModulePath('babel-preset-react'),

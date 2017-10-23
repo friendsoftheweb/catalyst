@@ -11,8 +11,6 @@ function generateEntry(entryPath) {
   }
 
   entry.push(
-    resolveModulePath('es5-shim'),
-    resolveModulePath('es6-promise/auto'),
     resolveModulePath('regenerator-runtime/runtime'),
     path.resolve(__dirname, '../../vendor/react-ujs')
   );
