@@ -246,6 +246,7 @@ connection.onmessage = function(event) {
 
   switch (message.type) {
     case 'ok':
+    case 'warnings':
       if (!runtimeErrorOccured) {
         hideNotification();
       }
