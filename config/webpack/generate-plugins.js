@@ -1,14 +1,20 @@
 const environment = require('../../utils/environment');
 const resolveModulePath = require('../../utils/resolve-module-path');
 const webpack = require(resolveModulePath('webpack'));
-const ExtractTextPlugin = require(resolveModulePath('extract-text-webpack-plugin'));
+const ExtractTextPlugin = require(resolveModulePath(
+  'extract-text-webpack-plugin'
+));
 const ManifestPlugin = require(resolveModulePath('webpack-manifest-plugin'));
-const CompressionPlugin = require(resolveModulePath('compression-webpack-plugin'));
+const CompressionPlugin = require(resolveModulePath(
+  'compression-webpack-plugin'
+));
 
 function generatePlugins() {
   const env = environment();
 
-  const cssFileName = env.production ? '[name]-[contenthash].css' : '[name].css';
+  const cssFileName = env.production
+    ? '[name]-[contenthash].css'
+    : '[name].css';
 
   const plugins = [
     new ExtractTextPlugin({
@@ -28,6 +34,7 @@ function generatePlugins() {
   if (env.production) {
     plugins.push(
       new webpack.optimize.UglifyJsPlugin({
+        sourceMap: true,
         compress: {
           warnings: false
         }
