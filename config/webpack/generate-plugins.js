@@ -9,7 +9,7 @@ const CompressionPlugin = require(resolveModulePath(
   'compression-webpack-plugin'
 ));
 
-function generatePlugins() {
+function generatePlugins(options = {}) {
   const env = environment();
 
   const cssFileName = env.production
@@ -30,6 +30,14 @@ function generatePlugins() {
       }
     })
   );
+
+  if (options.commonsChunk) {
+    plugins.push(
+      new webpack.optimize.CommonsChunkPlugin({
+        name: 'commons'
+      })
+    );
+  }
 
   if (env.production) {
     plugins.push(

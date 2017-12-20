@@ -9,12 +9,26 @@ const generateOutput = require('./generate-output');
 const generatePlugins = require('./generate-plugins');
 const generateRules = require('./generate-rules');
 
-function webpackConfig() {
+const defaultOptions = {
+  commonsChunk: false
+};
+
+function webpackConfig(options = {}) {
   const context = process.cwd();
   const config = loadConfig();
   const rootPath = path.join(context, config.rootPath);
   const buildPath = path.join(context, config.buildPath);
   const bundlesPath = path.join(context, `${config.rootPath}/bundles`);
+
+  options = Object.assign(
+    {
+      context,
+      rootPath,
+      buildPath
+    },
+    defaultOptions,
+    options
+  );
 
   const bundlePaths = fs
     .readdirSync(bundlesPath)
@@ -31,30 +45,20 @@ function webpackConfig() {
         const parts = bundlePath.split('/');
         const bundleName = parts[parts.length - 2];
 
-        return Object.assign({}, entry, { [bundleName]: generateEntry(bundlePath) });
+        return Object.assign({}, entry, {
+          [bundleName]: generateEntry(bundlePath)
+        });
       },
       {}
     ),
-    output: generateOutput({
-      context,
-      rootPath,
-      buildPath
-    }),
+    output: generateOutput(options),
     resolve: {
       extensions: ['.js'],
       modules: [rootPath, 'node_modules']
     },
-    plugins: generatePlugins({
-      context,
-      rootPath,
-      buildPath
-    }),
+    plugins: generatePlugins(options),
     module: {
-      loaders: generateRules({
-        context,
-        rootPath,
-        buildPath
-      })
+      loaders: generateRules(options)
     }
   };
 }
