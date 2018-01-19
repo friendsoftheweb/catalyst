@@ -10,7 +10,8 @@ const generatePlugins = require('./generate-plugins');
 const generateRules = require('./generate-rules');
 
 const defaultOptions = {
-  commonsChunk: false
+  commonsChunk: false,
+  publicPath: '/assets/'
 };
 
 function webpackConfig(options = {}) {

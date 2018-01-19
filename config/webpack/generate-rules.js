@@ -1,10 +1,12 @@
 const path = require('path');
 const environment = require('../../utils/environment');
 const resolveModulePath = require('../../utils/resolve-module-path');
-const ExtractTextPlugin = require(resolveModulePath('extract-text-webpack-plugin'));
+const ExtractTextPlugin = require(resolveModulePath(
+  'extract-text-webpack-plugin'
+));
 const babelConfig = require('../../config/babel');
 
-function generateRules({ context, rootPath }) {
+function generateRules({ context, rootPath, publicPath }) {
   const env = environment();
   const rules = [];
 
@@ -66,22 +68,23 @@ function generateRules({ context, rootPath }) {
     ]
   });
 
-  const assetFilePath = env.development ? '[path][name].[ext]' : '[path][name]-[hash].[ext]';
-
   rules.push(
-    generateFileLoaderRule(path.join(rootPath, 'assets')),
+    generateFileLoaderRule(path.join(rootPath, 'assets'), publicPath),
     generateFileLoaderRule(path.join(context, 'node_modules'))
   );
 
   return rules;
 }
 
-function generateFileLoaderRule(basePath) {
+function generateFileLoaderRule(basePath, publicPath) {
   const env = environment();
-  const name = env.development ? '[path][name].[ext]' : '[path][name]-[hash].[ext]';
-  const publicPath = env.development
-    ? `http://${env.devServerHost}:${env.devServerPort}/`
-    : '/assets/';
+  const name = env.development
+    ? '[path][name].[ext]'
+    : '[path][name]-[hash].[ext]';
+
+  if (env.development) {
+    publicPath = `http://${env.devServerHost}:${env.devServerPort}/`;
+  }
 
   return {
     test: /\.(jpe?g|gif|png|svg|woff2?|eot|ttf)$/,
