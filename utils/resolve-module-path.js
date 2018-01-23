@@ -4,7 +4,15 @@ const path = require('path');
 function resolveModulePath(modulePath) {
   let moduleName, modulePathSegments;
 
-  [moduleName, ...modulePathSegments] = modulePath.split('/');
+  const splitModulePath = modulePath.split('/');
+
+  if (/^@/.test(modulePath)) {
+    modulePathSegments = splitModulePath.slice(2);
+    moduleName = [splitModulePath[0], splitModulePath[1]].join('/');
+  } else {
+    modulePathSegments = splitModulePath.slice(1);
+    moduleName = splitModulePath[0];
+  }
 
   const projectModulesRoot = path.resolve(process.cwd(), './node_modules');
   const catalystModulesRoot = path.resolve(__dirname, '../node_modules');

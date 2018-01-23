@@ -11,7 +11,6 @@ const writeFileFromTemplate = require('../utils/write-file-from-template');
 const nodePackages = [
   '@ftw/catalyst',
   'axios',
-  'babel-core',
   'bind-decorator',
   'classnames',
   'react',
@@ -28,7 +27,6 @@ const nodePackagesDev = [
   'eslint-plugin-react',
   'flow-bin',
   'jest',
-  'react-addons-perf',
   'react-test-renderer'
 ];
 
@@ -40,9 +38,12 @@ function runInSeries(funcs) {
 
 function modifiedFileCount() {
   return parseInt(
-    execSync('git status --porcelain --untracked-files=no -- | wc -l | tr -d " "', {
-      stdio: ['pipe', 'pipe', 'ignore']
-    }).toString()
+    execSync(
+      'git status --porcelain --untracked-files=no -- | wc -l | tr -d " "',
+      {
+        stdio: ['pipe', 'pipe', 'ignore']
+      }
+    ).toString()
   );
 }
 
@@ -50,7 +51,9 @@ function init() {
   const defaultConfig = { rootPath: 'client', buildPath: 'public/assets' };
 
   if (modifiedFileCount() > 0) {
-    exitWithError('Please commit or stash any modified files before running `catalyst init`.');
+    exitWithError(
+      'Please commit or stash any modified files before running `catalyst init`.'
+    );
   }
 
   if (fs.existsSync('package.json')) {
@@ -84,10 +87,14 @@ function init() {
       mkdirp.sync(`${config.rootPath}/assets/images`);
 
       runInSeries([
-        writeFileFromTemplate.bind(null, 'package.json', 'package.json.jst', { config }),
+        writeFileFromTemplate.bind(null, 'package.json', 'package.json.jst', {
+          config
+        }),
         writeFileFromTemplate.bind(null, '.babelrc', '.babelrc.jst'),
         writeFileFromTemplate.bind(null, '.eslintrc', '.eslintrc.jst'),
-        writeFileFromTemplate.bind(null, '.flowconfig', '.flowconfig.jst', { config }),
+        writeFileFromTemplate.bind(null, '.flowconfig', '.flowconfig.jst', {
+          config
+        }),
         writeFileFromTemplate.bind(
           null,
           `${config.rootPath}/config/webpack.js`,

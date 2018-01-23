@@ -1,23 +1,25 @@
 const resolveModulePath = require('../../utils/resolve-module-path');
 const environment = require('../../utils/environment');
 
-function babelConfig({ modules = false, useBuiltIns = 'usage' }) {
+function babelConfig({ modules = false, useBuiltIns = false }) {
   const env = environment();
   const plugins = [
-    resolveModulePath('babel-plugin-transform-flow-strip-types'),
-    resolveModulePath('babel-plugin-transform-decorators-legacy'),
-    resolveModulePath('babel-plugin-transform-class-properties'),
-    resolveModulePath('babel-plugin-transform-regenerator')
+    resolveModulePath('@babel/plugin-transform-flow-strip-types'),
+    resolveModulePath('@babel/plugin-proposal-decorators'),
+    [resolveModulePath('@babel/plugin-proposal-class-properties'), {}],
+    resolveModulePath('@babel/plugin-transform-regenerator')
   ];
 
   if (env.production) {
-    plugins.push(resolveModulePath('babel-plugin-transform-react-constant-elements'));
+    plugins.push(
+      resolveModulePath('@babel/plugin-transform-react-constant-elements')
+    );
   }
 
   return {
     presets: [
       [
-        resolveModulePath('babel-preset-env'),
+        resolveModulePath('@babel/preset-env'),
         {
           modules,
           useBuiltIns,
@@ -26,8 +28,8 @@ function babelConfig({ modules = false, useBuiltIns = 'usage' }) {
           forceAllTransforms: env.production
         }
       ],
-      resolveModulePath('babel-preset-react'),
-      resolveModulePath('babel-preset-stage-2')
+      resolveModulePath('@babel/preset-react'),
+      resolveModulePath('@babel/preset-stage-2')
     ],
     plugins
   };
