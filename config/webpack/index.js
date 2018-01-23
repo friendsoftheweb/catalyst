@@ -35,8 +35,7 @@ function webpackConfig(options = {}) {
   const bundlePaths = fs
     .readdirSync(bundlesPath)
     .map(bundlePath => path.join(bundlesPath, bundlePath))
-    .filter(bundlePath => fs.statSync(bundlePath).isDirectory())
-    .map(bundlePath => path.join(bundlePath, 'index.js'));
+    .filter(bundlePath => fs.statSync(bundlePath).isDirectory());
 
   return {
     context,
@@ -45,18 +44,18 @@ function webpackConfig(options = {}) {
       bundlePaths,
       (entry, bundlePath) => {
         const parts = bundlePath.split('/');
-        const bundleName = parts[parts.length - 2];
+        const bundleName = parts[parts.length - 1];
+        const relativeBundlePath = `./bundles/${bundleName}/index.js`;
 
         return Object.assign({}, entry, {
-          [bundleName]: generateEntry(bundlePath)
+          [bundleName]: generateEntry(relativeBundlePath)
         });
       },
       {}
     ),
     output: generateOutput(options),
     resolve: {
-      extensions: ['.js'],
-      modules: [context, 'node_modules']
+      modules: [config.rootPath, 'node_modules']
     },
     plugins: generatePlugins(options),
     module: {
