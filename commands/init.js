@@ -9,7 +9,7 @@ const spinnerSpawn = require('../utils/spinner-spawn');
 const writeFileFromTemplate = require('../utils/write-file-from-template');
 
 const nodePackages = [
-  '@ftw/catalyst',
+  'catalyst',
   'axios',
   'bind-decorator',
   'classnames',
