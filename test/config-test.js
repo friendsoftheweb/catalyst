@@ -10,9 +10,10 @@ const generateRules = require('../config/webpack/generate-rules');
 const testProjectRoot = path.resolve(__dirname, './project');
 
 const options = {
-  context: testProjectRoot,
-  rootPath: 'client',
-  buildPath: 'public/assets'
+  projectRoot: testProjectRoot,
+  context: path.join(testProjectRoot, 'client'),
+  buildPath: 'public/assets',
+  publicPath: '/assets/'
 };
 
 describe('config', function() {

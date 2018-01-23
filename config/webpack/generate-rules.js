@@ -6,7 +6,7 @@ const ExtractTextPlugin = require(resolveModulePath(
 ));
 const babelConfig = require('../../config/babel');
 
-function generateRules({ context, rootPath, publicPath }) {
+function generateRules({ projectRoot, context, publicPath }) {
   const env = environment();
   const rules = [];
 
@@ -14,7 +14,7 @@ function generateRules({ context, rootPath, publicPath }) {
     {
       loader: resolveModulePath('css-loader'),
       options: {
-        root: rootPath,
+        root: context,
         sourceMap: true
       }
     },
@@ -51,7 +51,7 @@ function generateRules({ context, rootPath, publicPath }) {
 
   rules.push({
     test: /\.js$/,
-    include: rootPath,
+    include: context,
     use: [
       {
         loader: resolveModulePath('babel-loader'),
@@ -69,8 +69,8 @@ function generateRules({ context, rootPath, publicPath }) {
   });
 
   rules.push(
-    generateFileLoaderRule(path.join(rootPath, 'assets'), publicPath),
-    generateFileLoaderRule(path.join(context, 'node_modules'))
+    generateFileLoaderRule(path.join(context, 'assets'), publicPath),
+    generateFileLoaderRule(path.join(projectRoot, 'node_modules'))
   );
 
   return rules;

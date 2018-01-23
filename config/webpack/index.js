@@ -15,16 +15,17 @@ const defaultOptions = {
 };
 
 function webpackConfig(options = {}) {
-  const context = process.cwd();
   const config = loadConfig();
-  const rootPath = path.join(context, config.rootPath);
-  const buildPath = path.join(context, config.buildPath);
-  const bundlesPath = path.join(context, `${config.rootPath}/bundles`);
+
+  const projectRoot = process.cwd();
+  const context = path.join(projectRoot, config.rootPath);
+  const buildPath = path.join(projectRoot, config.buildPath);
+  const bundlesPath = path.join(context, 'bundles');
 
   options = Object.assign(
     {
       context,
-      rootPath,
+      projectRoot,
       buildPath
     },
     defaultOptions,
@@ -55,7 +56,7 @@ function webpackConfig(options = {}) {
     output: generateOutput(options),
     resolve: {
       extensions: ['.js'],
-      modules: [rootPath, 'node_modules']
+      modules: [context, 'node_modules']
     },
     plugins: generatePlugins(options),
     module: {
