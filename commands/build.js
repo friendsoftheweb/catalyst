@@ -20,7 +20,13 @@ function build() {
 
   spinnerSpawn(
     resolveModulePath('webpack/bin/webpack.js'),
-    [`--config=${config.rootPath}/config/webpack.js`, '--hide-modules', '--bail', '--color'],
+    [
+      `--config=${config.rootPath}/config/webpack.js`,
+      '--display-error-details',
+      '--hide-modules',
+      '--bail',
+      '--color'
+    ],
     'Building...'
   ).then(
     () => {
