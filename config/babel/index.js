@@ -1,7 +1,7 @@
 const resolveModulePath = require('../../utils/resolve-module-path');
 const environment = require('../../utils/environment');
 
-function babelConfig({ modules = false, useBuiltIns = false }) {
+function babelConfig({ modules = false, useBuiltIns = 'usage' }) {
   const env = environment();
   const plugins = [
     resolveModulePath('@babel/plugin-transform-flow-strip-types'),
