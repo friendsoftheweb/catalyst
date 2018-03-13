@@ -10,11 +10,7 @@ function generateEntry(entryPath) {
     entry.push(path.resolve(__dirname, '../../webpack-dev-client'));
   }
 
-  entry.push(
-    resolveModulePath('regenerator-runtime/runtime'),
-    path.resolve(__dirname, '../../vendor/react-ujs')
-  );
-
+  entry.push(resolveModulePath('regenerator-runtime/runtime'));
   entry.push(entryPath);
 
   return entry;
