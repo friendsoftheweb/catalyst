@@ -7,11 +7,16 @@ const environment = require('../utils/environment');
 function server() {
   const config = loadConfig();
 
-  const webpackConfig = require(path.join(process.cwd(), config.rootPath, 'config/webpack.js'));
+  const webpackConfig = require(path.join(
+    process.cwd(),
+    config.rootPath,
+    'config/webpack.js'
+  ));
   const compiler = webpack(webpackConfig);
   const { devServerHost, devServerPort } = environment();
 
   const webpackServer = new WebpackDevServer(compiler, {
+    mode: 'development',
     publicPath: webpackConfig.output.publicPath,
     historyApiFallback: true,
     hot: true,

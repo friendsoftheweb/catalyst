@@ -3,7 +3,6 @@ const path = require('path');
 const { reduce } = require('lodash');
 
 const loadConfig = require('../../utils/load-config');
-const generateDevtool = require('./generate-devtool');
 const generateEntry = require('./generate-entry');
 const generateOutput = require('./generate-output');
 const generatePlugins = require('./generate-plugins');
@@ -39,7 +38,6 @@ function webpackConfig(options = {}) {
 
   return {
     context,
-    devtool: generateDevtool(),
     entry: reduce(
       bundlePaths,
       (entry, bundlePath) => {
@@ -59,7 +57,7 @@ function webpackConfig(options = {}) {
     },
     plugins: generatePlugins(options),
     module: {
-      loaders: generateRules(options)
+      rules: generateRules(options)
     }
   };
 }

@@ -1,8 +1,8 @@
 const environment = require('../../utils/environment');
 const resolveModulePath = require('../../utils/resolve-module-path');
 const webpack = require(resolveModulePath('webpack'));
-const ExtractTextPlugin = require(resolveModulePath(
-  'extract-text-webpack-plugin'
+const MiniCssExtractPlugin = require(resolveModulePath(
+  'mini-css-extract-plugin'
 ));
 const ManifestPlugin = require(resolveModulePath('webpack-manifest-plugin'));
 const CompressionPlugin = require(resolveModulePath(
@@ -17,23 +17,20 @@ function generatePlugins(options = {}) {
     : '[name].css';
 
   const plugins = [
-    new ExtractTextPlugin({
-      filename: cssFileName,
-      allChunks: true
+    new MiniCssExtractPlugin({
+      filename: cssFileName
     })
   ];
 
   plugins.push(
     new webpack.DefinePlugin({
-      'process.env': {
-        NODE_ENV: JSON.stringify(process.env.NODE_ENV || 'development')
-      }
+      NODE_ENV: JSON.stringify(process.env.NODE_ENV || 'development')
     })
   );
 
   if (options.commonsChunk) {
     plugins.push(
-      new webpack.optimize.CommonsChunkPlugin({
+      new webpack.optimization.splitChunks({
         name: 'commons'
       })
     );
@@ -53,10 +50,6 @@ function generatePlugins(options = {}) {
 
   if (env.production || env.test) {
     plugins.push(new ManifestPlugin({ fileName: 'manifest.json' }));
-  }
-
-  if (env.development) {
-    plugins.push(new webpack.HotModuleReplacementPlugin());
   }
 
   return plugins;

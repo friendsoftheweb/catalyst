@@ -1,8 +1,8 @@
 const path = require('path');
 const environment = require('../../utils/environment');
 const resolveModulePath = require('../../utils/resolve-module-path');
-const ExtractTextPlugin = require(resolveModulePath(
-  'extract-text-webpack-plugin'
+const MiniCssExtractPlugin = require(resolveModulePath(
+  'mini-css-extract-plugin'
 ));
 const babelConfig = require('../../config/babel');
 
@@ -43,9 +43,7 @@ function generateRules({ projectRoot, context, publicPath }) {
   } else {
     rules.push({
       test: /\.s?css$/,
-      use: ExtractTextPlugin.extract({
-        use: scssRules
-      })
+      use: [MiniCssExtractPlugin.loader, ...scssRules]
     });
   }
 

@@ -1,7 +1,6 @@
 const expect = require('expect');
 const path = require('path');
 
-const generateDevtool = require('../config/webpack/generate-devtool');
 const generateEntry = require('../config/webpack/generate-entry');
 const generateOutput = require('../config/webpack/generate-output');
 const generatePlugins = require('../config/webpack/generate-plugins');
@@ -18,10 +17,6 @@ const options = {
 
 describe('config', function() {
   describe('webpack', function() {
-    it('generateDevtool', function() {
-      expect(typeof generateDevtool(options)).toBe('string');
-    });
-
     it('generateEntry', function() {
       expect(generateEntry(options)).toBeInstanceOf(Array);
     });
