@@ -19,8 +19,10 @@ function build() {
   }
 
   spinnerSpawn(
-    resolveModulePath('webpack/bin/webpack.js'),
+    'yarn',
     [
+      'run',
+      'webpack',
       `--config=${config.rootPath}/config/webpack.js`,
       '--display-error-details',
       '--hide-modules',

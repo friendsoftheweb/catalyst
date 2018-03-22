@@ -37,6 +37,7 @@ function webpackConfig(options = {}) {
     .filter(bundlePath => fs.statSync(bundlePath).isDirectory());
 
   return {
+    mode: process.env.WEBPACK_SERVE ? 'development' : 'production',
     context,
     entry: reduce(
       bundlePaths,
@@ -58,6 +59,17 @@ function webpackConfig(options = {}) {
     plugins: generatePlugins(options),
     module: {
       rules: generateRules(options)
+    },
+    optimization: {
+      splitChunks: {
+        cacheGroups: {
+          commons: {
+            test: /[\\/]node_modules[\\/]/,
+            name: 'common',
+            chunks: 'all'
+          }
+        }
+      }
     }
   };
 }

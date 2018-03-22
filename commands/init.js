@@ -19,6 +19,7 @@ const nodePackages = [
   'redux',
   'redux-saga'
 ];
+
 const nodePackagesDev = [
   '@ftw/eslint-config-catalyst',
   'babel-eslint',
@@ -27,7 +28,8 @@ const nodePackagesDev = [
   'eslint-plugin-react',
   'flow-bin',
   'jest',
-  'react-test-renderer'
+  'react-test-renderer',
+  'webpack-hot-client'
 ];
 
 function runInSeries(funcs) {

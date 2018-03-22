@@ -1,6 +1,5 @@
 const path = require('path');
-const webpack = require('webpack');
-const WebpackDevServer = require('webpack-dev-server');
+const serve = require('webpack-serve');
 const loadConfig = require('../utils/load-config');
 const environment = require('../utils/environment');
 
@@ -12,32 +11,10 @@ function server() {
     config.rootPath,
     'config/webpack.js'
   ));
-  const compiler = webpack(webpackConfig);
+
   const { devServerHost, devServerPort } = environment();
 
-  const webpackServer = new WebpackDevServer(compiler, {
-    mode: 'development',
-    publicPath: webpackConfig.output.publicPath,
-    historyApiFallback: true,
-    hot: true,
-    public: `${devServerHost}:${devServerPort}`,
-    headers: { 'Access-Control-Allow-Origin': '*' },
-    stats: {
-      colors: true,
-      hash: false,
-      version: false,
-      chunks: false,
-      children: false
-    }
-  });
-
-  webpackServer.listen(devServerPort, '0.0.0.0', function(err) {
-    if (err) {
-      console.log(err);
-    }
-
-    console.log(`Listening at localhost:${devServerPort}`);
-  });
+  serve({ config: webpackConfig, host: devServerHost, port: devServerPort });
 }
 
 module.exports = server;
