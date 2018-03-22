@@ -51,6 +51,7 @@
     "sockjs-client": "^1.1.4",
     "string": "^3.3.1",
     "style-loader": "^0.20.3",
+    "thread-loader": "^1.1.5",
     "url": "^0.11.0",
     "webpack": "^4.1.1",
     "webpack-cli": "^2.0.13",

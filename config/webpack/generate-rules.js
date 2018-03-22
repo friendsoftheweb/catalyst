@@ -10,47 +10,60 @@ function generateRules({ projectRoot, context, publicPath }) {
   const env = environment();
   const rules = [];
 
-  const scssRules = [
-    {
-      loader: resolveModulePath('css-loader'),
-      options: {
-        root: context,
-        sourceMap: true
-      }
-    },
-    {
-      loader: resolveModulePath('postcss-loader'),
-      options: {
-        sourceMap: true,
-        plugins: function() {
-          return [require(resolveModulePath('autoprefixer'))];
+  rules.push({
+    test: /\.s?css$/,
+    use: [
+      env.development
+        ? {
+            loader: resolveModulePath('style-loader')
+          }
+        : {
+            loader: MiniCssExtractPlugin.loader
+          },
+      {
+        loader: resolveModulePath('css-loader'),
+        options: {
+          root: context,
+          sourceMap: true
         }
       }
-    },
-    {
-      loader: resolveModulePath('sass-loader'),
-      options: {
-        sourceMap: true
-      }
-    }
-  ];
+    ]
+  });
 
-  if (env.development) {
-    rules.push({
-      test: /\.s?css$/,
-      use: [resolveModulePath('style-loader'), ...scssRules]
-    });
-  } else {
-    rules.push({
-      test: /\.s?css$/,
-      use: [MiniCssExtractPlugin.loader, ...scssRules]
-    });
-  }
+  // Add separate rule to prevent postcss-loader and sass-loader from running
+  // on node_modules.
+  rules.push({
+    test: /\.s?css$/,
+    include: context,
+    use: [
+      {
+        loader: resolveModulePath('postcss-loader'),
+        options: {
+          sourceMap: true,
+          plugins: function() {
+            return [require(resolveModulePath('autoprefixer'))];
+          }
+        }
+      },
+      {
+        loader: resolveModulePath('thread-loader')
+      },
+      {
+        loader: resolveModulePath('sass-loader'),
+        options: {
+          sourceMap: true
+        }
+      }
+    ]
+  });
 
   rules.push({
     test: /\.js$/,
     include: context,
     use: [
+      {
+        loader: resolveModulePath('thread-loader')
+      },
       {
         loader: resolveModulePath('babel-loader'),
         options: Object.assign(
@@ -59,9 +72,6 @@ function generateRules({ projectRoot, context, publicPath }) {
           },
           babelConfig(false)
         )
-      },
-      {
-        loader: path.resolve(__dirname, './loaders/component-styles-loader.js')
       }
     ]
   });
@@ -76,9 +86,9 @@ function generateRules({ projectRoot, context, publicPath }) {
 
 function generateFileLoaderRule(basePath, publicPath) {
   const env = environment();
-  const name = env.development
-    ? '[path][name].[ext]'
-    : '[path][name]-[hash].[ext]';
+  const name = env.production
+    ? '[path][name]-[hash].[ext]'
+    : '[path][name].[ext]';
 
   if (env.development) {
     publicPath = `http://${env.devServerHost}:${env.devServerPort}/`;
