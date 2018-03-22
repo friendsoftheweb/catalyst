@@ -14,7 +14,15 @@ function server() {
 
   const { devServerHost, devServerPort } = environment();
 
-  serve({ config: webpackConfig, host: devServerHost, port: devServerPort });
+  serve({
+    config: webpackConfig,
+    host: devServerHost,
+    port: devServerPort,
+    clipboard: false,
+    dev: {
+      headers: { 'Access-Control-Allow-Origin': '*' }
+    }
+  });
 }
 
 module.exports = server;

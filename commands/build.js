@@ -3,7 +3,6 @@ const loadConfig = require('../utils/load-config');
 const environment = require('../utils/environment');
 const { exitWithError } = require('../utils/logging');
 const spinnerSpawn = require('../utils/spinner-spawn');
-const resolveModulePath = require('../utils/resolve-module-path');
 
 function build() {
   const env = environment();
