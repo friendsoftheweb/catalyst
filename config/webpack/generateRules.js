@@ -50,6 +50,9 @@ function generateRules({ projectRoot, context, publicPath }) {
     include: context,
     use: [
       {
+        loader: resolveModulePath('thread-loader')
+      },
+      {
         loader: resolveModulePath('babel-loader'),
         options: Object.assign(
           {
