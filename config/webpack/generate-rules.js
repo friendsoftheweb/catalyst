@@ -26,25 +26,16 @@ function generateRules({ projectRoot, context, publicPath }) {
           root: context,
           sourceMap: true
         }
-      }
-    ]
-  });
-
-  // Add separate rule to prevent postcss-loader and sass-loader from running
-  // on node_modules.
-  rules.push({
-    test: /\.s?css$/,
-    include: context,
-    use: [
-      // {
-      //   loader: resolveModulePath('postcss-loader'),
-      //   options: {
-      //     sourceMap: true,
-      //     plugins: function() {
-      //       return [require(resolveModulePath('autoprefixer'))];
-      //     }
-      //   }
-      // },
+      },
+      {
+        loader: resolveModulePath('postcss-loader'),
+        options: {
+          sourceMap: true,
+          plugins() {
+            return [require(resolveModulePath('autoprefixer'))];
+          }
+        }
+      },
       {
         loader: resolveModulePath('sass-loader'),
         options: {

@@ -33,7 +33,7 @@ module.exports = {
 
   output: {
     filename: '[name].dll.js',
-    path: path.join(projectRoot, '/tmp/catalyst'),
+    path: path.join(projectRoot, '/public/assets'),
     library: '[name]'
   }
 };

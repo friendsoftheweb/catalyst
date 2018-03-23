@@ -22,11 +22,13 @@ function generatePlugins(options = {}) {
     );
   }
 
-  plugins.push(
-    new MiniCssExtractPlugin({
-      filename: cssFileName
-    })
-  );
+  if (!env.development) {
+    plugins.push(
+      new MiniCssExtractPlugin({
+        filename: cssFileName
+      })
+    );
+  }
 
   plugins.push(
     new webpack.DefinePlugin({

@@ -4,6 +4,7 @@ const { reduce } = require('lodash');
 
 const environment = require('../../utils/environment');
 const loadConfig = require('../../utils/load-config');
+const generateDevtool = require('./generate-devtool');
 const generateEntry = require('./generate-entry');
 const generateOutput = require('./generate-output');
 const generatePlugins = require('./generate-plugins');
@@ -39,8 +40,9 @@ function webpackConfig(options = {}) {
     .filter(bundlePath => fs.statSync(bundlePath).isDirectory());
 
   return {
-    mode: env.development ? 'development' : 'production',
     context,
+    mode: env.development ? 'development' : 'production',
+    devtool: generateDevtool(),
     entry: reduce(
       bundlePaths,
       (entry, bundlePath) => {
