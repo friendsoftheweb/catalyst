@@ -1,8 +1,8 @@
-const resolveModulePath = require('../../utils/resolve-module-path');
-const environment = require('../../utils/environment');
+const { getEnvironment, resolveModulePath } = require('../../utils');
 
 function babelConfig({ modules = false, useBuiltIns = 'usage' }) {
-  const env = environment();
+  const environment = getEnvironment();
+
   const plugins = [
     resolveModulePath('@babel/plugin-transform-flow-strip-types'),
     resolveModulePath('@babel/plugin-proposal-decorators'),
@@ -10,7 +10,7 @@ function babelConfig({ modules = false, useBuiltIns = 'usage' }) {
     resolveModulePath('@babel/plugin-transform-regenerator')
   ];
 
-  if (env.production) {
+  if (environment.production) {
     plugins.push(
       resolveModulePath('@babel/plugin-transform-react-constant-elements')
     );
@@ -22,10 +22,7 @@ function babelConfig({ modules = false, useBuiltIns = 'usage' }) {
         resolveModulePath('@babel/preset-env'),
         {
           modules,
-          useBuiltIns,
-          // Until UglifyJS supports ES6+ syntax, we must force transforms in
-          // the production environment.
-          forceAllTransforms: env.production
+          useBuiltIns
         }
       ],
       resolveModulePath('@babel/preset-react'),

@@ -2,12 +2,12 @@ const fs = require('fs');
 const path = require('path');
 const { reduce } = require('lodash');
 
-const loadConfig = require('../../utils/load-config');
-const generateDevtool = require('./generate-devtool');
-const generateEntry = require('./generate-entry');
-const generateOutput = require('./generate-output');
-const generatePlugins = require('./generate-plugins');
-const generateRules = require('./generate-rules');
+const { getEnvironment, getConfig, getDirectories } = require('../../utils');
+const generateDevtool = require('./generateDevtool');
+const generateEntry = require('./generateEntry');
+const generateOutput = require('./generateOutput');
+const generatePlugins = require('./generatePlugins');
+const generateRules = require('./generateRules');
 
 const defaultOptions = {
   commonsChunk: false,
@@ -15,30 +15,28 @@ const defaultOptions = {
 };
 
 function webpackConfig(options = {}) {
-  const config = loadConfig();
-
-  const projectRoot = process.cwd();
-  const context = path.join(projectRoot, config.rootPath);
-  const buildPath = path.join(projectRoot, config.buildPath);
-  const bundlesPath = path.join(context, 'bundles');
+  const env = getEnvironment();
+  const config = getConfig();
+  const directories = getDirectories();
 
   options = Object.assign(
     {
-      context,
-      projectRoot,
-      buildPath
+      context: directories.context,
+      projectRoot: directories.project,
+      buildPath: directories.build
     },
     defaultOptions,
     options
   );
 
   const bundlePaths = fs
-    .readdirSync(bundlesPath)
-    .map(bundlePath => path.join(bundlesPath, bundlePath))
+    .readdirSync(directories.bundles)
+    .map(bundlePath => path.join(directories.bundles, bundlePath))
     .filter(bundlePath => fs.statSync(bundlePath).isDirectory());
 
   return {
-    context,
+    context: directories.context,
+    mode: env.development ? 'development' : 'production',
     devtool: generateDevtool(),
     entry: reduce(
       bundlePaths,
@@ -59,7 +57,18 @@ function webpackConfig(options = {}) {
     },
     plugins: generatePlugins(options),
     module: {
-      loaders: generateRules(options)
+      rules: generateRules(options)
+    },
+    optimization: {
+      splitChunks: {
+        cacheGroups: {
+          commons: {
+            test: /[\\/]node_modules[\\/]/,
+            name: 'common',
+            chunks: 'all'
+          }
+        }
+      }
     }
   };
 }

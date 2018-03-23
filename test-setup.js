@@ -1,3 +1,3 @@
-const resolveModulePath = require('./utils/resolve-module-path');
+const resolveModulePath = require('./utils/resolveModulePath');
 
 require(resolveModulePath('regenerator-runtime/runtime'));

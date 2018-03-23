@@ -1,11 +1,8 @@
 // Heavily inspired by:
 // https://github.com/facebookincubator/create-react-app/blob/master/packages/react-dev-utils/webpackHotDevClient.js
 
-const SockJS = require('sockjs-client');
-const url = require('url');
-const environment = require('./utils/environment');
+const getEnvironment = require('./utils/getEnvironment');
 
-let isFirstCompilation = true;
 let runtimeErrorOccured = false;
 
 let overlayFramePromise = null;
@@ -201,45 +198,12 @@ function runtimeErrorTemplate(message) {
   );
 }
 
-function tryApplyUpdates() {
-  if (isFirstCompilation) {
-    isFirstCompilation = false;
-    return;
-  }
+const { devServerHost, devServerHotPort } = getEnvironment();
 
-  if (!module.hot) {
-    window.location.reload();
-    return;
-  }
+const socket = new WebSocket(`ws://${devServerHost}:${devServerHotPort}`);
 
-  if (module.hot.status() !== 'idle') {
-    return;
-  }
-
-  console.log('Applying update');
-
-  module.hot.check(true).then(
-    function() {
-      console.log('HMR update applied');
-    },
-    function() {
-      window.location.reload();
-    }
-  );
-}
-
-const connection = new SockJS(
-  url.format({
-    protocol: window.location.protocol,
-    hostname: window.location.hostname,
-    port: environment().devServerPort,
-    // Hardcoded in WebpackDevServer
-    pathname: '/sockjs-node'
-  })
-);
-
-connection.onmessage = function(event) {
-  const message = JSON.parse(event.data);
+socket.addEventListener('message', function(event) {
+  var message = JSON.parse(event.data);
 
   switch (message.type) {
     case 'ok':
@@ -247,7 +211,6 @@ connection.onmessage = function(event) {
       if (!runtimeErrorOccured) {
         hideNotification();
       }
-      tryApplyUpdates();
       break;
     case 'still-ok':
       hideNotification();
@@ -261,7 +224,7 @@ connection.onmessage = function(event) {
       );
       break;
   }
-};
+});
 
 function escapeErrorMessage(message) {
   return message

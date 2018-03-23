@@ -1,8 +1,6 @@
 const { map } = require('lodash');
 
-const { classify } = require('../utils/formatting');
-const { exitWithError } = require('../utils/logging');
-const writeFileFromTemplate = require('../utils/write-file-from-template');
+const { log, format } = require('../utils');
 
 const generateComponent = require('./generate/component');
 const generateModule = require('./generate/module');
@@ -10,9 +8,9 @@ const generateModule = require('./generate/module');
 function generate(type, moduleName, options) {
   type = type.replace(/\s/g, '');
 
-  const moduleNameParts = map(moduleName.split(/[\.\/]/), classify);
+  const moduleNameParts = map(moduleName.split(/[./]/), format.classify);
 
-  switch(type) {
+  switch (type) {
     case 'component':
       generateComponent(moduleNameParts, options);
       break;
@@ -20,8 +18,10 @@ function generate(type, moduleName, options) {
       generateModule(moduleNameParts, options);
       break;
     default:
-      exitWithError(`Unknown type '${type}'. Options are 'component' and 'module'.`);
+      log.exitWithError(
+        `Unknown type '${type}'. Options are 'component' and 'module'.`
+      );
   }
-};
+}
 
 module.exports = generate;

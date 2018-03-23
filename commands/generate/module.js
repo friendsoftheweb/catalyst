@@ -1,16 +1,12 @@
-const mkdirp = require('mkdirp');
 const { lowerFirst } = require('lodash');
-const { dasherize } = require('../../utils/formatting');
+const { format, getConfig, writeFileFromTemplate } = require('../../utils');
 
-const writeFileFromTemplate = require('../../utils/write-file-from-template');
-const loadConfig = require('../../utils/load-config');
-
-function generateModule(moduleNameParts, options) {
-  const config = loadConfig();
+function generateModule(moduleNameParts) {
+  const config = getConfig();
 
   const moduleName = moduleNameParts[0];
   const lowerModuleName = lowerFirst(moduleName);
-  const moduleDirectory = dasherize(moduleName);
+  const moduleDirectory = format.dasherize(moduleName);
 
   const context = {
     moduleName,
@@ -20,23 +16,48 @@ function generateModule(moduleNameParts, options) {
 
   const filePathBase = `${config.rootPath}/modules/${moduleDirectory}`;
 
-  writeFileFromTemplate(`${filePathBase}/index.js`, 'module/index.js.jst', context);
+  writeFileFromTemplate(
+    `${filePathBase}/index.js`,
+    'module/index.js.jst',
+    context
+  );
 
-  writeFileFromTemplate(`${filePathBase}/reducer.js`, 'module/reducer.js.jst', context);
-  writeFileFromTemplate(`${filePathBase}/saga.js`, 'module/saga.js.jst', context);
+  writeFileFromTemplate(
+    `${filePathBase}/reducer.js`,
+    'module/reducer.js.jst',
+    context
+  );
+
+  writeFileFromTemplate(
+    `${filePathBase}/saga.js`,
+    'module/saga.js.jst',
+    context
+  );
+
   writeFileFromTemplate(
     `${filePathBase}/action-creators.js`,
     'module/action-creators.js.jst',
     context
   );
-  writeFileFromTemplate(`${filePathBase}/requests.js`, 'module/requests.js.jst', context);
-  writeFileFromTemplate(`${filePathBase}/getters.js`, 'module/getters.js.jst', context);
+
+  writeFileFromTemplate(
+    `${filePathBase}/requests.js`,
+    'module/requests.js.jst',
+    context
+  );
+
+  writeFileFromTemplate(
+    `${filePathBase}/getters.js`,
+    'module/getters.js.jst',
+    context
+  );
 
   writeFileFromTemplate(
     `${filePathBase}/__tests__/reducer-test.js`,
     'module/reducer-test.js.jst',
     context
   );
+
   writeFileFromTemplate(
     `${filePathBase}/__tests__/saga-test.js`,
     'module/saga-test.js.jst',

@@ -4,9 +4,7 @@ const mkdirp = require('mkdirp');
 const chalk = require('chalk');
 const inquirer = require('inquirer');
 
-const { exitWithError } = require('../utils/logging');
-const spinnerSpawn = require('../utils/spinner-spawn');
-const writeFileFromTemplate = require('../utils/write-file-from-template');
+const { log, spinnerSpawn, writeFileFromTemplate } = require('../utils');
 
 const nodePackages = [
   'catalyst',
@@ -19,6 +17,7 @@ const nodePackages = [
   'redux',
   'redux-saga'
 ];
+
 const nodePackagesDev = [
   '@ftw/eslint-config-catalyst',
   'babel-eslint',
@@ -27,7 +26,8 @@ const nodePackagesDev = [
   'eslint-plugin-react',
   'flow-bin',
   'jest',
-  'react-test-renderer'
+  'react-test-renderer',
+  'webpack-hot-client'
 ];
 
 function runInSeries(funcs) {
@@ -51,7 +51,7 @@ function init() {
   const defaultConfig = { rootPath: 'client', buildPath: 'public/assets' };
 
   if (modifiedFileCount() > 0) {
-    exitWithError(
+    log.exitWithError(
       'Please commit or stash any modified files before running `catalyst init`.'
     );
   }
