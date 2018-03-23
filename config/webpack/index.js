@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const { reduce } = require('lodash');
 
+const environment = require('../../utils/environment');
 const loadConfig = require('../../utils/load-config');
 const generateEntry = require('./generate-entry');
 const generateOutput = require('./generate-output');
@@ -14,6 +15,7 @@ const defaultOptions = {
 };
 
 function webpackConfig(options = {}) {
+  const env = environment();
   const config = loadConfig();
 
   const projectRoot = process.cwd();
@@ -37,7 +39,7 @@ function webpackConfig(options = {}) {
     .filter(bundlePath => fs.statSync(bundlePath).isDirectory());
 
   return {
-    mode: process.env.WEBPACK_SERVE ? 'development' : 'production',
+    mode: env.development ? 'development' : 'production',
     context,
     entry: reduce(
       bundlePaths,
