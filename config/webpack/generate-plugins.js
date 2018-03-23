@@ -11,11 +11,22 @@ function generatePlugins(options = {}) {
 
   const cssFileName = env.production ? '[name]-[hash].css' : '[name].css';
 
-  const plugins = [
+  const plugins = [];
+
+  if (env.development) {
+    plugins.push(
+      new webpack.DllReferencePlugin({
+        context: options.projectRoot,
+        manifest: require(`${options.projectRoot}/tmp/catalyst/library.json`)
+      })
+    );
+  }
+
+  plugins.push(
     new MiniCssExtractPlugin({
       filename: cssFileName
     })
-  ];
+  );
 
   plugins.push(
     new webpack.DefinePlugin({

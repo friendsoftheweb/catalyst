@@ -36,18 +36,15 @@ function generateRules({ projectRoot, context, publicPath }) {
     test: /\.s?css$/,
     include: context,
     use: [
-      {
-        loader: resolveModulePath('postcss-loader'),
-        options: {
-          sourceMap: true,
-          plugins: function() {
-            return [require(resolveModulePath('autoprefixer'))];
-          }
-        }
-      },
-      {
-        loader: resolveModulePath('thread-loader')
-      },
+      // {
+      //   loader: resolveModulePath('postcss-loader'),
+      //   options: {
+      //     sourceMap: true,
+      //     plugins: function() {
+      //       return [require(resolveModulePath('autoprefixer'))];
+      //     }
+      //   }
+      // },
       {
         loader: resolveModulePath('sass-loader'),
         options: {
@@ -61,9 +58,6 @@ function generateRules({ projectRoot, context, publicPath }) {
     test: /\.js$/,
     include: context,
     use: [
-      {
-        loader: resolveModulePath('thread-loader')
-      },
       {
         loader: resolveModulePath('babel-loader'),
         options: Object.assign(
