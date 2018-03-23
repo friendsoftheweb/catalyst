@@ -1,12 +1,30 @@
 const fs = require('fs');
 const { exitWithError } = require('./logging');
 
+const defaultConfig = {
+  prebuildPackages: [
+    'axios',
+    'bind-decorator',
+    'classnames',
+    'lodash',
+    'react',
+    'react-dom',
+    'redux',
+    'redux-logger',
+    'redux-saga',
+    'react-router',
+    'react-router-dom',
+    'react-redux',
+    'regenerator-runtime'
+  ]
+};
+
 function loadConfig() {
   if (fs.existsSync('package.json')) {
     const packageData = JSON.parse(fs.readFileSync('package.json', 'utf8'));
 
     if (typeof packageData.catalyst === 'object') {
-      return packageData.catalyst;
+      return Object.assign({}, defaultConfig, packageData.catalyst);
     } else {
       exitWithError('package.json is missing a catalyst config');
     }

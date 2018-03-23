@@ -5,7 +5,7 @@ const environment = require('../utils/environment');
 const { execSync } = require('child_process');
 
 function server() {
-  console.log('Prebuilding libraries...\n');
+  console.log('Prebuilding vendor packages...\n');
 
   const output = execSync(
     [
@@ -30,7 +30,7 @@ function server() {
     'config/webpack.js'
   ));
 
-  const { devServerHost, devServerPort } = environment();
+  const { devServerHost, devServerPort, devServerHotPort } = environment();
 
   serve({
     config: webpackConfig,
@@ -39,6 +39,9 @@ function server() {
     clipboard: false,
     dev: {
       headers: { 'Access-Control-Allow-Origin': '*' }
+    },
+    hot: {
+      port: devServerHotPort
     }
   });
 }

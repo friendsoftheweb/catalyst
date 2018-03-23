@@ -1,6 +1,12 @@
 const path = require('path');
 const webpack = require('webpack');
+const loadConfig = require('../../utils/load-config');
 const projectRoot = process.cwd();
+
+const config = loadConfig();
+const projectDependencies = Object.keys(
+  require(path.join(projectRoot, 'package.json')).dependencies || {}
+);
 
 module.exports = {
   context: projectRoot,
@@ -11,17 +17,9 @@ module.exports = {
   },
 
   entry: {
-    library: [
-      'lodash',
-      'react',
-      'react-dom',
-      'redux',
-      'redux-saga',
-      'react-router',
-      'react-router-dom',
-      'react-redux',
-      'regenerator-runtime'
-    ]
+    library: config.prebuildPackages.filter(
+      package => projectDependencies.indexOf(package) > -1
+    )
   },
 
   plugins: [

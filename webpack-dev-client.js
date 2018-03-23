@@ -1,6 +1,8 @@
 // Heavily inspired by:
 // https://github.com/facebookincubator/create-react-app/blob/master/packages/react-dev-utils/webpackHotDevClient.js
 
+const environment = require('./utils/environment');
+
 let runtimeErrorOccured = false;
 
 let overlayFramePromise = null;
@@ -196,7 +198,9 @@ function runtimeErrorTemplate(message) {
   );
 }
 
-var socket = new WebSocket('ws://localhost:8081');
+const { devServerHost, devServerHotPort } = environment();
+
+const socket = new WebSocket(`ws://${devServerHost}:${devServerHotPort}`);
 
 socket.addEventListener('message', function(event) {
   var message = JSON.parse(event.data);
