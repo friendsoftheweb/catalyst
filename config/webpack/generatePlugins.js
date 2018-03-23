@@ -30,9 +30,7 @@ function generatePlugins(options = {}) {
   }
 
   plugins.push(
-    new webpack.DefinePlugin({
-      NODE_ENV: JSON.stringify(process.env.NODE_ENV || 'development')
-    })
+    new webpack.EnvironmentPlugin(['DEV_SERVER_HOST', 'DEV_SERVER_HOT_PORT'])
   );
 
   if (environment.production || environment.test) {
