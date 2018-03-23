@@ -17,7 +17,7 @@ module.exports = {
   },
 
   entry: {
-    library: config.prebuildPackages.filter(
+    vendor: config.prebuildPackages.filter(
       package => projectDependencies.indexOf(package) > -1
     )
   },
@@ -30,8 +30,8 @@ module.exports = {
   ],
 
   output: {
-    filename: '[name].dll.js',
-    path: path.join(projectRoot, '/public/assets'),
+    filename: '[name]-dll.js',
+    path: path.join(projectRoot, '/tmp/catalyst'),
     library: '[name]'
   }
 };

@@ -17,7 +17,7 @@ function generatePlugins(options = {}) {
     plugins.push(
       new webpack.DllReferencePlugin({
         context: options.projectRoot,
-        manifest: require(`${options.projectRoot}/tmp/catalyst/library.json`)
+        manifest: require(`${options.projectRoot}/tmp/catalyst/vendor.json`)
       })
     );
   }
