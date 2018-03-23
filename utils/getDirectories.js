@@ -10,7 +10,7 @@ function getDirectories() {
     context: path.join(project, config.rootPath),
     build: path.join(project, config.buildPath),
     bundles: path.join(project, config.rootPath, 'bundles'),
-    temp: path.join(project, 'temp', 'catalyst')
+    temp: path.join(project, 'tmp', 'catalyst')
   };
 }
 
