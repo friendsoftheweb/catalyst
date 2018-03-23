@@ -1,14 +1,14 @@
 const path = require('path');
 const fs = require('fs');
 const serve = require('webpack-serve');
-const loadConfig = require('../utils/load-config');
+const getDirectories = require('../utils/getDirectories');
 const environment = require('../utils/environment');
 const { execSync } = require('child_process');
 const Router = require('koa-router');
-const projectRoot = process.cwd();
 
+const directories = getDirectories();
 const router = new Router();
-const vendorFilePath = path.join(projectRoot, 'tmp/catalyst/vendor-dll.js');
+const vendorFilePath = path.join(directories.temp, 'vendor-dll.js');
 
 router.get('/vendor-dll.js', ctx => {
   ctx.body = fs.readFileSync(vendorFilePath);
@@ -32,11 +32,8 @@ function server() {
 
   console.log(output.toString());
 
-  const config = loadConfig();
-
   const webpackConfig = require(path.join(
-    process.cwd(),
-    config.rootPath,
+    directories.context,
     'config/webpack.js'
   ));
 

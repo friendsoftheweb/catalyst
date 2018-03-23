@@ -4,6 +4,7 @@ const { reduce } = require('lodash');
 
 const environment = require('../../utils/environment');
 const loadConfig = require('../../utils/load-config');
+const getDirectories = require('../../utils/getDirectories');
 const generateDevtool = require('./generate-devtool');
 const generateEntry = require('./generate-entry');
 const generateOutput = require('./generate-output');
@@ -18,29 +19,25 @@ const defaultOptions = {
 function webpackConfig(options = {}) {
   const env = environment();
   const config = loadConfig();
-
-  const projectRoot = process.cwd();
-  const context = path.join(projectRoot, config.rootPath);
-  const buildPath = path.join(projectRoot, config.buildPath);
-  const bundlesPath = path.join(context, 'bundles');
+  const directories = getDirectories();
 
   options = Object.assign(
     {
-      context,
-      projectRoot,
-      buildPath
+      context: directories.context,
+      projectRoot: directories.project,
+      buildPath: directories.build
     },
     defaultOptions,
     options
   );
 
   const bundlePaths = fs
-    .readdirSync(bundlesPath)
-    .map(bundlePath => path.join(bundlesPath, bundlePath))
+    .readdirSync(directories.bundles)
+    .map(bundlePath => path.join(directories.bundles, bundlePath))
     .filter(bundlePath => fs.statSync(bundlePath).isDirectory());
 
   return {
-    context,
+    context: directories.context,
     mode: env.development ? 'development' : 'production',
     devtool: generateDevtool(),
     entry: reduce(
