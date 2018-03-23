@@ -5,8 +5,8 @@ Catalyst is an opinionated tool for creating and maintaining React/Redux applica
 ## Starting a New Project
 
 ```
-$ yarn global add @ftw/catalyst
-$ catalyst init
+$ yarn add catalyst
+$ yarn run catalyst init
 ```
 
 ## Basic Project Structure
