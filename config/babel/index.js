@@ -22,10 +22,7 @@ function babelConfig({ modules = false, useBuiltIns = 'usage' }) {
         resolveModulePath('@babel/preset-env'),
         {
           modules,
-          useBuiltIns,
-          // Until UglifyJS supports ES6+ syntax, we must force transforms in
-          // the production environment.
-          forceAllTransforms: env.production
+          useBuiltIns
         }
       ],
       resolveModulePath('@babel/preset-react'),
