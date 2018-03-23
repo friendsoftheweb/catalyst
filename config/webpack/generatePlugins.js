@@ -1,19 +1,18 @@
-const environment = require('../../utils/environment');
-const resolveModulePath = require('../../utils/resolve-module-path');
 const webpack = require('webpack');
+const { getEnvironment, resolveModulePath } = require('../../utils');
 const MiniCssExtractPlugin = require(resolveModulePath(
   'mini-css-extract-plugin'
 ));
 const ManifestPlugin = require(resolveModulePath('webpack-manifest-plugin'));
 
 function generatePlugins(options = {}) {
-  const env = environment();
-
-  const cssFileName = env.production ? '[name]-[hash].css' : '[name].css';
-
+  const environment = getEnvironment();
+  const cssFileName = environment.production
+    ? '[name]-[hash].css'
+    : '[name].css';
   const plugins = [];
 
-  if (env.development) {
+  if (environment.development) {
     plugins.push(
       new webpack.DllReferencePlugin({
         context: options.projectRoot,
@@ -22,7 +21,7 @@ function generatePlugins(options = {}) {
     );
   }
 
-  if (!env.development) {
+  if (!environment.development) {
     plugins.push(
       new MiniCssExtractPlugin({
         filename: cssFileName
@@ -36,7 +35,7 @@ function generatePlugins(options = {}) {
     })
   );
 
-  if (env.production || env.test) {
+  if (environment.production || environment.test) {
     plugins.push(new ManifestPlugin({ fileName: 'manifest.json' }));
   }
 

@@ -1,16 +1,15 @@
 const path = require('path');
 const webpack = require('webpack');
-const loadConfig = require('../../utils/load-config');
-const getDirectories = require('../../utils/getDirectories');
+const { getConfig, getDirectories } = require('../../utils');
 
-const config = loadConfig();
+const config = getConfig();
 const directories = getDirectories();
 const projectDependencies = Object.keys(
-  require(path.join(directories.projectPath, 'package.json')).dependencies || {}
+  require(path.join(directories.project, 'package.json')).dependencies || {}
 );
 
 module.exports = {
-  context: directories.projectPath,
+  context: directories.project,
   mode: 'development',
 
   resolve: {
@@ -26,13 +25,13 @@ module.exports = {
   plugins: [
     new webpack.DllPlugin({
       name: '[name]',
-      path: path.join(directories.projectPath, '/tmp/catalyst/[name].json')
+      path: path.join(directories.project, '/tmp/catalyst/[name].json')
     })
   ],
 
   output: {
     filename: '[name]-dll.js',
-    path: path.join(directories.projectPath, '/tmp/catalyst'),
+    path: path.join(directories.project, '/tmp/catalyst'),
     library: '[name]'
   }
 };

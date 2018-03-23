@@ -2,14 +2,12 @@ const fs = require('fs');
 const path = require('path');
 const { reduce } = require('lodash');
 
-const environment = require('../../utils/environment');
-const loadConfig = require('../../utils/load-config');
-const getDirectories = require('../../utils/getDirectories');
-const generateDevtool = require('./generate-devtool');
-const generateEntry = require('./generate-entry');
-const generateOutput = require('./generate-output');
-const generatePlugins = require('./generate-plugins');
-const generateRules = require('./generate-rules');
+const { getEnvironment, getConfig, getDirectories } = require('../../utils');
+const generateDevtool = require('./generateDevtool');
+const generateEntry = require('./generateEntry');
+const generateOutput = require('./generateOutput');
+const generatePlugins = require('./generatePlugins');
+const generateRules = require('./generateRules');
 
 const defaultOptions = {
   commonsChunk: false,
@@ -17,8 +15,8 @@ const defaultOptions = {
 };
 
 function webpackConfig(options = {}) {
-  const env = environment();
-  const config = loadConfig();
+  const env = getEnvironment();
+  const config = getConfig();
   const directories = getDirectories();
 
   options = Object.assign(

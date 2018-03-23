@@ -1,4 +1,4 @@
-function environment() {
+function getEnvironment() {
   const env = process.env.NODE_ENV;
 
   return {
@@ -11,4 +11,4 @@ function environment() {
   };
 }
 
-module.exports = environment;
+module.exports = getEnvironment;

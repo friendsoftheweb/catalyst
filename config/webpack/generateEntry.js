@@ -1,12 +1,11 @@
 const path = require('path');
-const environment = require('../../utils/environment');
-const resolveModulePath = require('../../utils/resolve-module-path');
+const { getEnvironment, resolveModulePath } = require('../../utils');
 
 function generateEntry(entryPath) {
-  const env = environment();
+  const environment = getEnvironment();
   const entry = [];
 
-  if (env.development) {
+  if (environment.development) {
     entry.push(path.resolve(__dirname, '../../webpack-dev-client'));
   }
 

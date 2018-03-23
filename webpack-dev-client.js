@@ -1,7 +1,7 @@
 // Heavily inspired by:
 // https://github.com/facebookincubator/create-react-app/blob/master/packages/react-dev-utils/webpackHotDevClient.js
 
-const environment = require('./utils/environment');
+const getEnvironment = require('./utils/getEnvironment');
 
 let runtimeErrorOccured = false;
 
@@ -198,7 +198,7 @@ function runtimeErrorTemplate(message) {
   );
 }
 
-const { devServerHost, devServerHotPort } = environment();
+const { devServerHost, devServerHotPort } = getEnvironment();
 
 const socket = new WebSocket(`ws://${devServerHost}:${devServerHotPort}`);
 

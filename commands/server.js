@@ -1,20 +1,19 @@
 const path = require('path');
 const fs = require('fs');
-const serve = require('webpack-serve');
-const getDirectories = require('../utils/getDirectories');
-const environment = require('../utils/environment');
 const { execSync } = require('child_process');
+const serve = require('webpack-serve');
 const Router = require('koa-router');
-
-const directories = getDirectories();
-const router = new Router();
-const vendorFilePath = path.join(directories.temp, 'vendor-dll.js');
-
-router.get('/vendor-dll.js', ctx => {
-  ctx.body = fs.readFileSync(vendorFilePath);
-});
+const { getDirectories, getEnvironment } = require('../utils');
 
 function server() {
+  const directories = getDirectories();
+  const router = new Router();
+  const vendorFilePath = path.join(directories.temp, 'vendor-dll.js');
+
+  router.get('/vendor-dll.js', ctx => {
+    ctx.body = fs.readFileSync(vendorFilePath);
+  });
+
   console.log('Prebuilding vendor packages...\n');
 
   const output = execSync(
@@ -37,7 +36,7 @@ function server() {
     'config/webpack.js'
   ));
 
-  const { devServerHost, devServerPort, devServerHotPort } = environment();
+  const { devServerHost, devServerPort, devServerHotPort } = getEnvironment();
 
   serve({
     config: webpackConfig,

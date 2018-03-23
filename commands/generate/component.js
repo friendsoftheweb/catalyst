@@ -1,13 +1,11 @@
-const writeFileFromTemplate = require('../../utils/write-file-from-template');
-const loadConfig = require('../../utils/load-config');
-const { dasherize } = require('../../utils/formatting');
+const { format, getConfig, writeFileFromTemplate } = require('../../utils');
 
-function generateComponent(moduleNameParts, options) {
-  const config = loadConfig();
+function generateComponent(moduleNameParts) {
+  const config = getConfig();
 
   const className = moduleNameParts[moduleNameParts.length - 1];
-  const modulePath = moduleNameParts.map(dasherize).join('/');
-  const fileNameBase = dasherize(className);
+  const modulePath = moduleNameParts.map(format.dasherize).join('/');
+  const fileNameBase = format.dasherize(className);
 
   const modulePathBase = `components/${modulePath}`;
   const componentPathBase = `${config.rootPath}/${modulePathBase}`;

@@ -1,19 +1,19 @@
 const path = require('path');
-const environment = require('../../utils/environment');
-const resolveModulePath = require('../../utils/resolve-module-path');
+const { getEnvironment, resolveModulePath } = require('../../utils');
 const MiniCssExtractPlugin = require(resolveModulePath(
   'mini-css-extract-plugin'
 ));
+
 const babelConfig = require('../../config/babel');
 
 function generateRules({ projectRoot, context, publicPath }) {
-  const env = environment();
+  const environment = getEnvironment();
   const rules = [];
 
   rules.push({
     test: /\.s?css$/,
     use: [
-      env.development
+      environment.development
         ? {
             loader: resolveModulePath('style-loader')
           }
@@ -70,13 +70,15 @@ function generateRules({ projectRoot, context, publicPath }) {
 }
 
 function generateFileLoaderRule(basePath, publicPath) {
-  const env = environment();
-  const name = env.production
+  const environment = getEnvironment();
+  const name = environment.production
     ? '[path][name]-[hash].[ext]'
     : '[path][name].[ext]';
 
-  if (env.development) {
-    publicPath = `http://${env.devServerHost}:${env.devServerPort}/`;
+  if (environment.development) {
+    publicPath = `http://${environment.devServerHost}:${
+      environment.devServerPort
+    }/`;
   }
 
   return {

@@ -7,7 +7,7 @@ const inquirer = require('inquirer');
 
 require('colors');
 
-const { logAction } = require('../utils/logging');
+const { logAction } = require('./log');
 
 function templateFromFile(filePath) {
   const absoluteFilePath = path.resolve(__dirname, `../templates/${filePath}`);
@@ -68,7 +68,10 @@ function diffExisting(outputPath, fileContent) {
     diffFunction = jsdiff.diffLines;
   }
 
-  return diffFunction(fs.readFileSync(outputPath, 'utf8').toString(), fileContent);
+  return diffFunction(
+    fs.readFileSync(outputPath, 'utf8').toString(),
+    fileContent
+  );
 }
 
 function resolveConflict(filePath, fileContent) {

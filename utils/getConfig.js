@@ -1,5 +1,5 @@
 const fs = require('fs');
-const { exitWithError } = require('./logging');
+const { exitWithError } = require('./log');
 
 const defaultConfig = {
   prebuildPackages: [
@@ -19,7 +19,7 @@ const defaultConfig = {
   ]
 };
 
-function loadConfig() {
+function getConfig() {
   if (fs.existsSync('package.json')) {
     const packageData = JSON.parse(fs.readFileSync('package.json', 'utf8'));
 
@@ -33,4 +33,4 @@ function loadConfig() {
   }
 }
 
-module.exports = loadConfig;
+module.exports = getConfig;

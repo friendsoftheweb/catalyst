@@ -1,15 +1,13 @@
 const chalk = require('chalk');
-const loadConfig = require('../utils/load-config');
-const environment = require('../utils/environment');
-const { exitWithError } = require('../utils/logging');
-const spinnerSpawn = require('../utils/spinner-spawn');
+
+const { getConfig, getEnvironment, log, spinnerSpawn } = require('../utils');
 
 function build() {
-  const env = environment();
-  const config = loadConfig();
+  const environment = getEnvironment();
+  const config = getConfig();
 
-  if (!(env.production || env.test)) {
-    exitWithError(
+  if (!(environment.production || environment.test)) {
+    log.exitWithError(
       [
         'Build environment must be one of: "production", "test".',
         'Try setting the NODE_ENV environment variable.'
@@ -34,7 +32,7 @@ function build() {
       console.log(chalk.green('Build Succeeded'));
     },
     code => {
-      exitWithError('Build Failed!', code);
+      log.exitWithError('Build Failed!', code);
     }
   );
 }

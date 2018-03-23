@@ -1,8 +1,8 @@
 const path = require('path');
-const loadConfig = require('./load-config');
+const getConfig = require('./getConfig');
 
-module.exports = function getDirectories() {
-  const config = loadConfig();
+function getDirectories() {
+  const config = getConfig();
   const project = process.cwd();
 
   return {
@@ -12,4 +12,6 @@ module.exports = function getDirectories() {
     bundles: path.join(project, config.rootPath, 'bundles'),
     temp: path.join(project, 'temp', 'catalyst')
   };
-};
+}
+
+module.exports = getDirectories;
