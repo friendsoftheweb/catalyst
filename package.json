@@ -8,7 +8,7 @@
   },
   "scripts": {
     "test": "mocha",
-    "prepack": "yarn test"
+    "prepack": "NODE_ENV=test yarn test"
   },
   "author": "Dan Martens",
   "license": "MIT",
