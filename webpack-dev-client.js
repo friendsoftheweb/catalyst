@@ -212,7 +212,7 @@ socket.addEventListener('message', function(event) {
         hideNotification();
       }
       break;
-    case 'still-ok':
+    case 'no-change':
       hideNotification();
       break;
     case 'invalid':
