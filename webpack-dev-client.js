@@ -7,6 +7,7 @@ let runtimeErrorOccured = false;
 
 let overlayFramePromise = null;
 let overlayFrameCreated = false;
+let firstLoadComplete = false;
 
 function createOverlayFrame() {
   if (overlayFramePromise != null) {
@@ -208,6 +209,8 @@ socket.addEventListener('message', function(event) {
   switch (message.type) {
     case 'ok':
     case 'warnings':
+      firstLoadComplete = true;
+
       if (!runtimeErrorOccured) {
         hideNotification();
       }
@@ -233,9 +236,17 @@ function escapeErrorMessage(message) {
     .replace(/>/g, '&gt;');
 }
 
-document.addEventListener('DOMContentLoaded', function() {
+// If the body element exists, show the loading indicator. Otherwise, wait for a
+// "DOMContentLoaded" event.
+if (document.body != null) {
   showNotification(activityTemplate('Loading...'));
-});
+} else {
+  document.addEventListener('DOMContentLoaded', function() {
+    if (!firstLoadComplete) {
+      showNotification(activityTemplate('Loading...'));
+    }
+  });
+}
 
 window.onerror = function(message) {
   if (window.outerHeight - window.innerHeight < 100) {
