@@ -32,6 +32,7 @@ async function server() {
   const vendorFilePath = path.join(directories.temp, 'vendor-dll.js');
 
   router.get('/vendor-dll.js', ctx => {
+    ctx.set('Access-Control-Allow-Origin', '*');
     ctx.body = fs.readFileSync(vendorFilePath);
   });
 
