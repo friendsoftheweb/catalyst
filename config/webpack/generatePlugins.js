@@ -30,7 +30,10 @@ function generatePlugins(options = {}) {
   }
 
   plugins.push(
-    new webpack.EnvironmentPlugin(['DEV_SERVER_HOST', 'DEV_SERVER_HOT_PORT'])
+    new webpack.EnvironmentPlugin({
+      DEV_SERVER_HOST: environment.devServerHost,
+      DEV_SERVER_HOT_PORT: environment.devServerHotPort
+    })
   );
 
   if (environment.production || environment.test) {
