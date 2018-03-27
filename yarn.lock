@@ -2211,7 +2211,7 @@ commander@2.11.0:
   version "2.11.0"
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.11.0.tgz#157152fd1e7a6c8d98a5b715cf376df928004563"
 
-commander@^2.13.0:
+commander@^2.11.0, commander@^2.13.0:
   version "2.15.1"
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.15.1.tgz#df46e867d0fc2aec66a34662b406a9ccafff5b0f"
 
@@ -3098,6 +3098,14 @@ find-cache-dir@^1.0.0:
     commondir "^1.0.1"
     make-dir "^1.0.0"
     pkg-dir "^2.0.0"
+
+find-process@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/find-process/-/find-process-1.1.0.tgz#f21fa08220fec972b471d92ae3cf0c62bebcd5bb"
+  dependencies:
+    chalk "^2.0.1"
+    commander "^2.11.0"
+    debug "^2.6.8"
 
 find-up@^1.0.0:
   version "1.1.2"

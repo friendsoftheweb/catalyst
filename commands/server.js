@@ -1,11 +1,32 @@
 const path = require('path');
 const fs = require('fs');
 const { execSync } = require('child_process');
+const { get, map, uniq } = require('lodash/fp');
 const serve = require('webpack-serve');
 const Router = require('koa-router');
-const { getDirectories, getEnvironment } = require('../utils');
+const findProcess = require('find-process');
+const { getDirectories, getEnvironment, log } = require('../utils');
 
-function server() {
+async function server() {
+  const { devServerHost, devServerPort, devServerHotPort } = getEnvironment();
+
+  const serverProcesses = await findProcess('port', devServerPort);
+  const serverHotProcesses = await findProcess('port', devServerHotPort);
+
+  if (serverProcesses.length > 0 || serverHotProcesses > 0) {
+    const processIDs = uniq([
+      ...map(get('pid'), serverProcesses),
+      ...map(get('pid'), serverHotProcesses)
+    ]);
+
+    log.exitWithError(`
+  ERROR: Catalyst server failed to start!
+
+         Other processes are currently running on port ${devServerPort} and/or ${devServerHotPort}.
+         You can run 'kill -9 ${processIDs.join(' ')}' to stop them.
+    `);
+  }
+
   const directories = getDirectories();
   const router = new Router();
   const vendorFilePath = path.join(directories.temp, 'vendor-dll.js');
@@ -35,8 +56,6 @@ function server() {
     directories.context,
     'config/webpack.js'
   ));
-
-  const { devServerHost, devServerPort, devServerHotPort } = getEnvironment();
 
   serve({
     config: webpackConfig,
