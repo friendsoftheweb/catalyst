@@ -1,13 +1,13 @@
 {
   "name": "catalyst",
-  "version": "1.0.0-beta.13",
+  "version": "1.0.0-beta.14",
   "description": "Generates React components.",
   "engines": {
     "node": ">= 7.6.0",
     "npm": ">= 3.0.0"
   },
   "scripts": {
-    "test": "NODE_ENV=test mocha",
+    "test": "NODE_ENV=test mocha --slow 4000",
     "prepack": "yarn test"
   },
   "author": "Dan Martens",
@@ -40,27 +40,26 @@
     "inquirer": "^5.0.1",
     "koa-router": "^7.4.0",
     "lodash": "^4.17.4",
-    "mini-css-extract-plugin": "^0.2.0",
+    "mini-css-extract-plugin": "^0.4.0",
     "mkdirp": "^0.5.1",
     "node-sass": "^4.7.2",
     "node-spinner": "0.0.4",
     "postcss-loader": "^2.0.10",
-    "react": "^16.2.0",
-    "react-dom": "^16.2.0",
     "regenerator-runtime": "^0.11.1",
     "sass-loader": "^6.0.6",
     "string": "^3.3.1",
     "style-loader": "^0.20.3",
     "thread-loader": "^1.1.5",
-    "webpack": "^4.1.1",
+    "webpack": "^4.4.1",
     "webpack-cli": "^2.0.13",
     "webpack-hot-client": "^2.0.0",
     "webpack-manifest-plugin": "^2.0.0-rc.1",
-    "webpack-serve": "^0.2.0"
+    "webpack-serve": "^0.3.1"
   },
   "main": "index.js",
   "devDependencies": {
     "expect": "^22.1.0",
-    "mocha": "^5.0.0"
+    "mocha": "^5.0.0",
+    "mock-fs": "^4.4.2"
   }
 }

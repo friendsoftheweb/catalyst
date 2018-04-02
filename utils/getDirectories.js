@@ -5,6 +5,14 @@ function getDirectories() {
   const config = getConfig();
   const project = process.cwd();
 
+  if (typeof config.rootPath !== 'string') {
+    throw new Error('Invalid "rootPath" configuration.');
+  }
+
+  if (typeof config.buildPath !== 'string') {
+    throw new Error('Invalid "buildPath" configuration.');
+  }
+
   return {
     project,
     context: path.join(project, config.rootPath),
