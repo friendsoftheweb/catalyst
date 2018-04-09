@@ -6,7 +6,7 @@ function generateEntry(entryPath) {
   const entry = [];
 
   if (environment.development) {
-    entry.push(path.resolve(__dirname, '../../webpack-dev-client'));
+    entry.push(path.resolve(__dirname, '../../lib/dev-client'));
   }
 
   entry.push(resolveModulePath('regenerator-runtime/runtime'));

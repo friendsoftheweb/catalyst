@@ -8,7 +8,7 @@
   },
   "scripts": {
     "test": "NODE_ENV=test mocha --slow 4000",
-    "prepack": "yarn test"
+    "prepack": "scripts/prepack"
   },
   "author": "Dan Martens",
   "license": "MIT",
@@ -16,6 +16,7 @@
   "bin": {
     "catalyst": "index.js"
   },
+  "main": "index.js",
   "dependencies": {
     "@babel/core": "^7.0.0-beta.38",
     "@babel/plugin-proposal-class-properties": "^7.0.0-beta.38",
@@ -57,10 +58,9 @@
     "webpack-manifest-plugin": "^2.0.0-rc.1",
     "webpack-serve": "^0.3.1"
   },
-  "main": "index.js",
   "devDependencies": {
+    "@babel/cli": "^7.0.0-beta.44",
     "expect": "^22.1.0",
-    "mocha": "^5.0.0",
-    "mock-fs": "^4.4.2"
+    "mocha": "^5.0.0"
   }
 }

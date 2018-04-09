@@ -28,7 +28,7 @@ function createProject({
   fs.writeFileSync(
     path.resolve(testProjectRoot, './client/config/webpack.js'),
     `
-    const config = require('${projectRootPath}/config/webpack');
+    const config = require('${projectRootPath}/src/config/webpack');
     module.exports = config();
     `
   );
