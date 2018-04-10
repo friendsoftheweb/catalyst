@@ -26,6 +26,10 @@ program
 program
   .command('server')
   .alias('s')
+  .option(
+    '--no-hot',
+    'instruct the client not to apply Hot Module Replacement patches'
+  )
   .description('starts a development server')
   .action(server);
 

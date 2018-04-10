@@ -7,7 +7,7 @@ const Router = require('koa-router');
 const findProcess = require('find-process');
 const { getDirectories, getEnvironment, log } = require('../utils');
 
-async function server() {
+async function server(options) {
   const { devServerHost, devServerPort, devServerHotPort } = getEnvironment();
 
   const serverProcesses = await findProcess('port', devServerPort);
@@ -67,9 +67,11 @@ async function server() {
       headers: { 'Access-Control-Allow-Origin': '*' },
       logLevel: 'warn'
     },
-    hot: {
-      port: devServerHotPort
-    },
+    hot: options.hot
+      ? {
+          port: devServerHotPort
+        }
+      : false,
     add(app) {
       app.use(router.routes());
     }

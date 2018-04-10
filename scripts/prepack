@@ -18,4 +18,4 @@ if [ "$1" != "--force" ]; then
 fi
 
 yarn test
-babel src/dev-client --out-dir lib/dev-client
+webpack --config=webpack.config.js --bail
