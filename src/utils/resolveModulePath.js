@@ -1,6 +1,10 @@
 const fs = require('fs');
 const path = require('path');
 
+/*
+ * Determines the path to a node module. First searches in the host project and
+ * then within the "node_modules" directory for catalyst.
+ */
 function resolveModulePath(modulePath) {
   let moduleName, modulePathSegments;
 
@@ -15,7 +19,7 @@ function resolveModulePath(modulePath) {
   }
 
   const projectModulesRoot = path.resolve(process.cwd(), './node_modules');
-  const catalystModulesRoot = path.resolve(__dirname, '../node_modules');
+  const catalystModulesRoot = path.resolve(__dirname, '../../node_modules');
 
   if (fs.existsSync(path.join(projectModulesRoot, moduleName))) {
     return path.join(projectModulesRoot, moduleName, ...modulePathSegments);
