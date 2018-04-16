@@ -1,10 +1,10 @@
 const expect = require('expect');
 const path = require('path');
 
-const generateEntry = require('../config/webpack/generateEntry');
-const generateOutput = require('../config/webpack/generateOutput');
-const generatePlugins = require('../config/webpack/generatePlugins');
-const generateRules = require('../config/webpack/generateRules');
+const generateEntry = require('../src/config/webpack/generateEntry');
+const generateOutput = require('../src/config/webpack/generateOutput');
+const generatePlugins = require('../src/config/webpack/generatePlugins');
+const generateRules = require('../src/config/webpack/generateRules');
 
 const testProjectRoot = path.resolve(__dirname, './project');
 

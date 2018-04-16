@@ -1,0 +1,42 @@
+<div class="activity">
+  <div class="activity-indicator"></div>
+
+  <div class="activity-message"><%= message %></div>
+</div>
+
+<style>
+  @keyframes rotation {
+    0% { transform: rotate(0); }
+    100% { transform: rotate(350deg); }
+  }
+
+  .activity {
+    position: fixed;
+    background-color: rgba(0,0,0,0.8);
+    border-radius: 0.5rem;
+    font-family: Lucida Grande, sans-serif;
+    padding: 0.75em 1em;
+    text-align: center;
+    vertical-align: middle;
+  }
+
+  .activity-indicator {
+    display: inline-block;
+    animation: rotation 0.85s infinite linear;
+    vertical-align: middle;
+    font-size: 17px;
+    width: 1em;
+    height: 1em;
+    border: 2px solid rgba(255,255,255,0.25);
+    border-top-color: rgba(255,255,255,0.7);
+    border-radius: 50%;
+  }
+
+  .activity-message {
+    color: rgba(255,255,255,0.5);
+    margin-left: 0.4em;
+    padding-top: 0.25em;
+    display: inline-block;
+    -webkit-font-smoothing: antialiased
+  }
+</style>

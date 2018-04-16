@@ -8,7 +8,7 @@
   },
   "scripts": {
     "test": "NODE_ENV=test mocha --slow 4000",
-    "prepack": "yarn test"
+    "prepack": "scripts/prepack"
   },
   "author": "Dan Martens",
   "license": "MIT",
@@ -16,6 +16,7 @@
   "bin": {
     "catalyst": "index.js"
   },
+  "main": "index.js",
   "dependencies": {
     "@babel/core": "^7.0.0-beta.44",
     "@babel/plugin-proposal-class-properties": "^7.0.0-beta.44",
@@ -45,6 +46,7 @@
     "node-sass": "^4.7.2",
     "node-spinner": "0.0.4",
     "postcss-loader": "^2.0.10",
+    "react-dev-utils": "^5.0.1",
     "regenerator-runtime": "^0.11.1",
     "sass-loader": "^7.0.1",
     "string": "^3.3.1",
@@ -56,10 +58,10 @@
     "webpack-manifest-plugin": "^2.0.0",
     "webpack-serve": "^0.3.1"
   },
-  "main": "index.js",
   "devDependencies": {
+    "@babel/cli": "^7.0.0-beta.44",
+    "ejs-compiled-loader": "^1.1.0",
     "expect": "^22.1.0",
-    "mocha": "^5.1.0",
-    "mock-fs": "^4.4.2"
+    "mocha": "^5.1.0"
   }
 }
