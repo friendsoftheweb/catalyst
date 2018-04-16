@@ -18,6 +18,7 @@ program.version(require('../package.json')['version']);
 
 program
   .command('init')
+  .option('--force', 'run command even if uncommitted files exist')
   .description('creates a new package.json and directory structure')
   .action(init);
 

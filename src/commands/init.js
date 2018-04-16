@@ -3,6 +3,7 @@ const { execSync } = require('child_process');
 const mkdirp = require('mkdirp');
 const chalk = require('chalk');
 const inquirer = require('inquirer');
+const { get, without, compact } = require('lodash');
 
 const { log, spinnerSpawn, writeFileFromTemplate } = require('../utils');
 
@@ -47,19 +48,24 @@ function modifiedFileCount() {
   );
 }
 
-function init() {
+function init(options) {
   const defaultConfig = { rootPath: 'client', buildPath: 'public/assets' };
 
-  if (modifiedFileCount() > 0) {
+  if (!options.force && modifiedFileCount() > 0) {
     log.exitWithError(
-      'Please commit or stash any modified files before running `catalyst init`.'
+      'Please commit or stash any modified files before running `catalyst init` or rerun as `catalyst init --force`.'
     );
   }
 
+  let packageData = null;
+  let firstRun = true;
+
   if (fs.existsSync('package.json')) {
-    const packageData = JSON.parse(fs.readFileSync('package.json', 'utf8'));
+    packageData = JSON.parse(fs.readFileSync('package.json', 'utf8'));
 
     if (typeof packageData.catalyst === 'object') {
+      firstRun = false;
+
       Object.assign(defaultConfig, packageData.catalyst);
     }
   }
@@ -86,10 +92,17 @@ function init() {
       mkdirp.sync(`${config.rootPath}/assets/fonts`);
       mkdirp.sync(`${config.rootPath}/assets/images`);
 
-      runInSeries([
-        writeFileFromTemplate.bind(null, 'package.json', 'package.json.jst', {
-          config
-        }),
+      const commands = [];
+
+      if (firstRun) {
+        commands.push(
+          writeFileFromTemplate.bind(null, 'package.json', 'package.json.jst', {
+            config
+          })
+        );
+      }
+
+      commands.push(
         writeFileFromTemplate.bind(null, '.babelrc', '.babelrc.jst'),
         writeFileFromTemplate.bind(null, '.eslintrc', '.eslintrc.jst'),
         writeFileFromTemplate.bind(null, '.flowconfig', '.flowconfig.jst', {
@@ -99,29 +112,48 @@ function init() {
           null,
           `${config.rootPath}/config/webpack.js`,
           'webpack.config.js.jst'
-        ),
-
-        writeFileFromTemplate.bind(
-          null,
-          `${config.rootPath}/bundles/application/index.js`,
-          'bundles/bundle.js.jst'
-        ),
-        writeFileFromTemplate.bind(
-          null,
-          `${config.rootPath}/bundles/application/store.js`,
-          'bundles/store.js.jst'
-        ),
-        writeFileFromTemplate.bind(
-          null,
-          `${config.rootPath}/bundles/application/store-provider.js`,
-          'bundles/store-provider.js.jst'
         )
-      ]).then(() => {
-        fs.writeFileSync(`${config.rootPath}/styles/application.scss`, '');
+      );
 
-        installPackages(nodePackages)
+      if (firstRun) {
+        commands.push(
+          writeFileFromTemplate.bind(
+            null,
+            `${config.rootPath}/bundles/application/index.js`,
+            'bundles/bundle.js.jst'
+          ),
+          writeFileFromTemplate.bind(
+            null,
+            `${config.rootPath}/bundles/application/store.js`,
+            'bundles/store.js.jst'
+          ),
+          writeFileFromTemplate.bind(
+            null,
+            `${config.rootPath}/bundles/application/store-provider.js`,
+            'bundles/store-provider.js.jst'
+          )
+        );
+      }
+
+      runInSeries(commands).then(() => {
+        if (firstRun) {
+          fs.writeFileSync(`${config.rootPath}/styles/application.scss`, '');
+        }
+
+        const installedPackages = Object.keys(
+          get(packageData, 'dependencies', {})
+        );
+
+        const installedPackagesDev = Object.keys(
+          get(packageData, 'devDependencies', {})
+        );
+
+        installPackages(without(nodePackages, ...installedPackages))
           .then(() => {
-            return installPackages(nodePackagesDev, true);
+            return installPackages(
+              without(nodePackagesDev, ...installedPackagesDev),
+              true
+            );
           })
           .then(
             () => {
@@ -137,6 +169,10 @@ function init() {
 }
 
 function installPackages(packages, development = false) {
+  if (packages.length === 0) {
+    return Promise.resolve();
+  }
+
   const saveFlag = development ? '--dev' : null;
 
   return spinnerSpawn(
