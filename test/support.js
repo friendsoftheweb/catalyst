@@ -4,7 +4,7 @@ const mkdirp = require('mkdirp');
 const { uniqueId } = require('lodash');
 
 const projectRootPath = path.resolve(__dirname, '..');
-const commandPath = path.join(projectRootPath, 'index.js');
+const commandPath = path.join(projectRootPath, 'src/index.js');
 
 function createProject({
   createPackageFile = true,

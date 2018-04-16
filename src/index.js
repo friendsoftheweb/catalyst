@@ -1,7 +1,7 @@
 #! /usr/bin/env node
 
 module.exports = {
-  webpackConfig: require('./src/config/webpack')
+  webpackConfig: require('./config/webpack')
 };
 
 const { templateSettings } = require('lodash');
@@ -9,12 +9,12 @@ const program = require('commander');
 
 templateSettings.interpolate = /<%=([\s\S]+?)%>/g;
 
-const init = require('./src/commands/init');
-const generate = require('./src/commands/generate');
-const server = require('./src/commands/server');
-const build = require('./src/commands/build');
+const init = require('./commands/init');
+const generate = require('./commands/generate');
+const server = require('./commands/server');
+const build = require('./commands/build');
 
-program.version(require('./package.json')['version']);
+program.version(require('../package.json')['version']);
 
 program
   .command('init')
