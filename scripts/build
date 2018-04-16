@@ -4,9 +4,11 @@ set -e
 
 rm -rf lib
 
-webpack --config=webpack.config.js --bail
+webpack --config=src/dev-client/webpack.config.js --bail
 
 cp src/index.js lib/index.js
+cp src/babel-preset.js lib/babel-preset.js
+cp src/test-setup.js lib/test-setup.js
 
 for src_path in src/*
 do

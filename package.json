@@ -1,6 +1,6 @@
 {
   "name": "catalyst",
-  "version": "1.0.0-beta.17",
+  "version": "1.0.0-beta.18",
   "description": "Generates React components.",
   "engines": {
     "node": ">= 7.6.0",
@@ -8,7 +8,7 @@
   },
   "files": ["lib"],
   "scripts": {
-    "test": "NODE_ENV=test mocha --slow 4000",
+    "test": "NODE_ENV=test mocha --slow 5000",
     "prepack": "scripts/prepack"
   },
   "author": "Dan Martens",

@@ -16,14 +16,12 @@ function createProject({
   mkdirp.sync(`${testProjectRoot}/client/bundles/application`);
   mkdirp.sync(`${testProjectRoot}/client/config`);
 
-  execSync('yarn link catalyst', { cwd: testProjectRoot });
-
   if (createPackageFile) {
     fs.writeFileSync(
       path.resolve(testProjectRoot, './package.json'),
       JSON.stringify({
         catalyst: config,
-        dependencies: { webpack: '*' }
+        dependencies: {}
       })
     );
   }

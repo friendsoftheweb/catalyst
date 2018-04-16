@@ -11,13 +11,13 @@ describe('commands', function() {
   });
 
   describe('build', function() {
+    this.timeout(7500);
+
     beforeEach(function() {
       this.testProjectRoot = createProject();
     });
 
     it('builds the project', function() {
-      this.timeout(7500);
-
       fs.writeFileSync(
         path.resolve(
           this.testProjectRoot,

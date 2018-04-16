@@ -1,15 +1,15 @@
 const path = require('path');
 
-const context = path.resolve(__dirname, 'src');
+const context = __dirname;
 
 module.exports = {
   mode: 'production',
   context,
   entry: {
-    'dev-client': './dev-client/index.js'
+    'dev-client': './index.js'
   },
   output: {
-    path: path.resolve(__dirname, 'lib'),
+    path: path.resolve(__dirname, '../../lib'),
     filename: 'dev-client.js'
   },
   resolve: {
