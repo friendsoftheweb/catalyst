@@ -1,9 +1,5 @@
 #! /usr/bin/env node
 
-module.exports = {
-  webpackConfig: require('./config/webpack')
-};
-
 const { templateSettings } = require('lodash');
 const program = require('commander');
 

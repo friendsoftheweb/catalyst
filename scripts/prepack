@@ -17,19 +17,6 @@ if [ "$1" != "--force" ]; then
   fi
 fi
 
-rm -rf lib
+./scripts/build
 
 yarn test
-
-webpack --config=webpack.config.js --bail
-
-cp src/index.js lib/index.js
-
-for src_path in src/*
-do
-  lib_path=`echo $src_path | awk 'gsub("src", "lib")'`
-
-  if [ $lib_path != "lib/dev-client" ]; then
-    cp -R $src_path $lib_path
-  fi
-done

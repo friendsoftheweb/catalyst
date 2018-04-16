@@ -2,6 +2,7 @@ const path = require('path');
 const fs = require('fs');
 const mkdirp = require('mkdirp');
 const { uniqueId } = require('lodash');
+const { execSync } = require('child_process');
 
 const projectRootPath = path.resolve(__dirname, '..');
 const commandPath = path.join(projectRootPath, 'src/index.js');
@@ -15,6 +16,8 @@ function createProject({
   mkdirp.sync(`${testProjectRoot}/client/bundles/application`);
   mkdirp.sync(`${testProjectRoot}/client/config`);
 
+  execSync('yarn link catalyst', { cwd: testProjectRoot });
+
   if (createPackageFile) {
     fs.writeFileSync(
       path.resolve(testProjectRoot, './package.json'),
@@ -27,10 +30,9 @@ function createProject({
 
   fs.writeFileSync(
     path.resolve(testProjectRoot, './client/config/webpack.js'),
-    `
-    const config = require('${projectRootPath}/src/config/webpack');
-    module.exports = config();
-    `
+    fs.readFileSync(
+      path.resolve(projectRootPath, './src/templates/webpack.config.js.jst')
+    )
   );
 
   return testProjectRoot;
