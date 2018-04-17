@@ -174,7 +174,7 @@ if (document.body != null) {
 } else {
   document.addEventListener('DOMContentLoaded', () => {
     if (!firstLoadComplete) {
-      showNotification(activityTemplate('Loading...'));
+      showNotification(activityTemplate({ message: 'Loading...' }));
     }
   });
 }
