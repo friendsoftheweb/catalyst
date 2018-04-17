@@ -1,7 +1,7 @@
 {
   "name": "catalyst",
-  "version": "1.0.0-beta.18",
-  "description": "Generates React components.",
+  "version": "1.0.0-beta.19",
+  "description": "Sets up Webpack, React, Redux, and more!",
   "engines": {
     "node": ">= 7.6.0",
     "npm": ">= 3.0.0"
@@ -13,11 +13,8 @@
   },
   "author": "Dan Martens",
   "license": "MIT",
-  "preferGlobal": true,
-  "bin": {
-    "catalyst": "lib/index.js"
-  },
-  "main": "lib/index.js",
+  "main": "./lib/index.js",
+  "bin": "./lib/index.js",
   "dependencies": {
     "@babel/core": "^7.0.0-beta.44",
     "@babel/plugin-proposal-class-properties": "^7.0.0-beta.44",
