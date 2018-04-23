@@ -5,8 +5,10 @@ function babelConfig({ modules = false, useBuiltIns = 'usage' }) {
 
   const plugins = [
     resolveModulePath('@babel/plugin-transform-flow-strip-types'),
-    resolveModulePath('@babel/plugin-proposal-decorators'),
-    [resolveModulePath('@babel/plugin-proposal-class-properties'), {}],
+    [
+      resolveModulePath('@babel/plugin-proposal-class-properties'),
+      { loose: true }
+    ],
     resolveModulePath('@babel/plugin-transform-regenerator')
   ];
 
@@ -26,7 +28,7 @@ function babelConfig({ modules = false, useBuiltIns = 'usage' }) {
         }
       ],
       resolveModulePath('@babel/preset-react'),
-      resolveModulePath('@babel/preset-stage-2')
+      [resolveModulePath('@babel/preset-stage-2'), { decoratorsLegacy: true }]
     ],
     plugins
   };
