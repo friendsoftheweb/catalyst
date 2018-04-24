@@ -61,8 +61,9 @@ function webpackConfig(options = {}) {
     },
     optimization: {
       splitChunks: {
+        minChunks: 2,
         cacheGroups: {
-          commons: {
+          common: {
             test: /[\\/]node_modules[\\/]/,
             name: 'common',
             chunks: 'all'
