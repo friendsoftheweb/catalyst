@@ -36,6 +36,13 @@ async function server(options) {
     ctx.body = fs.readFileSync(vendorFilePath);
   });
 
+  // Add a route to fall back to during development if "common.js" is not
+  // generated (because it's unnecessary).
+  router.get('/common.js', ctx => {
+    ctx.set('Access-Control-Allow-Origin', '*');
+    ctx.body = '// This file left intentially blank.';
+  });
+
   console.log('Prebuilding vendor packages...\n');
 
   const output = execSync(
@@ -72,7 +79,10 @@ async function server(options) {
           port: devServerHotPort
         }
       : false,
-    add(app) {
+    add(app, middleware) {
+      middleware.webpack();
+      middleware.content();
+
       app.use(router.routes());
     }
   });
