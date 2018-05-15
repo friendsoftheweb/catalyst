@@ -3,7 +3,7 @@ const { execSync } = require('child_process');
 const mkdirp = require('mkdirp');
 const chalk = require('chalk');
 const inquirer = require('inquirer');
-const { get, without, compact } = require('lodash');
+const { get, without } = require('lodash');
 
 const { log, spinnerSpawn, writeFileFromTemplate } = require('../utils');
 
