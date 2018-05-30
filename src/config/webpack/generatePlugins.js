@@ -31,6 +31,7 @@ function generatePlugins(options = {}) {
 
   plugins.push(
     new webpack.EnvironmentPlugin({
+      NODE_ENV: JSON.stringify(process.env.NODE_ENV),
       DEV_SERVER_HOST: environment.devServerHost,
       DEV_SERVER_HOT_PORT: environment.devServerHotPort
     })
