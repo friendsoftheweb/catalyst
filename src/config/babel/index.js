@@ -9,6 +9,7 @@ function babelConfig({ modules = false, useBuiltIns = 'usage' }) {
       resolveModulePath('@babel/plugin-proposal-class-properties'),
       { loose: true }
     ],
+    resolveModulePath('@babel/plugin-proposal-optional-chaining'),
     resolveModulePath('@babel/plugin-transform-regenerator')
   ];
 
