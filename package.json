@@ -1,14 +1,12 @@
 {
   "name": "catalyst",
-  "version": "1.0.0-beta.23",
+  "version": "1.0.0-beta.24",
   "description": "Sets up Webpack, React, Redux, and more!",
   "engines": {
-    "node": ">= 7.6.0",
+    "node": ">= 8.11.2",
     "npm": ">= 3.0.0"
   },
-  "files": [
-    "lib"
-  ],
+  "files": ["lib"],
   "scripts": {
     "test": "NODE_ENV=test mocha --slow 5000",
     "prepack": "scripts/prepack",

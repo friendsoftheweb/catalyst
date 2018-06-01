@@ -146,6 +146,9 @@ function formatCompiliationError(message) {
         return '<br />';
       }
 
+      line = line.replace(/</g, '&lt;');
+      line = line.replace(/([^^])(>)/g, '$1&gt;');
+
       if (/^>\s+\d+?\s+\|/.test(line)) {
         line = line.replace(/^>/, ' ');
 
