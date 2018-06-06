@@ -1,6 +1,6 @@
 {
   "name": "catalyst",
-  "version": "1.0.0-beta.24",
+  "version": "1.0.0-beta.25",
   "description": "Sets up Webpack, React, Redux, and more!",
   "engines": {
     "node": ">= 8.11.2",
@@ -10,7 +10,8 @@
   "scripts": {
     "test": "NODE_ENV=test mocha --slow 5000",
     "prepack": "scripts/prepack",
-    "build": "scripts/build"
+    "build": "scripts/build",
+    "build:watch": "scripts/build-watch"
   },
   "author": "Dan Martens",
   "license": "MIT",

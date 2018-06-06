@@ -1,12 +1,15 @@
-const formatWebpackMessages = require('react-dev-utils/formatWebpackMessages');
-const getEnvironment = require('../utils/getEnvironment');
-const activityTemplate = require('./templates/activity');
-const compilationErrorTemplate = require('./templates/compilation-error');
-const runtimeErrorTemplate = require('./templates/runtime-error');
+import formatWebpackMessages from 'react-dev-utils/formatWebpackMessages';
+import getEnvironment from '../utils/getEnvironment';
+import activityTemplate from './templates/activity';
+import compilationErrorTemplate from './templates/compilation-error';
+import runtimeErrorTemplate from './templates/runtime-error';
+import formatCompiliationError from './formatCompilationError';
 
 let runtimeErrorOccured = false;
+let overlayContainerHTML = null;
 let overlayFramePromise = null;
 let overlayFrameCreated = false;
+let overlayFrameVisible = false;
 let firstLoadComplete = false;
 
 function createOverlayFrame() {
@@ -27,7 +30,7 @@ function createOverlayFrame() {
     frame.style.height = '100vh';
     frame.style.border = 'none';
     frame.style.zIndex = 9999999999;
-    frame.style.display = 'none';
+    frame.style.display = overlayFrameVisible ? 'block' : 'none';
     frame.style.opacity = 0.95;
 
     frame.onload = function() {
@@ -51,7 +54,7 @@ function createOverlayContainer() {
 
   overlayContainerPromise = new Promise((resolve, reject) => {
     createOverlayFrame()
-      .then(function(elements) {
+      .then(elements => {
         const container = elements.frame.contentDocument.createElement('div');
 
         container.style.position = 'fixed';
@@ -77,21 +80,25 @@ function createOverlayContainer() {
   return overlayContainerPromise;
 }
 
-function showNotification(template) {
-  return createOverlayContainer().then(function(elements) {
-    elements.container.innerHTML = template;
-    elements.frame.style.display = 'block';
+function updateOverlayContainer() {
+  return createOverlayContainer().then(elements => {
+    elements.container.innerHTML = overlayContainerHTML;
+    elements.frame.style.display = overlayFrameVisible ? 'block' : 'none';
   });
 }
 
+function showNotification(template) {
+  overlayFrameVisible = true;
+  overlayContainerHTML = template;
+
+  return updateOverlayContainer();
+}
+
 function hideNotification() {
-  if (overlayFrameCreated) {
-    return createOverlayFrame().then(function(elements) {
-      elements.frame.style.display = 'none';
-    });
-  } else {
-    return Promise.resolve(null);
-  }
+  overlayFrameVisible = false;
+  overlayContainerHTML = null;
+
+  return updateOverlayContainer();
 }
 
 const { devServerHost, devServerHotPort } = getEnvironment();
@@ -112,6 +119,7 @@ socket.addEventListener('message', event => {
       if (!runtimeErrorOccured) {
         hideNotification();
       }
+
       break;
     case 'no-change':
       hideNotification();
@@ -133,42 +141,6 @@ socket.addEventListener('message', event => {
       break;
   }
 });
-
-function formatCompiliationError(message) {
-  return message
-    .split('\n')
-    .map((line, index) => {
-      if (index === 0) {
-        return `<div class="file-path">${line}</div>`;
-      }
-
-      if (line.length === 0 || /^s+$/.test(line)) {
-        return '<br />';
-      }
-
-      line = line.replace(/</g, '&lt;');
-      line = line.replace(/([^^])(>)/g, '$1&gt;');
-
-      if (/^>\s+\d+?\s+\|/.test(line)) {
-        line = line.replace(/^>/, ' ');
-
-        return `<div class="code-line highlighted">${line}</div>`;
-      }
-
-      if (/^\s+|\s+\^/.test(line)) {
-        line = line.replace('^', '<span class="code-line-indicator">^</span>');
-
-        return `<div class="code-line">${line}</div>`;
-      }
-
-      if (/^\s+(\d+)?\s+\|/.test(line)) {
-        return `<div class="code-line">${line}</div>`;
-      }
-
-      return `<div>${line}</div>`;
-    })
-    .join('');
-}
 
 // If the body element exists, show the loading indicator. Otherwise, wait for a
 // "DOMContentLoaded" event.
