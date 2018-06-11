@@ -36,7 +36,7 @@ function webpackConfig(options = {}) {
 
   return {
     context: directories.context,
-    mode: env.development ? 'development' : 'production',
+    mode: env.production ? 'production' : 'development',
     devtool: generateDevtool(),
     entry: reduce(
       bundlePaths,
