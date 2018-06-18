@@ -1,6 +1,6 @@
 const { getEnvironment, resolveModulePath } = require('../../utils');
 
-function babelConfig({ modules = false, useBuiltIns = 'usage' }) {
+function babelConfig({ modules = false, useBuiltIns = 'usage' } = {}) {
   const environment = getEnvironment();
 
   const plugins = [

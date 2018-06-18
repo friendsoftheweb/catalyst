@@ -45,9 +45,15 @@ function generateRules({ projectRoot, context, publicPath }) {
     ]
   });
 
+  const include = [context];
+
+  if (environment.production) {
+    include.push(path.join(projectRoot, 'node_modules'));
+  }
+
   rules.push({
     test: /\.js$/,
-    include: context,
+    include,
     use: [
       {
         loader: resolveModulePath('thread-loader')
@@ -58,7 +64,7 @@ function generateRules({ projectRoot, context, publicPath }) {
           {
             cacheDirectory: true
           },
-          babelConfig(false)
+          babelConfig()
         )
       }
     ]
