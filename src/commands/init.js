@@ -27,8 +27,7 @@ const nodePackagesDev = [
   'eslint-plugin-react',
   'flow-bin',
   'jest',
-  'react-test-renderer',
-  'webpack-hot-client'
+  'react-test-renderer'
 ];
 
 function runInSeries(funcs) {
