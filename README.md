@@ -9,45 +9,30 @@ $ yarn add catalyst
 $ yarn run catalyst init
 ```
 
-## Basic Project Structure
+## Configuring Webpack
 
-<pre>
-├─ bundles
-|  └─ application
-|     ├─ <b>index.js</b>
-|     ├─ <b>reducer.js</b>
-|     ├─ <b>saga.js</b>
-|     ├─ <b>store-provider.js</b>
-|     └─ <b>styles.scss</b>
-|
-├─ components
-|  ├─ __tests__
-|  └─ component-name
-|     ├─ <b>index.js</b>
-|     ├─ styles.scss
-|     └─ sub-component-name
-|        ├─ <b>index.js</b>
-|        └─ styles.scss
-|
-├─ modules
-|  └─ module-name
-|     ├─ __tests__
-|     ├─ <b>index.js</b>
-|     ├─ <b>reducer.js</b>
-|     ├─ <b>action-creators.js</b>
-|     ├─ saga.js
-|     ├─ requests.js
-|     └─ getters.js
-|
-├─ utils
-|  └─ request.js
-|
-├─ config
-|  └─ webpack.js
-|
-└─ styles
-   └─ index.scss
-</pre>
+Catalyst provides a function which produces a webpack configuration that should
+be sufficient for most projects. There some options which can be configured
+by passing an object into the `config()` function call in
+`client/config/webpack.js`:
+
+```javascript
+const config = require('catalyst/lib/config/webpack');
+
+module.exports = config({
+  transformModules: ['react', 'react-dom']
+});
+```
+
+### Available Options
+
+#### `transformModules`
+
+An array of names for modules which should be transformed and polyfilled via
+[Babel](https://babeljs.io/). If you are using modules which require polyfills
+to work in all of your targeted browsers, you should include them in this array.
+The appropriate polyfills will then be imported from core-js via
+@babel/preset-env.
 
 ## Starting the Development Server
 

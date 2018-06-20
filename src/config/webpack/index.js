@@ -10,8 +10,20 @@ const generatePlugins = require('./generatePlugins');
 const generateRules = require('./generateRules');
 
 const defaultOptions = {
-  commonsChunk: false,
-  publicPath: '/assets/'
+  publicPath: '/assets/',
+  transformModules: [
+    '@ftw/redux-resources',
+    '@ftw/redux-utils',
+    'axios',
+    'luxon',
+    'react',
+    'react-dom',
+    'react-router',
+    'react-router-dom',
+    'react-transition-group',
+    'redux',
+    'redux-saga'
+  ]
 };
 
 function webpackConfig(options = {}) {

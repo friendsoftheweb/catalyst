@@ -4,9 +4,7 @@ const MiniCssExtractPlugin = require(resolveModulePath(
   'mini-css-extract-plugin'
 ));
 
-const babelConfig = require('../../config/babel');
-
-function generateRules({ projectRoot, context, publicPath }) {
+function generateRules({ projectRoot, context, publicPath, transformModules }) {
   const environment = getEnvironment();
   const rules = [];
 
@@ -45,11 +43,11 @@ function generateRules({ projectRoot, context, publicPath }) {
     ]
   });
 
-  const include = [context];
+  const include = transformModules.map(
+    moduleName => `${path.join(projectRoot, 'node_modules', moduleName)}/`
+  );
 
-  if (environment.production) {
-    include.push(path.join(projectRoot, 'node_modules'));
-  }
+  include.push(context);
 
   rules.push({
     test: /\.js$/,
@@ -60,12 +58,9 @@ function generateRules({ projectRoot, context, publicPath }) {
       },
       {
         loader: resolveModulePath('babel-loader'),
-        options: Object.assign(
-          {
-            cacheDirectory: true
-          },
-          babelConfig()
-        )
+        options: {
+          cacheDirectory: true
+        }
       }
     ]
   });
