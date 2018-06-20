@@ -9,6 +9,7 @@ webpack --config=src/dev-client/webpack.config.js --bail
 cp src/index.js lib/index.js
 cp src/babel-preset.js lib/babel-preset.js
 cp src/test-setup.js lib/test-setup.js
+cp src/dev-environment.js lib/dev-environment.js
 
 for src_path in src/*
 do

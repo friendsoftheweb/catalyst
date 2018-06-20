@@ -6,6 +6,7 @@ function generateEntry(entryPath) {
   const entry = [];
 
   if (environment.development) {
+    entry.push(path.resolve(__dirname, '../../../lib/dev-environment'));
     entry.push(path.resolve(__dirname, '../../../lib/dev-client'));
   }
 

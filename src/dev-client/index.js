@@ -1,5 +1,4 @@
 import formatWebpackMessages from 'react-dev-utils/formatWebpackMessages';
-import getEnvironment from '../utils/getEnvironment';
 import activityTemplate from './templates/activity';
 import compilationErrorTemplate from './templates/compilation-error';
 import runtimeErrorTemplate from './templates/runtime-error';
@@ -101,7 +100,7 @@ function hideNotification() {
   return updateOverlayContainer();
 }
 
-const { devServerHost, devServerHotPort } = getEnvironment();
+const { devServerHost, devServerHotPort } = window.__CATALYST_ENV__;
 const socket = new WebSocket(`ws://${devServerHost}:${devServerHotPort}`);
 
 socket.addEventListener('error', event => {
