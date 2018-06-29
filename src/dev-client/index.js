@@ -128,7 +128,7 @@ socket.addEventListener('message', event => {
       break;
     case 'errors':
       const formatted = formatWebpackMessages({
-        errors: message.data,
+        errors: message.data.errors,
         warnings: []
       });
 
