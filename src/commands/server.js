@@ -76,7 +76,8 @@ async function server(options) {
     },
     hot: options.hot
       ? {
-          port: devServerHotPort
+          port: devServerHotPort,
+          allEntries: true
         }
       : false,
     add(app, middleware) {

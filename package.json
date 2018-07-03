@@ -66,5 +66,8 @@
     "ejs-compiled-loader": "^1.1.0",
     "expect": "^23.1.0",
     "mocha": "^5.1.0"
+  },
+  "resolutions": {
+    "webpack-hot-client": ">=4.0.0"
   }
 }
