@@ -7,7 +7,6 @@ function generateEntry(entryPath) {
 
   if (environment.development) {
     entry.push(path.resolve(__dirname, '../../../lib/dev-environment'));
-    entry.push(path.resolve(__dirname, '../../../lib/dev-client'));
   }
 
   entry.push(resolveModulePath('regenerator-runtime/runtime'));
