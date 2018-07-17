@@ -1,9 +1,9 @@
 {
   "name": "catalyst",
-  "version": "1.0.0-beta.32",
+  "version": "1.0.0-beta.33",
   "description": "Sets up Webpack, React, Redux, and more!",
   "engines": {
-    "node": ">= 8.11.2",
+    "node": ">= 8.9.0",
     "npm": ">= 3.0.0"
   },
   "files": ["lib"],
