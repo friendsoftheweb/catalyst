@@ -60,31 +60,31 @@ async function server(options) {
 
   console.log(output.toString());
 
-  const webpackConfig = require(path.join(
-    directories.context,
-    'config/webpack.js'
-  ));
+  const argv = {};
+  const config = require(path.join(directories.context, 'config/webpack.js'));
+  const hotClient = options.hot
+    ? {
+        port: devServerHotPort,
+        allEntries: true
+      }
+    : false;
 
-  serve({
-    config: webpackConfig,
+  serve(argv, {
+    config,
     host: devServerHost,
     port: devServerPort,
     clipboard: false,
-    dev: {
+    devMiddleware: {
       headers: { 'Access-Control-Allow-Origin': '*' },
       logLevel: 'warn'
     },
-    hot: options.hot
-      ? {
-          port: devServerHotPort,
-          allEntries: true
-        }
-      : false,
+    hotClient,
     add(app, middleware) {
-      middleware.webpack();
-      middleware.content();
+      middleware.webpack().then(() => {
+        middleware.content();
 
-      app.use(router.routes());
+        app.use(router.routes());
+      });
     }
   });
 }
