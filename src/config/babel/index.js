@@ -15,7 +15,8 @@ function babelConfig({ modules = false, useBuiltIns = 'usage' } = {}) {
 
   if (environment.production) {
     plugins.push(
-      resolveModulePath('@babel/plugin-transform-react-constant-elements')
+      resolveModulePath('@babel/plugin-transform-react-constant-elements'),
+      resolveModulePath('babel-plugin-lodash')
     );
   }
 

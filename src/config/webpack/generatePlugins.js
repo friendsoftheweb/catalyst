@@ -4,6 +4,9 @@ const MiniCssExtractPlugin = require(resolveModulePath(
   'mini-css-extract-plugin'
 ));
 const ManifestPlugin = require(resolveModulePath('webpack-manifest-plugin'));
+const CompressionPlugin = require(resolveModulePath(
+  'compression-webpack-plugin'
+));
 
 function generatePlugins(options = {}) {
   const environment = getEnvironment();
@@ -40,6 +43,14 @@ function generatePlugins(options = {}) {
 
   if (environment.production || environment.test) {
     plugins.push(new ManifestPlugin({ fileName: 'manifest.json' }));
+  }
+
+  if (environment.production) {
+    plugins.push(
+      new CompressionPlugin({
+        test: /\.(js|s?css)$/
+      })
+    );
   }
 
   return plugins;
