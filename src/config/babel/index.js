@@ -29,8 +29,7 @@ function babelConfig({ modules = false, useBuiltIns = 'usage' } = {}) {
           useBuiltIns
         }
       ],
-      resolveModulePath('@babel/preset-react', { useBuiltIns: true }),
-      [resolveModulePath('@babel/preset-stage-2'), { decoratorsLegacy: true }]
+      resolveModulePath('@babel/preset-react', { useBuiltIns: true })
     ],
     plugins
   };
