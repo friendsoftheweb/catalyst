@@ -17,7 +17,7 @@ function spinnerSpawn(command, args, message) {
       let lastSpinner = '';
 
       const spinnerInterval = setInterval(() => {
-        lastSpinner = '\r\x1B[36m' + message + '\x1B[m ' + spinner.next();
+        lastSpinner = '\r' + spinner.next() + ' \x1B[36m' + message + '\x1B[m';
         process.stdout.write(lastSpinner);
       }, 100);
 

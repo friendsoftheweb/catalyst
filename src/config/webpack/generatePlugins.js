@@ -7,6 +7,7 @@ const ManifestPlugin = require(resolveModulePath('webpack-manifest-plugin'));
 const CompressionPlugin = require(resolveModulePath(
   'compression-webpack-plugin'
 ));
+const CleanUpStatsPlugin = require('../../webpack-plugins/CleanUpStatsPlugin');
 
 function generatePlugins(options = {}) {
   const environment = getEnvironment();
@@ -52,6 +53,8 @@ function generatePlugins(options = {}) {
       })
     );
   }
+
+  plugins.push(new CleanUpStatsPlugin());
 
   return plugins;
 }
