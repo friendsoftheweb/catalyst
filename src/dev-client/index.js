@@ -100,8 +100,9 @@ function hideNotification() {
   return updateOverlayContainer();
 }
 
-const { devServerHost, devServerHotPort } = window.__CATALYST_ENV__;
-const socket = new WebSocket(`ws://${devServerHost}:${devServerHotPort}`);
+const { devClientPort, devServerHost } = window.__CATALYST_ENV__;
+
+const socket = new WebSocket(`ws://${devServerHost}:${devClientPort}`);
 
 socket.addEventListener('error', event => {
   hideNotification();
@@ -111,51 +112,21 @@ socket.addEventListener('message', event => {
   const message = JSON.parse(event.data);
 
   switch (message.type) {
-    case 'ok':
-    case 'warnings':
-      firstLoadComplete = true;
+    case 'build-started':
+      showNotification(activityTemplate({ message: 'Building...' }));
+      break;
 
-      if (!runtimeErrorOccured) {
-        hideNotification();
+    case 'build-finished':
+      hideNotification();
+
+      if (message.data.errors.length > 0) {
+        showNotification(
+          compilationErrorTemplate({
+            message: formatCompiliationError(message.data.errors[0])
+          })
+        );
       }
 
       break;
-    case 'no-change':
-      hideNotification();
-      break;
-    case 'invalid':
-      showNotification(activityTemplate({ message: 'Reloading...' }));
-      break;
-    case 'errors':
-      const formatted = formatWebpackMessages({
-        errors: message.data.errors,
-        warnings: []
-      });
-
-      showNotification(
-        compilationErrorTemplate({
-          message: formatCompiliationError(formatted.errors[0])
-        })
-      );
-      break;
   }
 });
-
-// If the body element exists, show the loading indicator. Otherwise, wait for a
-// "DOMContentLoaded" event.
-if (document.body != null) {
-  showNotification(activityTemplate({ message: 'Loading...' }));
-} else {
-  document.addEventListener('DOMContentLoaded', () => {
-    if (!firstLoadComplete) {
-      showNotification(activityTemplate({ message: 'Loading...' }));
-    }
-  });
-}
-
-window.onerror = function(message) {
-  if (window.outerHeight - window.innerHeight < 100) {
-    runtimeErrorOccured = true;
-    showNotification(runtimeErrorTemplate({ message }));
-  }
-};

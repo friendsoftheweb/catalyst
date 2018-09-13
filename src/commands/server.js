@@ -1,11 +1,40 @@
 const path = require('path');
 const fs = require('fs');
 const { execSync } = require('child_process');
+const WebSocket = require('ws');
 const { get, map, uniq } = require('lodash/fp');
 const serve = require('webpack-serve');
 const Router = require('koa-router');
 const findProcess = require('find-process');
 const { getDirectories, getEnvironment, log } = require('../utils');
+
+class SocketServer {
+  constructor() {
+    const { devClientPort } = getEnvironment();
+
+    this.server = new WebSocket.Server({ port: devClientPort });
+    this.clients = [];
+    this.lastMessage = null;
+
+    this.server.on('connection', client => {
+      this.clients.push(client);
+
+      if (this.lastMessage != null) {
+        client.send(this.lastMessage);
+      }
+    });
+  }
+
+  broadcast(type, data = {}) {
+    this.lastMessage = JSON.stringify({ type, data });
+
+    for (const client of this.clients) {
+      if (client.readyState === 1) {
+        client.send(this.lastMessage);
+      }
+    }
+  }
+}
 
 async function server(options) {
   const { devServerHost, devServerPort, devServerHotPort } = getEnvironment();
@@ -42,6 +71,8 @@ async function server(options) {
     ctx.set('Access-Control-Allow-Origin', '*');
     ctx.body = '// This file left intentially blank.';
   });
+
+  const socketServer = new SocketServer();
 
   console.log('Prebuilding vendor packages...\n');
 
@@ -86,7 +117,25 @@ async function server(options) {
         app.use(router.routes());
       });
     }
-  });
+  })
+    .then(server => {
+      server.on('build-started', () => {
+        socketServer.broadcast('build-started');
+      });
+
+      server.on('build-finished', ({ stats, compiler }) => {
+        socketServer.broadcast('build-finished', {
+          errors: stats.toJson().errors
+        });
+      });
+
+      server.on('compiler-error', ({ json }) => {
+        socketServer.broadcast('compiler-error', {
+          errors: json.errors
+        });
+      });
+    })
+    .catch(console.error);
 }
 
 module.exports = server;

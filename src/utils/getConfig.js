@@ -2,6 +2,7 @@ const fs = require('fs');
 const { exitWithError } = require('./log');
 
 const defaultConfig = {
+  devClient: false,
   prebuildPackages: [
     'axios',
     'bind-decorator',

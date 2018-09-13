@@ -1,3 +1,5 @@
+const stripAnsi = require('strip-ansi');
+
 export default function formatCompiliationError(message) {
   return message
     .split('\n')
@@ -10,7 +12,13 @@ export default function formatCompiliationError(message) {
         return '<br />';
       }
 
+      // Remove ANSI color characters
+      line = stripAnsi(line);
+
+      // HTML escape less-than characters
       line = line.replace(/</g, '&lt;');
+
+      // HTML escape greater-than characters
       line = line.replace(/([^^])(>)/g, '$1&gt;');
 
       if (/^>\s+\d+?\s+\|/.test(line)) {

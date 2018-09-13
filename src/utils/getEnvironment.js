@@ -7,7 +7,8 @@ function getEnvironment() {
     development: env !== 'production' && env !== 'test',
     devServerHost: process.env.DEV_SERVER_HOST || 'localhost',
     devServerPort: process.env.DEV_SERVER_PORT || 8080,
-    devServerHotPort: process.env.DEV_SERVER_HOT_PORT || 8081
+    devServerHotPort: process.env.DEV_SERVER_HOT_PORT || 8081,
+    devClientPort: process.env.DEV_CLIENT_PORT || 8082
   };
 }
 
