@@ -8,6 +8,7 @@ const generateEntry = require('./generateEntry');
 const generateOutput = require('./generateOutput');
 const generatePlugins = require('./generatePlugins');
 const generateRules = require('./generateRules');
+const generateOptimization = require('./generateOptimization');
 
 const defaultOptions = {
   publicPath: '/assets/',
@@ -71,18 +72,7 @@ function webpackConfig(options = {}) {
     module: {
       rules: generateRules(options)
     },
-    optimization: {
-      splitChunks: {
-        minChunks: 2,
-        cacheGroups: {
-          common: {
-            test: /[\\/]node_modules[\\/]/,
-            name: 'common',
-            chunks: 'all'
-          }
-        }
-      }
-    }
+    optimization: generateOptimization(options)
   };
 }
 
