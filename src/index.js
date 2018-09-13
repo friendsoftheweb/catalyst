@@ -32,7 +32,15 @@ program
     'instruct the client not to apply Hot Module Replacement patches'
   )
   .description('starts a development server')
-  .action(server);
+  .action(options => {
+    // TODO: Determine if this logic should be moved to the server function
+    // itself. Or possibly convert all command functions to async functions so
+    // the same `catch()` logic can be used for all of them.
+    server(options).catch(error => {
+      console.error(error.stack);
+      process.exit(1);
+    });
+  });
 
 program
   .command('build')
