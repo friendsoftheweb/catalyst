@@ -5,7 +5,7 @@ const defaultConfig = {
   devClient: false,
   prebuildPackages: [
     'axios',
-    'bind-decorator',
+    'catalyst/lib/dev-client',
     'classnames',
     'lodash',
     'react',
