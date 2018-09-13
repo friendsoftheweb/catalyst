@@ -5,6 +5,7 @@ function babelConfig({ modules = false, useBuiltIns = 'usage' } = {}) {
 
   const plugins = [
     resolveModulePath('@babel/plugin-transform-flow-strip-types'),
+    resolveModulePath('@babel/plugin-proposal-object-rest-spread'),
     [
       resolveModulePath('@babel/plugin-proposal-class-properties'),
       { loose: true }
