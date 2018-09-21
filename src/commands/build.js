@@ -1,8 +1,14 @@
 const chalk = require('chalk');
 
-const { getConfig, getEnvironment, log, spinnerSpawn } = require('../utils');
+const {
+  getConfig,
+  getEnvironment,
+  log,
+  spinnerSpawn,
+  rebuildNodeSASS
+} = require('../utils');
 
-function build() {
+async function build() {
   const environment = getEnvironment();
   const config = getConfig();
 
@@ -14,6 +20,8 @@ function build() {
       ].join('\n')
     );
   }
+
+  await rebuildNodeSASS();
 
   spinnerSpawn(
     'yarn',

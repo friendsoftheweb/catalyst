@@ -45,6 +45,14 @@ program
 program
   .command('build')
   .description('builds it')
-  .action(build);
+  .action(options => {
+    // TODO: Determine if this logic should be moved to the build function
+    // itself. Or possibly convert all command functions to async functions so
+    // the same `catch()` logic can be used for all of them.
+    build(options).catch(error => {
+      console.error(error.stack);
+      process.exit(1);
+    });
+  });
 
 program.parse(process.argv);
