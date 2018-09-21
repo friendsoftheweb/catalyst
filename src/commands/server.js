@@ -37,15 +37,26 @@ class SocketServer {
 }
 
 async function server(options) {
-  const { devServerHost, devServerPort, devServerHotPort } = getEnvironment();
+  const {
+    devServerHost,
+    devServerPort,
+    devServerHotPort,
+    devClientPort
+  } = getEnvironment();
 
   const serverProcesses = await findProcess('port', devServerPort);
   const serverHotProcesses = await findProcess('port', devServerHotPort);
+  const serverClientProcesses = await findProcess('port', devClientPort);
 
-  if (serverProcesses.length > 0 || serverHotProcesses > 0) {
+  if (
+    serverProcesses.length > 0 ||
+    serverHotProcesses.length > 0 ||
+    serverClientProcesses.length > 0
+  ) {
     const processIDs = uniq([
       ...map(get('pid'), serverProcesses),
-      ...map(get('pid'), serverHotProcesses)
+      ...map(get('pid'), serverHotProcesses),
+      ...map(get('pid'), serverClientProcesses)
     ]);
 
     log.exitWithError(`
