@@ -35,6 +35,12 @@ function generateRules({ projectRoot, context, publicPath, transformModules }) {
         }
       },
       {
+        loader: path.resolve(
+          __dirname,
+          '../../webpack-loaders/checkUrlPathsLoader'
+        )
+      },
+      {
         loader: resolveModulePath('sass-loader'),
         options: {
           sourceMap: true
