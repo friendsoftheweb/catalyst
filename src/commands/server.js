@@ -6,7 +6,12 @@ const { get, map, uniq } = require('lodash/fp');
 const serve = require('webpack-serve');
 const Router = require('koa-router');
 const findProcess = require('find-process');
-const { getDirectories, getEnvironment, log } = require('../utils');
+const {
+  getDirectories,
+  getEnvironment,
+  log,
+  rebuildNodeSASS
+} = require('../utils');
 
 class SocketServer {
   constructor() {
@@ -37,6 +42,9 @@ class SocketServer {
 }
 
 async function server(options) {
+  // Check node-sass binary and rebuild if necessary
+  await rebuildNodeSASS();
+
   const {
     devServerHost,
     devServerPort,
