@@ -15,7 +15,8 @@ function babelConfig({ modules, useBuiltIns = 'usage' } = {}) {
       { loose: true }
     ],
     resolveModulePath('@babel/plugin-proposal-optional-chaining'),
-    resolveModulePath('@babel/plugin-transform-regenerator')
+    resolveModulePath('@babel/plugin-transform-regenerator'),
+    resolveModulePath('@babel/plugin-syntax-dynamic-import')
   ];
 
   if (environment.production) {
