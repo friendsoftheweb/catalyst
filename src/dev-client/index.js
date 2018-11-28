@@ -1,15 +1,15 @@
+import SockJS from 'sockjs-client';
+
 import formatWebpackMessages from 'react-dev-utils/formatWebpackMessages';
 import activityTemplate from './templates/activity';
 import compilationErrorTemplate from './templates/compilation-error';
 import runtimeErrorTemplate from './templates/runtime-error';
 import formatCompiliationError from './formatCompilationError';
 
-let runtimeErrorOccured = false;
 let overlayContainerHTML = null;
 let overlayFramePromise = null;
 let overlayFrameCreated = false;
 let overlayFrameVisible = false;
-let firstLoadComplete = false;
 
 function createOverlayFrame() {
   if (overlayFramePromise != null) {
@@ -102,31 +102,85 @@ function hideNotification() {
 
 const { devClientPort, devServerHost } = window.__CATALYST_ENV__;
 
-const socket = new WebSocket(`ws://${devServerHost}:${devClientPort}`);
+const connection = new SockJS(
+  `${window.location.protocol}//${devServerHost}:${devClientPort}/sockjs-node`
+);
 
-socket.addEventListener('error', event => {
-  hideNotification();
-});
+let isBuilding = false;
+let firstCompilationHash = null;
+let lastCompilationHash = null;
+let hasCompileErrors = false;
 
-socket.addEventListener('message', event => {
+connection.onmessage = function(event) {
   const message = JSON.parse(event.data);
 
   switch (message.type) {
-    case 'build-started':
-      showNotification(activityTemplate({ message: 'Building...' }));
-      break;
+    case 'invalid':
+      if (!isBuilding) {
+        isBuilding = true;
 
-    case 'build-finished':
-      hideNotification();
-
-      if (message.data.errors.length > 0) {
-        showNotification(
-          compilationErrorTemplate({
-            message: formatCompiliationError(message.data.errors[0])
-          })
-        );
+        showNotification(activityTemplate({ message: 'Building...' }));
       }
 
       break;
+
+    case 'hash':
+      if (firstCompilationHash == null) {
+        firstCompilationHash = message.data;
+      }
+
+      lastCompilationHash = message.data;
+      break;
+
+    case 'ok':
+      isBuilding = false;
+      tryApplyUpdates();
+      break;
+
+    case 'still-ok':
+      isBuilding = false;
+      hideNotification();
+      break;
+
+    case 'warnings':
+      console.warn(...message.data);
+
+      isBuilding = false;
+      tryApplyUpdates();
+
+      break;
+
+    case 'errors':
+      isBuilding = false;
+      hasCompileErrors = true;
+
+      showNotification(
+        compilationErrorTemplate({
+          message: formatCompiliationError(message.data[0])
+        })
+      );
+
+      break;
   }
-});
+};
+
+function tryApplyUpdates() {
+  if (firstCompilationHash === lastCompilationHash) {
+    return Promise.resolve();
+  }
+
+  if (!module.hot) {
+    window.location.reload();
+    return Promise.resolve();
+  }
+
+  if (module.hot.status() !== 'idle') {
+    return Promise.resolve();
+  }
+
+  return module.hot.check(true).catch(error => {
+    window.location.reload();
+
+    throw error;
+  });
+}

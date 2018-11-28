@@ -21,7 +21,8 @@ function generatePlugins(options = {}) {
       new webpack.DllReferencePlugin({
         context: options.projectRoot,
         manifest: require(`${options.projectRoot}/tmp/catalyst/vendor.json`)
-      })
+      }),
+      new webpack.HotModuleReplacementPlugin()
     );
   }
 
