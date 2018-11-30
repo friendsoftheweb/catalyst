@@ -7,7 +7,7 @@ function generateEntry(entryPath) {
 
   const entry = [];
 
-  if (environment.development && config.devClient) {
+  if (environment.development && config.overlay) {
     entry.push(path.resolve(__dirname, '../../../lib/dev-environment'));
     entry.push(path.resolve(__dirname, '../../../lib/dev-client'));
   }

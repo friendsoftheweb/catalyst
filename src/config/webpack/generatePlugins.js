@@ -21,7 +21,8 @@ function generatePlugins(options = {}) {
       new webpack.DllReferencePlugin({
         context: options.projectRoot,
         manifest: require(`${options.projectRoot}/tmp/catalyst/vendor.json`)
-      })
+      }),
+      new webpack.HotModuleReplacementPlugin()
     );
   }
 
@@ -37,9 +38,7 @@ function generatePlugins(options = {}) {
     new webpack.EnvironmentPlugin({
       NODE_ENV: JSON.stringify(process.env.NODE_ENV),
       DEV_SERVER_HOST: environment.devServerHost,
-      DEV_SERVER_PORT: environment.devServerPort,
-      DEV_SERVER_HOT_PORT: environment.devServerHotPort,
-      DEV_CLIENT_PORT: environment.devClientPort
+      DEV_SERVER_PORT: environment.devServerPort
     })
   );
 

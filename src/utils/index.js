@@ -1,3 +1,4 @@
+const checkPortAvailability = require('./checkPortAvailability');
 const format = require('./format');
 const getConfig = require('./getConfig');
 const getDirectories = require('./getDirectories');
@@ -9,6 +10,7 @@ const spinnerSpawn = require('./spinnerSpawn');
 const writeFileFromTemplate = require('./writeFileFromTemplate');
 
 module.exports = {
+  checkPortAvailability,
   format,
   getConfig,
   getDirectories,
