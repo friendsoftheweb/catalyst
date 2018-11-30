@@ -2,7 +2,7 @@ const fs = require('fs');
 const { exitWithError } = require('./log');
 
 const defaultConfig = {
-  overlay: true,
+  overlay: false,
   prebuildPackages: [
     'axios',
     'catalyst/lib/dev-client',

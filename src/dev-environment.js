@@ -1,6 +1,4 @@
 window.__CATALYST_ENV__ = {
   devServerHost: process.env.DEV_SERVER_HOST,
-  devServerPort: process.env.DEV_SERVER_PORT,
-  devServerHotPort: process.env.DEV_SERVER_HOT_PORT,
-  devClientPort: process.env.DEV_CLIENT_PORT
+  devServerPort: process.env.DEV_SERVER_PORT
 };

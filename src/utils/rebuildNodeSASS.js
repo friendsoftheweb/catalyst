@@ -8,11 +8,9 @@ async function rebuildNodeSASS() {
     console.log('\nAttempting to rebuild node-sass...');
 
     try {
-      execSync('npm rebuild node-sass');
+      execSync('npm rebuild node-sass', { stdio: 'inherit' });
     } catch (error) {
-      console.error(error.stack);
-
-      exitWithError('Failed to rebuild node-sass.');
+      exitWithError(`Failed to rebuild node-sass:\n\n${error.stack}`);
     }
   }
 }

@@ -100,10 +100,10 @@ function hideNotification() {
   return updateOverlayContainer();
 }
 
-const { devClientPort, devServerHost } = window.__CATALYST_ENV__;
+const { devServerPort, devServerHost } = window.__CATALYST_ENV__;
 
 const connection = new SockJS(
-  `${window.location.protocol}//${devServerHost}:${devClientPort}/sockjs-node`
+  `${window.location.protocol}//${devServerHost}:${devServerPort}/sockjs-node`
 );
 
 let isBuilding = false;
