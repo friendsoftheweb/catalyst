@@ -2,7 +2,6 @@ const path = require('path');
 const fs = require('fs');
 const mkdirp = require('mkdirp');
 const { uniqueId } = require('lodash');
-const { execSync } = require('child_process');
 
 const projectRootPath = path.resolve(__dirname, '..');
 const commandPath = path.join(projectRootPath, 'src/index.js');
