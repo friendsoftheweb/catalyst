@@ -1,9 +1,7 @@
 import SockJS from 'sockjs-client';
 
-import formatWebpackMessages from 'react-dev-utils/formatWebpackMessages';
 import activityTemplate from './templates/activity';
 import compilationErrorTemplate from './templates/compilation-error';
-import runtimeErrorTemplate from './templates/runtime-error';
 import formatCompiliationError from './formatCompilationError';
 
 let overlayContainerHTML = null;
@@ -178,9 +176,12 @@ function tryApplyUpdates() {
     return Promise.resolve();
   }
 
-  return module.hot.check(true).catch(error => {
-    window.location.reload();
+  return module.hot
+    .check(true)
+    .then(hideNotification)
+    .catch(error => {
+      window.location.reload();
 
-    throw error;
-  });
+      throw error;
+    });
 }

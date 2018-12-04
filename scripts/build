@@ -1,21 +1,39 @@
-#!/usr/bin/env bash
+#!/usr/bin/env node
 
-set -e
+const path = require('path');
+const fs = require('fs');
+const { execSync } = require('child_process');
+const glob = require('glob');
+const ejs = require('ejs');
+const mkdirp = require('mkdirp');
 
-rm -rf lib
+const inputDir = path.resolve(__dirname, '../src/dev-client/templates');
+const outputDir = path.resolve(__dirname, '../lib/dev-client/templates');
 
-webpack --config=src/dev-client/webpack.config.js --bail
+execSync('rm -rf lib');
 
-cp src/index.js lib/index.js
-cp src/babel-preset.js lib/babel-preset.js
-cp src/test-setup.js lib/test-setup.js
-cp src/dev-environment.js lib/dev-environment.js
+mkdirp.sync(outputDir);
 
-for src_path in src/*
-do
-  lib_path=`echo $src_path | awk 'gsub("src", "lib")'`
+const srcPaths = glob.sync('src/**/*.js');
 
-  if [ $lib_path != "lib/dev-client" ]; then
-    cp -R $src_path $lib_path
-  fi
-done
+for (const srcPath of srcPaths) {
+  const destPath = srcPath.replace(/^src/, 'lib');
+  const destPathDir = path.parse(destPath).dir;
+
+  mkdirp.sync(destPathDir);
+
+  fs.copyFileSync(srcPath, destPath);
+}
+
+fs.readdirSync(inputDir).forEach(file => {
+  const templateText = fs.readFileSync(path.join(inputDir, file)).toString();
+
+  const templateFunctionText =
+    ejs.compile(templateText, { client: true, _with: false }).toString() +
+    '\n\nexport default anonymous;';
+
+  fs.writeFileSync(
+    path.join(outputDir, file.replace(/\.ejs$/, '.js')),
+    templateFunctionText
+  );
+});

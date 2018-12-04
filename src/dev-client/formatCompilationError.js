@@ -1,6 +1,6 @@
-const stripAnsi = require('strip-ansi');
+import stripAnsi from 'strip-ansi';
 
-export default function formatCompiliationError(message) {
+function formatCompiliationError(message) {
   return message
     .split('\n')
     .map((line, index) => {
@@ -41,3 +41,5 @@ export default function formatCompiliationError(message) {
     })
     .join('');
 }
+
+export default formatCompiliationError;

@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-
-set -e
-
-webpack --config=src/dev-client/webpack.config.js --bail --watch
