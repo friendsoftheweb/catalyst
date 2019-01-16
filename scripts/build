@@ -14,7 +14,7 @@ execSync('rm -rf lib');
 
 mkdirp.sync(outputDir);
 
-const srcPaths = glob.sync('src/**/*.js');
+const srcPaths = glob.sync('src/**/*');
 
 for (const srcPath of srcPaths) {
   const destPath = srcPath.replace(/^src/, 'lib');

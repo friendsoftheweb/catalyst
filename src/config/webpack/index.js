@@ -66,6 +66,7 @@ function webpackConfig(options = {}) {
     ),
     output: generateOutput(options),
     resolve: {
+      extensions: ['.wasm', '.mjs', '.js', '.ts', '.tsx', '.json'],
       modules: [config.rootPath, 'node_modules']
     },
     plugins: generatePlugins(options),

@@ -35,7 +35,8 @@ function babelConfig({ modules, useBuiltIns = 'usage' } = {}) {
           useBuiltIns
         }
       ],
-      resolveModulePath('@babel/preset-react', { useBuiltIns: true })
+      resolveModulePath('@babel/preset-react', { useBuiltIns: true }),
+      resolveModulePath('@babel/preset-typescript')
     ],
     plugins
   };

@@ -26,6 +26,7 @@ const nodePackagesDev = [
   'eslint-plugin-flowtype',
   'eslint-plugin-react',
   'flow-bin',
+  'typescript',
   'jest',
   'react-test-renderer'
 ];
@@ -102,11 +103,12 @@ function init(options) {
       }
 
       commands.push(
-        writeFileFromTemplate.bind(null, '.babelrc', '.babelrc.jst'),
-        writeFileFromTemplate.bind(null, '.eslintrc', '.eslintrc.jst'),
-        writeFileFromTemplate.bind(null, '.flowconfig', '.flowconfig.jst', {
+        writeFileFromTemplate.bind(null, '.babelrc', 'babelrc.jst'),
+        writeFileFromTemplate.bind(null, '.eslintrc', 'eslintrc.jst'),
+        writeFileFromTemplate.bind(null, '.flowconfig', 'flowconfig.jst', {
           config
         }),
+        writeFileFromTemplate.bind(null, 'tsconfig.json', 'tsconfig.json.jst'),
         writeFileFromTemplate.bind(
           null,
           `${config.rootPath}/config/webpack.js`,
