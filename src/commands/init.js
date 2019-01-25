@@ -110,18 +110,8 @@ function init(options) {
         commands.push(
           writeFileFromTemplate.bind(
             null,
-            `${config.rootPath}/bundles/application/index.js`,
-            'bundles/bundle.js.jst'
-          ),
-          writeFileFromTemplate.bind(
-            null,
-            `${config.rootPath}/bundles/application/store.js`,
-            'bundles/store.js.jst'
-          ),
-          writeFileFromTemplate.bind(
-            null,
-            `${config.rootPath}/bundles/application/store-provider.js`,
-            'bundles/store-provider.js.jst'
+            `${config.rootPath}/bundles/application/index.ts`,
+            'bundles/bundle.ts.jst'
           )
         );
       }

@@ -4,7 +4,7 @@ const { reduce } = require('lodash');
 
 const { getEnvironment, getConfig, getDirectories } = require('../../utils');
 const generateDevtool = require('./generateDevtool');
-const generateEntry = require('./generateEntry');
+const generateEntryForBundleName = require('./generateEntryForBundleName');
 const generateOutput = require('./generateOutput');
 const generatePlugins = require('./generatePlugins');
 const generateRules = require('./generateRules');
@@ -13,8 +13,6 @@ const generateOptimization = require('./generateOptimization');
 const defaultOptions = {
   publicPath: '/assets/',
   transformModules: [
-    '@ftw/redux-resources',
-    '@ftw/redux-utils',
     'axios',
     'luxon',
     'react',
@@ -56,10 +54,9 @@ function webpackConfig(options = {}) {
       (entry, bundlePath) => {
         const parts = bundlePath.split('/');
         const bundleName = parts[parts.length - 1];
-        const relativeBundlePath = `./bundles/${bundleName}/index.js`;
 
         return Object.assign({}, entry, {
-          [bundleName]: generateEntry(relativeBundlePath)
+          [bundleName]: generateEntryForBundleName(bundleName)
         });
       },
       {}
