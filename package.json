@@ -1,6 +1,6 @@
 {
   "name": "catalyst",
-  "version": "1.0.0-beta.42",
+  "version": "1.0.0-beta.43",
   "description": "Sets up Webpack, React, Redux, and more!",
   "engines": {
     "node": ">= 8.9.0",
