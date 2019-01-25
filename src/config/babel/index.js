@@ -7,8 +7,22 @@ function babelConfig({ modules, useBuiltIns = 'usage' } = {}) {
     modules = environment.test ? 'commonjs' : false;
   }
 
+  const presets = [
+    [
+      resolveModulePath('@babel/preset-env'),
+      {
+        modules,
+        useBuiltIns
+      }
+    ],
+    resolveModulePath('@babel/preset-react', { useBuiltIns: true })
+  ];
+
+  if (environment.typeScriptConfigExists) {
+    presets.push(resolveModulePath('@babel/preset-typescript'));
+  }
+
   const plugins = [
-    resolveModulePath('@babel/plugin-transform-flow-strip-types'),
     resolveModulePath('@babel/plugin-proposal-object-rest-spread'),
     [
       resolveModulePath('@babel/plugin-proposal-class-properties'),
@@ -19,6 +33,12 @@ function babelConfig({ modules, useBuiltIns = 'usage' } = {}) {
     resolveModulePath('@babel/plugin-syntax-dynamic-import')
   ];
 
+  if (environment.flowConfigExists) {
+    plugins.unshift(
+      resolveModulePath('@babel/plugin-transform-flow-strip-types')
+    );
+  }
+
   if (environment.production) {
     plugins.push(
       resolveModulePath('@babel/plugin-transform-react-constant-elements'),
@@ -27,16 +47,7 @@ function babelConfig({ modules, useBuiltIns = 'usage' } = {}) {
   }
 
   return {
-    presets: [
-      [
-        resolveModulePath('@babel/preset-env'),
-        {
-          modules,
-          useBuiltIns
-        }
-      ],
-      resolveModulePath('@babel/preset-react', { useBuiltIns: true })
-    ],
+    presets,
     plugins
   };
 }

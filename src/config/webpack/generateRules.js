@@ -21,7 +21,6 @@ function generateRules({ projectRoot, context, publicPath, transformModules }) {
       {
         loader: resolveModulePath('css-loader'),
         options: {
-          root: context,
           sourceMap: true
         }
       },
@@ -56,7 +55,7 @@ function generateRules({ projectRoot, context, publicPath, transformModules }) {
   include.push(context);
 
   rules.push({
-    test: /\.js$/,
+    test: /\.(ts|js)x?$/,
     include,
     use: [
       {
