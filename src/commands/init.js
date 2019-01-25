@@ -7,26 +7,17 @@ const { get, without } = require('lodash');
 
 const { log, spinnerSpawn, writeFileFromTemplate } = require('../utils');
 
-const nodePackages = [
-  'catalyst',
-  'axios',
-  'bind-decorator',
-  'classnames',
-  'react',
-  'react-dom',
-  'react-redux',
-  'redux',
-  'redux-saga'
-];
+const nodePackages = ['catalyst', 'react', 'react-dom'];
 
 const nodePackagesDev = [
+  'typescript',
+  '@types/react',
+  '@types/react-dom',
   '@ftw/eslint-config-catalyst',
   'babel-eslint',
   'eslint',
   'eslint-plugin-flowtype',
   'eslint-plugin-react',
-  'flow-bin',
-  'typescript',
   'jest',
   'react-test-renderer'
 ];
@@ -105,10 +96,9 @@ function init(options) {
       commands.push(
         writeFileFromTemplate.bind(null, '.babelrc', 'babelrc.jst'),
         writeFileFromTemplate.bind(null, '.eslintrc', 'eslintrc.jst'),
-        writeFileFromTemplate.bind(null, '.flowconfig', 'flowconfig.jst', {
+        writeFileFromTemplate.bind(null, 'tsconfig.json', 'tsconfig.json.jst', {
           config
         }),
-        writeFileFromTemplate.bind(null, 'tsconfig.json', 'tsconfig.json.jst'),
         writeFileFromTemplate.bind(
           null,
           `${config.rootPath}/config/webpack.js`,

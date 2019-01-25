@@ -1,5 +1,3 @@
-// @flow
-
 export type <%= moduleName %>Action = Object;
 
 /*
@@ -12,7 +10,7 @@ export type <%= moduleName %>Action = Object;
   };
 
   export function createLineItemStart(
-    variantId: number, 
+    variantId: number,
     quantity: number
   ): CreateLineItemStartAction {
     return {
@@ -37,7 +35,7 @@ export type <%= moduleName %>Action = Object;
     };
   }
 
-  export type CurrentOrderAction = 
-    CreateLineItemStartAction | 
+  export type CurrentOrderAction =
+    CreateLineItemStartAction |
     CreateLineItemSuccessAction;
 */
