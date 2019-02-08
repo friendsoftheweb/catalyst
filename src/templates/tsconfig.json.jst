@@ -2,7 +2,7 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "*": ["*", "<%= config.rootPath %>/*"]
+      "*": ["<%= config.rootPath %>/*"]
     },
     "module": "esnext",
     "target": "es5",
@@ -19,7 +19,8 @@
     "importHelpers": true,
     "strictNullChecks": true,
     "suppressImplicitAnyIndexErrors": true,
-    "noUnusedLocals": true
-  },
-  "exclude": ["node_modules"]
+    "noUnusedLocals": true,
+    "downlevelIteration": true,
+    "typeRoots": ["./<%= config.rootPath %>/types", "./node_modules/@types"]
+  }
 }
