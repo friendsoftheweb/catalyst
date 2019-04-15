@@ -13,9 +13,15 @@ const generateOptimization = require('./generateOptimization');
 const defaultOptions = {
   publicPath: '/assets/',
   transformModules: [
+    '@reach/router',
+    'apollo-cache-inmemory',
+    'apollo-client',
+    'apollo-link',
+    'apollo-link-http',
     'axios',
     'luxon',
     'react',
+    'react-apollo',
     'react-dom',
     'react-router',
     'react-router-dom',

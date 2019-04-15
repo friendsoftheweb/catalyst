@@ -4,18 +4,24 @@ const { exitWithError } = require('./log');
 const defaultConfig = {
   overlay: false,
   prebuildPackages: [
+    '@reach/router',
+    'apollo-cache-inmemory',
+    'apollo-client',
+    'apollo-link',
+    'apollo-link-http',
     'axios',
     'catalyst/lib/dev-client',
     'classnames',
     'lodash',
     'react',
+    'react-apollo',
     'react-dom',
-    'redux',
-    'redux-logger',
-    'redux-saga',
     'react-router',
     'react-router-dom',
     'react-redux',
+    'redux',
+    'redux-logger',
+    'redux-saga',
     'regenerator-runtime'
   ]
 };

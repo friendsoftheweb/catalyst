@@ -1,12 +1,16 @@
 const webpack = require('webpack');
 const { getEnvironment, resolveModulePath } = require('../../utils');
+
 const MiniCssExtractPlugin = require(resolveModulePath(
   'mini-css-extract-plugin'
 ));
+
 const ManifestPlugin = require(resolveModulePath('webpack-manifest-plugin'));
+
 const CompressionPlugin = require(resolveModulePath(
   'compression-webpack-plugin'
 ));
+
 const CleanUpStatsPlugin = require('../../webpack-plugins/CleanUpStatsPlugin');
 
 function generatePlugins(options = {}) {
