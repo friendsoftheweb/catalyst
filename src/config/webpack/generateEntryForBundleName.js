@@ -8,20 +8,16 @@ function generateEntryForBundleName(bundleName) {
   const directories = getDirectories();
   const bundlePath = path.join(directories.bundles, bundleName);
 
-  const indexJSPath = path.join(bundlePath, 'index.js');
+  for (const extension of ['js', 'ts', 'tsx']) {
+    const indexPath = path.join(bundlePath, `index.${extension}`);
 
-  if (fs.existsSync(indexJSPath)) {
-    return generateEntry(indexJSPath);
-  }
-
-  const indexTSPath = path.join(bundlePath, 'index.ts');
-
-  if (fs.existsSync(indexTSPath)) {
-    return generateEntry(indexTSPath);
+    if (fs.existsSync(indexPath)) {
+      return generateEntry(indexPath);
+    }
   }
 
   throw new Error(
-    `The bundle directory "${bundleName}" must contain an "index.js" or "index.ts" file.`
+    `The bundle directory "${bundleName}" must contain an "index.js", "index.ts", or "index.tsx" file.`
   );
 }
 
