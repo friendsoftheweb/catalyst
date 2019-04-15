@@ -1,6 +1,6 @@
 const { getEnvironment, resolveModulePath } = require('../../utils');
 
-function babelConfig({ modules, useBuiltIns = 'usage' } = {}) {
+function babelConfig({ modules, corejs, useBuiltIns = 'usage' } = {}) {
   const environment = getEnvironment();
 
   if (modules == null) {
@@ -12,7 +12,8 @@ function babelConfig({ modules, useBuiltIns = 'usage' } = {}) {
       resolveModulePath('@babel/preset-env'),
       {
         modules,
-        useBuiltIns
+        useBuiltIns,
+        corejs
       }
     ],
     resolveModulePath('@babel/preset-react', { useBuiltIns: true })
