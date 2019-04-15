@@ -173,6 +173,7 @@ function tryApplyUpdates() {
   }
 
   if (module.hot.status() !== 'idle') {
+    hideNotification();
     return Promise.resolve();
   }
 
