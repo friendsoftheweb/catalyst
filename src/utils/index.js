@@ -5,7 +5,6 @@ const getDirectories = require('./getDirectories');
 const getEnvironment = require('./getEnvironment');
 const log = require('./log');
 const rebuildNodeSASS = require('./rebuildNodeSASS');
-const resolveModulePath = require('./resolveModulePath');
 const spinnerSpawn = require('./spinnerSpawn');
 const writeFileFromTemplate = require('./writeFileFromTemplate');
 
@@ -17,7 +16,6 @@ module.exports = {
   getEnvironment,
   log,
   rebuildNodeSASS,
-  resolveModulePath,
   spinnerSpawn,
   writeFileFromTemplate
 };

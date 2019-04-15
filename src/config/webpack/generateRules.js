@@ -1,8 +1,6 @@
 const path = require('path');
-const { getEnvironment, resolveModulePath } = require('../../utils');
-const MiniCssExtractPlugin = require(resolveModulePath(
-  'mini-css-extract-plugin'
-));
+const { getEnvironment } = require('../../utils');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 function generateRules({ projectRoot, context, publicPath, transformModules }) {
   const environment = getEnvironment();
@@ -13,23 +11,23 @@ function generateRules({ projectRoot, context, publicPath, transformModules }) {
     use: [
       environment.development
         ? {
-            loader: resolveModulePath('style-loader')
+            loader: 'style-loader'
           }
         : {
             loader: MiniCssExtractPlugin.loader
           },
       {
-        loader: resolveModulePath('css-loader'),
+        loader: 'css-loader',
         options: {
           sourceMap: true
         }
       },
       {
-        loader: resolveModulePath('postcss-loader'),
+        loader: 'postcss-loader',
         options: {
           sourceMap: true,
           plugins() {
-            return [require(resolveModulePath('autoprefixer'))];
+            return [require('autoprefixer')];
           }
         }
       },
@@ -40,7 +38,7 @@ function generateRules({ projectRoot, context, publicPath, transformModules }) {
         )
       },
       {
-        loader: resolveModulePath('sass-loader'),
+        loader: 'sass-loader',
         options: {
           sourceMap: true
         }
@@ -59,10 +57,10 @@ function generateRules({ projectRoot, context, publicPath, transformModules }) {
     include,
     use: [
       {
-        loader: resolveModulePath('thread-loader')
+        loader: 'thread-loader'
       },
       {
-        loader: resolveModulePath('babel-loader'),
+        loader: 'babel-loader',
         options: {
           cacheDirectory: true
         }

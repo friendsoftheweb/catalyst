@@ -1,4 +1,4 @@
-const { getEnvironment, resolveModulePath } = require('../../utils');
+const { getEnvironment } = require('../../utils');
 
 function babelConfig({ modules, corejs, useBuiltIns = 'usage' } = {}) {
   const environment = getEnvironment();
@@ -7,43 +7,41 @@ function babelConfig({ modules, corejs, useBuiltIns = 'usage' } = {}) {
     modules = environment.test ? 'commonjs' : false;
   }
 
+  const presetEnvOptions = {
+    modules,
+    useBuiltIns
+  };
+
+  if (corejs != null) {
+    presetEnvOptions.corejs = corejs;
+  }
+
   const presets = [
-    [
-      resolveModulePath('@babel/preset-env'),
-      {
-        modules,
-        useBuiltIns,
-        corejs
-      }
-    ],
-    resolveModulePath('@babel/preset-react', { useBuiltIns: true })
+    ['@babel/preset-env', presetEnvOptions],
+    ['@babel/preset-react', { useBuiltIns: true }]
   ];
 
   if (environment.typeScriptConfigExists) {
-    presets.push(resolveModulePath('@babel/preset-typescript'));
+    presets.push('@babel/preset-typescript');
   }
 
   const plugins = [
-    resolveModulePath('@babel/plugin-proposal-object-rest-spread'),
-    [
-      resolveModulePath('@babel/plugin-proposal-class-properties'),
-      { loose: true }
-    ],
-    resolveModulePath('@babel/plugin-proposal-optional-chaining'),
-    resolveModulePath('@babel/plugin-transform-regenerator'),
-    resolveModulePath('@babel/plugin-syntax-dynamic-import')
+    '@babel/plugin-proposal-object-rest-spread',
+    ['@babel/plugin-proposal-class-properties', { loose: true }],
+    '@babel/plugin-proposal-optional-chaining',
+    '@babel/plugin-transform-regenerator',
+    '@babel/plugin-syntax-dynamic-import',
+    'babel-plugin-graphql-tag'
   ];
 
   if (environment.flowConfigExists) {
-    plugins.unshift(
-      resolveModulePath('@babel/plugin-transform-flow-strip-types')
-    );
+    plugins.unshift('@babel/plugin-transform-flow-strip-types');
   }
 
   if (environment.production) {
     plugins.push(
-      resolveModulePath('@babel/plugin-transform-react-constant-elements'),
-      resolveModulePath('babel-plugin-lodash')
+      '@babel/plugin-transform-react-constant-elements',
+      'babel-plugin-lodash'
     );
   }
 

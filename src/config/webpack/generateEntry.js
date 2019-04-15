@@ -1,5 +1,5 @@
 const path = require('path');
-const { getEnvironment, getConfig, resolveModulePath } = require('../../utils');
+const { getEnvironment, getConfig } = require('../../utils');
 
 function generateEntry(entryPath) {
   const environment = getEnvironment();
@@ -12,7 +12,7 @@ function generateEntry(entryPath) {
     entry.push(path.resolve(__dirname, '../../../lib/dev-client'));
   }
 
-  entry.push(resolveModulePath('regenerator-runtime/runtime'));
+  entry.push('regenerator-runtime/runtime');
   entry.push(entryPath);
 
   return entry;
