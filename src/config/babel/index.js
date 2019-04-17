@@ -38,6 +38,10 @@ function babelConfig({ modules, corejs, useBuiltIns = 'usage' } = {}) {
     plugins.unshift('@babel/plugin-transform-flow-strip-types');
   }
 
+  if (!environment.development) {
+    plugins.push('@babel/plugin-transform-runtime');
+  }
+
   if (environment.production) {
     plugins.push(
       '@babel/plugin-transform-react-constant-elements',
