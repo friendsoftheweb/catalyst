@@ -29,18 +29,17 @@
     "@babel/plugin-syntax-dynamic-import": "^7.0.0",
     "@babel/plugin-transform-flow-strip-types": "^7.0.0",
     "@babel/plugin-transform-react-constant-elements": "^7.0.0",
-    "@babel/plugin-transform-regenerator": "^7.0.0",
     "@babel/plugin-transform-runtime": "^7.4.3",
     "@babel/polyfill": "^7.0.0",
     "@babel/preset-env": "^7.1.0",
     "@babel/preset-react": "^7.0.0",
     "@babel/preset-typescript": "^7.1.0",
+    "@babel/runtime": "^7.4.3",
     "autoprefixer": "^9.1.5",
     "babel-loader": "8.0.5",
     "babel-plugin-graphql-tag": "^2.1.0",
     "babel-plugin-lodash": "^3.3.4",
     "chalk": "^2.4.2",
-    "colors": "^1.3.2",
     "commander": "^2.19.0",
     "compression-webpack-plugin": "^2.0.0",
     "css-loader": "^2.1.0",
@@ -70,9 +69,21 @@
     "webpack-manifest-plugin": "^2.0.4"
   },
   "devDependencies": {
+    "@types/compression-webpack-plugin": "^2.0.0",
+    "@types/diff": "^4.0.2",
+    "@types/inquirer": "^6.0.0",
+    "@types/lodash": "^4.14.123",
+    "@types/mini-css-extract-plugin": "^0.2.0",
+    "@types/mkdirp": "^0.5.2",
+    "@types/node": "^11.13.6",
+    "@types/sockjs-client": "^1.1.1",
+    "@types/webpack": "^4.4.27",
+    "@types/webpack-dev-server": "^3.1.5",
+    "@types/webpack-manifest-plugin": "^2.0.0",
     "ejs": "^2.6.1",
     "expect": "^24.7.1",
     "glob": "^7.1.3",
-    "mocha": "^6.1.3"
+    "mocha": "^6.1.3",
+    "typescript": "^3.4.4"
   }
 }
