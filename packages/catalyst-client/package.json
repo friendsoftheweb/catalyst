@@ -1,0 +1,61 @@
+{
+  "name": "catalyst-client",
+  "version": "0.0.0",
+  "description": "> TODO: description",
+  "author": "Dan Martens <dan@friendsoftheweb.com>",
+  "homepage": "https://github.com/friendsoftheweb/catalyst#readme",
+  "license": "MIT",
+  "main": "lib/index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib"
+  ],
+  "publishConfig": {
+    "registry": "https://registry.yarnpkg.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/friendsoftheweb/catalyst.git"
+  },
+  "scripts": {
+    "build": "scripts/build",
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "jsx",
+      "ts",
+      "tsx",
+      "node",
+      "ejs"
+    ],
+    "transform": {
+      "^.+\\.(t|j)sx?$": "babel-jest",
+      "^.+\\.ejs$": "<rootDir>/transform.js"
+    }
+  },
+  "bugs": {
+    "url": "https://github.com/friendsoftheweb/catalyst/issues"
+  },
+  "dependencies": {
+    "sockjs-client": "^1.3.0",
+    "strip-ansi": "^5.2.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.4.4",
+    "@babel/preset-env": "^7.4.4",
+    "@babel/preset-typescript": "^7.3.3",
+    "@types/node": "^12.0.2",
+    "@types/sockjs-client": "^1.1.1",
+    "babel-jest": "^24.8.0",
+    "jest": "^24.8.0",
+    "jest-websocket-mock": "^1.4.0",
+    "mock-socket": "^8.0.5",
+    "typescript": "^3.4.5"
+  }
+}
