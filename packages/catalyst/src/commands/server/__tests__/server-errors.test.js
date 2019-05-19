@@ -4,6 +4,8 @@ import SockJS from 'sockjs-client';
 import getConfig from '../../../utils/getConfig';
 import getWebpackConfig from '../getWebpackConfig';
 
+const consoleLog = console.log;
+
 console.log = jest.fn();
 console.info = jest.fn();
 console.error = jest.fn();
@@ -58,6 +60,8 @@ test('works 2', (done) => {
 
       connection.onmessage = function(event) {
         const message = JSON.parse(event.data);
+
+        consoleLog(message);
 
         if (message.type === 'ok') {
           ok = true;
