@@ -1,7 +1,7 @@
 import { RuleSetRule } from 'webpack';
 import path from 'path';
 import { getEnvironment } from '../../utils';
-// import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 
 import { Options } from './index';
 
@@ -11,19 +11,20 @@ export default function generateRules({
   publicPath,
   transformModules
 }: Options) {
-  // const environment = getEnvironment();
+  const environment = getEnvironment();
   const rules: RuleSetRule[] = [];
 
   rules.push({
     test: /\.s?css$/,
+    // @ts-ignore
     use: [
-      // environment.isDevelopment
-      //   ? {
-      //       loader: 'style-loader'
-      //     }
-      //   : {
-      //       loader: MiniCssExtractPlugin.loader
-      //     },
+      environment.isDevelopment
+        ? {
+            loader: 'style-loader'
+          }
+        : {
+            loader: MiniCssExtractPlugin.loader
+          },
       {
         loader: 'css-loader',
         options: {
