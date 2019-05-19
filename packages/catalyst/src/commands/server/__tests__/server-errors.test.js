@@ -11,7 +11,7 @@ console.error = jest.fn();
 jest.mock('../../../utils/getConfig');
 jest.mock('../getWebpackConfig');
 
-jest.setTimeout(10000);
+jest.setTimeout(60000);
 
 const invalidSource = `
 function parsingError() {

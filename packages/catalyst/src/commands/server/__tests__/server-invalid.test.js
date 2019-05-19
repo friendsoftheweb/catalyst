@@ -14,7 +14,7 @@ console.info = jest.fn();
 
 const entryPath = './test-project/entry.js';
 
-jest.setTimeout(10000);
+jest.setTimeout(60000);
 
 import server from '../index';
 
