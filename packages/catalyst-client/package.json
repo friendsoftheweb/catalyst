@@ -22,7 +22,7 @@
   },
   "scripts": {
     "build": "scripts/build",
-    "test": "echo \"Error: run tests from root\" && exit 1"
+    "test": "jest"
   },
   "jest": {
     "moduleFileExtensions": [
