@@ -4,6 +4,7 @@ import webpack from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
 
 import { getDirectories } from '../../utils';
+import getWebpackConfig from './getWebpackConfig';
 
 interface Options {
   host: string;
@@ -23,6 +24,7 @@ export default function createDevServer({ host, port, overlay }: Options) {
     headers: {
       'Access-Control-Allow-Origin': '*'
     },
+    disableHostCheck: true,
     before(app) {
       app.get('/vendor-dll.js', (req, res) => {
         fs.readFile(vendorFilePath, (err, data) => {
@@ -47,7 +49,7 @@ export default function createDevServer({ host, port, overlay }: Options) {
     }
   };
 
-  const config = require(path.join(directories.context, 'config/webpack.js'));
+  const config = getWebpackConfig();
 
   // If the custom error overlay is disabled, add the standard webpack
   // development client.

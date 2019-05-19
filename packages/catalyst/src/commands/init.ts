@@ -5,7 +5,12 @@ import chalk from 'chalk';
 import inquirer from 'inquirer';
 import { get, without } from 'lodash';
 
-import { log, spinnerSpawn, writeFileFromTemplate } from '../utils';
+import {
+  log,
+  runInSeries,
+  spinnerSpawn,
+  writeFileFromTemplate
+} from '../utils';
 
 const nodePackages = ['catalyst', 'react', 'react-dom'];
 
@@ -137,12 +142,6 @@ export default function init(options: Options) {
           );
       });
     });
-}
-
-function runInSeries(functions: Function[]) {
-  return functions.reduce((promise, func) => {
-    return promise.then(() => func());
-  }, Promise.resolve());
 }
 
 function modifiedFileCount() {

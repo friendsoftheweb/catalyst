@@ -7,5 +7,5 @@ export default function generateDevtool() {
     return 'source-map';
   }
 
-  return 'inline-cheap-source-map';
+  return 'cheap-module-source-map';
 }

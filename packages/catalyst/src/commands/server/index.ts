@@ -24,16 +24,16 @@ export default async function server() {
 
   console.log(chalk.cyan('\nPrebuilding vendor packages...\n'));
 
-  execSync(
-    [
-      'webpack',
-      `--config=${webpackVendorConfigPath}`,
-      '--display-error-details',
-      '--hide-modules',
-      '--bail',
-      '--color'
-    ].join(' ')
-  );
+  // execSync(
+  //   [
+  //     'webpack',
+  //     `--config=${webpackVendorConfigPath}`,
+  //     '--display-error-details',
+  //     '--hide-modules',
+  //     '--bail',
+  //     '--color'
+  //   ].join(' ')
+  // );
 
   const { overlay } = getConfig();
 
@@ -43,23 +43,30 @@ export default async function server() {
     overlay: overlay || false
   });
 
-  server.listen(devServerPort, devServerHost, (error) => {
-    if (error) {
-      return console.log(error);
-    }
+  return new Promise((resolve, reject) => {
+    server.listen(devServerPort, devServerHost, (error) => {
+      if (error) {
+        console.log(error);
+        reject(error);
 
-    console.log(
-      `🧪 Catalyst server is now listening at ${chalk.cyan(
-        `http://${devServerHost}:${devServerPort}`
-      )}\n`
-    );
+        return;
+      }
 
-    const signals: Array<'SIGINT' | 'SIGTERM'> = ['SIGINT', 'SIGTERM'];
+      resolve();
 
-    signals.forEach((signal) => {
-      process.on(signal, () => {
-        server.close();
-        process.exit();
+      console.log(
+        `🧪 Catalyst server is now listening at ${chalk.cyan(
+          `http://${devServerHost}:${devServerPort}`
+        )}\n`
+      );
+
+      const signals: Array<'SIGINT' | 'SIGTERM'> = ['SIGINT', 'SIGTERM'];
+
+      signals.forEach((signal) => {
+        process.on(signal, () => {
+          server.close();
+          process.exit();
+        });
       });
     });
   });

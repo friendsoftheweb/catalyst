@@ -1,5 +1,3 @@
-import fs from 'fs';
-import path from 'path';
 import { reduce } from 'lodash';
 import { Configuration } from 'webpack';
 import { getEnvironment, getConfig, getDirectories } from '../../utils';
@@ -9,6 +7,7 @@ import generateOutput from './generateOutput';
 import generatePlugins from './generatePlugins';
 import generateRules from './generateRules';
 import generateOptimization from './generateOptimization';
+import bundlePaths from './bundlePaths';
 
 export interface Options {
   context: string;
@@ -39,7 +38,9 @@ const defaultOptions: Partial<Options> = {
   ]
 };
 
-export default function webpackConfig(options: Options): Configuration {
+export default function webpackConfig(
+  options: Partial<Options> = {}
+): Configuration {
   const env = getEnvironment();
   const config = getConfig();
   const directories = getDirectories();
@@ -52,17 +53,12 @@ export default function webpackConfig(options: Options): Configuration {
     ...options
   };
 
-  const bundlePaths = fs
-    .readdirSync(directories.bundles)
-    .map((bundlePath) => path.join(directories.bundles, bundlePath))
-    .filter((bundlePath) => fs.statSync(bundlePath).isDirectory());
-
   return {
     context: directories.context,
     mode: env.isProduction ? 'production' : 'development',
     devtool: generateDevtool(),
     entry: reduce(
-      bundlePaths,
+      bundlePaths(),
       (entry, bundlePath) => {
         const parts = bundlePath.split('/');
         const bundleName = parts[parts.length - 1];
