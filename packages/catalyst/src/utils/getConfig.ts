@@ -16,7 +16,7 @@ const defaultConfig: Partial<Configuration> = {
     'apollo-link',
     'apollo-link-http',
     'axios',
-    'catalyst/lib/dev-client',
+    'catalyst-client',
     'classnames',
     'lodash',
     'react',

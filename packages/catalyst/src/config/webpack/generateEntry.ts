@@ -9,7 +9,7 @@ export default function generateEntry(entryPath: string) {
 
   if (environment.isDevelopment && config.overlay) {
     entry.push(path.resolve(__dirname, '../../../lib/dev-environment'));
-    entry.push(path.resolve(__dirname, '../../../lib/dev-client'));
+    entry.push('catalyst-client');
   }
 
   entry.push('regenerator-runtime/runtime');
