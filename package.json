@@ -6,7 +6,8 @@
     "npm": ">= 3.0.0"
   },
   "scripts": {
-    "test": "lerna run test"
+    "test": "lerna run test",
+    "postinstall": "lerna bootstrap"
   },
   "author": "Dan Martens",
   "license": "MIT",
