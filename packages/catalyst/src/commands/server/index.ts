@@ -1,7 +1,7 @@
-import path from 'path';
-import { execSync } from 'child_process';
 import chalk from 'chalk';
+import WebpackDevServer from 'webpack-dev-server';
 
+import buildVendorPackages from './buildVendorPackages';
 import createDevServer from './createDevServer';
 
 import {
@@ -11,29 +11,12 @@ import {
   rebuildNodeSASS
 } from '../../utils';
 
-const webpackVendorConfigPath = path.resolve(
-  __dirname,
-  '../../config/webpack/dll-config.js'
-);
-
-export default async function server() {
+export default async function server(): Promise<WebpackDevServer> {
   const { devServerHost, devServerPort } = getEnvironment();
 
   await checkPortAvailability(devServerPort);
   await rebuildNodeSASS();
-
-  console.log(chalk.cyan('\nPrebuilding vendor packages...\n'));
-
-  // execSync(
-  //   [
-  //     'webpack',
-  //     `--config=${webpackVendorConfigPath}`,
-  //     '--display-error-details',
-  //     '--hide-modules',
-  //     '--bail',
-  //     '--color'
-  //   ].join(' ')
-  // );
+  await buildVendorPackages();
 
   const { overlay } = getConfig();
 
@@ -71,5 +54,3 @@ export default async function server() {
     });
   });
 }
-
-module.exports = server;

@@ -45,6 +45,7 @@ export default function webpackConfig(
   const config = getConfig();
   const directories = getDirectories();
 
+  // @ts-ignore
   const optionsWithDefaults: Options = {
     context: directories.context,
     projectRoot: directories.project,

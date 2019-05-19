@@ -4,12 +4,14 @@ import SockJS from 'sockjs-client';
 import getConfig from '../../../utils/getConfig';
 import getEnvironment from '../../../utils/getEnvironment';
 import getWebpackConfig from '../getWebpackConfig';
+import buildVendorPackages from '../buildVendorPackages';
 
 jest.setTimeout(20000);
 
 jest.mock('../../../utils/getConfig');
 jest.mock('../../../utils/getEnvironment');
 jest.mock('../getWebpackConfig');
+jest.mock('../buildVendorPackages');
 
 console.log = jest.fn();
 console.info = jest.fn();

@@ -22,7 +22,8 @@
   },
   "scripts": {
     "build": "scripts/build",
-    "test": "jest"
+    "test": "jest",
+    "types:check": "tsc --noEmit"
   },
   "jest": {
     "moduleFileExtensions": [
