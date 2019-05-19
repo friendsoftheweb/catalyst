@@ -6,5 +6,7 @@ node_js:
   - '8'
 cache: yarn
 script:
+  - (cd packages/catalyst && yarn tsc --noEmit)
+  - (cd packages/catalyst-client && yarn tsc --noEmit)
   - (cd packages/catalyst && yarn test)
   - (cd packages/catalyst-client && yarn test)

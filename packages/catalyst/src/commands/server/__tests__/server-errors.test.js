@@ -2,16 +2,34 @@ import fs from 'fs';
 import SockJS from 'sockjs-client';
 
 import getConfig from '../../../utils/getConfig';
+import getEnvironment from '../../../utils/getEnvironment';
 import getWebpackConfig from '../getWebpackConfig';
+
+jest.setTimeout(20000);
+
+jest.mock('../../../utils/getConfig');
+jest.mock('../../../utils/getEnvironment');
+jest.mock('../getWebpackConfig');
 
 console.log = jest.fn();
 console.info = jest.fn();
 console.error = jest.fn();
 
-jest.mock('../../../utils/getConfig');
-jest.mock('../getWebpackConfig');
+const devServerHost = 'localhost';
+const devServerPort = '8081';
+const entryPath = './test-project/errors-entry.js';
+let webpackDevServer;
+let sockJSConnection;
 
-jest.setTimeout(20000);
+afterEach(() => {
+  if (sockJSConnection != null) {
+    sockJSConnection.close();
+  }
+
+  if (webpackDevServer != null) {
+    webpackDevServer.close();
+  }
+});
 
 const invalidSource = `
 function parsingError() {
@@ -21,25 +39,20 @@ function parsingError() {
 
 import server from '../index';
 
-const entryPath = './test-project/entry2.js';
-
-let devSever;
-let connection;
-
-afterEach(() => {
-  if (connection != null) {
-    connection.close();
-  }
-
-  if (devSever != null) {
-    devSever.close();
-  }
-});
-
-test('works 2', (done) => {
+test('server emits "errors" events via SockJS', (done) => {
   getConfig.mockImplementation(() => ({
-    rootPath: 'ROOT',
-    buildPath: 'BUILD'
+    rootPath: 'src',
+    buildPath: 'public/assets'
+  }));
+
+  getEnvironment.mockImplementation(() => ({
+    isProduction: false,
+    isTest: false,
+    isDevelopment: true,
+    typeScriptConfigExists: false,
+    flowConfigExists: false,
+    devServerHost,
+    devServerPort
   }));
 
   getWebpackConfig.mockImplementation(() => ({
@@ -49,14 +62,21 @@ test('works 2', (done) => {
     }
   }));
 
-  fs.writeFile(entryPath, "console.log('ok');", () => {
-    server().then((webpackDevServer) => {
-      devSever = webpackDevServer;
-      connection = new SockJS('http://localhost:8080/sockjs-node');
+  fs.writeFile(entryPath, "console.log('ok');", (error) => {
+    if (error != null) {
+      throw new Error(error);
+    }
+
+    server().then((devSever) => {
+      webpackDevServer = devSever;
+
+      sockJSConnection = new SockJS(
+        `http://${devServerHost}:${devServerPort}/sockjs-node`
+      );
 
       let ok = false;
 
-      connection.onmessage = function(event) {
+      sockJSConnection.onmessage = function(event) {
         const message = JSON.parse(event.data);
 
         if (message.type === 'ok') {
