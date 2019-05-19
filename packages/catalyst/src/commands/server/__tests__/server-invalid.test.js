@@ -14,7 +14,7 @@ console.info = jest.fn();
 
 const entryPath = './test-project/entry.js';
 
-jest.setTimeout(60000);
+jest.setTimeout(20000);
 
 import server from '../index';
 
@@ -67,11 +67,9 @@ test('works', (done) => {
         if (message.type === 'ok') {
           ok = true;
 
-          fs.writeFile(
-            entryPath,
-            "console.log('Hello World Updated');",
-            () => {}
-          );
+          setTimeout(() => {
+            fs.writeFileSync(entryPath, "console.log('Hello World Updated');");
+          }, 100);
         }
 
         if (ok && message.type === 'invalid') {

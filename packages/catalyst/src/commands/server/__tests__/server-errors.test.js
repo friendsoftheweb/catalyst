@@ -4,8 +4,6 @@ import SockJS from 'sockjs-client';
 import getConfig from '../../../utils/getConfig';
 import getWebpackConfig from '../getWebpackConfig';
 
-const consoleLog = console.log;
-
 console.log = jest.fn();
 console.info = jest.fn();
 console.error = jest.fn();
@@ -13,7 +11,7 @@ console.error = jest.fn();
 jest.mock('../../../utils/getConfig');
 jest.mock('../getWebpackConfig');
 
-jest.setTimeout(60000);
+jest.setTimeout(20000);
 
 const invalidSource = `
 function parsingError() {
@@ -61,14 +59,12 @@ test('works 2', (done) => {
       connection.onmessage = function(event) {
         const message = JSON.parse(event.data);
 
-        consoleLog(message);
-
         if (message.type === 'ok') {
           ok = true;
 
           setTimeout(() => {
             fs.writeFileSync(entryPath, invalidSource);
-          }, 1000);
+          }, 100);
         }
 
         if (ok && message.type === 'errors') {
