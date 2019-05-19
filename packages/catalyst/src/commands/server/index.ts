@@ -52,7 +52,7 @@ export default async function server() {
         return;
       }
 
-      resolve();
+      resolve(server);
 
       console.log(
         `🧪 Catalyst server is now listening at ${chalk.cyan(

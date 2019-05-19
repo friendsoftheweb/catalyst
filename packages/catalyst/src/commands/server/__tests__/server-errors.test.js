@@ -37,7 +37,7 @@ test('works 2', (done) => {
   }));
 
   fs.writeFile(entryPath, "console.log('ok');", () => {
-    server().then(() => {
+    server().then((webpackDevServer) => {
       const connection = new SockJS('http://localhost:8080/sockjs-node');
 
       let ok = false;
@@ -65,6 +65,8 @@ test('works 2', (done) => {
             '| '
           ]);
 
+          connection.close();
+          webpackDevServer.close();
           done();
         }
       };
