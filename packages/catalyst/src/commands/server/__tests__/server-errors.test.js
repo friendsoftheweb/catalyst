@@ -66,7 +66,9 @@ test('works 2', (done) => {
         if (message.type === 'ok') {
           ok = true;
 
-          fs.writeFileSync(entryPath, invalidSource);
+          setTimeout(() => {
+            fs.writeFileSync(entryPath, invalidSource);
+          }, 1000);
         }
 
         if (ok && message.type === 'errors') {
