@@ -3,7 +3,6 @@
 import { templateSettings } from 'lodash';
 import program from 'commander';
 import init from './commands/init';
-import generate from './commands/generate/component';
 import server from './commands/server';
 import build from './commands/build';
 
@@ -16,12 +15,6 @@ program
   .option('--force', 'run command even if uncommitted files exist')
   .description('creates a new package.json and directory structure')
   .action(init);
-
-program
-  .command('generate [type] [name]')
-  .alias('g')
-  .description('generates a new set of files based on the type')
-  .action(generate);
 
 program
   .command('server')
