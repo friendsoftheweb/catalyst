@@ -23,6 +23,19 @@ import server from '../index';
 
 const entryPath = './test-project/entry2.js';
 
+let devSever;
+let connection;
+
+afterEach(() => {
+  if (connection != null) {
+    connection.close();
+  }
+
+  if (devSever != null) {
+    devSever.close();
+  }
+});
+
 test('works 2', (done) => {
   getConfig.mockImplementation(() => ({
     rootPath: 'ROOT',
@@ -38,7 +51,8 @@ test('works 2', (done) => {
 
   fs.writeFile(entryPath, "console.log('ok');", () => {
     server().then((webpackDevServer) => {
-      const connection = new SockJS('http://localhost:8080/sockjs-node');
+      devSever = webpackDevServer;
+      connection = new SockJS('http://localhost:8080/sockjs-node');
 
       let ok = false;
 
@@ -65,8 +79,6 @@ test('works 2', (done) => {
             '| '
           ]);
 
-          connection.close();
-          webpackDevServer.close();
           done();
         }
       };

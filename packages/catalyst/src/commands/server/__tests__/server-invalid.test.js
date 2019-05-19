@@ -18,6 +18,19 @@ jest.setTimeout(10000);
 
 import server from '../index';
 
+let devSever;
+let connection;
+
+afterEach(() => {
+  if (connection != null) {
+    connection.close();
+  }
+
+  if (devSever != null) {
+    devSever.close();
+  }
+});
+
 test('works', (done) => {
   getConfig.mockImplementation(() => ({
     rootPath: 'ROOT',
@@ -43,7 +56,8 @@ test('works', (done) => {
 
   fs.writeFile(entryPath, "console.log('Hello World');", () => {
     server().then((webpackDevServer) => {
-      const connection = new SockJS('http://localhost:8090/sockjs-node');
+      devSever = webpackDevServer;
+      connection = new SockJS('http://localhost:8090/sockjs-node');
 
       let ok = false;
 
@@ -61,8 +75,6 @@ test('works', (done) => {
         }
 
         if (ok && message.type === 'invalid') {
-          connection.close();
-          webpackDevServer.close();
           done();
         }
       };
