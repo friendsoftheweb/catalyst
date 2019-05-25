@@ -1,7 +1,7 @@
 import chalk from 'chalk';
 import { padStart } from 'lodash';
 
-export function logAction(action: string, filePath: string) {
+export default function logAction(action: string, filePath: string) {
   let color;
 
   switch (action) {
@@ -20,9 +20,4 @@ export function logAction(action: string, filePath: string) {
   }
 
   console.log(`${color(padStart(action, 10))} ${filePath}`);
-}
-
-export function exitWithError(message: string, code = 1) {
-  console.log(chalk.red(message));
-  process.exit(code);
 }

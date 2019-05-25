@@ -3,7 +3,7 @@ import chalk from 'chalk';
 import {
   getConfig,
   getEnvironment,
-  log,
+  exitWithError,
   spinnerSpawn,
   rebuildNodeSASS
 } from '../utils';
@@ -13,7 +13,7 @@ export default async function build() {
   const config = getConfig();
 
   if (!(environment.isProduction || environment.isTest)) {
-    log.exitWithError(
+    exitWithError(
       [
         'Build environment must be one of: "production", "test".',
         'Try setting the NODE_ENV environment variable.'
@@ -40,7 +40,7 @@ export default async function build() {
       console.log(chalk.green('Build Succeeded'));
     },
     (code) => {
-      log.exitWithError('Build Failed!', code);
+      exitWithError('Build Failed!', code);
     }
   );
 }

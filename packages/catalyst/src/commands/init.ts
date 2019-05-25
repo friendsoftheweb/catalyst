@@ -6,7 +6,7 @@ import inquirer from 'inquirer';
 import { get, without } from 'lodash';
 
 import {
-  log,
+  exitWithError,
   runInSeries,
   spinnerSpawn,
   writeFileFromTemplate
@@ -35,7 +35,7 @@ export default function init(options: Options) {
   const defaultConfig = { rootPath: 'client', buildPath: 'public/assets' };
 
   if (!options.force && modifiedFileCount() > 0) {
-    log.exitWithError(
+    exitWithError(
       'Please commit or stash any modified files before running `catalyst init` or rerun as `catalyst init --force`.'
     );
   }

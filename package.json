@@ -1,17 +1,14 @@
 {
-  "version": "1.0.0-beta.47",
-  "description": "Sets up Webpack, React, Redux, and more!",
+  "author": "Dan Martens",
+  "license": "MIT",
   "engines": {
-    "node": ">= 8.9.0",
-    "npm": ">= 3.0.0"
+    "node": ">= 10"
   },
   "scripts": {
     "test": "lerna run test",
     "types:check": "lerna run types:check",
     "postinstall": "lerna bootstrap"
   },
-  "author": "Dan Martens",
-  "license": "MIT",
   "devDependencies": {
     "lerna": "^3.14.1"
   }

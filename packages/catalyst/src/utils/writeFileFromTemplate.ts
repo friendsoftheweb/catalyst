@@ -6,7 +6,7 @@ import { diffJson, diffLines } from 'diff';
 import inquirer from 'inquirer';
 import chalk from 'chalk';
 
-import { logAction } from './log';
+import logAction from './logAction';
 
 export default function writeFileFromTemplate(
   outputPath: string,

@@ -1,5 +1,6 @@
 import { execSync } from 'child_process';
-import { exitWithError } from './log';
+
+import exitWithError from './exitWithError';
 
 export default async function rebuildNodeSASS() {
   try {

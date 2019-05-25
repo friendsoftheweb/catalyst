@@ -1,7 +1,7 @@
 {
   "name": "catalyst",
-  "version": "0.0.0",
-  "description": "> TODO: description",
+  "version": "1.0.0-beta.47",
+  "description": "Sets up Webpack, React, Redux, and more!",
   "author": "Dan Martens <dan@friendsoftheweb.com>",
   "homepage": "https://github.com/friendsoftheweb/catalyst#readme",
   "license": "MIT",
@@ -10,8 +10,8 @@
   "files": [
     "lib"
   ],
-  "publishConfig": {
-    "registry": "https://registry.yarnpkg.com"
+  "engines": {
+    "node": ">= 10"
   },
   "repository": {
     "type": "git",
