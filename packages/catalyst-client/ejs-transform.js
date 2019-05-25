@@ -1,4 +1,4 @@
-const ejs = require("ejs");
+const ejs = require('ejs');
 
 module.exports = {
   process(templateText) {
@@ -7,6 +7,7 @@ module.exports = {
         client: true,
         _with: false
       })};
+
       module.exports = anonymous;
     `;
   }

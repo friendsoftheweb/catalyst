@@ -1,7 +1,7 @@
 {
   "name": "catalyst-client",
-  "version": "0.0.0",
-  "description": "> TODO: description",
+  "version": "1.0.0-beta.47",
+  "description": "The development client for catalyst.",
   "author": "Dan Martens <dan@friendsoftheweb.com>",
   "homepage": "https://github.com/friendsoftheweb/catalyst#readme",
   "license": "MIT",
@@ -33,7 +33,7 @@
     ],
     "transform": {
       "^.+\\.(t|j)sx?$": "babel-jest",
-      "^.+\\.ejs$": "<rootDir>/transform.js"
+      "^.+\\.ejs$": "<rootDir>/ejs-transform.js"
     }
   },
   "bugs": {
