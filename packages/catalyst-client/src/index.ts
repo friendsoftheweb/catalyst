@@ -20,28 +20,42 @@ import SockJS from 'sockjs-client';
 import activityTemplate from './templates/activity';
 // @ts-ignore
 import compilationErrorTemplate from './templates/compilation-error';
+// @ts-ignore
+import runtimeErrorsTemplate from './templates/runtime-errors';
 
 import createOverlayContainer from './createOverlayContainer';
 import formatCompiliationError from './formatCompilationError';
 
 let overlayContainerHTML: string | null = null;
 let overlayFrameVisible = false;
+let overlayFramePointerEvents = 'none';
+let runtimeErrorCount = 0;
 
-function updateOverlayContainer() {
-  return createOverlayContainer().then((elements) => {
-    elements.container.innerHTML = overlayContainerHTML || '';
-    elements.frame.style.display = overlayFrameVisible ? 'block' : 'none';
+function updateOverlayContainer(): Promise<void> {
+  return createOverlayContainer().then(({ frame, container }) => {
+    frame.style.display = overlayFrameVisible ? 'block' : 'none';
+    frame.style.pointerEvents = overlayFramePointerEvents;
+
+    container.style.backgroundColor =
+      overlayFramePointerEvents === 'none'
+        ? 'transparent'
+        : 'rgba(255,255,255,0.25)';
+    container.innerHTML = overlayContainerHTML || '';
   });
 }
 
-function showNotification(template: string) {
+function showNotification(
+  template: string,
+  options: { pointerEvents: 'auto' | 'none' } = { pointerEvents: 'none' }
+): Promise<any> {
   overlayFrameVisible = true;
   overlayContainerHTML = template;
+  overlayFramePointerEvents = options.pointerEvents;
 
   return updateOverlayContainer();
 }
 
-function hideNotification() {
+function hideNotification(): Promise<void> {
   overlayFrameVisible = false;
   overlayContainerHTML = null;
 
@@ -49,9 +63,10 @@ function hideNotification() {
 }
 
 const { devServerPort, devServerHost } = window.__CATALYST_ENV__;
+const { protocol } = window.location;
 
 const connection = new SockJS(
-  `${window.location.protocol}//${devServerHost}:${devServerPort}/sockjs-node`
+  `${protocol}//${devServerHost}:${devServerPort}/sockjs-node`
 );
 
 let isBuilding = false;
@@ -81,12 +96,20 @@ connection.onmessage = function(event) {
 
     case 'ok':
       isBuilding = false;
-      tryApplyUpdates();
+
+      tryApplyUpdates().then(() => {
+        showRuntimeErrors();
+      });
+
       break;
 
     case 'still-ok':
       isBuilding = false;
-      hideNotification();
+
+      hideNotification().then(() => {
+        showRuntimeErrors();
+      });
+
       break;
 
     case 'warnings':
@@ -103,14 +126,15 @@ connection.onmessage = function(event) {
       showNotification(
         compilationErrorTemplate({
           message: formatCompiliationError(message.data[0])
-        })
+        }),
+        { pointerEvents: 'auto' }
       );
 
       break;
   }
 };
 
-function tryApplyUpdates() {
+function tryApplyUpdates(): Promise<any> {
   if (firstCompilationHash === lastCompilationHash) {
     return Promise.resolve();
   }
@@ -134,3 +158,21 @@ function tryApplyUpdates() {
       throw error;
     });
 }
+
+function showRuntimeErrors() {
+  if (!isBuilding && runtimeErrorCount > 0) {
+    showNotification(
+      runtimeErrorsTemplate({
+        count: runtimeErrorCount
+      })
+    );
+  }
+}
+
+window.onerror = () => {
+  runtimeErrorCount++;
+
+  showRuntimeErrors();
+
+  return false;
+};

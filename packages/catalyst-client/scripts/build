@@ -1,20 +1,20 @@
 #!/usr/bin/env node
 
-const path = require("path");
-const fs = require("fs");
-const { execSync } = require("child_process");
-const ejs = require("ejs");
-const mkdirp = require("mkdirp");
+const path = require('path');
+const fs = require('fs');
+const { execSync } = require('child_process');
+const ejs = require('ejs');
+const mkdirp = require('mkdirp');
 
-execSync("rm -rf lib");
-execSync("tsc");
+execSync('rm -rf lib');
+execSync('tsc');
 
-const inputDir = path.resolve(__dirname, "../src/templates");
-const outputDir = path.resolve(__dirname, "../lib/templates");
+const inputDir = path.resolve(__dirname, '../src/templates');
+const outputDir = path.resolve(__dirname, '../lib/templates');
 
 mkdirp.sync(outputDir);
 
-fs.readdirSync(inputDir).forEach(file => {
+fs.readdirSync(inputDir).forEach((file) => {
   const templateText = fs.readFileSync(path.join(inputDir, file)).toString();
 
   const templateFunctionText = `
@@ -24,7 +24,7 @@ fs.readdirSync(inputDir).forEach(file => {
   `;
 
   fs.writeFileSync(
-    path.join(outputDir, file.replace(/\.ejs$/, ".js")),
+    path.join(outputDir, file.replace(/\.ejs$/, '.js')),
     templateFunctionText
   );
 });
