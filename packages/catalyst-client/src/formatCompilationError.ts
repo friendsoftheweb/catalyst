@@ -21,6 +21,11 @@ function formatCompiliationError(message: string) {
       // HTML escape greater-than characters
       line = line.replace(/([^^])(>)/g, '$1&gt;');
 
+      // Remove stacktrace lines
+      if (/^\s+at Object/.test(line)) {
+        return null;
+      }
+
       if (/^>\s+\d+?\s+\|/.test(line)) {
         line = line.replace(/^>/, ' ');
 
@@ -39,6 +44,7 @@ function formatCompiliationError(message: string) {
 
       return `<div>${line}</div>`;
     })
+    .filter((line) => line != null)
     .join('');
 }
 

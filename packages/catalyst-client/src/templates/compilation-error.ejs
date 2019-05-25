@@ -1,5 +1,9 @@
 <div class="compilation-error">
-  <h1>Failed to compile</h1>
+  <a class="compilation-error-brand" href="https://github.com/friendsoftheweb/catalyst" target="_blank" rel="noopener">
+    🧪 Catalyst
+  </a>
+
+  <h1>Failed to Compile</h1>
 
   <div class="compilation-error-message"><%- locals.message %></div>
 </div>
@@ -30,6 +34,13 @@
     line-height: 1.2em;
     padding: 2rem;
     overflow: auto;
+  }
+
+  .compilation-error-brand {
+    display: block;
+    color: #999999;
+    text-decoration: none;
+    margin-bottom: 2em;
   }
 
   .compilation-error-message {
