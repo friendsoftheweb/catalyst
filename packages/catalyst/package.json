@@ -48,6 +48,7 @@
     "babel-loader": "^8.0.6",
     "babel-plugin-graphql-tag": "^2.4.0",
     "babel-plugin-lodash": "^3.3.4",
+    "catalyst-client": "^1.0.0-beta.47",
     "chalk": "^2.4.2",
     "commander": "^2.20.0",
     "compression-webpack-plugin": "^2.0.0",
