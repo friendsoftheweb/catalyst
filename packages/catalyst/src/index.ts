@@ -6,6 +6,9 @@ import init from './commands/init';
 import server from './commands/server';
 import build from './commands/build';
 
+export { default as babelConfig } from './config/babel';
+export { default as webpackConfig } from './config/webpack';
+
 templateSettings.interpolate = /<%=([\s\S]+?)%>/g;
 
 program.version(require('../package.json')['version']);
