@@ -40,7 +40,7 @@ export default function babelConfig({
     require.resolve('@babel/runtime/package.json')
   );
 
-  const plugins = [
+  const plugins: Array<string | [string, Object]> = [
     '@babel/plugin-proposal-object-rest-spread',
     ['@babel/plugin-proposal-class-properties', { loose: true }],
     '@babel/plugin-proposal-optional-chaining',
@@ -54,10 +54,12 @@ export default function babelConfig({
   }
 
   if (environment.isProduction) {
-    plugins.push(
-      '@babel/plugin-transform-react-constant-elements',
-      'babel-plugin-lodash'
-    );
+    plugins.push('babel-plugin-lodash', [
+      'babel-plugin-transform-react-remove-prop-types',
+      {
+        removeImport: true
+      }
+    ]);
   }
 
   return {
