@@ -18,7 +18,7 @@
     "url": "git+https://github.com/friendsoftheweb/catalyst.git"
   },
   "scripts": {
-    "build": "tsc",
+    "build": "scripts/build",
     "test": "jest",
     "types:check": "tsc --noEmit"
   },

@@ -106,7 +106,7 @@ export default function init(options: Options) {
           writeFileFromTemplate.bind(
             null,
             `${config.rootPath}/bundles/application/index.ts`,
-            'bundles/bundle.ts.jst'
+            'bundle.ts.jst'
           )
         );
       }

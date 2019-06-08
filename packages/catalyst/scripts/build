@@ -1,0 +1,22 @@
+#!/usr/bin/env node
+
+const path = require('path');
+const fs = require('fs');
+const { execSync } = require('child_process');
+const glob = require('glob');
+const mkdirp = require('mkdirp');
+
+execSync('rm -rf lib');
+execSync('tsc');
+execSync('chmod +x lib/index.js');
+
+const templatePaths = glob.sync('src/templates/**/*');
+
+for (const templatePath of templatePaths) {
+  const destPath = templatePath.replace(/^src/, 'lib');
+  const destPathDir = path.parse(destPath).dir;
+
+  mkdirp.sync(destPathDir);
+
+  fs.copyFileSync(templatePath, destPath);
+}
