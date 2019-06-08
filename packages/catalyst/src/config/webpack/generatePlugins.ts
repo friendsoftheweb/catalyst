@@ -2,9 +2,9 @@ import webpack from 'webpack';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import ManifestPlugin from 'webpack-manifest-plugin';
 import CompressionPlugin from 'compression-webpack-plugin';
+import WorkboxWebpackPlugin from 'workbox-webpack-plugin';
 import { getEnvironment } from '../../utils';
 import CleanUpStatsPlugin from '../../webpack-plugins/CleanUpStatsPlugin';
-
 import { Options } from './index';
 
 export default function generatePlugins(options: Options) {
@@ -48,6 +48,10 @@ export default function generatePlugins(options: Options) {
     plugins.push(
       new CompressionPlugin({
         test: /\.(js|s?css)$/
+      }),
+      new WorkboxWebpackPlugin.GenerateSW({
+        clientsClaim: true,
+        exclude: [/\.map$/, /manifest\.json$/]
       })
     );
   }
