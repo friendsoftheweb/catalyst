@@ -1,6 +1,5 @@
 import { reduce } from 'lodash';
-import { Configuration } from 'webpack';
-import { getEnvironment, getConfig, getDirectories } from '../../utils';
+import { Configuration as WebpackConfiguration } from 'webpack';
 import generateDevtool from './generateDevtool';
 import generateEntryForBundleName from './generateEntryForBundleName';
 import generateOutput from './generateOutput';
@@ -8,55 +7,14 @@ import generatePlugins from './generatePlugins';
 import generateRules from './generateRules';
 import generateOptimization from './generateOptimization';
 import bundlePaths from './bundlePaths';
+import Configuration from '../../Configuration';
 
-export interface Options {
-  context: string;
-  projectRoot: string;
-  buildPath: string;
-  publicPath: string;
-  transformModules: string[];
-}
+const { environment, rootPath, contextPath } = new Configuration();
 
-const defaultOptions: Partial<Options> = {
-  publicPath: '/assets/',
-  transformModules: [
-    '@reach/router',
-    'apollo-cache-inmemory',
-    'apollo-client',
-    'apollo-link',
-    'apollo-link-http',
-    'axios',
-    'luxon',
-    'react',
-    'react-apollo',
-    'react-dom',
-    'react-router',
-    'react-router-dom',
-    'react-transition-group',
-    'redux',
-    'redux-saga'
-  ]
-};
-
-export default function webpackConfig(
-  options: Partial<Options> = {}
-): Configuration {
-  const env = getEnvironment();
-  const config = getConfig();
-  const directories = getDirectories();
-
-  // @ts-ignore
-  const optionsWithDefaults: Options = {
-    context: directories.context,
-    projectRoot: directories.project,
-    buildPath: directories.build,
-    ...defaultOptions,
-    ...options
-  };
-
+export default function webpackConfig(): WebpackConfiguration {
   return {
-    context: directories.context,
-    mode: env.isProduction ? 'production' : 'development',
+    context: contextPath,
+    mode: environment === 'production' ? 'production' : 'development',
     devtool: generateDevtool(),
     entry: reduce(
       bundlePaths(),
@@ -70,14 +28,14 @@ export default function webpackConfig(
       },
       {}
     ),
-    output: generateOutput(optionsWithDefaults),
+    output: generateOutput(),
     resolve: {
       extensions: ['.wasm', '.mjs', '.js', '.ts', '.tsx', '.json'],
-      modules: [config.rootPath, 'node_modules']
+      modules: [rootPath, 'node_modules']
     },
-    plugins: generatePlugins(optionsWithDefaults),
+    plugins: generatePlugins(),
     module: {
-      rules: generateRules(optionsWithDefaults)
+      rules: generateRules()
     },
     optimization: generateOptimization()
   };

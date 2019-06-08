@@ -1,5 +1,7 @@
 import path from 'path';
-import { getEnvironment } from '../../utils';
+import Configuration from '../../Configuration';
+
+const { environment, typeScriptEnabled, flowEnabled } = new Configuration();
 
 interface Options {
   useBuiltIns?: 'usage' | 'entry' | false;
@@ -12,10 +14,8 @@ export default function babelConfig({
   corejs,
   useBuiltIns = 'usage'
 }: Options = {}) {
-  const environment = getEnvironment();
-
   if (modules == null) {
-    modules = environment.isTest ? 'commonjs' : false;
+    modules = environment === 'test' ? 'commonjs' : false;
   }
 
   const presetEnvOptions: Options = {
@@ -32,7 +32,7 @@ export default function babelConfig({
     ['@babel/preset-react', { useBuiltIns: true }]
   ];
 
-  if (environment.typeScriptConfigExists) {
+  if (typeScriptEnabled) {
     presets.push('@babel/preset-typescript');
   }
 
@@ -49,11 +49,11 @@ export default function babelConfig({
     ['@babel/plugin-transform-runtime', { useESModules: true, absoluteRuntime }]
   ];
 
-  if (environment.flowConfigExists) {
+  if (flowEnabled) {
     plugins.unshift('@babel/plugin-transform-flow-strip-types');
   }
 
-  if (environment.isProduction) {
+  if (environment === 'production') {
     plugins.push('babel-plugin-lodash', [
       'babel-plugin-transform-react-remove-prop-types',
       {

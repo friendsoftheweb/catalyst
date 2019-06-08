@@ -1,9 +1,10 @@
-import { getEnvironment } from '../../utils';
+import { Configuration as WebpackConfiguration } from 'webpack';
+import Configuration from '../../Configuration';
 
-export default function generateDevtool() {
-  const environment = getEnvironment();
+const { environment } = new Configuration();
 
-  if (environment.isProduction) {
+export default function generateDevtool(): WebpackConfiguration['devtool'] {
+  if (environment === 'production') {
     return 'source-map';
   }
 

@@ -1,26 +1,24 @@
 import { Output } from 'webpack';
-import path from 'path';
-import { getEnvironment } from '../../utils';
+import Configuration from '../../Configuration';
 
-import { Options } from './index';
+const {
+  environment,
+  buildPath,
+  publicPath,
+  devServerHost,
+  devServerPort
+} = new Configuration();
 
-export default function generateOutput({
-  context,
-  buildPath
-}: Options): Output {
-  const environment = getEnvironment();
-
-  if (environment.isDevelopment) {
+export default function generateOutput(): Output {
+  if (environment === 'development') {
     return {
-      path: path.join(context, 'app', 'assets'),
-      publicPath: `http://${environment.devServerHost}:${
-        environment.devServerPort
-      }/`
+      path: buildPath,
+      publicPath: `http://${devServerHost}:${devServerPort}/`
     };
   } else {
     return {
       path: buildPath,
-      publicPath: '/assets/',
+      publicPath,
       filename: '[name]-[hash].js'
     };
   }

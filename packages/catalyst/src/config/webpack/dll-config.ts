@@ -1,15 +1,20 @@
 import path from 'path';
 import webpack from 'webpack';
-import { getConfig, getDirectories } from '../../utils';
+import Configuration from '../../Configuration';
 
-const config = getConfig();
-const directories = getDirectories();
+const {
+  rootPath,
+  contextPath,
+  tempPath,
+  prebuiltModules
+} = new Configuration();
+
 const projectDependencies = Object.keys(
-  require(path.join(directories.project, 'package.json')).dependencies || {}
+  require(path.join(rootPath, 'package.json')).dependencies || {}
 );
 
 export default {
-  context: directories.project,
+  context: contextPath,
   mode: 'development',
 
   resolve: {
@@ -17,23 +22,21 @@ export default {
   },
 
   entry: {
-    vendor: config.prebuildPackages
-      ? config.prebuildPackages.filter(
-          (prebuildPackage) => projectDependencies.indexOf(prebuildPackage) > -1
-        )
-      : []
+    vendor: prebuiltModules.filter((prebuiltModule) =>
+      projectDependencies.includes(prebuiltModule)
+    )
   },
 
   plugins: [
     new webpack.DllPlugin({
       name: '[name]',
-      path: path.join(directories.project, '/tmp/catalyst/[name].json')
+      path: path.join(tempPath, '[name].json')
     })
   ],
 
   output: {
     filename: '[name]-dll.js',
-    path: path.join(directories.project, '/tmp/catalyst'),
+    path: tempPath,
     library: '[name]'
   }
 };

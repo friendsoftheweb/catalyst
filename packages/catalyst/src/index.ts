@@ -2,6 +2,7 @@
 
 import { templateSettings } from 'lodash';
 import program from 'commander';
+import chalk from 'chalk';
 import init from './commands/init';
 import server from './commands/server';
 import build from './commands/build';
@@ -45,7 +46,7 @@ program
     // itself. Or possibly convert all command functions to async functions so
     // the same `catch()` logic can be used for all of them.
     build().catch((error) => {
-      console.error(error.stack);
+      console.log(chalk.red(error.message));
       process.exit(1);
     });
   });

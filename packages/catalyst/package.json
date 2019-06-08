@@ -20,7 +20,9 @@
   "scripts": {
     "build": "scripts/build",
     "test": "jest",
-    "types:check": "tsc --noEmit"
+    "test:watch": "jest --watch",
+    "types:check": "tsc --noEmit",
+    "types:watch": "tsc --noEmit --watch"
   },
   "bugs": {
     "url": "https://github.com/friendsoftheweb/catalyst/issues"

@@ -1,13 +1,12 @@
 import fs from 'fs';
 import path from 'path';
+import Configuration from '../../Configuration';
 
-import { getDirectories } from '../../utils';
+const { bundlesPath } = new Configuration();
 
 export default function bundlePaths(): string[] {
-  const directories = getDirectories();
-
   return fs
-    .readdirSync(directories.bundles)
-    .map((bundlePath) => path.join(directories.bundles, bundlePath))
+    .readdirSync(bundlesPath)
+    .map((bundlePath) => path.join(bundlesPath, bundlePath))
     .filter((bundlePath) => fs.statSync(bundlePath).isDirectory());
 }

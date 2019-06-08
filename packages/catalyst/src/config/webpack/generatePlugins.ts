@@ -1,30 +1,31 @@
+import path from 'path';
 import webpack from 'webpack';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import ManifestPlugin from 'webpack-manifest-plugin';
 import CompressionPlugin from 'compression-webpack-plugin';
 import WorkboxWebpackPlugin from 'workbox-webpack-plugin';
-import { getEnvironment } from '../../utils';
 import CleanUpStatsPlugin from '../../webpack-plugins/CleanUpStatsPlugin';
-import { Options } from './index';
+import Configuration from '../../Configuration';
 
-export default function generatePlugins(options: Options) {
-  const environment = getEnvironment();
-  const cssFileName = environment.isProduction
-    ? '[name]-[hash].css'
-    : '[name].css';
+const { environment, contextPath, tempPath } = new Configuration();
+
+export default function generatePlugins() {
+  const cssFileName =
+    environment === 'production' ? '[name]-[hash].css' : '[name].css';
+
   const plugins = [];
 
-  if (environment.isDevelopment) {
+  if (environment === 'development') {
     plugins.push(
       new webpack.DllReferencePlugin({
-        context: options.projectRoot,
-        manifest: require(`${options.projectRoot}/tmp/catalyst/vendor.json`)
+        context: contextPath,
+        manifest: require(path.join(tempPath, 'vendor.json'))
       }),
       new webpack.HotModuleReplacementPlugin()
     );
   }
 
-  if (!environment.isDevelopment) {
+  if (environment !== 'development') {
     plugins.push(
       new MiniCssExtractPlugin({
         filename: cssFileName
@@ -34,17 +35,15 @@ export default function generatePlugins(options: Options) {
 
   plugins.push(
     new webpack.EnvironmentPlugin({
-      NODE_ENV: JSON.stringify(process.env.NODE_ENV),
-      DEV_SERVER_HOST: environment.devServerHost,
-      DEV_SERVER_PORT: environment.devServerPort
+      NODE_ENV: JSON.stringify(process.env.NODE_ENV)
     })
   );
 
-  if (environment.isProduction || environment.isTest) {
+  if (environment !== 'development') {
     plugins.push(new ManifestPlugin({ fileName: 'manifest.json' }));
   }
 
-  if (environment.isProduction) {
+  if (environment === 'production') {
     plugins.push(
       new CompressionPlugin({
         test: /\.(js|s?css)$/

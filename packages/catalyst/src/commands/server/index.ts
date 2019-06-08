@@ -1,29 +1,21 @@
 import chalk from 'chalk';
 import WebpackDevServer from 'webpack-dev-server';
-
 import buildVendorPackages from './buildVendorPackages';
 import createDevServer from './createDevServer';
+import { checkPortAvailability, rebuildNodeSASS } from '../../utils';
+import Configuration from '../../Configuration';
 
-import {
-  getEnvironment,
-  getConfig,
-  checkPortAvailability,
-  rebuildNodeSASS
-} from '../../utils';
+const { devServerHost, devServerPort, overlayEnabled } = new Configuration();
 
 export default async function server(): Promise<WebpackDevServer> {
-  const { devServerHost, devServerPort } = getEnvironment();
-
   await checkPortAvailability(devServerPort);
   await rebuildNodeSASS();
   await buildVendorPackages();
 
-  const { overlay } = getConfig();
-
   const server = createDevServer({
     host: devServerHost,
     port: devServerPort,
-    overlay: overlay || false
+    overlayEnabled: overlayEnabled
   });
 
   return new Promise((resolve, reject) => {

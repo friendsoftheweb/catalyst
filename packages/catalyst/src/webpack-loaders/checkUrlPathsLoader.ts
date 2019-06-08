@@ -1,7 +1,9 @@
 import path from 'path';
 import fs from 'fs';
 import chalk from 'chalk';
-import { getDirectories } from '../utils';
+import Configuration from '../Configuration';
+
+const { rootPath } = new Configuration();
 
 const CSS_URL_PATTERN = /url\(["']?(\/[^"']+)["']?\)/g;
 
@@ -10,13 +12,11 @@ const CSS_URL_PATTERN = /url\(["']?(\/[^"']+)["']?\)/g;
  * when it should probably start with a "~".
  */
 export default function checkUrlPathsLoader(content: string) {
-  const { context } = getDirectories();
-
   let match;
 
   while ((match = CSS_URL_PATTERN.exec(content)) !== null) {
     const assetPath = match[1];
-    const fullAssetPath = path.join(context, assetPath);
+    const fullAssetPath = path.join(rootPath, assetPath);
 
     if (fs.existsSync(fullAssetPath)) {
       throw new Error(

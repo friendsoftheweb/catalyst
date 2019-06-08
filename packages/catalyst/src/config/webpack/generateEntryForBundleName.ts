@@ -1,11 +1,12 @@
 import fs from 'fs';
 import path from 'path';
-import { getDirectories } from '../../utils';
+import Configuration from '../../Configuration';
 import generateEntry from './generateEntry';
 
+const { bundlesPath } = new Configuration();
+
 export default function generateEntryForBundleName(bundleName: string) {
-  const directories = getDirectories();
-  const bundlePath = path.join(directories.bundles, bundleName);
+  const bundlePath = path.join(bundlesPath, bundleName);
 
   for (const extension of ['js', 'ts', 'tsx']) {
     const indexPath = path.join(bundlePath, `index.${extension}`);

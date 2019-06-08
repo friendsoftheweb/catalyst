@@ -1,24 +1,24 @@
-import { RuleSetRule } from 'webpack';
 import path from 'path';
-import { getEnvironment } from '../../utils';
+import { RuleSetRule } from 'webpack';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import Configuration from '../../Configuration';
 
-import { Options } from './index';
-
-export default function generateRules({
-  projectRoot,
-  context,
+const {
+  environment,
+  rootPath,
+  contextPath,
   publicPath,
-  transformModules
-}: Options) {
-  const environment = getEnvironment();
+  transformedModules
+} = new Configuration();
+
+export default function generateRules() {
   const rules: RuleSetRule[] = [];
 
   rules.push({
     test: /\.s?css$/,
     // @ts-ignore
     use: [
-      environment.isDevelopment
+      environment === 'development'
         ? {
             loader: 'style-loader'
           }
@@ -55,11 +55,11 @@ export default function generateRules({
     ]
   });
 
-  const include = transformModules.map(
-    (moduleName) => `${path.join(projectRoot, 'node_modules', moduleName)}/`
+  const include = transformedModules.map(
+    (moduleName) => `${path.join(rootPath, 'node_modules', moduleName)}/`
   );
 
-  include.push(context);
+  include.push(contextPath);
 
   rules.push({
     test: /\.(ts|js)x?$/,
@@ -78,27 +78,18 @@ export default function generateRules({
   });
 
   rules.push(
-    generateFileLoaderRule(path.join(context, 'assets'), publicPath),
-    generateFileLoaderRule(path.join(projectRoot, 'node_modules'))
+    generateFileLoaderRule(path.join(contextPath, 'assets')),
+    generateFileLoaderRule(path.join(rootPath, 'node_modules'))
   );
 
   return rules;
 }
 
-function generateFileLoaderRule(
-  basePath: string,
-  publicPath?: string
-): RuleSetRule {
-  const environment = getEnvironment();
-  const name = environment.isProduction
-    ? '[path][name]-[hash].[ext]'
-    : '[path][name].[ext]';
-
-  if (environment.isDevelopment) {
-    publicPath = `http://${environment.devServerHost}:${
-      environment.devServerPort
-    }/`;
-  }
+function generateFileLoaderRule(basePath: string): RuleSetRule {
+  const name =
+    environment === 'production'
+      ? '[path][name]-[hash].[ext]'
+      : '[path][name].[ext]';
 
   return {
     test: /\.(jpe?g|gif|png|svg|woff2?|eot|ttf)$/,

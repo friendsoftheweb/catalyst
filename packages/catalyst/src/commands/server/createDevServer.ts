@@ -2,19 +2,22 @@ import path from 'path';
 import fs from 'fs';
 import webpack from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
+import Configuration from '../../Configuration';
 
-import { getDirectories } from '../../utils';
-import getWebpackConfig from './getWebpackConfig';
+const { tempPath, webpackConfig } = new Configuration();
 
 interface Options {
   host: string;
   port: number;
-  overlay: boolean;
+  overlayEnabled: boolean;
 }
 
-export default function createDevServer({ host, port, overlay }: Options) {
-  const directories = getDirectories();
-  const vendorFilePath = path.join(directories.temp, 'vendor-dll.js');
+export default function createDevServer({
+  host,
+  port,
+  overlayEnabled
+}: Options) {
+  const vendorFilePath = path.join(tempPath, 'vendor-dll.js');
 
   const configuration: WebpackDevServer.Configuration = {
     host,
@@ -49,15 +52,13 @@ export default function createDevServer({ host, port, overlay }: Options) {
     }
   };
 
-  const config = getWebpackConfig();
-
   // If the custom error overlay is disabled, add the standard webpack
   // development client.
-  if (overlay === false) {
-    WebpackDevServer.addDevServerEntrypoints(config, configuration);
+  if (overlayEnabled === false) {
+    WebpackDevServer.addDevServerEntrypoints(webpackConfig, configuration);
   }
 
-  const compiler = webpack(config);
+  const compiler = webpack(webpackConfig);
 
   return new WebpackDevServer(compiler, configuration);
 }
