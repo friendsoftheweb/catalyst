@@ -12,7 +12,7 @@ import {
   writeFileFromTemplate
 } from '../utils';
 
-const nodePackages = ['catalyst', 'react', 'react-dom'];
+const nodePackages = ['catalyst', 'react', 'react-dom', 'core-js@3'];
 
 const nodePackagesDev = [
   'typescript',
