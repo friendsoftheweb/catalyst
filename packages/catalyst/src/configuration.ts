@@ -1,7 +1,6 @@
 import path from 'path';
 import fs from 'fs';
 import { Configuration as WebpackConfiguration } from 'webpack';
-import generateWebpackConfig from './config/webpack';
 
 type Environment = 'development' | 'test' | 'production';
 
@@ -72,7 +71,7 @@ function isCustomConfiguration(value: any): value is CustomConfiguration {
   }
 
   // TODO: Validate custom root path
-  if (typeof value.rootPath !== 'string') {
+  if (typeof value.contextPath !== 'string') {
     return false;
   }
 
@@ -136,7 +135,7 @@ export default class Configuration {
       throw new Error('Configuration is invalid.');
     }
 
-    this.configuration = new Configuration();
+    this.configuration = configuration;
   }
 
   get environment(): Environment {
@@ -207,16 +206,6 @@ export default class Configuration {
     }
 
     return defaultTransformedModules;
-  }
-
-  get webpackConfig(): WebpackConfiguration {
-    const { webpackConfig } = this.configuration;
-
-    if (webpackConfig != null) {
-      return webpackConfig;
-    }
-
-    return generateWebpackConfig();
   }
 
   get devServerProtocol(): string {

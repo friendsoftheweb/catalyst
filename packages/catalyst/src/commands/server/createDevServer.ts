@@ -3,8 +3,9 @@ import fs from 'fs';
 import webpack from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
 import Configuration from '../../Configuration';
+import getWebpackConfig from '../../utils/getWebpackConfig';
 
-const { tempPath, webpackConfig } = new Configuration();
+const { tempPath } = new Configuration();
 
 interface Options {
   host: string;
@@ -12,7 +13,7 @@ interface Options {
   overlayEnabled: boolean;
 }
 
-export default function createDevServer({
+export default async function createDevServer({
   host,
   port,
   overlayEnabled
@@ -51,6 +52,8 @@ export default function createDevServer({
       });
     }
   };
+
+  const webpackConfig = await getWebpackConfig();
 
   // If the custom error overlay is disabled, add the standard webpack
   // development client.

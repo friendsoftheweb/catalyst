@@ -2,8 +2,9 @@ import webpack from 'webpack';
 import chalk from 'chalk';
 import { exitWithError, rebuildNodeSASS } from '../utils';
 import Configuration from '../Configuration';
+import getWebpackConfig from '../utils/getWebpackConfig';
 
-const { environment, buildPath, webpackConfig } = new Configuration();
+const { environment, buildPath } = new Configuration();
 
 export default async function build() {
   if (environment === 'production') {
@@ -27,7 +28,7 @@ export default async function build() {
 
   await rebuildNodeSASS();
 
-  const compiler = webpack(webpackConfig);
+  const compiler = webpack(await getWebpackConfig());
 
   return new Promise((resolve, reject) => {
     compiler.run((err, stats) => {

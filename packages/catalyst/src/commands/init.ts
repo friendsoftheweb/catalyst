@@ -93,12 +93,7 @@ export default function init(options: Options) {
         writeFileFromTemplate.bind(null, '.eslintrc', 'eslintrc.jst'),
         writeFileFromTemplate.bind(null, 'tsconfig.json', 'tsconfig.json.jst', {
           config
-        }),
-        writeFileFromTemplate.bind(
-          null,
-          `${config.rootPath}/config/webpack.js`,
-          'webpack.config.js.jst'
-        )
+        })
       );
 
       if (firstRun) {

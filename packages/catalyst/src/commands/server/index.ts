@@ -12,7 +12,7 @@ export default async function server(): Promise<WebpackDevServer> {
   await rebuildNodeSASS();
   await buildVendorPackages();
 
-  const server = createDevServer({
+  const server = await createDevServer({
     host: devServerHost,
     port: devServerPort,
     overlayEnabled: overlayEnabled
