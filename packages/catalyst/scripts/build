@@ -7,7 +7,7 @@ const glob = require('glob');
 const mkdirp = require('mkdirp');
 
 execSync('rm -rf lib');
-execSync('tsc');
+execSync('tsc', { stdio: 'inherit' });
 execSync('chmod +x lib/index.js');
 
 const templatePaths = glob.sync('src/templates/**/*');
