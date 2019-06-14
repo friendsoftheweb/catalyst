@@ -3,15 +3,14 @@ import { RuleSetRule } from 'webpack';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import Configuration from '../../Configuration';
 
-const {
-  environment,
-  rootPath,
-  contextPath,
-  publicPath,
-  transformedModules
-} = new Configuration();
-
 export default function generateRules() {
+  const {
+    environment,
+    rootPath,
+    contextPath,
+    transformedModules
+  } = new Configuration();
+
   const rules: RuleSetRule[] = [];
 
   rules.push({
@@ -86,6 +85,8 @@ export default function generateRules() {
 }
 
 function generateFileLoaderRule(basePath: string): RuleSetRule {
+  const { environment, publicPath } = new Configuration();
+
   const name =
     environment === 'production'
       ? '[path][name]-[hash].[ext]'

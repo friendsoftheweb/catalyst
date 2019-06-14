@@ -5,9 +5,9 @@ import createDevServer from './createDevServer';
 import { checkPortAvailability, rebuildNodeSASS } from '../../utils';
 import Configuration from '../../Configuration';
 
-const { devServerHost, devServerPort, overlayEnabled } = new Configuration();
-
 export default async function server(): Promise<WebpackDevServer> {
+  const { devServerHost, devServerPort, overlayEnabled } = new Configuration();
+
   await checkPortAvailability(devServerPort);
   await rebuildNodeSASS();
   await buildVendorPackages();

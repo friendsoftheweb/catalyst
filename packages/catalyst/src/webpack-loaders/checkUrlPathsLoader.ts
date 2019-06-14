@@ -3,8 +3,6 @@ import fs from 'fs';
 import chalk from 'chalk';
 import Configuration from '../Configuration';
 
-const { rootPath } = new Configuration();
-
 const CSS_URL_PATTERN = /url\(["']?(\/[^"']+)["']?\)/g;
 
 /*
@@ -12,6 +10,8 @@ const CSS_URL_PATTERN = /url\(["']?(\/[^"']+)["']?\)/g;
  * when it should probably start with a "~".
  */
 export default function checkUrlPathsLoader(content: string) {
+  const { rootPath } = new Configuration();
+
   let match;
 
   while ((match = CSS_URL_PATTERN.exec(content)) !== null) {

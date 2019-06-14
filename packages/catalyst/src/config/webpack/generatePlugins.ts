@@ -7,9 +7,9 @@ import WorkboxWebpackPlugin from 'workbox-webpack-plugin';
 import CleanUpStatsPlugin from '../../webpack-plugins/CleanUpStatsPlugin';
 import Configuration from '../../Configuration';
 
-const { environment, contextPath, tempPath } = new Configuration();
-
 export default function generatePlugins() {
+  const { environment, contextPath, tempPath } = new Configuration();
+
   const cssFileName =
     environment === 'production' ? '[name]-[hash].css' : '[name].css';
 

@@ -1,9 +1,9 @@
 import { Configuration as WebpackConfiguration } from 'webpack';
 import Configuration from '../../Configuration';
 
-const { environment } = new Configuration();
-
 export default function generateDevtool(): WebpackConfiguration['devtool'] {
+  const { environment } = new Configuration();
+
   if (environment === 'production') {
     return 'source-map';
   }

@@ -1,9 +1,9 @@
 import path from 'path';
 import Configuration from '../../Configuration';
 
-const { environment, overlayEnabled } = new Configuration();
-
 export default function generateEntry(entryPath: string) {
+  const { environment, overlayEnabled } = new Configuration();
+
   const entry = [];
 
   if (environment === 'development' && overlayEnabled) {

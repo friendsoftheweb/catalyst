@@ -1,15 +1,15 @@
 import { Output } from 'webpack';
 import Configuration from '../../Configuration';
 
-const {
-  environment,
-  buildPath,
-  publicPath,
-  devServerHost,
-  devServerPort
-} = new Configuration();
-
 export default function generateOutput(): Output {
+  const {
+    environment,
+    buildPath,
+    publicPath,
+    devServerHost,
+    devServerPort
+  } = new Configuration();
+
   if (environment === 'development') {
     return {
       path: buildPath,

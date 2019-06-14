@@ -5,8 +5,6 @@ import WebpackDevServer from 'webpack-dev-server';
 import Configuration from '../../Configuration';
 import getWebpackConfig from '../../utils/getWebpackConfig';
 
-const { tempPath } = new Configuration();
-
 interface Options {
   host: string;
   port: number;
@@ -18,6 +16,8 @@ export default async function createDevServer({
   port,
   overlayEnabled
 }: Options) {
+  const { tempPath } = new Configuration();
+
   const vendorFilePath = path.join(tempPath, 'vendor-dll.js');
 
   const configuration: WebpackDevServer.Configuration = {

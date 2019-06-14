@@ -4,9 +4,9 @@ import { exitWithError, rebuildNodeSASS } from '../utils';
 import Configuration from '../Configuration';
 import getWebpackConfig from '../utils/getWebpackConfig';
 
-const { environment, buildPath } = new Configuration();
-
 export default async function build() {
+  const { environment, buildPath } = new Configuration();
+
   if (environment === 'production') {
     console.log(
       `Creating a ${chalk.cyan('production')} build in ${chalk.cyan(

@@ -9,9 +9,9 @@ import generateOptimization from './generateOptimization';
 import bundlePaths from './bundlePaths';
 import Configuration from '../../Configuration';
 
-const { environment, contextPath } = new Configuration();
-
 export default function webpackConfig(): WebpackConfiguration {
+  const { environment, contextPath } = new Configuration();
+
   return {
     context: contextPath,
     mode: environment === 'production' ? 'production' : 'development',

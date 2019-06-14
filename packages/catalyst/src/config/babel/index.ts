@@ -1,8 +1,6 @@
 import path from 'path';
 import Configuration from '../../Configuration';
 
-const { environment, typeScriptEnabled, flowEnabled } = new Configuration();
-
 interface Options {
   useBuiltIns?: 'usage' | 'entry' | false;
   modules?: 'amd' | 'umd' | 'systemjs' | 'commonjs' | 'cjs' | 'auto' | false;
@@ -14,6 +12,8 @@ export default function babelConfig({
   corejs,
   useBuiltIns = 'usage'
 }: Options = {}) {
+  const { environment, typeScriptEnabled, flowEnabled } = new Configuration();
+
   if (modules == null) {
     modules = environment === 'test' ? 'commonjs' : false;
   }
