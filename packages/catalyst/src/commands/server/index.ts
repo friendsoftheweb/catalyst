@@ -1,6 +1,6 @@
 import chalk from 'chalk';
 import WebpackDevServer from 'webpack-dev-server';
-import buildVendorPackages from './buildVendorPackages';
+import prebuildVendorPackages from './prebuildVendorPackages';
 import createDevServer from './createDevServer';
 import { checkPortAvailability, rebuildNodeSASS } from '../../utils';
 import Configuration from '../../Configuration';
@@ -10,7 +10,7 @@ export default async function server(): Promise<WebpackDevServer> {
 
   await checkPortAvailability(devServerPort);
   await rebuildNodeSASS();
-  await buildVendorPackages();
+  await prebuildVendorPackages();
 
   const server = await createDevServer({
     host: devServerHost,
