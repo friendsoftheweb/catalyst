@@ -3,9 +3,9 @@ import path from 'path';
 import Configuration from '../../Configuration';
 import generateEntry from './generateEntry';
 
-const { bundlesPath } = new Configuration();
-
 export default function generateEntryForBundleName(bundleName: string) {
+  const { bundlesPath } = new Configuration();
+
   const bundlePath = path.join(bundlesPath, bundleName);
 
   for (const extension of ['js', 'ts', 'tsx']) {
