@@ -85,7 +85,14 @@ export default async function init(options: Options) {
       'bundle.ts.jst'
     );
 
-    fs.writeFileSync(`${config.contextPath}/styles/application.scss`, '');
+    const stylesheetPath = path.join(
+      config.contextPath,
+      'styles/application.scss'
+    );
+
+    if (!fs.existsSync(stylesheetPath)) {
+      fs.writeFileSync(stylesheetPath, '');
+    }
   }
 
   await installMissingDependencies(nodePackages);
