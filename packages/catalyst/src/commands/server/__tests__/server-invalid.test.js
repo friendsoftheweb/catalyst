@@ -1,17 +1,36 @@
 import fs from 'fs';
 import SockJS from 'sockjs-client';
 
-import getConfig from '../../../utils/getConfig';
-import getEnvironment from '../../../utils/getEnvironment';
-import getWebpackConfig from '../getWebpackConfig';
-import buildVendorPackages from '../buildVendorPackages';
+import Configuration from '../../../Configuration';
+import getWebpackConfig from '../../../utils/getWebpackConfig';
+import prebuildVendorPackages from '../prebuildVendorPackages';
 
 jest.setTimeout(20000);
 
-jest.mock('../../../utils/getConfig');
-jest.mock('../../../utils/getEnvironment');
-jest.mock('../getWebpackConfig');
-jest.mock('../buildVendorPackages');
+jest.mock('../../../Configuration', () => {
+  return function() {
+    return {
+      environment: 'development',
+      contextPath: 'src',
+      tempPath: 'tmp',
+      devServerHost: 'localhost',
+      devServerPort: 8082
+    };
+  };
+});
+
+jest.mock('../../../utils/getWebpackConfig', () => {
+  return function() {
+    return Promise.resolve({
+      mode: 'development',
+      entry: {
+        application: './test-project/errors-entry.js'
+      }
+    });
+  };
+});
+
+jest.mock('../prebuildVendorPackages');
 
 console.log = jest.fn();
 console.info = jest.fn();
@@ -36,27 +55,27 @@ afterEach(() => {
 import server from '../index';
 
 test('server emits "invalid" events via SockJS', (done) => {
-  getConfig.mockImplementation(() => ({
-    rootPath: 'src',
-    buildPath: 'public/assets'
-  }));
+  // getConfig.mockImplementation(() => ({
+  //   rootPath: 'src',
+  //   buildPath: 'public/assets'
+  // }));
 
-  getEnvironment.mockImplementation(() => ({
-    isProduction: false,
-    isTest: false,
-    isDevelopment: true,
-    typeScriptConfigExists: false,
-    flowConfigExists: false,
-    devServerHost,
-    devServerPort
-  }));
+  // getEnvironment.mockImplementation(() => ({
+  //   isProduction: false,
+  //   isTest: false,
+  //   isDevelopment: true,
+  //   typeScriptConfigExists: false,
+  //   flowConfigExists: false,
+  //   devServerHost,
+  //   devServerPort
+  // }));
 
-  getWebpackConfig.mockImplementation(() => ({
-    mode: 'development',
-    entry: {
-      application: entryPath
-    }
-  }));
+  // getWebpackConfig.mockImplementation(() => ({
+  //   mode: 'development',
+  //   entry: {
+  //     application: entryPath
+  //   }
+  // }));
 
   fs.writeFile(entryPath, "console.log('Hello World');", () => {
     server().then((devSever) => {

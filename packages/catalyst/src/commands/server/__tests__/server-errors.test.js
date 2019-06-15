@@ -2,7 +2,8 @@ import fs from 'fs';
 import SockJS from 'sockjs-client';
 
 import Configuration from '../../../Configuration';
-import buildVendorPackages from '../buildVendorPackages';
+import getWebpackConfig from '../../../utils/getWebpackConfig';
+import prebuildVendorPackages from '../prebuildVendorPackages';
 
 console.log = jest.fn();
 console.info = jest.fn();
@@ -17,18 +18,23 @@ jest.mock('../../../Configuration', () => {
       contextPath: 'src',
       tempPath: 'tmp',
       devServerHost: 'localhost',
-      devServerPort: 8081,
-      webpackConfig: {
-        mode: 'development',
-        entry: {
-          application: './test-project/errors-entry.js'
-        }
-      }
+      devServerPort: 8081
     };
   };
 });
 
-jest.mock('../buildVendorPackages');
+jest.mock('../../../utils/getWebpackConfig', () => {
+  return function() {
+    return Promise.resolve({
+      mode: 'development',
+      entry: {
+        application: './test-project/errors-entry.js'
+      }
+    });
+  };
+});
+
+jest.mock('../prebuildVendorPackages');
 
 let webpackDevServer;
 let sockJSConnection;

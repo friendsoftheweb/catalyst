@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import { Configuration as WebpackConfiguration } from 'webpack';
 
-import Configuration from '../configuration';
+import Configuration from '../Configuration';
 import generateWebpackConfig from '../config/webpack';
 
 export default async function getWebpackConfig(): Promise<

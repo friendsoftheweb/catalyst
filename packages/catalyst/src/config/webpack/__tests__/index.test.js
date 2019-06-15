@@ -1,22 +1,27 @@
 import webpackConfig from '../index';
 import bundlePaths from '../bundlePaths';
 import generateEntryForBundleName from '../generateEntryForBundleName';
-import getConfig from '../../../utils/getConfig';
+import Configuration from '../../../Configuration';
 
 jest.mock('../bundlePaths');
 jest.mock('../generateEntryForBundleName');
-jest.mock('../../../utils/getConfig');
+
+jest.mock('../../../Configuration', () => {
+  return function() {
+    return {
+      rootPath: 'ROOT',
+      buildPath: 'BUILD',
+      contextPath: 'CONTEXT',
+      transformedModules: []
+    };
+  };
+});
 
 describe('webpackConfig()', () => {
   test('generates a configuration', () => {
     bundlePaths.mockImplementation(() => ['application', 'admin']);
 
     generateEntryForBundleName.mockImplementation(() => ['entry.js']);
-
-    getConfig.mockImplementation(() => ({
-      rootPath: 'ROOT',
-      buildPath: 'BUILD'
-    }));
 
     const config = webpackConfig();
 

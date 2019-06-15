@@ -1,15 +1,17 @@
 import babelConfig from '../index';
-import getConfig from '../../../utils/getConfig';
+import Configuration from '../../../Configuration';
 
-jest.mock('../../../utils/getConfig');
+jest.mock('../../../Configuration', () => {
+  return function() {
+    return {
+      rootPath: 'ROOT',
+      buildPath: 'BUILD'
+    };
+  };
+});
 
 describe('babelConfig()', () => {
   test('generates a configuration', () => {
-    getConfig.mockImplementation(() => ({
-      rootPath: 'ROOT',
-      buildPath: 'BUILD'
-    }));
-
     const config = babelConfig();
 
     expect(config.presets.length).toBeGreaterThan(0);
