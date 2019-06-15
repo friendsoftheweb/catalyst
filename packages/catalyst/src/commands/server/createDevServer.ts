@@ -24,6 +24,7 @@ export default async function createDevServer({
     host,
     port,
     hot: true,
+    publicPath: '/',
     clientLogLevel: 'none',
     headers: {
       'Access-Control-Allow-Origin': '*'
