@@ -12,7 +12,7 @@ export default function writeFileFromTemplate(
   outputPath: string,
   templatePath: string,
   context = {}
-) {
+): Promise<void> {
   const outputDirname = path.dirname(outputPath);
 
   if (outputDirname !== '.') {

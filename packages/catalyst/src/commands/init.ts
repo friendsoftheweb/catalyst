@@ -1,145 +1,100 @@
 import fs from 'fs';
+import path from 'path';
 import { execSync } from 'child_process';
 import mkdirp from 'mkdirp';
 import chalk from 'chalk';
 import inquirer from 'inquirer';
-import { get, without } from 'lodash';
 
-import {
-  exitWithError,
-  runInSeries,
-  spinnerSpawn,
-  writeFileFromTemplate
-} from '../utils';
+import installMissingDependencies from '../utils/installMissingDependencies';
+import writeFileFromTemplate from '../utils/writeFileFromTemplate';
+import exitWithError from '../utils/exitWithError';
 
-const nodePackages = ['catalyst', 'react', 'react-dom', 'core-js@3'];
+export const defaultConfig = {
+  contextPath: 'client',
+  buildPath: 'public/assets',
+  publicPath: '/assets'
+};
 
-const nodePackagesDev = [
-  'typescript',
-  '@types/react',
-  '@types/react-dom',
-  '@ftw/eslint-config-catalyst',
-  'babel-eslint',
-  'eslint',
-  'eslint-plugin-flowtype',
-  'eslint-plugin-react',
-  'jest',
-  'react-test-renderer'
-];
+const nodePackages = ['react', 'react-dom', 'core-js@3'];
+const nodePackagesDev = ['typescript', '@types/react', '@types/react-dom'];
 
 interface Options {
   force: boolean;
 }
 
-export default function init(options: Options) {
-  const defaultConfig = { rootPath: 'client', buildPath: 'public/assets' };
-
+export default async function init(options: Options) {
   if (!options.force && modifiedFileCount() > 0) {
     exitWithError(
       'Please commit or stash any modified files before running `catalyst init` or rerun as `catalyst init --force`.'
     );
   }
 
-  let packageData: {
-    catalyst?: {};
-  } = {};
-
   let firstRun = true;
+  const currentConfig = Object.assign({}, defaultConfig);
+  const catalystConfigPath = path.join(process.cwd(), 'catalyst.config.json');
 
-  if (fs.existsSync('package.json')) {
-    packageData = JSON.parse(fs.readFileSync('package.json', 'utf8'));
+  if (fs.existsSync(catalystConfigPath)) {
+    firstRun = false;
 
-    if (typeof packageData.catalyst === 'object') {
-      firstRun = false;
-
-      Object.assign(defaultConfig, packageData.catalyst);
-    }
+    Object.assign(currentConfig, catalystConfigPath);
   }
 
-  inquirer
-    .prompt<{ rootPath: string; buildPath: string }>([
-      {
-        name: 'rootPath',
-        message: 'Root path:',
-        default: defaultConfig.rootPath
-      },
-      {
-        name: 'buildPath',
-        message: 'Build path:',
-        default: defaultConfig.buildPath
-      }
-    ])
-    .then((config) => {
-      mkdirp.sync(`${config.rootPath}/bundles`);
-      mkdirp.sync(`${config.rootPath}/components`);
-      mkdirp.sync(`${config.rootPath}/modules`);
-      mkdirp.sync(`${config.rootPath}/config`);
-      mkdirp.sync(`${config.rootPath}/styles`);
-      mkdirp.sync(`${config.rootPath}/assets/fonts`);
-      mkdirp.sync(`${config.rootPath}/assets/images`);
+  const config = await inquirer.prompt<{
+    contextPath: string;
+    buildPath: string;
+    publicPath: string;
+  }>([
+    {
+      name: 'contextPath',
+      message: 'Context path:',
+      default: currentConfig.contextPath
+    },
+    {
+      name: 'buildPath',
+      message: 'Build path:',
+      default: currentConfig.buildPath
+    },
+    {
+      name: 'publicPath',
+      message: 'Public path:',
+      default: currentConfig.publicPath
+    }
+  ]);
 
-      const commands = [];
+  mkdirp.sync(`${config.contextPath}/bundles`);
+  mkdirp.sync(`${config.contextPath}/components`);
+  mkdirp.sync(`${config.contextPath}/modules`);
+  mkdirp.sync(`${config.contextPath}/config`);
+  mkdirp.sync(`${config.contextPath}/styles`);
+  mkdirp.sync(`${config.contextPath}/assets/fonts`);
+  mkdirp.sync(`${config.contextPath}/assets/images`);
 
-      if (firstRun) {
-        commands.push(
-          writeFileFromTemplate.bind(null, 'package.json', 'package.json.jst', {
-            config
-          })
-        );
-      }
+  await writeFileFromTemplate(
+    'catalyst.config.json',
+    'catalyst.config.json.jst',
+    config
+  );
 
-      commands.push(
-        writeFileFromTemplate.bind(null, '.babelrc', 'babelrc.jst'),
-        writeFileFromTemplate.bind(null, '.eslintrc', 'eslintrc.jst'),
-        writeFileFromTemplate.bind(null, 'tsconfig.json', 'tsconfig.json.jst', {
-          config
-        })
-      );
+  await writeFileFromTemplate('.babelrc', 'babelrc.jst');
+  await writeFileFromTemplate('.eslintrc', 'eslintrc.jst');
+  await writeFileFromTemplate('tsconfig.json', 'tsconfig.json.jst', config);
 
-      if (firstRun) {
-        commands.push(
-          writeFileFromTemplate.bind(
-            null,
-            `${config.rootPath}/bundles/application/index.ts`,
-            'bundle.ts.jst'
-          )
-        );
-      }
+  if (firstRun) {
+    await writeFileFromTemplate(
+      `${config.contextPath}/bundles/application/index.ts`,
+      'bundle.ts.jst'
+    );
 
-      runInSeries(commands).then(() => {
-        if (firstRun) {
-          fs.writeFileSync(`${config.rootPath}/styles/application.scss`, '');
-        }
+    fs.writeFileSync(`${config.contextPath}/styles/application.scss`, '');
+  }
 
-        const installedPackages = Object.keys(
-          get(packageData, 'dependencies', {})
-        );
+  await installMissingDependencies(nodePackages);
+  await installMissingDependencies(nodePackagesDev, true);
 
-        const installedPackagesDev = Object.keys(
-          get(packageData, 'devDependencies', {})
-        );
-
-        installPackages(without(nodePackages, ...installedPackages))
-          .then(() => {
-            return installPackages(
-              without(nodePackagesDev, ...installedPackagesDev),
-              true
-            );
-          })
-          .then(
-            () => {
-              console.log(chalk.green('Done'));
-            },
-            (code) => {
-              console.log(chalk.red('Failed'));
-              process.exit(code);
-            }
-          );
-      });
-    });
+  console.log(chalk.green('\nDone'));
 }
 
-function modifiedFileCount() {
+function modifiedFileCount(): number {
   return parseInt(
     execSync(
       'git status --porcelain --untracked-files=no -- | wc -l | tr -d " "',
@@ -147,22 +102,5 @@ function modifiedFileCount() {
         stdio: ['pipe', 'pipe', 'ignore']
       }
     ).toString()
-  );
-}
-
-function installPackages(
-  packages: string[],
-  development = false
-): Promise<number | void> {
-  if (packages.length === 0) {
-    return Promise.resolve();
-  }
-
-  const saveFlag = development ? '--dev' : '';
-
-  return spinnerSpawn(
-    'yarn',
-    ['add'].concat(packages).concat([saveFlag, '--color']),
-    'Installing Packages...'
   );
 }

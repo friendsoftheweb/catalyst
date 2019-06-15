@@ -121,11 +121,11 @@ export default class Configuration {
   private configuration: CustomConfiguration;
 
   constructor() {
-    const configurationPath = path.join(this.rootPath, 'catalyst.config.js');
+    const configurationPath = path.join(this.rootPath, 'catalyst.config.json');
 
     if (!fs.existsSync(configurationPath)) {
       throw new Error(
-        `Missing catalyst configuration file. Expected "${configurationPath}" to exist.`
+        `Missing Catalyst configuration file. Expected it to be here: ${configurationPath}`
       );
     }
 

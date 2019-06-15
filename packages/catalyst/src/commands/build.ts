@@ -1,6 +1,7 @@
 import webpack from 'webpack';
 import chalk from 'chalk';
-import { exitWithError, rebuildNodeSASS } from '../utils';
+import rebuildNodeSASS from '../utils/rebuildNodeSASS';
+import exitWithError from '../utils/exitWithError';
 import Configuration from '../Configuration';
 import getWebpackConfig from '../utils/getWebpackConfig';
 

@@ -2,7 +2,7 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "*": ["<%= config.contextPath %>/*"]
+      "*": ["<%= contextPath %>/*"]
     },
     "module": "esnext",
     "target": "es5",
@@ -11,7 +11,7 @@
     "allowJs": false,
     "jsx": "react",
     "moduleResolution": "node",
-    "rootDir": "<%= config.contextPath %>",
+    "rootDir": "<%= contextPath %>",
     "forceConsistentCasingInFileNames": true,
     "noImplicitReturns": true,
     "noImplicitThis": true,
@@ -22,5 +22,5 @@
     "noUnusedLocals": true,
     "allowSyntheticDefaultImports": true
   },
-  "include": ["<%= config.contextPath %>/**/*"]
+  "include": ["<%= contextPath %>/**/*"]
 }
