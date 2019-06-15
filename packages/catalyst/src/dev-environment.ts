@@ -1,9 +1,6 @@
-import Configuration from './Configuration';
-
-const configuration = new Configuration();
-
 // @ts-ignore
 window.__CATALYST_ENV__ = {
-  devServerHost: configuration.devServerHost,
-  devServerPort: configuration.devServerPort
+  devServerProtocol: process.env.DEV_SERVER_PROTOCOL,
+  devServerHost: process.env.DEV_SERVER_HOST,
+  devServerPort: process.env.DEV_SERVER_PORT
 };

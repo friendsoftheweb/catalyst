@@ -8,7 +8,14 @@ import CleanUpStatsPlugin from '../../webpack-plugins/CleanUpStatsPlugin';
 import Configuration from '../../Configuration';
 
 export default function generatePlugins() {
-  const { environment, contextPath, tempPath } = new Configuration();
+  const {
+    environment,
+    contextPath,
+    tempPath,
+    devServerProtocol,
+    devServerHost,
+    devServerPort
+  } = new Configuration();
 
   const cssFileName =
     environment === 'production' ? '[name]-[hash].css' : '[name].css';
@@ -35,7 +42,10 @@ export default function generatePlugins() {
 
   plugins.push(
     new webpack.EnvironmentPlugin({
-      NODE_ENV: JSON.stringify(process.env.NODE_ENV)
+      NODE_ENV: process.env.NODE_ENV,
+      DEV_SERVER_PROTOCOL: devServerProtocol,
+      DEV_SERVER_HOST: devServerHost,
+      DEV_SERVER_PORT: devServerPort
     })
   );
 
