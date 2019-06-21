@@ -55,28 +55,6 @@ afterEach(() => {
 import server from '../index';
 
 test('server emits "invalid" events via SockJS', (done) => {
-  // getConfig.mockImplementation(() => ({
-  //   rootPath: 'src',
-  //   buildPath: 'public/assets'
-  // }));
-
-  // getEnvironment.mockImplementation(() => ({
-  //   isProduction: false,
-  //   isTest: false,
-  //   isDevelopment: true,
-  //   typeScriptConfigExists: false,
-  //   flowConfigExists: false,
-  //   devServerHost,
-  //   devServerPort
-  // }));
-
-  // getWebpackConfig.mockImplementation(() => ({
-  //   mode: 'development',
-  //   entry: {
-  //     application: entryPath
-  //   }
-  // }));
-
   fs.writeFile(entryPath, "console.log('Hello World');", () => {
     server().then((devSever) => {
       webpackDevServer = devSever;
