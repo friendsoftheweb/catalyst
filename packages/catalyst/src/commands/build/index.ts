@@ -1,9 +1,8 @@
 import webpack from 'webpack';
 import chalk from 'chalk';
-import rebuildNodeSASS from '../utils/rebuildNodeSASS';
-import exitWithError from '../utils/exitWithError';
-import Configuration from '../Configuration';
-import getWebpackConfig from '../utils/getWebpackConfig';
+import rebuildNodeSASS from '../../utils/rebuildNodeSASS';
+import Configuration from '../../Configuration';
+import getWebpackConfig from '../../utils/getWebpackConfig';
 
 export default async function build() {
   const { environment, buildPath } = new Configuration();
@@ -19,7 +18,7 @@ export default async function build() {
       `Creating a ${chalk.cyan('test')} build in ${chalk.cyan(buildPath)}...`
     );
   } else {
-    exitWithError(
+    throw new Error(
       [
         'Build environment must be one of: "production", "test".',
         'Try setting the NODE_ENV environment variable.'

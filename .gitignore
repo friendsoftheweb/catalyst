@@ -3,3 +3,4 @@ node_modules
 /packages/*/lib
 /packages/*/coverage
 /packages/catalyst/test-project/*
+/packages/catalyst/fixtures/*/dist
