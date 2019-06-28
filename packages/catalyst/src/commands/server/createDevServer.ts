@@ -30,6 +30,7 @@ export default async function createDevServer({
       'Access-Control-Allow-Origin': '*'
     },
     disableHostCheck: true,
+    stats: 'errors-only',
     before(app) {
       app.get('/vendor-dll.js', (req, res) => {
         fs.readFile(vendorFilePath, (err, data) => {
