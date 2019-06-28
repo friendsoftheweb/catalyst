@@ -169,10 +169,18 @@ function showRuntimeErrors() {
   }
 }
 
-window.onerror = () => {
+window.addEventListener('error', () => {
   runtimeErrorCount++;
 
   showRuntimeErrors();
 
   return false;
-};
+});
+
+window.addEventListener('unhandledrejection', () => {
+  runtimeErrorCount++;
+
+  showRuntimeErrors();
+
+  return false;
+});
