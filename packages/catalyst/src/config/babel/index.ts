@@ -46,6 +46,7 @@ export default function babelConfig({
     '@babel/plugin-proposal-optional-chaining',
     '@babel/plugin-syntax-dynamic-import',
     'babel-plugin-graphql-tag',
+    'babel-plugin-styled-components',
     ['@babel/plugin-transform-runtime', { useESModules: true, absoluteRuntime }]
   ];
 

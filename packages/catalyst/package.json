@@ -46,6 +46,7 @@
     "babel-loader": "^8.0.6",
     "babel-plugin-graphql-tag": "^2.4.0",
     "babel-plugin-lodash": "^3.3.4",
+    "babel-plugin-styled-components": "^1.10.4",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
     "catalyst-client": "^1.0.0-beta.47",
     "chalk": "^2.4.2",
@@ -65,7 +66,6 @@
     "node-sass": "^4.12.0",
     "postcss-loader": "^3.0.0",
     "sass-loader": "^7.1.0",
-    "string": "^3.3.3",
     "style-loader": "^0.23.1",
     "thread-loader": "^2.1.2",
     "webpack": "4.28.4",
@@ -87,7 +87,10 @@
     "@types/webpack-manifest-plugin": "^2.0.0",
     "@types/workbox-webpack-plugin": "^4.1.0",
     "jest": "^24.8.0",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
     "sockjs-client": "^1.3.0",
+    "styled-components": "^4.3.2",
     "typescript": "^3.4.5"
   }
 }

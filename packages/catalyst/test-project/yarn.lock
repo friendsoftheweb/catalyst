@@ -1307,6 +1307,21 @@ babel-plugin-lodash@^3.3.4:
     lodash "^4.17.10"
     require-package-name "^2.0.1"
 
+babel-plugin-styled-components@^1.10.4:
+  version "1.10.4"
+  resolved "https://registry.yarnpkg.com/babel-plugin-styled-components/-/babel-plugin-styled-components-1.10.4.tgz#c9a01d7992e41dc45338792be5ce2cd805e4d868"
+  integrity sha512-LI4xaSF//yp9+CWG+TkAIbH1Xt50ptMY04WQgzi27184JyHVt4D3biCfDppJg+FJ4cOAtuuvdLXpFNoOWSEpQQ==
+  dependencies:
+    "@babel/helper-annotate-as-pure" "^7.0.0"
+    "@babel/helper-module-imports" "^7.0.0"
+    babel-plugin-syntax-jsx "^6.18.0"
+    lodash "^4.17.11"
+
+babel-plugin-syntax-jsx@^6.18.0:
+  version "6.18.0"
+  resolved "https://registry.yarnpkg.com/babel-plugin-syntax-jsx/-/babel-plugin-syntax-jsx-6.18.0.tgz#0af32a9a6e13ca7a3fd5069e62d7b0f58d0d8946"
+  integrity sha1-CvMqmm4Tyno/1QaeYtew9Y0NiUY=
+
 babel-plugin-syntax-object-rest-spread@^6.8.0:
   version "6.13.0"
   resolved "https://registry.yarnpkg.com/babel-plugin-syntax-object-rest-spread/-/babel-plugin-syntax-object-rest-spread-6.13.0.tgz#fd6536f2bce13836ffa3a5458c4903a597bb3bf5"
@@ -1677,6 +1692,7 @@ catalyst-client@^1.0.0-beta.47:
     babel-loader "^8.0.6"
     babel-plugin-graphql-tag "^2.4.0"
     babel-plugin-lodash "^3.3.4"
+    babel-plugin-styled-components "^1.10.4"
     babel-plugin-transform-react-remove-prop-types "^0.4.24"
     catalyst-client "^1.0.0-beta.47"
     chalk "^2.4.2"
@@ -1695,9 +1711,7 @@ catalyst-client@^1.0.0-beta.47:
     mini-css-extract-plugin "^0.6.0"
     node-sass "^4.12.0"
     postcss-loader "^3.0.0"
-    regenerator-runtime "^0.13.2"
     sass-loader "^7.1.0"
-    string "^3.3.3"
     style-loader "^0.23.1"
     thread-loader "^2.1.2"
     webpack "4.28.4"
@@ -5781,11 +5795,6 @@ string-width@^3.0.0, string-width@^3.1.0:
     emoji-regex "^7.0.1"
     is-fullwidth-code-point "^2.0.0"
     strip-ansi "^5.1.0"
-
-string@^3.3.3:
-  version "3.3.3"
-  resolved "https://registry.yarnpkg.com/string/-/string-3.3.3.tgz#5ea211cd92d228e184294990a6cc97b366a77cb0"
-  integrity sha1-XqIRzZLSKOGEKUmQpsyXs2anfLA=
 
 string_decoder@^1.0.0, string_decoder@^1.1.1:
   version "1.2.0"

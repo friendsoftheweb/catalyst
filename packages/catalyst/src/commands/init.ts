@@ -15,7 +15,7 @@ export const defaultConfig = {
   publicPath: '/assets'
 };
 
-const nodePackages = ['react', 'react-dom', 'core-js@3'];
+const nodePackages = ['react', 'react-dom', 'styled-components', 'core-js@3'];
 const nodePackagesDev = ['typescript', '@types/react', '@types/react-dom'];
 
 interface Options {
