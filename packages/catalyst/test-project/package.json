@@ -1,0 +1,15 @@
+{
+  "license": "MIT",
+  "dependencies": {
+    "catalyst": "file:../",
+    "core-js": "3",
+    "graphql-tag": "^2.10.1",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6"
+  },
+  "devDependencies": {
+    "@types/react": "^16.8.22",
+    "@types/react-dom": "^16.8.4",
+    "typescript": "^3.5.2"
+  }
+}

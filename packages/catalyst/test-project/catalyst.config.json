@@ -1,0 +1,5 @@
+{
+  "contextPath": "src",
+  "buildPath": "dist",
+  "publicPath": "/assets"
+}

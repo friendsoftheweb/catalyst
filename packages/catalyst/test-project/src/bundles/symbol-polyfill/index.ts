@@ -1,0 +1,1 @@
+const testSymbol = Symbol('testSymbol');

@@ -15,11 +15,19 @@ export default function generateOutput(): Output {
       path: buildPath,
       publicPath: `http://${devServerHost}:${devServerPort}/`
     };
-  } else {
+  }
+
+  if (environment === 'test') {
     return {
       path: buildPath,
       publicPath,
-      filename: '[name]-[hash].js'
+      filename: '[name].js'
     };
   }
+
+  return {
+    path: buildPath,
+    publicPath,
+    filename: '[name]-[hash].js'
+  };
 }
