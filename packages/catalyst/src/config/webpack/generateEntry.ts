@@ -11,7 +11,6 @@ export default function generateEntry(entryPath: string) {
     entry.push('catalyst-client');
   }
 
-  entry.push('regenerator-runtime/runtime');
   entry.push(entryPath);
 
   return entry;
