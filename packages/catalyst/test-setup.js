@@ -9,7 +9,7 @@ module.exports = async function() {
 
   console.log('\nInstalling catalyst into test project...\n');
 
-  execSync('yarn install', {
+  execSync('yarn add "file:../" --prefer-offline', {
     stdio: 'inherit',
     cwd: join(process.cwd(), 'test-project')
   });

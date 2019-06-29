@@ -3,9 +3,11 @@
   "dependencies": {
     "catalyst": "file:../",
     "core-js": "3",
+    "graphql": "^14.4.1",
     "graphql-tag": "^2.10.1",
     "react": "^16.8.6",
-    "react-dom": "^16.8.6"
+    "react-dom": "^16.8.6",
+    "styled-components": "^4.3.2"
   },
   "devDependencies": {
     "@types/react": "^16.8.22",

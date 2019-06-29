@@ -7,17 +7,7 @@ import getWebpackConfig from '../../utils/getWebpackConfig';
 export default async function build() {
   const { environment, buildPath } = new Configuration();
 
-  if (environment === 'production') {
-    console.log(
-      `Creating a ${chalk.cyan('production')} build in ${chalk.cyan(
-        buildPath
-      )}...`
-    );
-  } else if (environment === 'test') {
-    console.log(
-      `Creating a ${chalk.cyan('test')} build in ${chalk.cyan(buildPath)}...`
-    );
-  } else {
+  if (!['production', 'test'].includes(environment)) {
     throw new Error(
       [
         'Build environment must be one of: "production", "test".',
@@ -25,6 +15,12 @@ export default async function build() {
       ].join('\n')
     );
   }
+
+  console.log(
+    `Creating a ${chalk.cyan(environment)} build in ${chalk.cyan(
+      buildPath
+    )}...\n`
+  );
 
   await rebuildNodeSASS();
 
