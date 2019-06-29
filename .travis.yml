@@ -8,4 +8,5 @@ script:
   - (cd packages/catalyst && yarn tsc --noEmit)
   - (cd packages/catalyst-client && yarn tsc --noEmit)
   - (cd packages/catalyst && yarn test)
+  - (cd packages/catalyst && ./tests.js)
   - (cd packages/catalyst-client && yarn test)
