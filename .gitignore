@@ -3,4 +3,4 @@ node_modules
 /packages/*/lib
 /packages/*/coverage
 /packages/catalyst/test-project/dist/*
-/packages/catalyst/fixtures/*/dist
+/packages/catalyst/test-project/.last-build

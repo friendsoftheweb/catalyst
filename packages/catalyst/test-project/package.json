@@ -1,5 +1,10 @@
 {
   "license": "MIT",
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not op_mini all"
+  ],
   "dependencies": {
     "catalyst": "file:../",
     "core-js": "3",
