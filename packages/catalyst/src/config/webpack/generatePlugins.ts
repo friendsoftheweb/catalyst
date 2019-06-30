@@ -4,6 +4,7 @@ import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import ManifestPlugin from 'webpack-manifest-plugin';
 import CompressionPlugin from 'compression-webpack-plugin';
 import WorkboxWebpackPlugin from 'workbox-webpack-plugin';
+import DuplicatePackageCheckerPlugin from 'duplicate-package-checker-webpack-plugin';
 import CleanUpStatsPlugin from '../../webpack-plugins/CleanUpStatsPlugin';
 import Configuration from '../../Configuration';
 
@@ -65,7 +66,7 @@ export default function generatePlugins() {
     );
   }
 
-  plugins.push(new CleanUpStatsPlugin());
+  plugins.push(new CleanUpStatsPlugin(), new DuplicatePackageCheckerPlugin());
 
   return plugins;
 }

@@ -38,11 +38,13 @@ module.exports = async function() {
 
     const lastBuildTime = new Date();
 
+    execSync('yarn link', { stdio: 'inherit' });
+
     execSync('yarn build', { stdio: 'inherit' });
 
-    console.log('\nInstalling catalyst into test project...\n');
+    console.log('\nLinking catalyst into test project...\n');
 
-    execSync('yarn add "file:../" --prefer-offline', {
+    execSync('yarn link catalyst', {
       stdio: 'inherit',
       cwd: testProjectRoot
     });
