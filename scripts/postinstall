@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+set -euxo pipefail
+
+lerna bootstrap
+
+(cd ./packages/catalyst/test-project && yarn install)
+
+ln -sf ../catalyst/lib/index.js ./packages/catalyst/test-project/node_modules/.bin/catalyst

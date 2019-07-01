@@ -7,7 +7,7 @@
   "scripts": {
     "test": "lerna run test",
     "types:check": "lerna run types:check",
-    "postinstall": "lerna bootstrap && (cd ./packages/catalyst/test-project; yarn install) && ln -sf ../catalyst/lib/index.js ./packages/catalyst/test-project/node_modules/.bin/catalyst"
+    "postinstall": "scripts/postinstall"
   },
   "devDependencies": {
     "lerna": "^3.14.1"
