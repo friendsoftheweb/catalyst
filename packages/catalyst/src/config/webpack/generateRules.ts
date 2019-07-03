@@ -1,6 +1,7 @@
 import path from 'path';
 import { RuleSetRule } from 'webpack';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import autoprefixer from 'autoprefixer';
 import Configuration from '../../Configuration';
 
 export default function generateRules() {
@@ -35,7 +36,7 @@ export default function generateRules() {
         options: {
           sourceMap: true,
           plugins() {
-            return [require('autoprefixer')];
+            return [autoprefixer({ grid: 'no-autoplace' })];
           }
         }
       },

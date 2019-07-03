@@ -91,6 +91,7 @@
     "workbox-webpack-plugin": "^4.3.1"
   },
   "devDependencies": {
+    "@types/autoprefixer": "^9.5.0",
     "@types/case-sensitive-paths-webpack-plugin": "^2.1.2",
     "@types/circular-dependency-plugin": "^5.0.0",
     "@types/compression-webpack-plugin": "^2.0.0",
