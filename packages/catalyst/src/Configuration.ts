@@ -170,10 +170,10 @@ export default class Configuration {
     if (this.environment === 'development') {
       return `${this.devServerProtocol}://${this.devServerHost}:${
         this.devServerPort
-      }`;
+      }/`;
     }
 
-    return this.configuration.publicPath;
+    return this.configuration.publicPath.replace(/\/*$/, '/');
   }
 
   get tempPath(): string {

@@ -14,6 +14,7 @@ export default function generatePlugins() {
   const {
     environment,
     contextPath,
+    publicPath,
     tempPath,
     devServerProtocol,
     devServerHost,
@@ -48,7 +49,8 @@ export default function generatePlugins() {
       NODE_ENV: process.env.NODE_ENV,
       DEV_SERVER_PROTOCOL: devServerProtocol,
       DEV_SERVER_HOST: devServerHost,
-      DEV_SERVER_PORT: devServerPort
+      DEV_SERVER_PORT: devServerPort,
+      SERVICE_WORKER_URL: `${publicPath}/service-worker.js`
     })
   );
 
@@ -56,7 +58,7 @@ export default function generatePlugins() {
     plugins.push(new ManifestPlugin({ fileName: 'manifest.json' }));
   }
 
-  if (environment === 'production') {
+  if (environment === 'production' || environment === 'test') {
     plugins.push(
       new CompressionPlugin({
         test: /\.(js|s?css)$/

@@ -12,7 +12,7 @@ import exitWithError from '../utils/exitWithError';
 export const defaultConfig = {
   contextPath: 'client',
   buildPath: 'public/assets',
-  publicPath: '/assets'
+  publicPath: '/assets/'
 };
 
 const nodePackages = ['react', 'react-dom', 'styled-components', 'core-js@3'];

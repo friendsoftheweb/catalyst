@@ -13,5 +13,9 @@ export default function generateEntry(entryPath: string) {
 
   entry.push(entryPath);
 
+  if (environment === 'production' || environment === 'test') {
+    entry.push(path.resolve(__dirname, '../../../lib/workbox'));
+  }
+
   return entry;
 }
