@@ -2,6 +2,7 @@ import webpack from 'webpack';
 import chalk from 'chalk';
 import rebuildNodeSASS from '../../utils/rebuildNodeSASS';
 import Configuration from '../../Configuration';
+import logVersion from '../../utils/logVersion';
 import getWebpackConfig from '../../utils/getWebpackConfig';
 
 export default async function build() {
@@ -15,6 +16,8 @@ export default async function build() {
       ].join('\n')
     );
   }
+
+  logVersion();
 
   console.log(
     `Creating a ${chalk.cyan(environment)} build in ${chalk.cyan(
