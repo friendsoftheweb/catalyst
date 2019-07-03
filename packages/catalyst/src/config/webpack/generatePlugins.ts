@@ -71,7 +71,13 @@ export default function generatePlugins() {
   }
 
   plugins.push(
-    new DuplicatePackageCheckerPlugin(),
+    new DuplicatePackageCheckerPlugin({
+      exclude(instance) {
+        return ['prop-types', 'hoist-non-react-statics'].includes(
+          instance.name
+        );
+      }
+    }),
     new CaseSensitivePathsPlugin(),
     new CircularDependencyPlugin({
       exclude: /.*\/node_modules\/.*/,
