@@ -18,6 +18,7 @@
     "url": "git+https://github.com/friendsoftheweb/catalyst.git"
   },
   "scripts": {
+    "prepack": "scripts/prepack",
     "build": "scripts/build",
     "test": "jest",
     "test:watch": "jest --watch",
