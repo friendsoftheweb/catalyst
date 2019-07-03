@@ -5,6 +5,8 @@ import ManifestPlugin from 'webpack-manifest-plugin';
 import CompressionPlugin from 'compression-webpack-plugin';
 import WorkboxWebpackPlugin from 'workbox-webpack-plugin';
 import DuplicatePackageCheckerPlugin from 'duplicate-package-checker-webpack-plugin';
+import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin';
+import CircularDependencyPlugin from 'circular-dependency-plugin';
 import CleanUpStatsPlugin from '../../webpack-plugins/CleanUpStatsPlugin';
 import Configuration from '../../Configuration';
 
@@ -66,7 +68,17 @@ export default function generatePlugins() {
     );
   }
 
-  plugins.push(new CleanUpStatsPlugin(), new DuplicatePackageCheckerPlugin());
+  plugins.push(
+    new DuplicatePackageCheckerPlugin(),
+    new CaseSensitivePathsPlugin(),
+    new CircularDependencyPlugin({
+      exclude: /.*\/node_modules\/.*/,
+      failOnError: environment !== 'development',
+      allowAsyncCycles: true,
+      cwd: process.cwd()
+    }),
+    new CleanUpStatsPlugin()
+  );
 
   return plugins;
 }

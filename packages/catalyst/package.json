@@ -61,8 +61,10 @@
     "babel-plugin-lodash": "^3.3.4",
     "babel-plugin-styled-components": "^1.10.4",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
+    "case-sensitive-paths-webpack-plugin": "^2.2.0",
     "catalyst-client": "^1.0.0-beta.47",
     "chalk": "^2.4.2",
+    "circular-dependency-plugin": "^5.0.2",
     "commander": "^2.20.0",
     "compression-webpack-plugin": "^3.0.0",
     "css-loader": "^3.0.0",
@@ -89,6 +91,8 @@
     "workbox-webpack-plugin": "^4.3.1"
   },
   "devDependencies": {
+    "@types/case-sensitive-paths-webpack-plugin": "^2.1.2",
+    "@types/circular-dependency-plugin": "^5.0.0",
     "@types/compression-webpack-plugin": "^2.0.0",
     "@types/diff": "^4.0.2",
     "@types/duplicate-package-checker-webpack-plugin": "^2.1.0",
