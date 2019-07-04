@@ -1,6 +1,5 @@
 import path from 'path';
 import fs from 'fs';
-import { Configuration as WebpackConfiguration } from 'webpack';
 
 type Environment = 'development' | 'test' | 'production';
 
@@ -12,7 +11,6 @@ interface CustomConfiguration {
   contextPath: string;
   buildPath: string;
   publicPath: string;
-  webpackConfig?: WebpackConfiguration;
   overlayEnabled?: boolean;
   prebuiltModules?: string[];
   transformedModules?: string[];
