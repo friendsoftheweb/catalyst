@@ -1,5 +1,5 @@
 node_modules
-/yarn-error.log
+yarn-error.log
 /packages/*/lib
 /packages/*/coverage
 /packages/catalyst/test-project/dist/*
