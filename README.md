@@ -57,7 +57,7 @@ Certain aspects of Catalyst can be configured by editing the `catalyst.config.js
 Catalyst automatically creates a webpack configuration that should
 be sufficient for most projects. If a project does require manual webpack configuration, a `webpack.config.js` file can be added to the root of the project.
 
-Catalyst exports function which returns Catalyst's default webpack configuration as an object:
+Catalyst exports a function which returns Catalyst's default webpack configuration as an object:
 
 ```javascript
 const { webpackConfig } = require('catalyst');
