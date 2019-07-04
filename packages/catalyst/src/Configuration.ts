@@ -16,6 +16,9 @@ interface CustomConfiguration {
   overlayEnabled?: boolean;
   prebuiltModules?: string[];
   transformedModules?: string[];
+  generateServiceWorker?: boolean;
+  warnAboutDuplicatePackages?: boolean;
+  ignoredDuplicatePackages?: string[];
   devServerProtocol?: string;
   devServerHost?: string;
   devServerPort?: number;
@@ -61,6 +64,11 @@ const defaultTransformedModules = [
   'redux-saga'
 ];
 
+const defaultIgnoredDuplicatePackages = [
+  'prop-types',
+  'hoist-non-react-statics'
+];
+
 function isCustomConfiguration(value: any): value is CustomConfiguration {
   if (value == null) {
     return false;
@@ -96,6 +104,27 @@ function isCustomConfiguration(value: any): value is CustomConfiguration {
   }
 
   if ('prebuiltPackages' in value && !Array.isArray(value.prebuiltPackages)) {
+    return false;
+  }
+
+  if (
+    'generateServiceWorker' in value &&
+    typeof value.generateServiceWorker !== 'boolean'
+  ) {
+    return false;
+  }
+
+  if (
+    'warnAboutDuplicatePackages' in value &&
+    typeof value.warnAboutDuplicatePackages !== 'boolean'
+  ) {
+    return false;
+  }
+
+  if (
+    'ignoredDuplicatePackages' in value &&
+    !Array.isArray(value.ignoredDuplicatePackages)
+  ) {
     return false;
   }
 
@@ -206,6 +235,36 @@ export default class Configuration {
     }
 
     return defaultTransformedModules;
+  }
+
+  get generateServiceWorker(): boolean {
+    const { generateServiceWorker } = this.configuration;
+
+    if (generateServiceWorker != null) {
+      return generateServiceWorker;
+    }
+
+    return this.environment === 'production' || this.environment === 'test';
+  }
+
+  get warnAboutDuplicatePackages(): boolean {
+    const { warnAboutDuplicatePackages } = this.configuration;
+
+    if (warnAboutDuplicatePackages != null) {
+      return warnAboutDuplicatePackages;
+    }
+
+    return true;
+  }
+
+  get ignoredDuplicatePackages(): string[] {
+    const { ignoredDuplicatePackages } = this.configuration;
+
+    if (ignoredDuplicatePackages != null) {
+      return ignoredDuplicatePackages;
+    }
+
+    return defaultIgnoredDuplicatePackages;
   }
 
   get devServerProtocol(): string {

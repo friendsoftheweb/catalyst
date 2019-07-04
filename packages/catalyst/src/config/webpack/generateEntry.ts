@@ -2,7 +2,11 @@ import path from 'path';
 import Configuration from '../../Configuration';
 
 export default function generateEntry(entryPath: string) {
-  const { environment, overlayEnabled } = new Configuration();
+  const {
+    environment,
+    overlayEnabled,
+    generateServiceWorker
+  } = new Configuration();
 
   const entry = [];
 
@@ -13,7 +17,7 @@ export default function generateEntry(entryPath: string) {
 
   entry.push(entryPath);
 
-  if (environment === 'production' || environment === 'test') {
+  if (generateServiceWorker) {
     entry.push(path.resolve(__dirname, '../../../lib/workbox'));
   }
 

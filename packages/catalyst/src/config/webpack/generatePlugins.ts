@@ -16,6 +16,9 @@ export default function generatePlugins() {
     contextPath,
     publicPath,
     tempPath,
+    generateServiceWorker,
+    warnAboutDuplicatePackages,
+    ignoredDuplicatePackages,
     devServerProtocol,
     devServerHost,
     devServerPort
@@ -54,6 +57,15 @@ export default function generatePlugins() {
     })
   );
 
+  if (generateServiceWorker) {
+    plugins.push(
+      new WorkboxWebpackPlugin.GenerateSW({
+        clientsClaim: true,
+        exclude: [/\.map$/, /manifest\.json$/]
+      })
+    );
+  }
+
   if (environment !== 'development') {
     plugins.push(new ManifestPlugin({ fileName: 'manifest.json' }));
   }
@@ -62,22 +74,21 @@ export default function generatePlugins() {
     plugins.push(
       new CompressionPlugin({
         test: /\.(js|s?css)$/
-      }),
-      new WorkboxWebpackPlugin.GenerateSW({
-        clientsClaim: true,
-        exclude: [/\.map$/, /manifest\.json$/]
+      })
+    );
+  }
+
+  if (warnAboutDuplicatePackages) {
+    plugins.push(
+      new DuplicatePackageCheckerPlugin({
+        exclude(instance) {
+          return ignoredDuplicatePackages.includes(instance.name);
+        }
       })
     );
   }
 
   plugins.push(
-    new DuplicatePackageCheckerPlugin({
-      exclude(instance) {
-        return ['prop-types', 'hoist-non-react-statics'].includes(
-          instance.name
-        );
-      }
-    }),
     new CaseSensitivePathsPlugin(),
     new CircularDependencyPlugin({
       exclude: /.*\/node_modules\/.*/,
