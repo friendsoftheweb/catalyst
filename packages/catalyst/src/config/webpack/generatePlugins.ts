@@ -70,10 +70,10 @@ export default function generatePlugins() {
     plugins.push(new ManifestPlugin({ fileName: 'manifest.json' }));
   }
 
-  if (environment === 'production' || environment === 'test') {
+  if (environment === 'production') {
     plugins.push(
       new CompressionPlugin({
-        test: /\.(js|s?css)$/
+        test: /\.js|css)$/
       })
     );
   }
