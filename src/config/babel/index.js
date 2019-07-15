@@ -43,10 +43,7 @@ function babelConfig({ modules, corejs, useBuiltIns = 'usage' } = {}) {
   }
 
   if (environment.production) {
-    plugins.push(
-      '@babel/plugin-transform-react-constant-elements',
-      'babel-plugin-lodash'
-    );
+    plugins.push('babel-plugin-lodash');
   }
 
   return {
