@@ -23,10 +23,6 @@ program
 program
   .command('server')
   .alias('s')
-  .option(
-    '--no-hot',
-    'instruct the client not to apply Hot Module Replacement patches'
-  )
   .description('starts a development server')
   .action(() => {
     // TODO: Determine if this logic should be moved to the server function
@@ -40,12 +36,13 @@ program
 
 program
   .command('build')
-  .description('builds it')
-  .action(() => {
+  .description('creates either a "production" or "test" build')
+  .option('--watch', 'watch the filesystem for changes')
+  .action((options) => {
     // TODO: Determine if this logic should be moved to the build function
     // itself. Or possibly convert all command functions to async functions so
     // the same `catch()` logic can be used for all of them.
-    build().catch((error) => {
+    build(options).catch((error) => {
       console.log(chalk.red(error.message));
       process.exit(1);
     });

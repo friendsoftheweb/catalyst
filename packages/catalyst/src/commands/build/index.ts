@@ -1,11 +1,16 @@
-import webpack from 'webpack';
+import webpack, { Stats } from 'webpack';
 import chalk from 'chalk';
 import rebuildNodeSASS from '../../utils/rebuildNodeSASS';
 import Configuration from '../../Configuration';
 import logVersion from '../../utils/logVersion';
 import getWebpackConfig from '../../utils/getWebpackConfig';
+import logStatus from '../../utils/logStatus';
 
-export default async function build() {
+interface Options {
+  watch?: boolean;
+}
+
+export default async function build(options: Options) {
   const { environment, buildPath } = new Configuration();
 
   if (!['production', 'test'].includes(environment)) {
@@ -19,37 +24,81 @@ export default async function build() {
 
   logVersion();
 
-  console.log(
-    `Creating a ${chalk.cyan(environment)} build in ${chalk.cyan(
-      buildPath
-    )}...\n`
-  );
-
   await rebuildNodeSASS();
 
   const compiler = webpack(await getWebpackConfig());
 
-  return new Promise((resolve, reject) => {
-    compiler.run((err, stats) => {
-      if (err != null) {
-        reject(err);
-      } else {
-        const { errors, warnings } = stats.toJson({
-          all: false,
-          warnings: true,
-          errors: true
-        });
+  if (options.watch) {
+    console.log(
+      `A new ${chalk.cyan(environment)} build will be created in ${chalk.cyan(
+        buildPath
+      )} whenever a file changes.`
+    );
 
-        if (errors.length > 0) {
-          reject(new Error(errors[0]));
-        } else {
-          if (warnings.length > 0) {
-            console.log(chalk.yellow(warnings.join('\n\n')));
-          }
-
-          resolve({ stats });
-        }
+    compiler.watch({}, (err, stats) => {
+      if (err) {
+        throw err;
       }
+
+      logStats(stats);
     });
+  } else {
+    console.log(
+      `Creating a ${chalk.cyan(environment)} build in ${chalk.cyan(
+        buildPath
+      )}...\n`
+    );
+
+    return new Promise((resolve, reject) => {
+      compiler.run((err, stats) => {
+        if (err != null) {
+          reject(err);
+        } else {
+          logStats(stats);
+
+          const { errors } = stats.toJson({
+            all: false,
+            warnings: true,
+            errors: true
+          });
+
+          if (errors.length > 0) {
+            reject();
+          } else {
+            resolve();
+          }
+        }
+      });
+    });
+  }
+}
+
+function logStats(stats: Stats) {
+  const { errors, warnings } = stats.toJson({
+    all: false,
+    warnings: true,
+    errors: true
   });
+
+  if (errors.length > 0) {
+    logStatus('ERROR', `Failed to build:`);
+
+    console.log(`\n${errors.join('\n\n')}`);
+  } else {
+    if (warnings.length > 0) {
+      logStatus(
+        'WARNING',
+        `\nBuilt successfully, with ${warnings.length} warning${
+          warnings.length > 1 ? 's' : ''
+        }:\n\n`
+      );
+
+      console.log(chalk.yellow(warnings.join('\n\n')));
+    } else if (stats.endTime != null && stats.startTime != null) {
+      logStatus(
+        'SUCCESS',
+        `Built successfully in ${(stats.endTime - stats.startTime) / 1000}s`
+      );
+    }
+  }
 }
