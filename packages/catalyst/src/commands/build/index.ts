@@ -88,9 +88,9 @@ function logStats(stats: Stats) {
     if (warnings.length > 0) {
       logStatus(
         'WARNING',
-        `\nBuilt successfully, with ${warnings.length} warning${
+        `Built successfully, with ${warnings.length} warning${
           warnings.length > 1 ? 's' : ''
-        }:\n\n`
+        }:\n`
       );
 
       console.log(chalk.yellow(warnings.join('\n\n')));
