@@ -73,7 +73,7 @@ export default function generatePlugins() {
   if (environment === 'production') {
     plugins.push(
       new CompressionPlugin({
-        test: /\.js|css)$/
+        test: /\.(js|css)$/
       })
     );
   }
