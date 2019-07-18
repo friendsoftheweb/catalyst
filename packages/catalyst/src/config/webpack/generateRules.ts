@@ -20,19 +20,19 @@ export default function generateRules() {
     use: [
       environment === 'development'
         ? {
-            loader: 'style-loader'
+            loader: require.resolve('style-loader')
           }
         : {
             loader: MiniCssExtractPlugin.loader
           },
       {
-        loader: 'css-loader',
+        loader: require.resolve('css-loader'),
         options: {
           sourceMap: true
         }
       },
       {
-        loader: 'postcss-loader',
+        loader: require.resolve('postcss-loader'),
         options: {
           sourceMap: true,
           plugins() {
@@ -47,7 +47,7 @@ export default function generateRules() {
         )
       },
       {
-        loader: 'sass-loader',
+        loader: require.resolve('sass-loader'),
         options: {
           sourceMap: true
         }
@@ -66,10 +66,10 @@ export default function generateRules() {
     include,
     use: [
       {
-        loader: 'thread-loader'
+        loader: require.resolve('thread-loader')
       },
       {
-        loader: 'babel-loader',
+        loader: require.resolve('babel-loader'),
         options: {
           cacheDirectory: true
         }
@@ -98,7 +98,7 @@ function generateFileLoaderRule(basePath: string): RuleSetRule {
     include: basePath,
     use: [
       {
-        loader: 'file-loader',
+        loader: require.resolve('file-loader'),
         options: {
           context: basePath,
           name,
