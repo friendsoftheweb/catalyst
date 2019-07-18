@@ -15,7 +15,8 @@ interface CustomConfiguration {
   prebuiltModules?: string[];
   transformedModules?: string[];
   generateServiceWorker?: boolean;
-  warnAboutDuplicatePackages?: boolean;
+  checkForCircularDependencies?: boolean;
+  checkForDuplicatePackages?: boolean;
   ignoredDuplicatePackages?: string[];
   devServerProtocol?: string;
   devServerHost?: string;
@@ -113,8 +114,15 @@ function isCustomConfiguration(value: any): value is CustomConfiguration {
   }
 
   if (
-    'warnAboutDuplicatePackages' in value &&
-    typeof value.warnAboutDuplicatePackages !== 'boolean'
+    'checkForCircularDependencies' in value &&
+    typeof value.checkForCircularDependencies !== 'boolean'
+  ) {
+    return false;
+  }
+
+  if (
+    'checkForDuplicatePackages' in value &&
+    typeof value.checkForDuplicatePackages !== 'boolean'
   ) {
     return false;
   }
@@ -245,11 +253,21 @@ export default class Configuration {
     return this.environment === 'production' || this.environment === 'test';
   }
 
-  get warnAboutDuplicatePackages(): boolean {
-    const { warnAboutDuplicatePackages } = this.configuration;
+  get checkForCircularDependencies(): boolean {
+    const { checkForCircularDependencies } = this.configuration;
 
-    if (warnAboutDuplicatePackages != null) {
-      return warnAboutDuplicatePackages;
+    if (checkForCircularDependencies != null) {
+      return checkForCircularDependencies;
+    }
+
+    return true;
+  }
+
+  get checkForDuplicatePackages(): boolean {
+    const { checkForDuplicatePackages } = this.configuration;
+
+    if (checkForDuplicatePackages != null) {
+      return checkForDuplicatePackages;
     }
 
     return true;

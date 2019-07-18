@@ -6,6 +6,7 @@ import chalk from 'chalk';
 import init from './commands/init';
 import server from './commands/server';
 import build from './commands/build';
+import logStatus from './utils/logStatus';
 
 export { default as babelConfig } from './config/babel';
 export { default as webpackConfig } from './config/webpack';
@@ -29,7 +30,10 @@ program
     // itself. Or possibly convert all command functions to async functions so
     // the same `catch()` logic can be used for all of them.
     server().catch((error) => {
-      console.error(error.stack);
+      if (error instanceof Error) {
+        logStatus('ERROR', error.message);
+      }
+
       process.exit(1);
     });
   });
@@ -43,7 +47,10 @@ program
     // itself. Or possibly convert all command functions to async functions so
     // the same `catch()` logic can be used for all of them.
     build(options).catch((error) => {
-      console.log(chalk.red(error.message));
+      if (error instanceof Error) {
+        logStatus('ERROR', error.message);
+      }
+
       process.exit(1);
     });
   });

@@ -56,13 +56,7 @@ export default async function build(options: Options) {
         } else {
           logStats(stats);
 
-          const { errors } = stats.toJson({
-            all: false,
-            warnings: true,
-            errors: true
-          });
-
-          if (errors.length > 0) {
+          if (stats.hasErrors()) {
             reject();
           } else {
             resolve();

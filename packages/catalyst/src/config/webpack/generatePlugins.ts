@@ -17,7 +17,8 @@ export default function generatePlugins() {
     publicPath,
     tempPath,
     generateServiceWorker,
-    warnAboutDuplicatePackages,
+    checkForCircularDependencies,
+    checkForDuplicatePackages,
     ignoredDuplicatePackages,
     devServerProtocol,
     devServerHost,
@@ -78,7 +79,18 @@ export default function generatePlugins() {
     );
   }
 
-  if (warnAboutDuplicatePackages) {
+  if (checkForCircularDependencies) {
+    plugins.push(
+      new CircularDependencyPlugin({
+        exclude: /.*\/node_modules\/.*/,
+        failOnError: environment !== 'development',
+        allowAsyncCycles: true,
+        cwd: process.cwd()
+      })
+    );
+  }
+
+  if (checkForDuplicatePackages) {
     plugins.push(
       new DuplicatePackageCheckerPlugin({
         exclude(instance) {
@@ -88,16 +100,7 @@ export default function generatePlugins() {
     );
   }
 
-  plugins.push(
-    new CaseSensitivePathsPlugin(),
-    new CircularDependencyPlugin({
-      exclude: /.*\/node_modules\/.*/,
-      failOnError: environment !== 'development',
-      allowAsyncCycles: true,
-      cwd: process.cwd()
-    }),
-    new CleanUpStatsPlugin()
-  );
+  plugins.push(new CaseSensitivePathsPlugin(), new CleanUpStatsPlugin());
 
   return plugins;
 }
