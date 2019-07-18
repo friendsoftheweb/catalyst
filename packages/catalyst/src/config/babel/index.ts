@@ -28,12 +28,12 @@ export default function babelConfig({
   }
 
   const presets: Array<string | [string, Object]> = [
-    ['@babel/preset-env', presetEnvOptions],
-    ['@babel/preset-react', { useBuiltIns: true }]
+    [require.resolve('@babel/preset-env'), presetEnvOptions],
+    [require.resolve('@babel/preset-react'), { useBuiltIns: true }]
   ];
 
   if (typeScriptEnabled) {
-    presets.push('@babel/preset-typescript');
+    presets.push(require.resolve('@babel/preset-typescript'));
   }
 
   const absoluteRuntime = path.dirname(
@@ -41,22 +41,30 @@ export default function babelConfig({
   );
 
   const plugins: Array<string | [string, Object]> = [
-    '@babel/plugin-proposal-object-rest-spread',
-    ['@babel/plugin-proposal-class-properties', { loose: true }],
-    '@babel/plugin-proposal-optional-chaining',
-    '@babel/plugin-syntax-dynamic-import',
-    'babel-plugin-graphql-tag',
-    'babel-plugin-styled-components',
-    ['@babel/plugin-transform-runtime', { useESModules: true, absoluteRuntime }]
+    require.resolve('@babel/plugin-proposal-object-rest-spread'),
+    [
+      require.resolve('@babel/plugin-proposal-class-properties'),
+      { loose: true }
+    ],
+    require.resolve('@babel/plugin-proposal-optional-chaining'),
+    require.resolve('@babel/plugin-syntax-dynamic-import'),
+    require.resolve('babel-plugin-graphql-tag'),
+    require.resolve('babel-plugin-styled-components'),
+    [
+      require.resolve('@babel/plugin-transform-runtime'),
+      { useESModules: true, absoluteRuntime }
+    ]
   ];
 
   if (flowEnabled) {
-    plugins.unshift('@babel/plugin-transform-flow-strip-types');
+    plugins.unshift(
+      require.resolve('@babel/plugin-transform-flow-strip-types')
+    );
   }
 
   if (environment === 'production') {
-    plugins.push('babel-plugin-lodash', [
-      'babel-plugin-transform-react-remove-prop-types',
+    plugins.push(require.resolve('babel-plugin-lodash'), [
+      require.resolve('babel-plugin-transform-react-remove-prop-types'),
       {
         removeImport: true
       }
