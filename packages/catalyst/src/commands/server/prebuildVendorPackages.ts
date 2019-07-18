@@ -5,18 +5,18 @@ import getProjectDependencies from '../../utils/getProjectDependencies';
 import Configuration from '../../Configuration';
 
 export default async function prebuildVendorPackages() {
-  const { contextPath, tempPath, prebuiltModules } = new Configuration();
+  const { contextPath, tempPath, prebuiltPackages } = new Configuration();
   const projectDependencies = await getProjectDependencies();
 
-  const modulesToPrebuild = prebuiltModules.filter((prebuiltModule) =>
-    projectDependencies.includes(prebuiltModule)
+  const packagesToPrebuild = prebuiltPackages.filter((prebuiltPackage) =>
+    projectDependencies.includes(prebuiltPackage)
   );
 
-  if (modulesToPrebuild.length === 0) {
+  if (packagesToPrebuild.length === 0) {
     return;
   }
 
-  console.log(`\nPrebuilding packages: ${modulesToPrebuild.join(', ')}\n`);
+  console.log(`\nPrebuilding packages: ${packagesToPrebuild.join(', ')}\n`);
 
   const compiler = webpack({
     context: contextPath,
@@ -27,7 +27,7 @@ export default async function prebuildVendorPackages() {
     },
 
     entry: {
-      vendor: modulesToPrebuild
+      vendor: packagesToPrebuild
     },
 
     plugins: [

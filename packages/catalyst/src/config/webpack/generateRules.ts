@@ -9,7 +9,7 @@ export default function generateRules() {
     environment,
     rootPath,
     contextPath,
-    transformedModules
+    transformedPackages
   } = new Configuration();
 
   const rules: RuleSetRule[] = [];
@@ -55,8 +55,8 @@ export default function generateRules() {
     ]
   });
 
-  const include = transformedModules.map(
-    (moduleName) => `${path.join(rootPath, 'node_modules', moduleName)}/`
+  const include = transformedPackages.map(
+    (packageName) => `${path.join(rootPath, 'node_modules', packageName)}/`
   );
 
   include.push(contextPath);

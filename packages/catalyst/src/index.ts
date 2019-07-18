@@ -2,7 +2,6 @@
 
 import { templateSettings } from 'lodash';
 import program from 'commander';
-import chalk from 'chalk';
 import init from './commands/init';
 import server from './commands/server';
 import build from './commands/build';

@@ -12,8 +12,8 @@ interface CustomConfiguration {
   buildPath: string;
   publicPath: string;
   overlayEnabled?: boolean;
-  prebuiltModules?: string[];
-  transformedModules?: string[];
+  prebuiltPackages?: string[];
+  transformedPackages?: string[];
   generateServiceWorker?: boolean;
   checkForCircularDependencies?: boolean;
   checkForDuplicatePackages?: boolean;
@@ -23,7 +23,7 @@ interface CustomConfiguration {
   devServerPort?: number;
 }
 
-const defaultPrebuiltModules = [
+const defaultPrebuiltPackages = [
   '@reach/router',
   'apollo-cache-inmemory',
   'apollo-client',
@@ -45,7 +45,7 @@ const defaultPrebuiltModules = [
   'regenerator-runtime'
 ];
 
-const defaultTransformedModules = [
+const defaultTransformedPackages = [
   '@reach/router',
   'apollo-cache-inmemory',
   'apollo-client',
@@ -223,24 +223,24 @@ export default class Configuration {
     return fs.existsSync(path.join(this.rootPath, '.flowconfig'));
   }
 
-  get prebuiltModules(): string[] {
-    const { prebuiltModules } = this.configuration;
+  get prebuiltPackages(): string[] {
+    const { prebuiltPackages } = this.configuration;
 
-    if (prebuiltModules != null) {
-      return prebuiltModules;
+    if (prebuiltPackages != null) {
+      return prebuiltPackages;
     }
 
-    return defaultPrebuiltModules;
+    return defaultPrebuiltPackages;
   }
 
-  get transformedModules(): string[] {
-    const { transformedModules } = this.configuration;
+  get transformedPackages(): string[] {
+    const { transformedPackages } = this.configuration;
 
-    if (transformedModules != null) {
-      return transformedModules;
+    if (transformedPackages != null) {
+      return transformedPackages;
     }
 
-    return defaultTransformedModules;
+    return defaultTransformedPackages;
   }
 
   get generateServiceWorker(): boolean {
