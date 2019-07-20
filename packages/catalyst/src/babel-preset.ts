@@ -1,5 +1,7 @@
 import babelConfig from './config/babel';
 
-export default function babelPreset(_api: any, options = {}) {
+export default function babelPreset(api: any, options = {}) {
+  api.cache.using(() => process.env.NODE_ENV);
+
   return babelConfig(options);
 }

@@ -7,7 +7,10 @@
   ],
   "dependencies": {
     "catalyst": "file:../",
+    "catalyst-plugin-graphql-tag": "file:../../catalyst-plugin-graphql-tag",
+    "catalyst-plugin-styled-components": "file:../../catalyst-plugin-styled-components",
     "core-js": "3",
+    "graphql": "^14.4.2",
     "graphql-tag": "^2.10.1",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",

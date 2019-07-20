@@ -12,7 +12,8 @@ jest.mock('../../../Configuration', () => {
       rootPath: 'ROOT',
       buildPath: 'BUILD',
       contextPath: 'CONTEXT',
-      transformedPackages: []
+      transformedPackages: [],
+      plugins: []
     };
   };
 });

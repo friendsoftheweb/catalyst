@@ -21,6 +21,7 @@ interface CustomConfiguration {
   devServerProtocol?: string;
   devServerHost?: string;
   devServerPort?: number;
+  plugins?: string[];
 }
 
 const defaultPrebuiltPackages = [
@@ -146,6 +147,10 @@ function isCustomConfiguration(value: any): value is CustomConfiguration {
   }
 
   if ('devServerPort' in value && typeof value.devServerHost !== 'number') {
+    return false;
+  }
+
+  if ('plugins' in value && !Array.isArray(value.plugins)) {
     return false;
   }
 
@@ -339,5 +344,15 @@ export default class Configuration {
     }
 
     return overlayEnabled;
+  }
+
+  get plugins(): string[] {
+    const { plugins } = this.configuration;
+
+    if (plugins == null) {
+      return [];
+    }
+
+    return plugins;
   }
 }

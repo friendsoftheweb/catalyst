@@ -5,7 +5,8 @@ jest.mock('../../../Configuration', () => {
   return function() {
     return {
       rootPath: 'ROOT',
-      buildPath: 'BUILD'
+      buildPath: 'BUILD',
+      plugins: []
     };
   };
 });

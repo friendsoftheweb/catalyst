@@ -3,16 +3,19 @@ import { RuleSetRule } from 'webpack';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import autoprefixer from 'autoprefixer';
 import Configuration from '../../Configuration';
+import forEachPlugin from '../../utils/forEachPlugin';
 
 export default function generateRules() {
+  const configuration = new Configuration();
+
   const {
     environment,
     rootPath,
     contextPath,
     transformedPackages
-  } = new Configuration();
+  } = configuration;
 
-  const rules: RuleSetRule[] = [];
+  let rules: RuleSetRule[] = [];
 
   rules.push({
     test: /\.s?css$/,
@@ -81,6 +84,12 @@ export default function generateRules() {
     generateFileLoaderRule(path.join(contextPath, 'assets')),
     generateFileLoaderRule(path.join(rootPath, 'node_modules'))
   );
+
+  forEachPlugin((plugin) => {
+    if (plugin.modifyWebpackRules != null) {
+      rules = plugin.modifyWebpackRules(rules, configuration);
+    }
+  });
 
   return rules;
 }

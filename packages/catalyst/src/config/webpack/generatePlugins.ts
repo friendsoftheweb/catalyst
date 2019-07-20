@@ -1,5 +1,5 @@
 import path from 'path';
-import webpack from 'webpack';
+import webpack, { Plugin as WebpackPlugin } from 'webpack';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import ManifestPlugin from 'webpack-manifest-plugin';
 import CompressionPlugin from 'compression-webpack-plugin';
@@ -9,8 +9,11 @@ import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin';
 import CircularDependencyPlugin from 'circular-dependency-plugin';
 import CleanUpStatsPlugin from '../../webpack-plugins/CleanUpStatsPlugin';
 import Configuration from '../../Configuration';
+import forEachPlugin from '../../utils/forEachPlugin';
 
-export default function generatePlugins() {
+export default function generatePlugins(): WebpackPlugin[] {
+  const configuration = new Configuration();
+
   const {
     environment,
     contextPath,
@@ -23,12 +26,12 @@ export default function generatePlugins() {
     devServerProtocol,
     devServerHost,
     devServerPort
-  } = new Configuration();
+  } = configuration;
 
   const cssFileName =
     environment === 'production' ? '[name]-[hash].css' : '[name].css';
 
-  const plugins = [];
+  let plugins: WebpackPlugin[] = [];
 
   if (environment === 'development') {
     plugins.push(
@@ -101,6 +104,12 @@ export default function generatePlugins() {
   }
 
   plugins.push(new CaseSensitivePathsPlugin(), new CleanUpStatsPlugin());
+
+  forEachPlugin((plugin) => {
+    if (plugin.modifyWebpackPlugins != null) {
+      plugins = plugin.modifyWebpackPlugins(plugins, configuration);
+    }
+  });
 
   return plugins;
 }

@@ -6,7 +6,7 @@ const {
   writeFileSync,
   readFileSync
 } = require('fs');
-const { join } = require('path');
+const { join, resolve, parse } = require('path');
 const glob = require('glob');
 
 const testProjectRoot = join(process.cwd(), 'test-project');
@@ -23,7 +23,7 @@ function shouldBuild() {
     return true;
   }
 
-  for (const filePath of glob.sync('src/**/*.*')) {
+  for (const filePath of glob.sync('../*/src/**/*.*')) {
     if (statSync(filePath).mtime > lastBuildTime) {
       return true;
     }
@@ -34,17 +34,26 @@ function shouldBuild() {
 
 module.exports = async function() {
   if (shouldBuild()) {
-    console.log('\n\nBuilding catalyst...\n');
-
     const lastBuildTime = new Date();
 
-    execSync('yarn link', { stdio: 'inherit' });
+    for (const relativePackagePath of glob.sync('../*')) {
+      const packagePath = resolve(__dirname, relativePackagePath);
+      const packageName = parse(packagePath).name;
 
-    execSync('yarn build', { stdio: 'inherit' });
+      console.log(`\n\nBuilding ${packageName}...\n`);
 
-    console.log('\nLinking catalyst into test project...\n');
+      execSync('yarn link', { stdio: 'inherit', cwd: packagePath });
+      execSync('yarn build', { stdio: 'inherit', cwd: packagePath });
 
-    execSync('yarn link catalyst', {
+      console.log(`\nLinking ${packageName} into test project...\n`);
+
+      execSync(`yarn link ${packageName}`, {
+        stdio: 'inherit',
+        cwd: testProjectRoot
+      });
+    }
+
+    execSync('rm -rf node_modules/.cache', {
       stdio: 'inherit',
       cwd: testProjectRoot
     });

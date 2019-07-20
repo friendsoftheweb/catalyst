@@ -1,5 +1,6 @@
 import path from 'path';
 import Configuration from '../../Configuration';
+import forEachPlugin from '../../utils/forEachPlugin';
 
 interface Options {
   useBuiltIns?: 'usage' | 'entry' | false;
@@ -12,7 +13,9 @@ export default function babelConfig({
   corejs,
   useBuiltIns = 'usage'
 }: Options = {}) {
-  const { environment, typeScriptEnabled, flowEnabled } = new Configuration();
+  const configuration = new Configuration();
+
+  const { environment, typeScriptEnabled, flowEnabled } = configuration;
 
   if (modules == null) {
     modules = environment === 'test' ? 'commonjs' : false;
@@ -27,7 +30,7 @@ export default function babelConfig({
     presetEnvOptions.corejs = corejs;
   }
 
-  const presets: Array<string | [string, Object]> = [
+  let presets: Array<string | [string, Object]> = [
     [require.resolve('@babel/preset-env'), presetEnvOptions],
     [require.resolve('@babel/preset-react'), { useBuiltIns: true }]
   ];
@@ -40,7 +43,7 @@ export default function babelConfig({
     require.resolve('@babel/runtime/package.json')
   );
 
-  const plugins: Array<string | [string, Object]> = [
+  let plugins: Array<string | [string, Object]> = [
     require.resolve('@babel/plugin-proposal-object-rest-spread'),
     [
       require.resolve('@babel/plugin-proposal-class-properties'),
@@ -48,8 +51,6 @@ export default function babelConfig({
     ],
     require.resolve('@babel/plugin-proposal-optional-chaining'),
     require.resolve('@babel/plugin-syntax-dynamic-import'),
-    require.resolve('babel-plugin-graphql-tag'),
-    require.resolve('babel-plugin-styled-components'),
     [
       require.resolve('@babel/plugin-transform-runtime'),
       { useESModules: true, absoluteRuntime }
@@ -70,6 +71,16 @@ export default function babelConfig({
       }
     ]);
   }
+
+  forEachPlugin((plugin) => {
+    if (plugin.modifyBabelPresets != null) {
+      presets = plugin.modifyBabelPresets(presets, configuration);
+    }
+
+    if (plugin.modifyBabelPlugins != null) {
+      plugins = plugin.modifyBabelPlugins(plugins, configuration);
+    }
+  });
 
   return {
     presets,

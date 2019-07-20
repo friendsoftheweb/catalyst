@@ -1,5 +1,9 @@
 {
   "contextPath": "src",
   "buildPath": "dist",
-  "publicPath": "/assets"
+  "publicPath": "/assets",
+  "plugins": [
+    "catalyst-plugin-styled-components",
+    "catalyst-plugin-graphql-tag"
+  ]
 }
