@@ -24,6 +24,8 @@ function shouldBuild() {
   }
 
   for (const filePath of glob.sync('../*/src/**/*.*')) {
+    if (filePath.includes('__tests__')) continue;
+
     if (statSync(filePath).mtime > lastBuildTime) {
       return true;
     }
