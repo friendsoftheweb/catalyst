@@ -888,6 +888,11 @@
     "@types/minimatch" "*"
     "@types/node" "*"
 
+"@types/graphql@^14.2.2":
+  version "14.2.2"
+  resolved "https://registry.yarnpkg.com/@types/graphql/-/graphql-14.2.2.tgz#10f197e6f8559c11b16d630c5e9c10c3c8e61c5e"
+  integrity sha512-okXbUmdZFMO3AYBEJCcpJFPFDkKmIiZZBqWD5TmPtAv+GHfjD2qLZEI0PvZ8IWMU4ozoK2HV2lDxWjw4LbVlnw==
+
 "@types/minimatch@*":
   version "3.0.3"
   resolved "https://registry.yarnpkg.com/@types/minimatch/-/minimatch-3.0.3.tgz#3dca0e3f33b200fc7d1139c0cd96c1268cadfd9d"
@@ -915,12 +920,29 @@
   dependencies:
     "@types/react" "*"
 
+"@types/react-native@*":
+  version "0.60.2"
+  resolved "https://registry.yarnpkg.com/@types/react-native/-/react-native-0.60.2.tgz#2dca78481a904419c2a5907288dd97d1090c6e3c"
+  integrity sha512-K4+/etirpv52xu24xAc++OdhbD0VQEt0Kq0h6dZrLU82OlA+I7BhpKF3JBvx9tbmrFaZDxhHp8N4TEvRYS4fdQ==
+  dependencies:
+    "@types/prop-types" "*"
+    "@types/react" "*"
+
 "@types/react@*", "@types/react@^16.8.22":
   version "16.8.22"
   resolved "https://registry.yarnpkg.com/@types/react/-/react-16.8.22.tgz#7f18bf5ea0c1cad73c46b6b1c804a3ce0eec6d54"
   integrity sha512-C3O1yVqk4sUXqWyx0wlys76eQfhrQhiDhDlHBrjER76lR2S2Agiid/KpOU9oCqj1dISStscz7xXz1Cg8+sCQeA==
   dependencies:
     "@types/prop-types" "*"
+    csstype "^2.2.0"
+
+"@types/styled-components@^4.1.18":
+  version "4.1.18"
+  resolved "https://registry.yarnpkg.com/@types/styled-components/-/styled-components-4.1.18.tgz#348804fe5a399ae0a46550afaf030085815ad931"
+  integrity sha512-VrHkgvjbxQXOw0xWSUckusUUZ4y/jqN1u7kF29ngh0oE6uOrlZHleTgqeUqylQqHQIeQ8MxFb50BRHy8ju5DHg==
+  dependencies:
+    "@types/react" "*"
+    "@types/react-native" "*"
     csstype "^2.2.0"
 
 "@webassemblyjs/ast@1.8.5":
@@ -1799,12 +1821,12 @@ catalyst-client@^1.0.0-beta.47:
     strip-ansi "^5.2.0"
 
 "catalyst-plugin-graphql-tag@file:../../catalyst-plugin-graphql-tag":
-  version "1.0.0"
+  version "1.0.0-beta.1"
   dependencies:
     babel-plugin-graphql-tag "^2.4.0"
 
 "catalyst-plugin-styled-components@file:../../catalyst-plugin-styled-components":
-  version "1.0.0"
+  version "1.0.0-beta.1"
   dependencies:
     babel-plugin-styled-components "^1.10.6"
 

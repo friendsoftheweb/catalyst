@@ -3,7 +3,7 @@
   "buildPath": "dist",
   "publicPath": "/assets/",
   "plugins": [
-    "catalyst-plugin-styled-components",
-    "catalyst-plugin-graphql-tag"
+    "catalyst-plugin-graphql-tag",
+    "catalyst-plugin-styled-components"
   ]
 }

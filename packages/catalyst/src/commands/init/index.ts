@@ -17,8 +17,13 @@ export const defaultConfig = {
   plugins: []
 };
 
-const nodePackages = ['react', 'react-dom', 'styled-components', 'core-js@3'];
-const nodePackagesDev = ['typescript', '@types/react', '@types/react-dom'];
+const defaultNodePackages = ['react', 'react-dom', 'core-js@3'];
+
+const defaultNodePackagesDev = [
+  'typescript',
+  '@types/react',
+  '@types/react-dom'
+];
 
 interface Options {
   force: boolean;
@@ -46,7 +51,7 @@ export default async function init(options: Options) {
     buildPath: string;
     publicPath: string;
     plugins: Array<
-      'catalyst-plugin-styled-components' | 'catalyst-plugin-graphql-tag'
+      'catalyst-plugin-graphql-tag' | 'catalyst-plugin-styled-components'
     >;
   }>([
     {
@@ -69,8 +74,8 @@ export default async function init(options: Options) {
       type: 'checkbox',
       message: 'Select plugins:',
       choices: [
-        'catalyst-plugin-styled-components',
-        'catalyst-plugin-graphql-tag'
+        'catalyst-plugin-graphql-tag',
+        'catalyst-plugin-styled-components'
       ],
       default: currentConfig.plugins || []
     }
@@ -107,6 +112,19 @@ export default async function init(options: Options) {
     if (!fs.existsSync(stylesheetPath)) {
       fs.writeFileSync(stylesheetPath, '');
     }
+  }
+
+  let nodePackages = [...defaultNodePackages];
+  let nodePackagesDev = [...defaultNodePackagesDev];
+
+  if (config.plugins.includes('catalyst-plugin-graphql-tag')) {
+    nodePackages.push('graphql', 'graphql-tag');
+    nodePackagesDev.push('@types/graphql');
+  }
+
+  if (config.plugins.includes('catalyst-plugin-styled-components')) {
+    nodePackages.push('styled-components');
+    nodePackagesDev.push('@types/styled-components');
   }
 
   await installMissingDependencies(nodePackages);
