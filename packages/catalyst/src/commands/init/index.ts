@@ -5,14 +5,16 @@ import mkdirp from 'mkdirp';
 import chalk from 'chalk';
 import inquirer from 'inquirer';
 
-import installMissingDependencies from '../utils/installMissingDependencies';
-import writeFileFromTemplate from '../utils/writeFileFromTemplate';
-import exitWithError from '../utils/exitWithError';
+import installMissingDependencies from '../../utils/installMissingDependencies';
+import writeFileFromTemplate from '../../utils/writeFileFromTemplate';
+import exitWithError from '../../utils/exitWithError';
+import tryWriteFile from '../../utils/tryWriteFile';
 
 export const defaultConfig = {
   contextPath: 'client',
   buildPath: 'public/assets',
-  publicPath: '/assets/'
+  publicPath: '/assets/',
+  plugins: []
 };
 
 const nodePackages = ['react', 'react-dom', 'styled-components', 'core-js@3'];
@@ -36,13 +38,16 @@ export default async function init(options: Options) {
   if (fs.existsSync(catalystConfigPath)) {
     firstRun = false;
 
-    Object.assign(currentConfig, catalystConfigPath);
+    Object.assign(currentConfig, require(catalystConfigPath));
   }
 
   const config = await inquirer.prompt<{
     contextPath: string;
     buildPath: string;
     publicPath: string;
+    plugins: Array<
+      'catalyst-plugin-styled-components' | 'catalyst-plugin-graphql-tag'
+    >;
   }>([
     {
       name: 'contextPath',
@@ -58,6 +63,16 @@ export default async function init(options: Options) {
       name: 'publicPath',
       message: 'Public path:',
       default: currentConfig.publicPath
+    },
+    {
+      name: 'plugins',
+      type: 'checkbox',
+      message: 'Select plugins:',
+      choices: [
+        'catalyst-plugin-styled-components',
+        'catalyst-plugin-graphql-tag'
+      ],
+      default: currentConfig.plugins || []
     }
   ]);
 
@@ -69,10 +84,9 @@ export default async function init(options: Options) {
   mkdirp.sync(`${config.contextPath}/assets/fonts`);
   mkdirp.sync(`${config.contextPath}/assets/images`);
 
-  await writeFileFromTemplate(
+  await tryWriteFile(
     'catalyst.config.json',
-    'catalyst.config.json.jst',
-    config
+    JSON.stringify(config, null, 2) + '\n'
   );
 
   await writeFileFromTemplate('.babelrc', 'babelrc.jst');
