@@ -13,7 +13,7 @@ export default function forEachPlugin(
 
     if (!fs.existsSync(pluginPath)) {
       throw new Error(
-        `Failed to load plugin: ${plugin}.\nTry running \`yarn install "${plugin}"\`.`
+        `Failed to load plugin: ${plugin}.\nTry running \`yarn add "${plugin}"\`.`
       );
     }
 
