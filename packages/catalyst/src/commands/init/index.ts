@@ -118,12 +118,12 @@ export default async function init(options: Options) {
   let nodePackagesDev = [...defaultNodePackagesDev];
 
   if (config.plugins.includes('catalyst-plugin-graphql-tag')) {
-    nodePackages.push('graphql', 'graphql-tag');
+    nodePackages.push('catalyst-plugin-graphql-tag', 'graphql', 'graphql-tag');
     nodePackagesDev.push('@types/graphql');
   }
 
   if (config.plugins.includes('catalyst-plugin-styled-components')) {
-    nodePackages.push('styled-components');
+    nodePackages.push('catalyst-plugin-styled-components', 'styled-components');
     nodePackagesDev.push('@types/styled-components');
   }
 
