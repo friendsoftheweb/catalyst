@@ -1,6 +1,6 @@
 {
   "name": "catalyst",
-  "version": "1.0.0-beta.47",
+  "version": "1.0.0-beta.55",
   "description": "Sets up Webpack, React, Redux, and more!",
   "author": "Dan Martens <dan@friendsoftheweb.com>",
   "homepage": "https://github.com/friendsoftheweb/catalyst#readme",
