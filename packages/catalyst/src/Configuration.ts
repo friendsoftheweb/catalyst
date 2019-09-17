@@ -65,8 +65,10 @@ const defaultTransformedPackages = [
 ];
 
 const defaultIgnoredDuplicatePackages = [
+  'hoist-non-react-statics',
   'prop-types',
-  'hoist-non-react-statics'
+  'react-is',
+  'ts-invariant'
 ];
 
 function isCustomConfiguration(value: any): value is CustomConfiguration {
@@ -208,9 +210,7 @@ export default class Configuration {
 
   get publicPath(): string {
     if (this.environment === 'development') {
-      return `${this.devServerProtocol}://${this.devServerHost}:${
-        this.devServerPort
-      }/`;
+      return `${this.devServerProtocol}://${this.devServerHost}:${this.devServerPort}/`;
     }
 
     return this.configuration.publicPath.replace(/\/*$/, '/');

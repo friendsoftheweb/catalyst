@@ -30,7 +30,7 @@ export default function babelConfig({
     presetEnvOptions.corejs = corejs;
   }
 
-  let presets: Array<string | [string, Object]> = [
+  let presets: Array<string | [string, object]> = [
     [require.resolve('@babel/preset-env'), presetEnvOptions],
     [require.resolve('@babel/preset-react'), { useBuiltIns: true }]
   ];
@@ -43,7 +43,7 @@ export default function babelConfig({
     require.resolve('@babel/runtime/package.json')
   );
 
-  let plugins: Array<string | [string, Object]> = [
+  let plugins: Array<string | [string, object]> = [
     require.resolve('@babel/plugin-proposal-object-rest-spread'),
     [
       require.resolve('@babel/plugin-proposal-class-properties'),

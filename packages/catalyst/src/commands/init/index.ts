@@ -97,6 +97,7 @@ export default async function init(options: Options) {
   await writeFileFromTemplate('.babelrc', 'babelrc.jst');
   await writeFileFromTemplate('.eslintrc', 'eslintrc.jst');
   await writeFileFromTemplate('tsconfig.json', 'tsconfig.json.jst', config);
+  await writeFileFromTemplate('jest.config.js', 'jest.config.js.jst', config);
 
   if (firstRun) {
     await writeFileFromTemplate(

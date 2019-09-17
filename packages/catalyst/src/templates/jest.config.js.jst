@@ -1,0 +1,10 @@
+module.exports = {
+  modulePaths: ['<%= contextPath %>'],
+  testPathIgnorePatterns: ['<rootDir>/(node_modules|vendor)/'],
+  transform: {
+    '^.+\\.(js|jsx|ts|tsx)$': require.resolve(
+      'catalyst/config/jest/babelTransform.js'
+    ),
+    '^.+\\.css$': require.resolve('catalyst/config/jest/cssTransform.js')
+  }
+};
