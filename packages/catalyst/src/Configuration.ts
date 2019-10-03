@@ -21,7 +21,14 @@ interface CustomConfiguration {
   devServerProtocol?: string;
   devServerHost?: string;
   devServerPort?: number;
+  devServerCertificate?: DevServerCertificate;
   plugins?: string[];
+}
+
+interface DevServerCertificate {
+  keyPath: string;
+  certPath: string;
+  caPath: string;
 }
 
 const defaultPrebuiltPackages = [
@@ -149,6 +156,14 @@ function isCustomConfiguration(value: any): value is CustomConfiguration {
   }
 
   if ('devServerPort' in value && typeof value.devServerHost !== 'number') {
+    return false;
+  }
+
+  // TODO: Validate "devServerCertificate" keys and values
+  if (
+    'devServerCertificate' in value &&
+    typeof value.devServerCertificate !== 'object'
+  ) {
     return false;
   }
 
@@ -301,6 +316,10 @@ export default class Configuration {
       return devServerProtocol;
     }
 
+    if (this.devServerCertificate != null) {
+      return 'https';
+    }
+
     return 'http';
   }
 
@@ -334,6 +353,12 @@ export default class Configuration {
     }
 
     return 8080;
+  }
+
+  get devServerCertificate(): DevServerCertificate | null {
+    const { devServerCertificate } = this.configuration;
+
+    return devServerCertificate || null;
   }
 
   get overlayEnabled(): boolean {

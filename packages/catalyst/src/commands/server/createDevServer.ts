@@ -4,25 +4,41 @@ import webpack from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
 import Configuration from '../../Configuration';
 import getWebpackConfig from '../../utils/getWebpackConfig';
+import readCertificateFiles from './readCertificateFiles';
 
 interface Options {
   host: string;
   port: number;
+  protocol: string;
+  certificate: {
+    keyPath: string;
+    certPath: string;
+    caPath: string;
+  } | null;
   overlayEnabled: boolean;
 }
 
 export default async function createDevServer({
   host,
   port,
+  protocol,
+  certificate,
   overlayEnabled
 }: Options) {
-  const { tempPath } = new Configuration();
+  const { rootPath, tempPath } = new Configuration();
 
   const vendorFilePath = path.join(tempPath, 'vendor-dll.js');
+
+  let https: WebpackDevServer.Configuration['https'] = protocol === 'https';
+
+  if (certificate != null) {
+    https = await readCertificateFiles(rootPath, certificate);
+  }
 
   const configuration: WebpackDevServer.Configuration = {
     host,
     port,
+    https,
     hot: true,
     publicPath: '/',
     clientLogLevel: 'none',

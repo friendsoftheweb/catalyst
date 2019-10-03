@@ -7,7 +7,13 @@ import checkPortAvailability from '../../utils/checkPortAvailability';
 import Configuration from '../../Configuration';
 
 export default async function server(): Promise<WebpackDevServer> {
-  const { devServerHost, devServerPort, overlayEnabled } = new Configuration();
+  const {
+    devServerHost,
+    devServerPort,
+    devServerProtocol,
+    devServerCertificate,
+    overlayEnabled
+  } = new Configuration();
 
   await checkPortAvailability(devServerPort);
   await rebuildNodeSASS();
@@ -16,6 +22,8 @@ export default async function server(): Promise<WebpackDevServer> {
   const server = await createDevServer({
     host: devServerHost,
     port: devServerPort,
+    protocol: devServerProtocol,
+    certificate: devServerCertificate,
     overlayEnabled: overlayEnabled
   });
 
@@ -32,7 +40,7 @@ export default async function server(): Promise<WebpackDevServer> {
 
       console.log(
         `🧪 Catalyst server is now listening at ${chalk.cyan(
-          `http://${devServerHost}:${devServerPort}`
+          `${devServerProtocol}://${devServerHost}:${devServerPort}`
         )}\n`
       );
 
