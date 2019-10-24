@@ -1,4 +1,4 @@
-# 🧪 Catalyst &middot; [![Build Status](https://travis-ci.org/friendsoftheweb/catalyst.svg?branch=master)](https://travis-ci.org/friendsoftheweb/catalyst)
+# 🧪 Catalyst &middot; [![CircleCI](https://circleci.com/gh/friendsoftheweb/catalyst.svg?style=svg)](https://circleci.com/gh/friendsoftheweb/catalyst)
 
 Catalyst is an opinionated tool for creating and maintaining React applications. It sets up webpack, TypeScript, React, Apollo, SASS, Autoprefixer, and more!
 
