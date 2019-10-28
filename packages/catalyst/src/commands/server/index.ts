@@ -6,7 +6,13 @@ import rebuildNodeSASS from '../../utils/rebuildNodeSASS';
 import checkPortAvailability from '../../utils/checkPortAvailability';
 import Configuration from '../../Configuration';
 
-export default async function server(): Promise<WebpackDevServer> {
+interface Options {
+  bundleAnalyzer?: boolean;
+}
+
+export default async function server(
+  options: Options
+): Promise<WebpackDevServer> {
   const {
     devServerHost,
     devServerPort,
@@ -24,7 +30,8 @@ export default async function server(): Promise<WebpackDevServer> {
     port: devServerPort,
     protocol: devServerProtocol,
     certificate: devServerCertificate,
-    overlayEnabled: overlayEnabled
+    overlayEnabled: overlayEnabled,
+    bundleAnalyzerEnabled: options.bundleAnalyzer === true
   });
 
   return new Promise((resolve, reject) => {

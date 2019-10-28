@@ -16,15 +16,19 @@ interface Options {
     caPath: string;
   } | null;
   overlayEnabled: boolean;
+  bundleAnalyzerEnabled: boolean;
 }
 
-export default async function createDevServer({
-  host,
-  port,
-  protocol,
-  certificate,
-  overlayEnabled
-}: Options) {
+export default async function createDevServer(options: Options) {
+  const {
+    host,
+    port,
+    protocol,
+    certificate,
+    overlayEnabled,
+    bundleAnalyzerEnabled
+  } = options;
+
   const { rootPath, tempPath } = new Configuration();
 
   const vendorFilePath = path.join(tempPath, 'vendor-dll.js');
@@ -71,7 +75,9 @@ export default async function createDevServer({
     }
   };
 
-  const webpackConfig = await getWebpackConfig();
+  const webpackConfig = await getWebpackConfig({
+    bundleAnalyzerEnabled
+  });
 
   // If the custom error overlay is disabled, add the standard webpack
   // development client.

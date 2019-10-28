@@ -9,7 +9,11 @@ import generateOptimization from './generateOptimization';
 import bundlePaths from './bundlePaths';
 import Configuration from '../../Configuration';
 
-export default function webpackConfig(): WebpackConfiguration {
+interface Options {
+  bundleAnalyzerEnabled?: boolean;
+}
+
+export default function webpackConfig(options?: Options): WebpackConfiguration {
   const { environment, contextPath } = new Configuration();
 
   return {
@@ -33,7 +37,7 @@ export default function webpackConfig(): WebpackConfiguration {
       extensions: ['.wasm', '.mjs', '.js', '.ts', '.tsx', '.json'],
       modules: [contextPath, 'node_modules']
     },
-    plugins: generatePlugins(),
+    plugins: generatePlugins(options),
     module: {
       rules: generateRules()
     },

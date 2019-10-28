@@ -7,11 +7,16 @@ import WorkboxWebpackPlugin from 'workbox-webpack-plugin';
 import DuplicatePackageCheckerPlugin from 'duplicate-package-checker-webpack-plugin';
 import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin';
 import CircularDependencyPlugin from 'circular-dependency-plugin';
+import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import CleanUpStatsPlugin from '../../webpack-plugins/CleanUpStatsPlugin';
 import Configuration from '../../Configuration';
 import forEachPlugin from '../../utils/forEachPlugin';
 
-export default function generatePlugins(): WebpackPlugin[] {
+interface Options {
+  bundleAnalyzerEnabled?: boolean;
+}
+
+export default function generatePlugins(options?: Options): WebpackPlugin[] {
   const configuration = new Configuration();
 
   const {
@@ -104,6 +109,10 @@ export default function generatePlugins(): WebpackPlugin[] {
   }
 
   plugins.push(new CaseSensitivePathsPlugin(), new CleanUpStatsPlugin());
+
+  if (options != null && options.bundleAnalyzerEnabled) {
+    plugins.push(new BundleAnalyzerPlugin());
+  }
 
   forEachPlugin((plugin) => {
     if (plugin.modifyWebpackPlugins != null) {

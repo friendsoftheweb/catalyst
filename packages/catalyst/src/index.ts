@@ -24,12 +24,13 @@ program
 program
   .command('server')
   .alias('s')
+  .option('--bundle-analyzer', 'analyze bundle')
   .description('starts a development server')
-  .action(() => {
+  .action((options) => {
     // TODO: Determine if this logic should be moved to the server function
     // itself. Or possibly convert all command functions to async functions so
     // the same `catch()` logic can be used for all of them.
-    server().catch((error) => {
+    server(options).catch((error) => {
       if (error instanceof Error) {
         logStatus('ERROR', error.message);
       }

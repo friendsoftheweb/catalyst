@@ -5,9 +5,13 @@ import { Configuration as WebpackConfiguration } from 'webpack';
 import Configuration from '../Configuration';
 import generateWebpackConfig from '../config/webpack';
 
-export default async function getWebpackConfig(): Promise<
-  WebpackConfiguration
-> {
+interface Options {
+  bundleAnalyzerEnabled?: boolean;
+}
+
+export default async function getWebpackConfig(
+  options?: Options
+): Promise<WebpackConfiguration> {
   const { rootPath } = new Configuration();
   const webpackConfigPath = path.join(rootPath, 'webpack.config.js');
 
@@ -16,7 +20,7 @@ export default async function getWebpackConfig(): Promise<
       if (exists) {
         resolve(require(webpackConfigPath));
       } else {
-        resolve(generateWebpackConfig());
+        resolve(generateWebpackConfig(options));
       }
     });
   });
