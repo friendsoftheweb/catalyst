@@ -24,7 +24,10 @@ program
 program
   .command('server')
   .alias('s')
-  .option('--bundle-analyzer', 'analyze bundle')
+  .option(
+    '--bundle-analyzer',
+    'open a visual representation of the webpack output'
+  )
   .description('starts a development server')
   .action((options) => {
     // TODO: Determine if this logic should be moved to the server function

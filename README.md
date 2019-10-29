@@ -72,3 +72,11 @@ customConfig.module.rules.push({
 
 module.exports = customConfig;
 ```
+
+### Analyzing Webpack Output
+
+The size of the bundles output by webpack can be vizualized using [webpack-bundle-analyzer](https://github.com/webpack-contrib/webpack-bundle-analyzer). You can open the analyzer by starting Catalyst server with the `--bundle-analyzer` option:
+
+```
+$ NODE_ENV=development yarn run catalyst server --bundle-analyzer
+```
