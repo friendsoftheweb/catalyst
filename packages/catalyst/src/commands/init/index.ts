@@ -22,7 +22,9 @@ const defaultNodePackages = ['react', 'react-dom', 'core-js@3'];
 const defaultNodePackagesDev = [
   'typescript',
   '@types/react',
-  '@types/react-dom'
+  '@types/react-dom',
+  'eslint',
+  '@ftw/eslint-config-ts'
 ];
 
 interface Options {
