@@ -14,14 +14,18 @@ interface Plugin {
   ): Array<string | [string, object]>;
 
   modifyWebpackRules?(
-    rules: RuleSetRule[],
+    rules: readonly RuleSetRule[],
     configuration: Configuration
   ): RuleSetRule[];
 
   modifyWebpackPlugins?(
-    plugins: WebpackPlugin[],
+    plugins: readonly WebpackPlugin[],
     configuration: Configuration
   ): WebpackPlugin[];
+
+  modifyNodePackages?(packages: readonly string[]): string[];
+
+  modifyNodePackagesDev?(packages: readonly string[]): string[];
 }
 
 export default Plugin;

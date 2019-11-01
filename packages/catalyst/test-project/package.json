@@ -1,4 +1,5 @@
 {
+  "name": "test-project",
   "license": "MIT",
   "browserslist": [
     ">0.2%",

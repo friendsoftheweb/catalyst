@@ -12,6 +12,7 @@ jest.mock('../../../Configuration', () => {
       rootPath: 'ROOT',
       buildPath: 'BUILD',
       contextPath: 'CONTEXT',
+      projectName: 'catalyst-test',
       transformedPackages: [],
       plugins: []
     };

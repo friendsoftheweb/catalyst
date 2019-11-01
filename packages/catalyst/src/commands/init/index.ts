@@ -9,6 +9,7 @@ import installMissingDependencies from '../../utils/installMissingDependencies';
 import writeFileFromTemplate from '../../utils/writeFileFromTemplate';
 import exitWithError from '../../utils/exitWithError';
 import tryWriteFile from '../../utils/tryWriteFile';
+import forEachPlugin from '../../utils/forEachPlugin';
 
 export const defaultConfig = {
   contextPath: 'client',
@@ -117,18 +118,18 @@ export default async function init(options: Options) {
     }
   }
 
-  let nodePackages = [...defaultNodePackages];
+  let nodePackages = [...defaultNodePackages, ...config.plugins];
   let nodePackagesDev = [...defaultNodePackagesDev];
 
-  if (config.plugins.includes('catalyst-plugin-graphql-tag')) {
-    nodePackages.push('catalyst-plugin-graphql-tag', 'graphql', 'graphql-tag');
-    nodePackagesDev.push('@types/graphql');
-  }
+  forEachPlugin((plugin) => {
+    if (plugin.modifyNodePackages != null) {
+      nodePackages = plugin.modifyNodePackages(nodePackages);
+    }
 
-  if (config.plugins.includes('catalyst-plugin-styled-components')) {
-    nodePackages.push('catalyst-plugin-styled-components', 'styled-components');
-    nodePackagesDev.push('@types/styled-components');
-  }
+    if (plugin.modifyNodePackagesDev != null) {
+      nodePackagesDev = plugin.modifyNodePackagesDev(nodePackagesDev);
+    }
+  });
 
   await installMissingDependencies(nodePackages);
   await installMissingDependencies(nodePackagesDev, true);

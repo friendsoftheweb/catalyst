@@ -235,6 +235,12 @@ export default class Configuration {
     return path.join(this.rootPath, 'tmp', 'catalyst');
   }
 
+  get projectName(): string {
+    return JSON.parse(
+      fs.readFileSync(path.join(this.rootPath, 'package.json')).toString()
+    )['name'];
+  }
+
   get typeScriptEnabled(): boolean {
     return fs.existsSync(path.join(this.rootPath, 'tsconfig.json'));
   }
