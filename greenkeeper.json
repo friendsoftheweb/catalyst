@@ -1,0 +1,14 @@
+{
+  "groups": {
+    "default": {
+      "packages": [
+        "package.json",
+        "packages/catalyst-client/package.json",
+        "packages/catalyst-plugin-graphql-tag/package.json",
+        "packages/catalyst-plugin-styled-components/package.json",
+        "packages/catalyst/package.json",
+        "packages/catalyst/test-project/package.json"
+      ]
+    }
+  }
+}
