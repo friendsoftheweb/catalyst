@@ -54,7 +54,7 @@
     "ejs": "^2.6.1",
     "jest": "^24.8.0",
     "jest-websocket-mock": "^1.4.0",
-    "mock-socket": "^8.0.5",
+    "mock-socket": "^9.0.2",
     "typescript": "^3.4.5"
   },
   "gitHead": "50c8ea594496b7aea95495cec235ea1d4b4f569d"
