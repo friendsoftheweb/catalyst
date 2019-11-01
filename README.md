@@ -1,6 +1,6 @@
-# Catalyst &middot; [![Build Status](https://travis-ci.org/friendsoftheweb/catalyst.svg?branch=master)](https://travis-ci.org/friendsoftheweb/catalyst)
+# 🧪 Catalyst &middot; [![CircleCI](https://circleci.com/gh/friendsoftheweb/catalyst.svg?style=svg)](https://circleci.com/gh/friendsoftheweb/catalyst)
 
-Catalyst is an opinionated tool for creating and maintaining React/Redux applications. It sets up Webpack, Flow, ESLint, React, Redux, Redux Saga, SASS, Autoprefixer, and more!
+Catalyst is an opinionated tool for creating and maintaining React applications. It sets up webpack, TypeScript, React, Apollo, SASS, Autoprefixer, and more!
 
 ## Starting a New Project
 
@@ -9,41 +9,16 @@ $ yarn add catalyst
 $ yarn run catalyst init
 ```
 
-## Configuring Webpack
-
-Catalyst provides a function which produces a webpack configuration that should
-be sufficient for most projects. There some options which can be configured
-by passing an object into the `config()` function call in
-`client/config/webpack.js`:
-
-```javascript
-const config = require('catalyst/lib/config/webpack');
-
-module.exports = config({
-  transformModules: ['react', 'react-dom']
-});
-```
-
-### Available Options
-
-#### `transformModules`
-
-An array of names for modules which should be transformed and polyfilled via
-[Babel](https://babeljs.io/). If you are using modules which require polyfills
-to work in all of your targeted browsers, you should include them in this array.
-The appropriate polyfills will then be imported from core-js via
-@babel/preset-env.
-
 ## Starting the Development Server
 
-You can start the Webpack server with:
+You can start the development server with:
 
 ```
-$ yarn start
+$ NODE_ENV=development yarn run catalyst server
 ```
 
 By default, the server will be accessible at http://localhost:8080. You can override this by setting
-`DEV_SERVER_HOST` and/or `DEV_SERVER_PORT` environment variables.
+`DEV_SERVER_PROTOCOL`, `DEV_SERVER_HOST` and/or `DEV_SERVER_PORT` environment variables.
 
 If you want to be able to access your development server from other devices on your local network,
 you can start it like this:
@@ -57,3 +32,51 @@ Where `en0` is the network device you're using.
 ## Integrating with Rails
 
 See: https://github.com/friendsoftheweb/catalyst-rails
+
+## Configuration
+
+Certain aspects of Catalyst can be configured by editing the `catalyst.config.json` file in the root of your project. Some options can also be configured via environment variables (which take precedence over the value in `catalyst.config.json`). _The server must be restarted before any changes to the configuration will take effect._
+
+| Key                              | Environment Variable  | Type                                                     | Description                                                                                                                                                                                |
+| -------------------------------- | --------------------- | -------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **contextPath**                  | N/A                   | `string`                                                 | The path (relative to the root of your project) that webpack should treat as the [context](https://webpack.js.org/configuration/entry-context/#context) when requiring modules and assets. |
+| **buildPath**                    | N/A                   | `string`                                                 | The path (relative to the root of your project) where _test_ and _production_ builds will be output.                                                                                       |
+| **publicPath**                   | N/A                   | `string`                                                 | The the base URI used when generating paths for `<script />` and `<link />` tags.                                                                                                          |
+| **overlayEnabled**               | N/A                   | `boolean`                                                | Display a custom overlay that shows build status, build errors, and runtime errors. This only applies to the _development_ environment.                                                    |
+| **prebuiltPackages**             | N/A                   | `string[]`                                               | A list of npm packages which should be pre-built in the _development_ environment. This decreases the time spent on re-building entries by skipping the listed packages.                   |
+| **transformedPackages**          | N/A                   | `string[]`                                               | A list of npm packages which should be [transformed and polyfilled via Babel](https://babeljs.io/docs/en/babel-preset-env).                                                                |
+| **generateServiceWorker**        | N/A                   | `boolean`                                                | Generate a separate file which will be registered as a [SeviceWorker](https://developer.mozilla.org/en-US/docs/Web/API/ServiceWorker) and preload JavaScript, CSS, and other assets.       |
+| **checkForCircularDependencies** | N/A                   | `boolean`                                                | Show warnings in _development_ and errors in other in environments if a circular dependency is detected.                                                                                   |
+| **checkForDuplicatePackages**    | N/A                   | `boolean`                                                | Show warnings if mulitple versions of the same package are required in the webpack dependency tree.                                                                                        |
+| **ignoredDuplicatePackages**     | N/A                   | `string[]`                                               | A list of npm packages to ignore when checking for duplicates. This has no effect if **checkForDuplicatePackages** is `false`.                                                             |
+| **devServerHost**                | `DEV_SERVER_HOST`     | `string`                                                 | The host for the development server. Defaults to `"localhost"`.                                                                                                                            |
+| **devServerPort**                | `DEV_SERVER_PORT`     | `number`                                                 | The port for the development server. Defaults to `8080`.                                                                                                                                   |
+| **devServerProtocol**            | `DEV_SERVER_PROTOCOL` | `string`                                                 | The protocol (e.g. `"http"` or `"https"`) used for accessing the development server. Defaults to `"http"`.                                                                                 |
+| **devServerCertificate**         | N/A                   | `{ keyPath: string; certPath: string; caPath: string; }` | The certificate file paths for running the server with SSL support.                                                                                                                        |
+
+### Configuring Webpack
+
+Catalyst automatically creates a webpack configuration that should
+be sufficient for most projects. If a project does require manual webpack configuration, a `webpack.config.js` file can be added to the root of the project.
+
+Catalyst exports a function which returns Catalyst's default webpack configuration as an object:
+
+```javascript
+const { webpackConfig } = require('catalyst');
+
+const customConfig = webpackConfig();
+
+customConfig.module.rules.push({
+  loader: 'my-custom-loader'
+});
+
+module.exports = customConfig;
+```
+
+### Analyzing Webpack Output
+
+The size of the bundles output by webpack can be vizualized using [webpack-bundle-analyzer](https://github.com/webpack-contrib/webpack-bundle-analyzer). You can open the analyzer by starting Catalyst server with the `--bundle-analyzer` option:
+
+```
+$ NODE_ENV=development yarn run catalyst server --bundle-analyzer
+```

@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+set -euxo pipefail
+
+(cd packages/catalyst && yarn install && yarn link)
+(cd packages/catalyst/test-project && yarn install)
+(cd packages/catalyst-client && yarn install)
+(cd packages/catalyst-plugin-graphql-tag && yarn install && yarn link catalyst)
+(cd packages/catalyst-plugin-styled-components && yarn install && yarn link catalyst)
+
+ln -sf ../../../lib/index.js ./packages/catalyst/test-project/node_modules/.bin/catalyst

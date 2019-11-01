@@ -1,3 +1,7 @@
+.DS_Store
 node_modules
-/yarn-error.log
-/lib
+yarn-error.log
+/packages/*/lib
+/packages/*/coverage
+/packages/catalyst/test-project/dist/*
+/packages/catalyst/test-project/.last-build
