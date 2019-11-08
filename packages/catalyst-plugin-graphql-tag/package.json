@@ -21,7 +21,9 @@
     "typescript": "^3.5.3"
   },
   "peerDependencies": {
-    "catalyst": "^1.0.0-beta.53"
+    "catalyst": "^1.0.0",
+    "graphql": "^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0",
+    "graphql-tag": "^2.10.1"
   },
   "gitHead": "50c8ea594496b7aea95495cec235ea1d4b4f569d"
 }
