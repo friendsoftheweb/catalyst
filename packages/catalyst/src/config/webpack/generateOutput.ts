@@ -34,7 +34,7 @@ export default function generateOutput(): Output {
   return {
     path: buildPath,
     publicPath,
-    filename: '[name]-[hash].js',
+    filename: '[name].[contenthash:8].js',
     jsonpFunction
   };
 }
