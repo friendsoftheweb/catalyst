@@ -34,7 +34,7 @@ export default function generatePlugins(options?: Options): WebpackPlugin[] {
   } = configuration;
 
   const cssFileName =
-    environment === 'production' ? '[name]-[hash].css' : '[name].css';
+    environment === 'production' ? '[name].[contenthash:8].css' : '[name].css';
 
   let plugins: WebpackPlugin[] = [];
 
