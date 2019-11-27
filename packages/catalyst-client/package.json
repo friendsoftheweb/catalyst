@@ -19,39 +19,31 @@
   "scripts": {
     "prepack": "scripts/prepack",
     "build": "scripts/build",
+    "build:watch": "tsc --watch",
     "test": "jest",
     "types:check": "tsc --noEmit"
   },
   "jest": {
-    "moduleFileExtensions": [
-      "js",
-      "json",
-      "jsx",
-      "ts",
-      "tsx",
-      "node",
-      "ejs"
-    ],
     "transform": {
-      "^.+\\.(t|j)sx?$": "babel-jest",
-      "^.+\\.ejs$": "<rootDir>/ejs-transform.js"
+      "^.+\\.(t|j)sx?$": "babel-jest"
     }
   },
   "bugs": {
     "url": "https://github.com/friendsoftheweb/catalyst/issues"
   },
   "dependencies": {
+    "preact": "^10.0.5",
     "sockjs-client": "^1.3.0",
     "strip-ansi": "^5.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.4.4",
+    "@babel/plugin-transform-react-jsx": "^7.7.0",
     "@babel/preset-env": "^7.4.4",
     "@babel/preset-typescript": "^7.3.3",
     "@types/node": "^12.0.2",
     "@types/sockjs-client": "^1.1.1",
     "babel-jest": "^24.8.0",
-    "ejs": "^2.6.1",
     "jest": "^24.8.0",
     "jest-websocket-mock": "^1.4.0",
     "mock-socket": "^8.0.5",

@@ -15,49 +15,49 @@ declare global {
 }
 
 import SockJS from 'sockjs-client';
-
-// @ts-ignore
-import activityTemplate from './templates/activity';
-// @ts-ignore
-import compilationErrorTemplate from './templates/compilation-error';
-// @ts-ignore
-import runtimeErrorsTemplate from './templates/runtime-errors';
+import { h, render } from 'preact';
 
 import createOverlayContainer from './createOverlayContainer';
 import formatCompiliationError from './formatCompilationError';
 
-let overlayContainerHTML: string | null = null;
+let overlayContainerNode: preact.ComponentChild | null = null;
 let overlayFrameVisible = false;
 let overlayFramePointerEvents = 'none';
 let runtimeErrorCount = 0;
+let runtimeErrorMessage: string | undefined;
 
-function updateOverlayContainer(): Promise<void> {
-  return createOverlayContainer().then(({ frame, container }) => {
-    frame.style.display = overlayFrameVisible ? 'block' : 'none';
-    frame.style.pointerEvents = overlayFramePointerEvents;
+import Activity from './components/Activity';
+import RuntimeErrors from './components/RuntimeErrors';
+import CompilationError from './components/CompilationError';
 
-    container.style.backgroundColor =
-      overlayFramePointerEvents === 'none'
-        ? 'transparent'
-        : 'rgba(255,255,255,0.25)';
-    container.innerHTML = overlayContainerHTML || '';
-  });
+async function updateOverlayContainer() {
+  const { frame, container } = await createOverlayContainer();
+
+  frame.style.display = overlayFrameVisible ? 'block' : 'none';
+  frame.style.pointerEvents = overlayFramePointerEvents;
+
+  container.style.backgroundColor =
+    overlayFramePointerEvents === 'none'
+      ? 'transparent'
+      : 'rgba(255,255,255,0.25)';
+
+  render(overlayContainerNode, container);
 }
 
 function showNotification(
-  template: string,
+  node: preact.ComponentChild,
   options: { pointerEvents: 'auto' | 'none' } = { pointerEvents: 'none' }
-): Promise<any> {
+) {
+  overlayContainerNode = node;
   overlayFrameVisible = true;
-  overlayContainerHTML = template;
   overlayFramePointerEvents = options.pointerEvents;
 
   return updateOverlayContainer();
 }
 
-function hideNotification(): Promise<void> {
+function hideNotification() {
+  overlayContainerNode = null;
   overlayFrameVisible = false;
-  overlayContainerHTML = null;
 
   return updateOverlayContainer();
 }
@@ -81,7 +81,7 @@ connection.onmessage = function(event) {
       if (!isBuilding) {
         isBuilding = true;
 
-        showNotification(activityTemplate({ message: 'Building...' }));
+        showNotification(h(Activity, { message: 'Building...' }));
       }
 
       break;
@@ -124,7 +124,7 @@ connection.onmessage = function(event) {
       isBuilding = false;
 
       showNotification(
-        compilationErrorTemplate({
+        h(CompilationError, {
           message: formatCompiliationError(message.data[0])
         }),
         { pointerEvents: 'auto' }
@@ -162,24 +162,38 @@ function tryApplyUpdates(): Promise<any> {
 function showRuntimeErrors() {
   if (!isBuilding && runtimeErrorCount > 0) {
     showNotification(
-      runtimeErrorsTemplate({
-        count: runtimeErrorCount
+      h(RuntimeErrors, {
+        count: runtimeErrorCount,
+        message: runtimeErrorMessage
       })
     );
   }
 }
 
-window.addEventListener('error', () => {
+// function shouldDisplayErrorOverlay(error: ErrorEvent): boolean {
+//   return /^Error: Element type is invalid/.test(error.message);
+// }
+
+function messageForError(error: Error): string | undefined {
+  if (error.name === 'ReferenceError') {
+    return error.message;
+  }
+}
+
+window.addEventListener('error', (error) => {
   runtimeErrorCount++;
 
+  runtimeErrorMessage = messageForError(error.error);
   showRuntimeErrors();
+
+  console.log({ error: error.error });
+  console.log(error.error.stack.split('\n'));
 
   return false;
 });
 
 window.addEventListener('unhandledrejection', () => {
   runtimeErrorCount++;
-
   showRuntimeErrors();
 
   return false;

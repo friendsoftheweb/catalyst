@@ -1,14 +1,35 @@
-<div class="compilation-error">
-  <a class="compilation-error-brand" href="https://github.com/friendsoftheweb/catalyst" target="_blank" rel="noopener">
-    🧪 Catalyst
-  </a>
+import { h, Component, Fragment } from 'preact';
 
-  <h1>Failed to Compile</h1>
+interface Props {
+  message?: string;
+}
 
-  <div class="compilation-error-message"><%- locals.message %></div>
-</div>
+export default class CompilationError extends Component<Props> {
+  render() {
+    const { message } = this.props;
 
-<style>
+    return (
+      <Fragment>
+        <div className="compilation-error">
+          <a
+            className="compilation-error-brand"
+            href="https://github.com/friendsoftheweb/catalyst"
+            target="_blank"
+            rel="noopener"
+          >
+            🧪 Catalyst
+          </a>
+
+          <h1>Failed to Compile</h1>
+
+          <div
+            className="compilation-error-message"
+            dangerouslySetInnerHTML={{ __html: message }}
+          />
+        </div>
+
+        <style>
+          {`
   h1 {
     color: #ffffff;
     font-size: 1.5em;
@@ -80,4 +101,9 @@
       font-size: 0.8em;
     }
   }
-</style>
+  `}
+        </style>
+      </Fragment>
+    );
+  }
+}
