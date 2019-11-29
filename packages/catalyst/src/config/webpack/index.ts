@@ -20,18 +20,14 @@ export default function webpackConfig(options?: Options): WebpackConfiguration {
     context: contextPath,
     mode: environment === 'production' ? 'production' : 'development',
     devtool: generateDevtool(),
-    entry: reduce(
-      bundlePaths(),
-      (entry, bundlePath) => {
-        const parts = bundlePath.split('/');
-        const bundleName = parts[parts.length - 1];
+    entry: reduce(bundlePaths(), (entry, bundlePath) => {
+      const parts = bundlePath.split('/');
+      const bundleName = parts[parts.length - 1];
 
-        return Object.assign({}, entry, {
-          [bundleName]: generateEntryForBundleName(bundleName)
-        });
-      },
-      {}
-    ),
+      return Object.assign({}, entry, {
+        [bundleName]: generateEntryForBundleName(bundleName)
+      });
+    }),
     output: generateOutput(),
     resolve: {
       extensions: ['.wasm', '.mjs', '.js', '.ts', '.tsx', '.json'],

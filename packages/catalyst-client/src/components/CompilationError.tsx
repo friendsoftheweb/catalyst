@@ -1,6 +1,6 @@
 import { h, Component, Fragment } from 'preact';
 
-interface Props {
+export interface Props {
   message?: string;
 }
 
@@ -22,10 +22,12 @@ export default class CompilationError extends Component<Props> {
 
           <h1>Failed to Compile</h1>
 
-          <div
-            className="compilation-error-message"
-            dangerouslySetInnerHTML={{ __html: message }}
-          />
+          {message && (
+            <div
+              className="compilation-error-message"
+              dangerouslySetInnerHTML={{ __html: message }}
+            />
+          )}
         </div>
 
         <style>

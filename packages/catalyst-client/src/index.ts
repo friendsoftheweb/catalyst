@@ -1,6 +1,7 @@
 declare global {
   interface Window {
     __CATALYST_ENV__: {
+      devServerProtocol: string;
       devServerHost: string;
       devServerPort: number;
     };
@@ -15,40 +16,32 @@ declare global {
 }
 
 import SockJS from 'sockjs-client';
-import { h, render } from 'preact';
-
-import createOverlayContainer from './createOverlayContainer';
+import createOverlayFrame from './createOverlayFrame';
 import formatCompiliationError from './formatCompilationError';
+import { FrameState } from './types';
 
-let overlayContainerNode: preact.ComponentChild | null = null;
-let overlayFrameVisible = false;
+let overlayFrameVisible = true;
 let overlayFramePointerEvents = 'none';
+let overlayFrameState: FrameState = null;
 let runtimeErrorCount = 0;
 let runtimeErrorMessage: string | undefined;
 
-import Activity from './components/Activity';
-import RuntimeErrors from './components/RuntimeErrors';
-import CompilationError from './components/CompilationError';
-
 async function updateOverlayContainer() {
-  const { frame, container } = await createOverlayContainer();
+  const { frame } = await createOverlayFrame();
 
   frame.style.display = overlayFrameVisible ? 'block' : 'none';
   frame.style.pointerEvents = overlayFramePointerEvents;
 
-  container.style.backgroundColor =
-    overlayFramePointerEvents === 'none'
-      ? 'transparent'
-      : 'rgba(255,255,255,0.25)';
-
-  render(overlayContainerNode, container);
+  if (frame.contentWindow != null) {
+    frame.contentWindow.postMessage(JSON.stringify(overlayFrameState), '*');
+  }
 }
 
 function showNotification(
-  node: preact.ComponentChild,
+  state: FrameState,
   options: { pointerEvents: 'auto' | 'none' } = { pointerEvents: 'none' }
 ) {
-  overlayContainerNode = node;
+  overlayFrameState = state;
   overlayFrameVisible = true;
   overlayFramePointerEvents = options.pointerEvents;
 
@@ -56,7 +49,7 @@ function showNotification(
 }
 
 function hideNotification() {
-  overlayContainerNode = null;
+  overlayFrameState = null;
   overlayFrameVisible = false;
 
   return updateOverlayContainer();
@@ -81,7 +74,12 @@ connection.onmessage = function(event) {
       if (!isBuilding) {
         isBuilding = true;
 
-        showNotification(h(Activity, { message: 'Building...' }));
+        showNotification({
+          component: 'Activity',
+          props: {
+            message: 'Building…'
+          }
+        });
       }
 
       break;
@@ -124,9 +122,12 @@ connection.onmessage = function(event) {
       isBuilding = false;
 
       showNotification(
-        h(CompilationError, {
-          message: formatCompiliationError(message.data[0])
-        }),
+        {
+          component: 'CompilationError',
+          props: {
+            message: formatCompiliationError(message.data[0])
+          }
+        },
         { pointerEvents: 'auto' }
       );
 
@@ -161,21 +162,22 @@ function tryApplyUpdates(): Promise<any> {
 
 function showRuntimeErrors() {
   if (!isBuilding && runtimeErrorCount > 0) {
-    showNotification(
-      h(RuntimeErrors, {
+    showNotification({
+      component: 'RuntimeErrors',
+      props: {
         count: runtimeErrorCount,
         message: runtimeErrorMessage
-      })
-    );
+      }
+    });
   }
 }
 
-// function shouldDisplayErrorOverlay(error: ErrorEvent): boolean {
-//   return /^Error: Element type is invalid/.test(error.message);
-// }
-
 function messageForError(error: Error): string | undefined {
   if (error.name === 'ReferenceError') {
+    return error.message;
+  }
+
+  if (error.message.startsWith('Element type is invalid')) {
     return error.message;
   }
 }

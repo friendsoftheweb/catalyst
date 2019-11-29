@@ -1,6 +1,6 @@
 import { h, Component, Fragment } from 'preact';
 
-interface Props {
+export interface Props {
   count: number;
   message?: string;
 }
@@ -24,7 +24,7 @@ export default class RuntimeErrors extends Component<Props, State> {
         this.setState({
           updated: false
         });
-      }, 1000);
+      }, 500);
     }
   }
 
@@ -37,6 +37,9 @@ export default class RuntimeErrors extends Component<Props, State> {
         {message && (
           <div
             style={{
+              boxSizing: 'border-box',
+              width: '100%',
+              padding: '1em 5em 1em 1em',
               fontFamily: 'Menlo, Consolas, monospace',
               fontSize: '14px',
               position: 'absolute',
@@ -45,7 +48,9 @@ export default class RuntimeErrors extends Component<Props, State> {
               right: 0,
               backgroundColor: '#fff2f5',
               color: '#b8000b',
-              padding: '1em',
+              whiteSpace: 'nowrap',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
               animation: 'slide 150ms'
             }}
           >
@@ -55,9 +60,13 @@ export default class RuntimeErrors extends Component<Props, State> {
 
         <div
           className="runtime-errors"
-          style={{
-            animation: updated ? 'shake 100ms 2' : undefined
-          }}
+          style={
+            updated
+              ? {
+                  animation: 'flash 500ms 1'
+                }
+              : undefined
+          }
         >
           <span
             style={{
@@ -79,21 +88,18 @@ export default class RuntimeErrors extends Component<Props, State> {
 
         <style>
           {`
-          @keyframes shake {
+          @keyframes flash {
             0% {
-              right: 10px;
+              opacity: 1;
             }
 
-            33% {
-              right: 6px;
-            }
-
-            66% {
-              right: 10px;
+            50% {
+              opacity: 0.25;
             }
 
             100% {
-              right: 14px;
+
+              opacity: 1;
             }
           }
 

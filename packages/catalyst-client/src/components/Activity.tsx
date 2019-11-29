@@ -1,6 +1,6 @@
 import { h, Component, Fragment } from 'preact';
 
-interface Props {
+export interface Props {
   message?: string;
 }
 

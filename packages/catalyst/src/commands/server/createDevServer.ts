@@ -72,6 +72,38 @@ export default async function createDevServer(options: Options) {
         res.set('Access-Control-Allow-Origin', '*');
         res.send('// This file left intentially blank.');
       });
+
+      app.get('/frame', (req, res) => {
+        res.set('Content-Type', 'text/html');
+        res.set('Access-Control-Allow-Origin', '*');
+
+        fs.readFile(
+          require.resolve('catalyst-client/lib/frame.js'),
+          (err, data) => {
+            res.send(
+              `<html>
+                <head>
+                  <style>
+                    body {
+                      margin: 0;
+                      position: fixed;
+                      width: 100vw;
+                      height: 100vh;
+                      position: fixed;
+                      box-sizing: border-box;
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                    }
+                  </style>
+                  <script>${data.toString()}</script>
+                </head>
+                <body></body>
+              </html>`
+            );
+          }
+        );
+      });
     }
   };
 

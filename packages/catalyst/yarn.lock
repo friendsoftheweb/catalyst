@@ -2366,10 +2366,10 @@ caseless@~0.12.0:
   resolved "https://registry.yarnpkg.com/caseless/-/caseless-0.12.0.tgz#1b681c21ff84033c826543090689420d187151dc"
   integrity sha1-G2gcIf+EAzyCZUMJBolCDRhxUdw=
 
-catalyst-client@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/catalyst-client/-/catalyst-client-1.0.1.tgz#d1d90032b092a8d8dbb9a0fdef06302ca6aa6f7a"
-  integrity sha512-JaO3tXvIIJVg+gmYH3Zry2ivO1HF3EKQrku/1FFX9nPrysYVi/y9atVuiw1PElncp3LyQ7HZATmivT+6Q3MADQ==
+catalyst-client@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/catalyst-client/-/catalyst-client-1.0.2.tgz#98855118611d126a5e80d91ee8fe5219d30e385b"
+  integrity sha512-HoV7NiIL3ZxomWlKifVa/bLX06TZN4nsAmA//1thHcUzF0O3EwotGhvq6LuhvVZ7xVmTeXsEapf8zqUn/HMUgw==
   dependencies:
     sockjs-client "^1.3.0"
     strip-ansi "^5.2.0"
