@@ -4,7 +4,8 @@ import Configuration from '../../Configuration';
 const configuration = new Configuration();
 
 const presets: Array<string | [string, object]> = [
-  [require.resolve('@babel/preset-env'), { targets: { node: 'current' } }]
+  [require.resolve('@babel/preset-env'), { targets: { node: 'current' } }],
+  [require.resolve('@babel/preset-react'), { useBuiltIns: true }]
 ];
 
 const plugins: Array<string | [string, object]> = [];
