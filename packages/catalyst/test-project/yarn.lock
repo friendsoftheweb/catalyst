@@ -330,6 +330,14 @@
     "@babel/helper-plugin-utils" "^7.0.0"
     "@babel/plugin-syntax-json-strings" "^7.2.0"
 
+"@babel/plugin-proposal-nullish-coalescing-operator@^7.4.4":
+  version "7.7.4"
+  resolved "https://registry.yarnpkg.com/@babel/plugin-proposal-nullish-coalescing-operator/-/plugin-proposal-nullish-coalescing-operator-7.7.4.tgz#7db302c83bc30caa89e38fee935635ef6bd11c28"
+  integrity sha512-TbYHmr1Gl1UC7Vo2HVuj/Naci5BEGNZ0AJhzqD2Vpr6QPFWpUmBRLrIDjedzx7/CShq0bRDS2gI4FIs77VHLVQ==
+  dependencies:
+    "@babel/helper-plugin-utils" "^7.0.0"
+    "@babel/plugin-syntax-nullish-coalescing-operator" "^7.7.4"
+
 "@babel/plugin-proposal-object-rest-spread@^7.4.4":
   version "7.4.4"
   resolved "https://registry.yarnpkg.com/@babel/plugin-proposal-object-rest-spread/-/plugin-proposal-object-rest-spread-7.4.4.tgz#1ef173fcf24b3e2df92a678f027673b55e7e3005"
@@ -395,6 +403,13 @@
   version "7.2.0"
   resolved "https://registry.yarnpkg.com/@babel/plugin-syntax-jsx/-/plugin-syntax-jsx-7.2.0.tgz#0b85a3b4bc7cdf4cc4b8bf236335b907ca22e7c7"
   integrity sha512-VyN4QANJkRW6lDBmENzRszvZf3/4AXaj9YR7GwrWeeN9tEBPuXbmDYVU9bYBN0D70zCWVwUy0HWq2553VCb6Hw==
+  dependencies:
+    "@babel/helper-plugin-utils" "^7.0.0"
+
+"@babel/plugin-syntax-nullish-coalescing-operator@^7.7.4":
+  version "7.7.4"
+  resolved "https://registry.yarnpkg.com/@babel/plugin-syntax-nullish-coalescing-operator/-/plugin-syntax-nullish-coalescing-operator-7.7.4.tgz#e53b751d0c3061b1ba3089242524b65a7a9da12b"
+  integrity sha512-XKh/yIRPiQTOeBg0QJjEus5qiSKucKAiApNtO1psqG7D17xmE+X2i5ZqBEuSvo0HRuyPaKaSN/Gy+Ha9KFQolw==
   dependencies:
     "@babel/helper-plugin-utils" "^7.0.0"
 
@@ -2176,29 +2191,30 @@ caseless@~0.12.0:
   resolved "https://registry.yarnpkg.com/caseless/-/caseless-0.12.0.tgz#1b681c21ff84033c826543090689420d187151dc"
   integrity sha1-G2gcIf+EAzyCZUMJBolCDRhxUdw=
 
-catalyst-client@^1.0.0-beta.47:
-  version "1.0.0-beta.48"
-  resolved "https://registry.yarnpkg.com/catalyst-client/-/catalyst-client-1.0.0-beta.48.tgz#40171543699a8ad3b13c3f928527913c3fbd8131"
-  integrity sha512-pFT9UUeOfalcbF9ekXG3FUuYXp95MTAArAQD4MrZgsVb+PaUtDq8oXY5bwIlHAGP6JGbSdh6aczksa8Ixvnmbw==
+catalyst-client@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/catalyst-client/-/catalyst-client-1.0.2.tgz#98855118611d126a5e80d91ee8fe5219d30e385b"
+  integrity sha512-HoV7NiIL3ZxomWlKifVa/bLX06TZN4nsAmA//1thHcUzF0O3EwotGhvq6LuhvVZ7xVmTeXsEapf8zqUn/HMUgw==
   dependencies:
     sockjs-client "^1.3.0"
     strip-ansi "^5.2.0"
 
 "catalyst-plugin-graphql-tag@file:../../catalyst-plugin-graphql-tag":
-  version "1.0.0-beta.1"
+  version "1.0.4"
   dependencies:
     babel-plugin-graphql-tag "^2.4.0"
 
 "catalyst-plugin-styled-components@file:../../catalyst-plugin-styled-components":
-  version "1.0.0-beta.1"
+  version "1.0.4"
   dependencies:
     babel-plugin-styled-components "^1.10.6"
 
 "catalyst@file:..":
-  version "1.0.0-beta.61"
+  version "1.0.4"
   dependencies:
     "@babel/core" "^7.4.4"
     "@babel/plugin-proposal-class-properties" "^7.4.4"
+    "@babel/plugin-proposal-nullish-coalescing-operator" "^7.4.4"
     "@babel/plugin-proposal-object-rest-spread" "^7.4.4"
     "@babel/plugin-proposal-optional-chaining" "^7.2.0"
     "@babel/plugin-syntax-dynamic-import" "^7.2.0"
@@ -2214,7 +2230,7 @@ catalyst-client@^1.0.0-beta.47:
     babel-plugin-lodash "^3.3.4"
     babel-plugin-transform-react-remove-prop-types "^0.4.24"
     case-sensitive-paths-webpack-plugin "^2.2.0"
-    catalyst-client "^1.0.0-beta.47"
+    catalyst-client "^1.0.2"
     chalk "^2.4.2"
     circular-dependency-plugin "^5.0.2"
     commander "^3.0.2"
@@ -2224,8 +2240,6 @@ catalyst-client@^1.0.0-beta.47:
     duplicate-package-checker-webpack-plugin "^3.0.0"
     file-loader "^4.0.0"
     find-process "^1.4.1"
-    graphql "^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0"
-    graphql-tag "^2.10.1"
     inquirer "^7.0.0"
     koa-router "^7.4.0"
     loader-utils "^1.2.3"
@@ -3873,13 +3887,6 @@ graphql-tag@^2.10.1:
   version "2.10.1"
   resolved "https://registry.yarnpkg.com/graphql-tag/-/graphql-tag-2.10.1.tgz#10aa41f1cd8fae5373eaf11f1f67260a3cad5e02"
   integrity sha512-jApXqWBzNXQ8jYa/HLkZJaVw9jgwNqZkywa2zfFn16Iv1Zb7ELNHkJaXHR7Quvd5SIGsy6Ny7SUKATgnu05uEg==
-
-"graphql@^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0":
-  version "14.4.1"
-  resolved "https://registry.yarnpkg.com/graphql/-/graphql-14.4.1.tgz#7a7818d3f63f66b9528ba5416b6c88460db62280"
-  integrity sha512-g4HUH26CohlMjaHneXMAtvG3QtO6peJIUTFxrPW4g5LNnXkUuFoBI6Bk1c14Q5kW8+FyjM/tTbePTgpiVB/2hQ==
-  dependencies:
-    iterall "^1.2.2"
 
 graphql@^14.4.2:
   version "14.4.2"
