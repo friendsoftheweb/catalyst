@@ -1,6 +1,6 @@
 {
   "name": "catalyst",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Sets up Webpack, React, GraphQL, and more!",
   "author": "Dan Martens <dan@friendsoftheweb.com>",
   "homepage": "https://github.com/friendsoftheweb/catalyst#readme",
