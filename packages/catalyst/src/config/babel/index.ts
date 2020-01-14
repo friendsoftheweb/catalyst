@@ -3,13 +3,15 @@ import Configuration from '../../Configuration';
 import forEachPlugin from '../../utils/forEachPlugin';
 
 interface Options {
-  useBuiltIns?: 'usage' | 'entry' | false;
   modules?: 'amd' | 'umd' | 'systemjs' | 'commonjs' | 'cjs' | 'auto' | false;
+  targets?: { [key: string]: string };
   corejs?: 2 | 3;
+  useBuiltIns?: 'usage' | 'entry' | false;
 }
 
 export default function babelConfig({
   modules,
+  targets,
   corejs,
   useBuiltIns = 'usage'
 }: Options = {}) {
@@ -26,6 +28,10 @@ export default function babelConfig({
     useBuiltIns
   };
 
+  if (targets != null) {
+    presetEnvOptions.targets = targets;
+  }
+
   if (corejs != null) {
     presetEnvOptions.corejs = corejs;
   }
@@ -37,6 +43,10 @@ export default function babelConfig({
 
   if (typeScriptEnabled) {
     presets.push(require.resolve('@babel/preset-typescript'));
+  }
+
+  if (flowEnabled) {
+    presets.push(require.resolve('@babel/preset-flow'));
   }
 
   const absoluteRuntime = path.dirname(
@@ -54,15 +64,9 @@ export default function babelConfig({
     require.resolve('@babel/plugin-syntax-dynamic-import'),
     [
       require.resolve('@babel/plugin-transform-runtime'),
-      { useESModules: true, absoluteRuntime }
+      { useESModules: modules === false, absoluteRuntime }
     ]
   ];
-
-  if (flowEnabled) {
-    plugins.unshift(
-      require.resolve('@babel/plugin-transform-flow-strip-types')
-    );
-  }
 
   if (environment === 'production') {
     plugins.push(require.resolve('babel-plugin-lodash'), [
