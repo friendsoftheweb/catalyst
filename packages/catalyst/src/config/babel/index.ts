@@ -45,10 +45,6 @@ export default function babelConfig({
     presets.push(require.resolve('@babel/preset-typescript'));
   }
 
-  if (flowEnabled) {
-    presets.push(require.resolve('@babel/preset-flow'));
-  }
-
   const absoluteRuntime = path.dirname(
     require.resolve('@babel/runtime/package.json')
   );
@@ -67,6 +63,12 @@ export default function babelConfig({
       { useESModules: modules === false, absoluteRuntime }
     ]
   ];
+
+  if (flowEnabled) {
+    plugins.unshift(
+      require.resolve('@babel/plugin-transform-flow-strip-types')
+    );
+  }
 
   if (environment === 'production') {
     plugins.push(require.resolve('babel-plugin-lodash'), [
