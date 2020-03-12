@@ -1,6 +1,6 @@
 {
   "name": "catalyst",
-  "version": "1.0.5",
+  "version": "1.1.1",
   "description": "Sets up Webpack, React, GraphQL, and more!",
   "author": "Dan Martens <dan@friendsoftheweb.com>",
   "homepage": "https://github.com/friendsoftheweb/catalyst#readme",
@@ -50,7 +50,7 @@
     "@babel/plugin-proposal-object-rest-spread": "^7.4.4",
     "@babel/plugin-proposal-optional-chaining": "^7.2.0",
     "@babel/plugin-syntax-dynamic-import": "^7.2.0",
-    "@babel/plugin-transform-flow-strip-types": "^7.4.4",
+    "@babel/plugin-transform-flow-strip-types": "^7.8.3",
     "@babel/plugin-transform-runtime": "^7.4.4",
     "@babel/preset-env": "^7.4.4",
     "@babel/preset-react": "^7.0.0",
