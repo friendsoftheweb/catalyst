@@ -1,7 +1,11 @@
 import path from 'path';
 import fs from 'fs';
 
-type Environment = 'development' | 'test' | 'production';
+export enum Environment {
+  Development = 'development',
+  Test = 'test',
+  Production = 'production'
+}
 
 function isEnvironment(value: any): value is Environment {
   return ['development', 'test', 'production'].includes(value);
@@ -224,7 +228,7 @@ export default class Configuration {
   }
 
   get publicPath(): string {
-    if (this.environment === 'development') {
+    if (this.environment === Environment.Development) {
       return `${this.devServerProtocol}://${this.devServerHost}:${this.devServerPort}/`;
     }
 
@@ -276,7 +280,10 @@ export default class Configuration {
       return generateServiceWorker;
     }
 
-    return this.environment === 'production' || this.environment === 'test';
+    return (
+      this.environment === Environment.Production ||
+      this.environment === Environment.Test
+    );
   }
 
   get checkForCircularDependencies(): boolean {

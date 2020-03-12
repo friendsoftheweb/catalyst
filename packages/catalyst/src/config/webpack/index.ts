@@ -7,7 +7,7 @@ import generatePlugins from './generatePlugins';
 import generateRules from './generateRules';
 import generateOptimization from './generateOptimization';
 import bundlePaths from './bundlePaths';
-import Configuration from '../../Configuration';
+import Configuration, { Environment } from '../../Configuration';
 
 interface Options {
   bundleAnalyzerEnabled?: boolean;
@@ -18,7 +18,7 @@ export default function webpackConfig(options?: Options): WebpackConfiguration {
 
   return {
     context: contextPath,
-    mode: environment === 'production' ? 'production' : 'development',
+    mode: environment === Environment.Production ? 'production' : 'development',
     devtool: generateDevtool(),
     entry: reduce(
       bundlePaths(),

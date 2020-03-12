@@ -1,5 +1,5 @@
 import path from 'path';
-import Configuration from '../../Configuration';
+import Configuration, { Environment } from '../../Configuration';
 
 export default function generateEntry(entryPath: string) {
   const {
@@ -10,7 +10,7 @@ export default function generateEntry(entryPath: string) {
 
   const entry = [];
 
-  if (environment === 'development' && overlayEnabled) {
+  if (environment === Environment.Development && overlayEnabled) {
     entry.push(path.resolve(__dirname, '../../../lib/dev-environment'));
     entry.push('catalyst-client');
   }
