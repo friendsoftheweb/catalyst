@@ -38,7 +38,15 @@ export default function babelConfig({
 
   let presets: Array<string | [string, object]> = [
     [require.resolve('@babel/preset-env'), presetEnvOptions],
-    [require.resolve('@babel/preset-react'), { useBuiltIns: true }]
+    [
+      require.resolve('@babel/preset-react'),
+      {
+        useBuiltIns: true,
+        development:
+          environment === Environment.Development ||
+          environment === Environment.Test
+      }
+    ]
   ];
 
   if (typeScriptEnabled) {
