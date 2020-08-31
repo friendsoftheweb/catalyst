@@ -10,7 +10,9 @@ module.exports = async function assertFileContains({ file, content }) {
         if (data.includes(content)) {
           resolve();
         } else {
-          reject();
+          reject(
+            `Expected to find the following content in "${file}":\n\n${content}`
+          );
         }
       }
     });
