@@ -4,8 +4,10 @@
   "license": "MIT",
   "main": "./lib/index.js",
   "files": [
-    "lib"
+    "lib",
+    "graphql-module.d.ts"
   ],
+  "types": "./graphql-module.d.ts",
   "scripts": {
     "build": "tsc",
     "prepack": "yarn build"
