@@ -36,5 +36,30 @@ jobs:
             - packages/catalyst-plugin-styled-components/node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
 
-      # run tests!
-      - run: cd packages/catalyst && yarn test
+      - run:
+          working_directory: packages/catalyst
+          command: |
+            yarn build
+            yarn run tsc --noEmit
+
+      - run:
+          working_directory: packages/catalyst-client
+          command: |
+            yarn build
+            yarn run tsc --noEmit
+
+      - run:
+          working_directory: packages/catalyst-plugin-graphql-tag
+          command: |
+            yarn build
+            yarn run tsc --noEmit
+
+      - run:
+          working_directory: packages/catalyst-plugin-styled-components
+          command: |
+            yarn build
+            yarn run tsc --noEmit
+
+      - run:
+          working_directory: packages/catalyst
+          command: yarn test
