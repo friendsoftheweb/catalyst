@@ -111,7 +111,8 @@ function generateFileLoaderRule(basePath: string): RuleSetRule {
         options: {
           context: basePath,
           name,
-          publicPath
+          publicPath,
+          esModule: false
         }
       }
     ]
