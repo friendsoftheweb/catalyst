@@ -10,7 +10,9 @@
   "types": "./graphql-module.d.ts",
   "scripts": {
     "build": "tsc",
-    "prepack": "yarn build"
+    "prepack": "yarn build",
+    "types:check": "tsc --noEmit",
+    "prettier:check": "prettier --check \"src/**/*.ts\""
   },
   "dependencies": {
     "babel-plugin-graphql-tag": "^2.4.0"
@@ -20,6 +22,7 @@
     "catalyst": "^1.1.3",
     "graphql": "^15.4.0",
     "graphql-tag": "^2.11.0",
+    "prettier": "^2.2.1",
     "typescript": "^3.5.3"
   },
   "peerDependencies": {

@@ -73,7 +73,7 @@ let isBuilding = false;
 let firstCompilationHash: string | null = null;
 let lastCompilationHash: string | null = null;
 
-connection.onmessage = function(event) {
+connection.onmessage = function (event) {
   const message = JSON.parse(event.data);
 
   switch (message.type) {
