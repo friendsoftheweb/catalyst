@@ -1,5 +1,6 @@
 import path from 'path';
-import Configuration, { Environment } from '../../Configuration';
+import Configuration from '../../Configuration';
+import { Environment } from '../../Environment';
 import forEachPlugin from '../../utils/forEachPlugin';
 
 interface Options {

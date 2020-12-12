@@ -9,7 +9,8 @@ import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin';
 import CircularDependencyPlugin from 'circular-dependency-plugin';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import CleanUpStatsPlugin from '../../webpack-plugins/CleanUpStatsPlugin';
-import Configuration, { Environment } from '../../Configuration';
+import Configuration from '../../Configuration';
+import { Environment } from '../../Environment';
 import forEachPlugin from '../../utils/forEachPlugin';
 
 interface Options {

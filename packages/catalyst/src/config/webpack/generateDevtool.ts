@@ -1,5 +1,6 @@
 import { Configuration as WebpackConfiguration } from 'webpack';
-import Configuration, { Environment } from '../../Configuration';
+import Configuration from '../../Configuration';
+import { Environment } from '../../Environment';
 
 export default function generateDevtool(): WebpackConfiguration['devtool'] {
   const { environment } = new Configuration();

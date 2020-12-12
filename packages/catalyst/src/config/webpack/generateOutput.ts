@@ -1,5 +1,6 @@
 import { Output } from 'webpack';
-import Configuration, { Environment } from '../../Configuration';
+import Configuration from '../../Configuration';
+import { Environment } from '../../Environment';
 
 export default function generateOutput(): Output {
   const {

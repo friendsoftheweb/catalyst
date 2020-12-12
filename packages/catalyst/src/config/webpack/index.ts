@@ -7,7 +7,8 @@ import generatePlugins from './generatePlugins';
 import generateRules from './generateRules';
 import generateOptimization from './generateOptimization';
 import bundlePaths from './bundlePaths';
-import Configuration, { Environment } from '../../Configuration';
+import Configuration from '../../Configuration';
+import { Environment } from '../../Environment';
 
 interface Options {
   bundleAnalyzerEnabled?: boolean;

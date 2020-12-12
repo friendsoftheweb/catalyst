@@ -1,5 +1,6 @@
 import path from 'path';
-import Configuration, { Environment } from '../../Configuration';
+import Configuration from '../../Configuration';
+import { Environment } from '../../Environment';
 
 export default function generateEntry(entryPath: string) {
   const {

@@ -1,15 +1,6 @@
 import path from 'path';
 import fs from 'fs';
-
-export enum Environment {
-  Development = 'development',
-  Test = 'test',
-  Production = 'production'
-}
-
-function isEnvironment(value: any): value is Environment {
-  return ['development', 'test', 'production'].includes(value);
-}
+import { Environment, isEnvironment } from './Environment';
 
 interface CustomConfiguration {
   contextPath: string;

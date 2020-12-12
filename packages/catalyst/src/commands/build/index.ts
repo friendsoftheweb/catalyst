@@ -1,6 +1,7 @@
 import webpack, { Stats } from 'webpack';
 import chalk from 'chalk';
-import Configuration, { Environment } from '../../Configuration';
+import Configuration from '../../Configuration';
+import { Environment } from '../../Environment';
 import logVersion from '../../utils/logVersion';
 import getWebpackConfig from '../../utils/getWebpackConfig';
 import logStatus from '../../utils/logStatus';
