@@ -23,25 +23,25 @@ export default async function prebuildVendorPackages() {
     mode: 'development',
 
     resolve: {
-      modules: ['node_modules']
+      modules: ['node_modules'],
     },
 
     entry: {
-      vendor: packagesToPrebuild
+      vendor: packagesToPrebuild,
     },
 
     plugins: [
       new webpack.DllPlugin({
         name: '[name]',
-        path: path.join(tempPath, '[name].json')
-      })
+        path: path.join(tempPath, '[name].json'),
+      }),
     ],
 
     output: {
       filename: '[name]-dll.js',
       path: tempPath,
-      library: '[name]'
-    }
+      library: '[name]',
+    },
   });
 
   return new Promise((resolve, reject) => {
@@ -52,7 +52,7 @@ export default async function prebuildVendorPackages() {
         const { errors, warnings } = stats.toJson({
           all: false,
           warnings: true,
-          errors: true
+          errors: true,
         });
 
         if (errors.length > 0) {

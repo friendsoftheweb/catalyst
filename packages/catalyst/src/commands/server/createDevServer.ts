@@ -26,7 +26,7 @@ export default async function createDevServer(options: Options) {
     protocol,
     certificate,
     overlayEnabled,
-    bundleAnalyzerEnabled
+    bundleAnalyzerEnabled,
   } = options;
 
   const { rootPath, tempPath } = new Configuration();
@@ -47,7 +47,7 @@ export default async function createDevServer(options: Options) {
     publicPath: '/',
     clientLogLevel: 'none',
     headers: {
-      'Access-Control-Allow-Origin': '*'
+      'Access-Control-Allow-Origin': '*',
     },
     disableHostCheck: true,
     stats: 'errors-only',
@@ -72,11 +72,11 @@ export default async function createDevServer(options: Options) {
         res.set('Access-Control-Allow-Origin', '*');
         res.send('// This file left intentially blank.');
       });
-    }
+    },
   };
 
   const webpackConfig = await getWebpackConfig({
-    bundleAnalyzerEnabled
+    bundleAnalyzerEnabled,
   });
 
   // If the custom error overlay is disabled, add the standard webpack

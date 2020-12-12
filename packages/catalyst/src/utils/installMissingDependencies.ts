@@ -4,7 +4,7 @@ import getProjectDependencies from './getProjectDependencies';
 
 export default async function installMissingDependencies(
   dependencies: string[],
-  development: boolean = false
+  development = false
 ): Promise<number | void> {
   const projectDependencies = await getProjectDependencies();
 

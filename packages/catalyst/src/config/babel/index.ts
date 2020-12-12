@@ -9,12 +9,10 @@ interface Options {
   useBuiltIns?: 'usage' | 'entry' | false;
 }
 
-export default function babelConfig({
-  modules,
-  targets,
-  corejs,
-  useBuiltIns = 'usage'
-}: Options = {}) {
+export default function babelConfig(options: Options = {}) {
+  const { targets, corejs, useBuiltIns = 'usage' } = options;
+  let { modules } = options;
+
   const configuration = new Configuration();
 
   const { environment, typeScriptEnabled, flowEnabled } = configuration;
@@ -25,7 +23,7 @@ export default function babelConfig({
 
   const presetEnvOptions: Options = {
     modules,
-    useBuiltIns
+    useBuiltIns,
   };
 
   if (targets != null) {
@@ -36,9 +34,12 @@ export default function babelConfig({
     presetEnvOptions.corejs = corejs;
   }
 
-  let presets: Array<string | [string, object]> = [
-    [require.resolve('@babel/preset-env'), presetEnvOptions],
-    [require.resolve('@babel/preset-react'), { useBuiltIns: true }]
+  let presets: Array<string | [string, Record<string, unknown>]> = [
+    [
+      require.resolve('@babel/preset-env'),
+      presetEnvOptions as Record<string, unknown>,
+    ],
+    [require.resolve('@babel/preset-react'), { useBuiltIns: true }],
   ];
 
   if (typeScriptEnabled) {
@@ -49,19 +50,19 @@ export default function babelConfig({
     require.resolve('@babel/runtime/package.json')
   );
 
-  let plugins: Array<string | [string, object]> = [
+  let plugins: Array<string | [string, Record<string, unknown>]> = [
     require.resolve('@babel/plugin-proposal-object-rest-spread'),
     [
       require.resolve('@babel/plugin-proposal-class-properties'),
-      { loose: true }
+      { loose: true },
     ],
     require.resolve('@babel/plugin-proposal-optional-chaining'),
     require.resolve('@babel/plugin-proposal-nullish-coalescing-operator'),
     require.resolve('@babel/plugin-syntax-dynamic-import'),
     [
       require.resolve('@babel/plugin-transform-runtime'),
-      { useESModules: modules === false, absoluteRuntime }
-    ]
+      { useESModules: modules === false, absoluteRuntime },
+    ],
   ];
 
   if (flowEnabled) {
@@ -74,8 +75,8 @@ export default function babelConfig({
     plugins.push(require.resolve('babel-plugin-lodash'), [
       require.resolve('babel-plugin-transform-react-remove-prop-types'),
       {
-        removeImport: true
-      }
+        removeImport: true,
+      },
     ]);
   }
 
@@ -91,6 +92,6 @@ export default function babelConfig({
 
   return {
     presets,
-    plugins
+    plugins,
   };
 }
