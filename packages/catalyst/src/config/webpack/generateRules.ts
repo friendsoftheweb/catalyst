@@ -1,7 +1,6 @@
 import path from 'path';
 import { RuleSetRule } from 'webpack';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
-import autoprefixer from 'autoprefixer';
 import Configuration from '../../Configuration';
 import forEachPlugin from '../../utils/forEachPlugin';
 
@@ -37,8 +36,17 @@ export default function generateRules() {
         loader: require.resolve('postcss-loader'),
         options: {
           sourceMap: true,
-          plugins() {
-            return [autoprefixer({ grid: 'no-autoplace' })];
+          postcssOptions: {
+            plugins: [
+              [
+                'postcss-preset-env',
+                {
+                  autoprefixer: {
+                    grid: 'no-autoplace',
+                  },
+                },
+              ],
+            ],
           },
         },
       },
