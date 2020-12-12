@@ -5,7 +5,7 @@ const content = `
     var _this;
 
     (0, _classCallCheck2.default)(this, FlowClassProperties);
-    _this = (0, _possibleConstructorReturn2.default)(this, (0, _getPrototypeOf2.default)(FlowClassProperties).apply(this, arguments));
+    _this = _super.apply(this, arguments);
     _this.foo = _this.foo.bind((0, _assertThisInitialized2.default)(_this));
     return _this;
   }

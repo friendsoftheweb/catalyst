@@ -18,10 +18,10 @@ export default async function resolveFileConflict(
       choices: [
         { name: 'Yes, Overwrite', key: 'y', value: 'overwrite' },
         { name: 'No, Skip', key: 'n', value: 'skip' },
-        { name: 'Diff', key: 'd', value: 'diff' }
+        { name: 'Diff', key: 'd', value: 'diff' },
       ],
-      default: 1
-    }
+      default: 1,
+    },
   ]);
 
   if (config.resolution === 'diff') {

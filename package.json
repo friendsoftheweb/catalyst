@@ -7,6 +7,8 @@
   "scripts": {
     "test": "lerna run test",
     "types:check": "lerna run types:check",
+    "prettier:check": "lerna run prettier:check",
+    "lint": "lerna run lint",
     "postinstall": "scripts/postinstall"
   },
   "devDependencies": {

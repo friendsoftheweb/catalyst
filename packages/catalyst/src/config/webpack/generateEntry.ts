@@ -5,7 +5,7 @@ export default function generateEntry(entryPath: string) {
   const {
     environment,
     overlayEnabled,
-    generateServiceWorker
+    generateServiceWorker,
   } = new Configuration();
 
   const entry = [];

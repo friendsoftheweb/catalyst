@@ -27,7 +27,7 @@ export default function webpackConfig(options?: Options): WebpackConfiguration {
         const bundleName = parts[parts.length - 1];
 
         return Object.assign({}, entry, {
-          [bundleName]: generateEntryForBundleName(bundleName)
+          [bundleName]: generateEntryForBundleName(bundleName),
         });
       },
       {}
@@ -35,12 +35,12 @@ export default function webpackConfig(options?: Options): WebpackConfiguration {
     output: generateOutput(),
     resolve: {
       extensions: ['.wasm', '.mjs', '.js', '.ts', '.tsx', '.json'],
-      modules: [contextPath, 'node_modules']
+      modules: [contextPath, 'node_modules'],
     },
     plugins: generatePlugins(options),
     module: {
-      rules: generateRules()
+      rules: generateRules(),
     },
-    optimization: generateOptimization()
+    optimization: generateOptimization(),
   };
 }

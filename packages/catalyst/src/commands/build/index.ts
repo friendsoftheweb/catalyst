@@ -1,6 +1,5 @@
 import webpack, { Stats } from 'webpack';
 import chalk from 'chalk';
-import rebuildNodeSASS from '../../utils/rebuildNodeSASS';
 import Configuration, { Environment } from '../../Configuration';
 import logVersion from '../../utils/logVersion';
 import getWebpackConfig from '../../utils/getWebpackConfig';
@@ -20,14 +19,12 @@ export default async function build(options: Options) {
     throw new Error(
       [
         'Build environment must be one of: "production", "test".',
-        'Try setting the NODE_ENV environment variable.'
+        'Try setting the NODE_ENV environment variable.',
       ].join('\n')
     );
   }
 
   logVersion();
-
-  await rebuildNodeSASS();
 
   const compiler = webpack(await getWebpackConfig());
 
@@ -74,7 +71,7 @@ function logStats(stats: Stats) {
   const { errors, warnings } = stats.toJson({
     all: false,
     warnings: true,
-    errors: true
+    errors: true,
   });
 
   if (errors.length > 0) {

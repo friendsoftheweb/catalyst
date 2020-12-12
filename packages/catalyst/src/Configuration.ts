@@ -54,7 +54,7 @@ const defaultPrebuiltPackages = [
   'redux',
   'redux-logger',
   'redux-saga',
-  'regenerator-runtime'
+  'regenerator-runtime',
 ];
 
 const defaultTransformedPackages = [
@@ -72,14 +72,14 @@ const defaultTransformedPackages = [
   'react-router-dom',
   'react-transition-group',
   'redux',
-  'redux-saga'
+  'redux-saga',
 ];
 
 const defaultIgnoredDuplicatePackages = [
   'hoist-non-react-statics',
   'prop-types',
   'react-is',
-  'ts-invariant'
+  'ts-invariant',
 ];
 
 function isCustomConfiguration(value: any): value is CustomConfiguration {
