@@ -6,9 +6,9 @@ const content = `.example {
           user-select: none; }
 `;
 
-test('build process transpiles dynamic import', async () => {
+test('build process adds vendor prefixes to CSS', async () => {
   await assertFileContains({
     file: 'autoprefixer.css',
-    content
+    content,
   });
 });
