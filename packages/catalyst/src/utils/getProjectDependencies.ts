@@ -23,7 +23,7 @@ export default async function getProjectDependencies(): Promise<string[]> {
 
         resolve([
           ...Object.keys(dependencies),
-          ...Object.keys(devDependencies)
+          ...Object.keys(devDependencies),
         ]);
       });
     });

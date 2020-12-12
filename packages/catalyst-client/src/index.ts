@@ -9,19 +9,16 @@ declare global {
   interface NodeModule {
     hot: {
       status(): 'idle';
-      check(autoApply: boolean): Promise<any>;
+      check(autoApply: boolean): Promise<unknown>;
     };
   }
 }
 
 import SockJS from 'sockjs-client';
 
-// @ts-ignore
-import activityTemplate from './templates/activity';
-// @ts-ignore
-import compilationErrorTemplate from './templates/compilation-error';
-// @ts-ignore
-import runtimeErrorsTemplate from './templates/runtime-errors';
+import activityTemplate from './templates/activity.ejs';
+import compilationErrorTemplate from './templates/compilation-error.ejs';
+import runtimeErrorsTemplate from './templates/runtime-errors.ejs';
 
 import createOverlayContainer from './createOverlayContainer';
 import formatCompiliationError from './formatCompilationError';
@@ -47,7 +44,7 @@ function updateOverlayContainer(): Promise<void> {
 function showNotification(
   template: string,
   options: { pointerEvents: 'auto' | 'none' } = { pointerEvents: 'none' }
-): Promise<any> {
+): Promise<unknown> {
   overlayFrameVisible = true;
   overlayContainerHTML = template;
   overlayFramePointerEvents = options.pointerEvents;
@@ -73,7 +70,7 @@ let isBuilding = false;
 let firstCompilationHash: string | null = null;
 let lastCompilationHash: string | null = null;
 
-connection.onmessage = function(event) {
+connection.onmessage = function (event) {
   const message = JSON.parse(event.data);
 
   switch (message.type) {
@@ -125,7 +122,7 @@ connection.onmessage = function(event) {
 
       showNotification(
         compilationErrorTemplate({
-          message: formatCompiliationError(message.data[0])
+          message: formatCompiliationError(message.data[0]),
         }),
         { pointerEvents: 'auto' }
       );
@@ -134,7 +131,7 @@ connection.onmessage = function(event) {
   }
 };
 
-function tryApplyUpdates(): Promise<any> {
+function tryApplyUpdates(): Promise<unknown> {
   if (firstCompilationHash === lastCompilationHash) {
     return Promise.resolve();
   }
@@ -163,7 +160,7 @@ function showRuntimeErrors() {
   if (!isBuilding && runtimeErrorCount > 0) {
     showNotification(
       runtimeErrorsTemplate({
-        count: runtimeErrorCount
+        count: runtimeErrorCount,
       })
     );
   }

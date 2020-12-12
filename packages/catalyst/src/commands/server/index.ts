@@ -17,7 +17,7 @@ export default async function server(
     devServerPort,
     devServerProtocol,
     devServerCertificate,
-    overlayEnabled
+    overlayEnabled,
   } = new Configuration();
 
   await checkPortAvailability(devServerPort);
@@ -29,7 +29,7 @@ export default async function server(
     protocol: devServerProtocol,
     certificate: devServerCertificate,
     overlayEnabled: overlayEnabled,
-    bundleAnalyzerEnabled: options.bundleAnalyzer === true
+    bundleAnalyzerEnabled: options.bundleAnalyzer === true,
   });
 
   return new Promise((resolve, reject) => {

@@ -11,7 +11,7 @@ const plugin: Plugin = {
 
   modifyNodePackagesDev(packages) {
     return [...packages, '@types/styled-components'];
-  }
+  },
 };
 
 export default plugin;

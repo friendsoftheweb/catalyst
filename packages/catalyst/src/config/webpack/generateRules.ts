@@ -1,7 +1,6 @@
 import path from 'path';
 import { RuleSetRule } from 'webpack';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
-import autoprefixer from 'autoprefixer';
 import Configuration from '../../Configuration';
 import forEachPlugin from '../../utils/forEachPlugin';
 
@@ -12,50 +11,58 @@ export default function generateRules() {
     environment,
     rootPath,
     contextPath,
-    transformedPackages
+    transformedPackages,
   } = configuration;
 
   let rules: RuleSetRule[] = [];
 
   rules.push({
     test: /\.s?css$/,
-    // @ts-ignore
     use: [
       environment === 'development'
         ? {
-            loader: require.resolve('style-loader')
+            loader: require.resolve('style-loader'),
           }
         : {
-            loader: MiniCssExtractPlugin.loader
+            loader: MiniCssExtractPlugin.loader,
           },
       {
         loader: require.resolve('css-loader'),
         options: {
-          sourceMap: true
-        }
+          sourceMap: true,
+        },
       },
       {
         loader: require.resolve('postcss-loader'),
         options: {
           sourceMap: true,
-          plugins() {
-            return [autoprefixer({ grid: 'no-autoplace' })];
-          }
-        }
+          postcssOptions: {
+            plugins: [
+              [
+                'postcss-preset-env',
+                {
+                  autoprefixer: {
+                    grid: 'no-autoplace',
+                  },
+                },
+              ],
+            ],
+          },
+        },
       },
       {
         loader: path.resolve(
           __dirname,
           '../../webpack-loaders/checkUrlPathsLoader'
-        )
+        ),
       },
       {
         loader: require.resolve('sass-loader'),
         options: {
-          sourceMap: true
-        }
-      }
-    ]
+          sourceMap: true,
+        },
+      },
+    ],
   });
 
   const include = transformedPackages.map(
@@ -69,15 +76,15 @@ export default function generateRules() {
     include,
     use: [
       {
-        loader: require.resolve('thread-loader')
+        loader: require.resolve('thread-loader'),
       },
       {
         loader: require.resolve('babel-loader'),
         options: {
-          cacheDirectory: true
-        }
-      }
-    ]
+          cacheDirectory: true,
+        },
+      },
+    ],
   });
 
   rules.push(
@@ -112,9 +119,9 @@ function generateFileLoaderRule(basePath: string): RuleSetRule {
           context: basePath,
           name,
           publicPath,
-          esModule: false
-        }
-      }
-    ]
+          esModule: false,
+        },
+      },
+    ],
   };
 }

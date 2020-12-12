@@ -16,7 +16,7 @@ export default async function build(options: Options) {
     throw new Error(
       [
         'Build environment must be one of: "production", "test".',
-        'Try setting the NODE_ENV environment variable.'
+        'Try setting the NODE_ENV environment variable.',
       ].join('\n')
     );
   }
@@ -68,7 +68,7 @@ function logStats(stats: Stats) {
   const { errors, warnings } = stats.toJson({
     all: false,
     warnings: true,
-    errors: true
+    errors: true,
   });
 
   if (errors.length > 0) {
