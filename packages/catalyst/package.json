@@ -71,6 +71,7 @@
     "css-loader": "^5.0.0",
     "diff": "^4.0.1",
     "duplicate-package-checker-webpack-plugin": "^3.0.0",
+    "fibers": "^5.0.0",
     "file-loader": "^6.2.0",
     "find-process": "^1.4.1",
     "inquirer": "^7.0.0",

@@ -60,6 +60,10 @@ export default function generateRules() {
         loader: require.resolve('sass-loader'),
         options: {
           sourceMap: true,
+          implementation: require('sass'),
+          sassOptions: {
+            fiber: require('fibers'),
+          },
         },
       },
     ],
