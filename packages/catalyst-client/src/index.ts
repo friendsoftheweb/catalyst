@@ -125,7 +125,7 @@ connection.onmessage = function (event) {
 
       showNotification(
         compilationErrorTemplate({
-          message: formatCompiliationError(message.data[0])
+          message: formatCompiliationError(message.data[0]),
         }),
         { pointerEvents: 'auto' }
       );
@@ -163,7 +163,7 @@ function showRuntimeErrors() {
   if (!isBuilding && runtimeErrorCount > 0) {
     showNotification(
       runtimeErrorsTemplate({
-        count: runtimeErrorCount
+        count: runtimeErrorCount,
       })
     );
   }
