@@ -33,6 +33,9 @@ jobs:
       - name: Run Prettier Check
         run: yarn prettier:check
 
+      - name: Run ESLint
+        run: yarn lint
+
   test:
     runs-on: ubuntu-latest
 

@@ -9,12 +9,10 @@ interface Options {
   useBuiltIns?: 'usage' | 'entry' | false;
 }
 
-export default function babelConfig({
-  modules,
-  targets,
-  corejs,
-  useBuiltIns = 'usage',
-}: Options = {}) {
+export default function babelConfig(options: Options = {}) {
+  const { targets, corejs, useBuiltIns = 'usage' } = options;
+  let { modules } = options;
+
   const configuration = new Configuration();
 
   const { environment, typeScriptEnabled, flowEnabled } = configuration;
@@ -36,8 +34,11 @@ export default function babelConfig({
     presetEnvOptions.corejs = corejs;
   }
 
-  let presets: Array<string | [string, object]> = [
-    [require.resolve('@babel/preset-env'), presetEnvOptions],
+  let presets: Array<string | [string, Record<string, unknown>]> = [
+    [
+      require.resolve('@babel/preset-env'),
+      presetEnvOptions as Record<string, unknown>,
+    ],
     [require.resolve('@babel/preset-react'), { useBuiltIns: true }],
   ];
 
@@ -49,7 +50,7 @@ export default function babelConfig({
     require.resolve('@babel/runtime/package.json')
   );
 
-  let plugins: Array<string | [string, object]> = [
+  let plugins: Array<string | [string, Record<string, unknown>]> = [
     require.resolve('@babel/plugin-proposal-object-rest-spread'),
     [
       require.resolve('@babel/plugin-proposal-class-properties'),

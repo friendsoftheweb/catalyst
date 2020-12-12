@@ -9,19 +9,16 @@ declare global {
   interface NodeModule {
     hot: {
       status(): 'idle';
-      check(autoApply: boolean): Promise<any>;
+      check(autoApply: boolean): Promise<unknown>;
     };
   }
 }
 
 import SockJS from 'sockjs-client';
 
-// @ts-ignore
-import activityTemplate from './templates/activity';
-// @ts-ignore
-import compilationErrorTemplate from './templates/compilation-error';
-// @ts-ignore
-import runtimeErrorsTemplate from './templates/runtime-errors';
+import activityTemplate from './templates/activity.ejs';
+import compilationErrorTemplate from './templates/compilation-error.ejs';
+import runtimeErrorsTemplate from './templates/runtime-errors.ejs';
 
 import createOverlayContainer from './createOverlayContainer';
 import formatCompiliationError from './formatCompilationError';
@@ -47,7 +44,7 @@ function updateOverlayContainer(): Promise<void> {
 function showNotification(
   template: string,
   options: { pointerEvents: 'auto' | 'none' } = { pointerEvents: 'none' }
-): Promise<any> {
+): Promise<unknown> {
   overlayFrameVisible = true;
   overlayContainerHTML = template;
   overlayFramePointerEvents = options.pointerEvents;
@@ -134,7 +131,7 @@ connection.onmessage = function (event) {
   }
 };
 
-function tryApplyUpdates(): Promise<any> {
+function tryApplyUpdates(): Promise<unknown> {
   if (firstCompilationHash === lastCompilationHash) {
     return Promise.resolve();
   }

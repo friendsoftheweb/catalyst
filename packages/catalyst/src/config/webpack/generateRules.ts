@@ -19,7 +19,6 @@ export default function generateRules() {
 
   rules.push({
     test: /\.s?css$/,
-    // @ts-ignore
     use: [
       environment === 'development'
         ? {
