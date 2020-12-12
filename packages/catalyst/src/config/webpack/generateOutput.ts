@@ -8,7 +8,7 @@ export default function generateOutput(): Output {
     buildPath,
     publicPath,
     devServerHost,
-    devServerPort
+    devServerPort,
   } = new Configuration();
 
   // This allows multiple projects built with webpack to coexist in the same
@@ -18,7 +18,7 @@ export default function generateOutput(): Output {
   if (environment === 'development') {
     return {
       path: buildPath,
-      publicPath: `http://${devServerHost}:${devServerPort}/`
+      publicPath: `http://${devServerHost}:${devServerPort}/`,
     };
   }
 
@@ -27,7 +27,7 @@ export default function generateOutput(): Output {
       path: buildPath,
       publicPath,
       filename: '[name].js',
-      jsonpFunction
+      jsonpFunction,
     };
   }
 
@@ -35,6 +35,6 @@ export default function generateOutput(): Output {
     path: buildPath,
     publicPath,
     filename: '[name].[contenthash:8].js',
-    jsonpFunction
+    jsonpFunction,
   };
 }

@@ -13,6 +13,6 @@ export default async function readCertificateFiles(
   return {
     key: fs.readFileSync(path.resolve(rootPath, certificate.keyPath)),
     cert: fs.readFileSync(path.resolve(rootPath, certificate.certPath)),
-    ca: fs.readFileSync(path.resolve(rootPath, certificate.caPath))
+    ca: fs.readFileSync(path.resolve(rootPath, certificate.caPath)),
   };
 }

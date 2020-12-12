@@ -4,14 +4,14 @@ import Configuration from './Configuration';
 
 interface Plugin {
   modifyBabelPlugins?(
-    plugins: Array<string | [string, object]>,
+    plugins: Array<string | [string, Record<string, unknown>]>,
     configuration: Configuration
-  ): Array<string | [string, object]>;
+  ): Array<string | [string, Record<string, unknown>]>;
 
   modifyBabelPresets?(
-    presets: Array<string | [string, object]>,
+    presets: Array<string | [string, Record<string, unknown>]>,
     configuration: Configuration
-  ): Array<string | [string, object]>;
+  ): Array<string | [string, Record<string, unknown>]>;
 
   modifyWebpackRules?(
     rules: readonly RuleSetRule[],

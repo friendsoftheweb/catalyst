@@ -30,7 +30,7 @@ export default function generatePlugins(options?: Options): WebpackPlugin[] {
     ignoredDuplicatePackages,
     devServerProtocol,
     devServerHost,
-    devServerPort
+    devServerPort,
   } = configuration;
 
   const cssFileName =
@@ -42,7 +42,7 @@ export default function generatePlugins(options?: Options): WebpackPlugin[] {
     plugins.push(
       new webpack.DllReferencePlugin({
         context: contextPath,
-        manifest: require(path.join(tempPath, 'vendor.json'))
+        manifest: require(path.join(tempPath, 'vendor.json')),
       }),
       new webpack.HotModuleReplacementPlugin()
     );
@@ -51,7 +51,7 @@ export default function generatePlugins(options?: Options): WebpackPlugin[] {
   if (environment !== 'development') {
     plugins.push(
       new MiniCssExtractPlugin({
-        filename: cssFileName
+        filename: cssFileName,
       })
     );
   }
@@ -62,7 +62,7 @@ export default function generatePlugins(options?: Options): WebpackPlugin[] {
       DEV_SERVER_PROTOCOL: devServerProtocol,
       DEV_SERVER_HOST: devServerHost,
       DEV_SERVER_PORT: devServerPort,
-      SERVICE_WORKER_URL: `${publicPath}service-worker.js`
+      SERVICE_WORKER_URL: `${publicPath}service-worker.js`,
     })
   );
 
@@ -70,7 +70,7 @@ export default function generatePlugins(options?: Options): WebpackPlugin[] {
     plugins.push(
       new WorkboxWebpackPlugin.GenerateSW({
         clientsClaim: true,
-        exclude: [/\.map$/, /manifest\.json$/]
+        exclude: [/\.map$/, /manifest\.json$/],
       })
     );
   }
@@ -82,7 +82,7 @@ export default function generatePlugins(options?: Options): WebpackPlugin[] {
   if (environment === 'production') {
     plugins.push(
       new CompressionPlugin({
-        test: /\.(js|css)$/
+        test: /\.(js|css)$/,
       })
     );
   }
@@ -93,7 +93,7 @@ export default function generatePlugins(options?: Options): WebpackPlugin[] {
         exclude: /.*\/node_modules\/.*/,
         failOnError: environment !== 'development',
         allowAsyncCycles: true,
-        cwd: process.cwd()
+        cwd: process.cwd(),
       })
     );
   }
@@ -103,7 +103,7 @@ export default function generatePlugins(options?: Options): WebpackPlugin[] {
       new DuplicatePackageCheckerPlugin({
         exclude(instance) {
           return ignoredDuplicatePackages.includes(instance.name);
-        }
+        },
       })
     );
   }
