@@ -1,5 +1,3 @@
-import stripAnsi from 'strip-ansi';
-
 function formatCompiliationError(message: string) {
   return message
     .split('\n')
@@ -11,9 +9,6 @@ function formatCompiliationError(message: string) {
       if (/^\s*$/.test(line)) {
         return '<br />';
       }
-
-      // Remove ANSI color characters
-      line = stripAnsi(line);
 
       // HTML escape less-than characters
       line = line.replace(/</g, '&lt;');

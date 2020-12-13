@@ -1,6 +1,6 @@
-#!/usr/bin/env node
+#!/usr/bin/env bash
 
-const { execSync } = require('child_process');
+set -euxo pipefail
 
-execSync('rm -rf lib');
-execSync('tsc', { stdio: 'inherit' });
+rm -rf lib
+yarn run webpack

@@ -52,10 +52,10 @@ export default async function createDevServer(options: Options) {
     disableHostCheck: true,
     stats: 'errors-only',
     before(app) {
-      app.get('/vendor-dll.js', (req, res) => {
-        fs.readFile(vendorFilePath, (err, data) => {
-          if (err) {
-            throw err;
+      app.get('/vendor-dll.js', (_req, res) => {
+        fs.readFile(vendorFilePath, (error, data) => {
+          if (error) {
+            throw error;
           }
 
           res.set('Content-Type', 'application/javascript');
@@ -102,6 +102,21 @@ export default async function createDevServer(options: Options) {
                 <body></body>
               </html>`
             );
+          }
+        );
+      });
+
+      app.get('/mappings.wasm', (_req, res) => {
+        fs.readFile(
+          require.resolve(
+            'catalyst-client/node_modules/source-map/lib/mappings.wasm'
+          ),
+          (error, data) => {
+            if (error) {
+              // TODO: Handle error
+            } else {
+              res.send(data);
+            }
           }
         );
       });

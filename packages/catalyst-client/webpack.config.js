@@ -5,7 +5,10 @@ module.exports = {
   context: __dirname,
   entry: {
     index: ['regenerator-runtime/runtime', './src/index.ts'],
-    frame: './src/frame.ts'
+    frame: './src/frame.ts',
+  },
+  node: {
+    fs: 'empty',
   },
   module: {
     rules: [
@@ -13,17 +16,17 @@ module.exports = {
         test: /\.(ts|js)x?$/,
         use: [
           {
-            loader: 'babel-loader'
-          }
-        ]
-      }
-    ]
+            loader: 'babel-loader',
+          },
+        ],
+      },
+    ],
   },
   resolve: {
     modules: ['node_modules', path.resolve(__dirname, 'src')],
-    extensions: ['.js', '.jsx', '.ts', '.tsx']
+    extensions: ['.js', '.jsx', '.ts', '.tsx'],
   },
   output: {
-    path: path.resolve(__dirname, 'lib')
-  }
+    path: path.resolve(__dirname, 'lib'),
+  },
 };

@@ -3,7 +3,7 @@ declare global {
     __CATALYST_ENV__: {
       devServerProtocol: string;
       devServerHost: string;
-      devServerPort: number;
+      devServerPort: string;
     };
   }
 
@@ -19,12 +19,15 @@ import SockJS from 'sockjs-client';
 import createOverlayFrame from './createOverlayFrame';
 import formatCompiliationError from './formatCompilationError';
 import { FrameState } from './types';
+import { SourceMapConsumer } from 'source-map';
 
 let overlayFrameVisible = true;
 let overlayFramePointerEvents = 'none';
 let overlayFrameState: FrameState = null;
 let runtimeErrorCount = 0;
 let runtimeErrorMessage: string | undefined;
+let runtimeErrorPath: string | undefined;
+let runtimeErrorLine: number | undefined;
 
 async function updateOverlayContainer() {
   const { frame } = await createOverlayFrame();
@@ -55,12 +58,15 @@ function hideNotification() {
   return updateOverlayContainer();
 }
 
-const { devServerPort, devServerHost } = window.__CATALYST_ENV__;
-const { protocol } = window.location;
+const {
+  devServerProtocol,
+  devServerHost,
+  devServerPort,
+} = window.__CATALYST_ENV__;
 
-const connection = new SockJS(
-  `${protocol}//${devServerHost}:${devServerPort}/sockjs-node`
-);
+const devServerURI = `${devServerProtocol}://${devServerHost}:${devServerPort}`;
+
+const connection = new SockJS(`${devServerURI}/sockjs-node`);
 
 let isBuilding = false;
 let firstCompilationHash: string | null = null;
@@ -166,6 +172,11 @@ function showRuntimeErrors() {
       component: 'RuntimeErrors',
       props: {
         count: runtimeErrorCount,
+        location: `${
+          runtimeErrorPath != null
+            ? runtimeErrorPath.replace('webpack:///', '')
+            : ''
+        }:${runtimeErrorLine}`,
         message: runtimeErrorMessage,
       },
     });
@@ -180,16 +191,71 @@ function messageForError(error: Error): string | undefined {
   if (error.message.startsWith('Element type is invalid')) {
     return error.message;
   }
+
+  if (error.message.endsWith('is not a function')) {
+    return error.message;
+  }
+
+  return 'other';
 }
 
-window.addEventListener('error', (error) => {
-  runtimeErrorCount++;
+// @ts-expect-error: The types for this library seem to be incorrect
+SourceMapConsumer.initialize({
+  'lib/mappings.wasm': `${devServerURI}/mappings.wasm`,
+});
 
-  runtimeErrorMessage = messageForError(error.error);
+const sourceMapPromises: Record<string, Promise<string>> = {};
+
+const getSourceLocation = async (
+  errorEvent: ErrorEvent
+): Promise<{ source: string; line: number; column: number }> => {
+  const sourceMapURI = `${errorEvent.filename}.map`;
+
+  if (sourceMapPromises[sourceMapURI] == null) {
+    sourceMapPromises[sourceMapURI] = fetch(sourceMapURI)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`Failed to load source map: ${sourceMapURI}`);
+        }
+
+        return response;
+      })
+      .then((response) => response.json());
+  }
+
+  const sourceMap = await sourceMapPromises[sourceMapURI];
+
+  let position;
+
+  await SourceMapConsumer.with(sourceMap, null, (consumer) => {
+    position = consumer.originalPositionFor({
+      line: errorEvent.lineno,
+      column: errorEvent.colno,
+    });
+  });
+
+  // Allow source map content to be garbage-collected
+  delete sourceMapPromises[sourceMapURI];
+
+  if (position == null) {
+    throw new Error('Failed to look up source map location');
+  }
+
+  return position;
+};
+
+window.addEventListener('error', (event) => {
+  runtimeErrorCount++;
+  runtimeErrorMessage = messageForError(event.error);
+
   showRuntimeErrors();
 
-  console.log({ error: error.error });
-  console.log(error.error.stack.split('\n'));
+  getSourceLocation(event).then((position) => {
+    runtimeErrorPath = position.source;
+    runtimeErrorLine = position.line;
+
+    showRuntimeErrors();
+  });
 
   return false;
 });
