@@ -1,5 +1,6 @@
 import path from 'path';
 import Configuration from '../../Configuration';
+import { Environment } from '../../Environment';
 import forEachPlugin from '../../utils/forEachPlugin';
 
 interface Options {
@@ -18,7 +19,7 @@ export default function babelConfig(options: Options = {}) {
   const { environment, typeScriptEnabled, flowEnabled } = configuration;
 
   if (modules == null) {
-    modules = environment === 'test' ? 'commonjs' : false;
+    modules = environment === Environment.Test ? 'commonjs' : false;
   }
 
   const presetEnvOptions: Options = {
@@ -39,7 +40,15 @@ export default function babelConfig(options: Options = {}) {
       require.resolve('@babel/preset-env'),
       presetEnvOptions as Record<string, unknown>,
     ],
-    [require.resolve('@babel/preset-react'), { useBuiltIns: true }],
+    [
+      require.resolve('@babel/preset-react'),
+      {
+        useBuiltIns: true,
+        development:
+          environment === Environment.Development ||
+          environment === Environment.Test,
+      },
+    ],
   ];
 
   if (typeScriptEnabled) {
@@ -71,7 +80,7 @@ export default function babelConfig(options: Options = {}) {
     );
   }
 
-  if (environment === 'production') {
+  if (environment === Environment.Production) {
     plugins.push(require.resolve('babel-plugin-lodash'), [
       require.resolve('babel-plugin-transform-react-remove-prop-types'),
       {

@@ -1,5 +1,6 @@
 import { Output } from 'webpack';
 import Configuration from '../../Configuration';
+import { Environment } from '../../Environment';
 
 export default function generateOutput(): Output {
   const {
@@ -15,14 +16,14 @@ export default function generateOutput(): Output {
   // realm.
   const jsonpFunction = `webpackJsonp${projectName.replace(/[^a-z]+/gi, '_')}`;
 
-  if (environment === 'development') {
+  if (environment === Environment.Development) {
     return {
       path: buildPath,
       publicPath: `http://${devServerHost}:${devServerPort}/`,
     };
   }
 
-  if (environment === 'test') {
+  if (environment === Environment.Test) {
     return {
       path: buildPath,
       publicPath,

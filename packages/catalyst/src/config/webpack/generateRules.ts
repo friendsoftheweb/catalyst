@@ -2,6 +2,7 @@ import path from 'path';
 import { RuleSetRule } from 'webpack';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import Configuration from '../../Configuration';
+import { Environment } from '../../Environment';
 import forEachPlugin from '../../utils/forEachPlugin';
 
 export default function generateRules() {
@@ -19,7 +20,7 @@ export default function generateRules() {
   rules.push({
     test: /\.s?css$/,
     use: [
-      environment === 'development'
+      environment === Environment.Development
         ? {
             loader: require.resolve('style-loader'),
           }
@@ -109,7 +110,7 @@ function generateFileLoaderRule(basePath: string): RuleSetRule {
   const { environment, publicPath } = new Configuration();
 
   const name =
-    environment === 'production'
+    environment === Environment.Production
       ? '[path][name]-[hash].[ext]'
       : '[path][name].[ext]';
 
