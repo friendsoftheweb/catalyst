@@ -6,7 +6,7 @@ export interface Props {
 
 export default class Activity extends Component<Props> {
   state = {
-    updated: false
+    updated: false,
   };
 
   render() {
@@ -19,12 +19,12 @@ export default class Activity extends Component<Props> {
             position: 'fixed',
             backgroundColor: 'rgba(0,0,0,0.6)',
             borderRadius: '0.5rem',
-            fontFamily: 'Menlo, Consolas, monospace',
+            fontFamily: "'Fira Code', Menlo, Consolas, monospace",
             padding: '0.75em 1em',
             textAlign: 'center',
             verticalAlign: 'middle',
             boxShadow: '0 0 20px rgba(0,0,0,0.45)',
-            backdropFilter: 'blur(8px)'
+            backdropFilter: 'blur(8px)',
           }}
         >
           <div
@@ -37,7 +37,7 @@ export default class Activity extends Component<Props> {
               height: '1em',
               border: '3px solid rgba(255,255,255,0.25)',
               borderTopColor: 'rgba(255,255,255,0.7)',
-              borderRadius: '50%'
+              borderRadius: '50%',
             }}
           ></div>
 
@@ -47,7 +47,7 @@ export default class Activity extends Component<Props> {
               marginLeft: '0.65em',
               paddingTop: '0.25em',
               display: 'inline-block',
-              WebkitFontSmoothing: 'antialiased'
+              WebkitFontSmoothing: 'antialiased',
             }}
           >
             {message}

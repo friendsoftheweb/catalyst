@@ -53,7 +53,7 @@ export default class CompilationError extends Component<Props> {
     color: #333333;
     background-color: #fafafa;
     font-size: 1em;
-    font-family: Menlo, Consolas, monospace;
+    font-family: 'Fira Code', Menlo, Consolas, monospace;
     line-height: 1.2em;
     padding: 2rem;
     overflow: auto;

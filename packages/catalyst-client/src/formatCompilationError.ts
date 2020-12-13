@@ -3,7 +3,7 @@ function formatCompiliationError(message: string) {
     .split('\n')
     .map((line, index) => {
       if (index === 0) {
-        return `<div class="file-path">${line}</div>`;
+        return `<div class="file-path">${line.replace(/\s*\(.*\)/, '')}</div>`;
       }
 
       if (/^\s*$/.test(line)) {
@@ -16,24 +16,29 @@ function formatCompiliationError(message: string) {
       // HTML escape greater-than characters
       line = line.replace(/([^^])(>)/g, '$1&gt;');
 
-      // Remove stacktrace lines
+      // Remove JavaScript stacktrace lines
       if (/^\s+at Object/.test(line)) {
         return null;
       }
 
-      if (/^>\s+\d+?\s+\|/.test(line)) {
+      // Stacktrace
+      if (/\w+\.\w+\s+\d+:\d+/.test(line)) {
+        return `<div class="stacktrace-line">${line}</div>`;
+      }
+
+      if (/^>\s+\d+\s+\|/.test(line)) {
         line = line.replace(/^>/, ' ');
 
         return `<div class="code-line highlighted">${line}</div>`;
       }
 
-      if (/^\s+|\s+\^/.test(line)) {
+      if (/^\s+\|\s+\^/.test(line)) {
         line = line.replace('^', '<span class="code-line-indicator">^</span>');
 
         return `<div class="code-line">${line}</div>`;
       }
 
-      if (/^\s+(\d+)?\s+\|/.test(line)) {
+      if (/^\s*(\d+)?\s+[|│╷]/.test(line)) {
         return `<div class="code-line">${line}</div>`;
       }
 
