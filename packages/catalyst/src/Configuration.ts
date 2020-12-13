@@ -1,11 +1,6 @@
 import path from 'path';
 import fs from 'fs';
-
-type Environment = 'development' | 'test' | 'production';
-
-function isEnvironment(value: any): value is Environment {
-  return ['development', 'test', 'production'].includes(value);
-}
+import { Environment, isEnvironment } from './Environment';
 
 interface CustomConfiguration {
   contextPath: string;
@@ -50,7 +45,7 @@ const defaultPrebuiltPackages = [
   'redux',
   'redux-logger',
   'redux-saga',
-  'regenerator-runtime'
+  'regenerator-runtime',
 ];
 
 const defaultTransformedPackages = [
@@ -68,14 +63,14 @@ const defaultTransformedPackages = [
   'react-router-dom',
   'react-transition-group',
   'redux',
-  'redux-saga'
+  'redux-saga',
 ];
 
 const defaultIgnoredDuplicatePackages = [
   'hoist-non-react-statics',
   'prop-types',
   'react-is',
-  'ts-invariant'
+  'ts-invariant',
 ];
 
 function isCustomConfiguration(value: any): value is CustomConfiguration {
@@ -224,7 +219,7 @@ export default class Configuration {
   }
 
   get publicPath(): string {
-    if (this.environment === 'development') {
+    if (this.environment === Environment.Development) {
       return `${this.devServerProtocol}://${this.devServerHost}:${this.devServerPort}/`;
     }
 
@@ -276,7 +271,10 @@ export default class Configuration {
       return generateServiceWorker;
     }
 
-    return this.environment === 'production' || this.environment === 'test';
+    return (
+      this.environment === Environment.Production ||
+      this.environment === Environment.Test
+    );
   }
 
   get checkForCircularDependencies(): boolean {

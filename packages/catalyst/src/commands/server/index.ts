@@ -2,7 +2,6 @@ import chalk from 'chalk';
 import WebpackDevServer from 'webpack-dev-server';
 import prebuildVendorPackages from './prebuildVendorPackages';
 import createDevServer from './createDevServer';
-import rebuildNodeSASS from '../../utils/rebuildNodeSASS';
 import checkPortAvailability from '../../utils/checkPortAvailability';
 import Configuration from '../../Configuration';
 
@@ -18,11 +17,10 @@ export default async function server(
     devServerPort,
     devServerProtocol,
     devServerCertificate,
-    overlayEnabled
+    overlayEnabled,
   } = new Configuration();
 
   await checkPortAvailability(devServerPort);
-  await rebuildNodeSASS();
   await prebuildVendorPackages();
 
   const server = await createDevServer({
@@ -31,7 +29,7 @@ export default async function server(
     protocol: devServerProtocol,
     certificate: devServerCertificate,
     overlayEnabled: overlayEnabled,
-    bundleAnalyzerEnabled: options.bundleAnalyzer === true
+    bundleAnalyzerEnabled: options.bundleAnalyzer === true,
   });
 
   return new Promise((resolve, reject) => {

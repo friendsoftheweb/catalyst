@@ -28,7 +28,7 @@ export default function createOverlayFrame(): Promise<{
     frame.style.zIndex = '9999999999';
     frame.style.display = 'none';
 
-    frame.onload = function() {
+    frame.onload = function () {
       resolve({ frame: frame });
     };
 

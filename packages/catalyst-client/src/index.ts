@@ -10,7 +10,7 @@ declare global {
   interface NodeModule {
     hot: {
       status(): 'idle';
-      check(autoApply: boolean): Promise<any>;
+      check(autoApply: boolean): Promise<unknown>;
     };
   }
 }
@@ -66,7 +66,7 @@ let isBuilding = false;
 let firstCompilationHash: string | null = null;
 let lastCompilationHash: string | null = null;
 
-connection.onmessage = function(event) {
+connection.onmessage = function (event) {
   const message = JSON.parse(event.data);
 
   switch (message.type) {
@@ -77,8 +77,8 @@ connection.onmessage = function(event) {
         showNotification({
           component: 'Activity',
           props: {
-            message: 'Building…'
-          }
+            message: 'Building…',
+          },
         });
       }
 
@@ -125,8 +125,8 @@ connection.onmessage = function(event) {
         {
           component: 'CompilationError',
           props: {
-            message: formatCompiliationError(message.data[0])
-          }
+            message: formatCompiliationError(message.data[0]),
+          },
         },
         { pointerEvents: 'auto' }
       );
@@ -135,7 +135,7 @@ connection.onmessage = function(event) {
   }
 };
 
-function tryApplyUpdates(): Promise<any> {
+function tryApplyUpdates(): Promise<unknown> {
   if (firstCompilationHash === lastCompilationHash) {
     return Promise.resolve();
   }
@@ -166,8 +166,8 @@ function showRuntimeErrors() {
       component: 'RuntimeErrors',
       props: {
         count: runtimeErrorCount,
-        message: runtimeErrorMessage
-      }
+        message: runtimeErrorMessage,
+      },
     });
   }
 }

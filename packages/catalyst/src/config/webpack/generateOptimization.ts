@@ -8,34 +8,34 @@ export default function generateOptimization(): Options.Optimization {
       new TerserPlugin({
         terserOptions: {
           parse: {
-            ecma: 8
+            ecma: 8,
           },
           compress: {
             warnings: false,
             comparisons: false,
-            inline: 2
+            inline: 2,
           },
           mangle: {
-            safari10: true
+            safari10: true,
           },
           output: {
             ecma: 5,
             comments: false,
-            ascii_only: true
-          }
+            ascii_only: true,
+          },
         },
         parallel: true,
         cache: true,
-        sourceMap: true
+        sourceMap: true,
       }),
       new OptimizeCSSAssetsPlugin({
         cssProcessorOptions: {
           map: {
             inline: false,
-            annotation: true
-          }
-        }
-      })
+            annotation: true,
+          },
+        },
+      }),
     ],
     splitChunks: {
       minChunks: 2,
@@ -43,9 +43,9 @@ export default function generateOptimization(): Options.Optimization {
         common: {
           test: /[\\/]node_modules[\\/]/,
           name: 'common',
-          chunks: 'all'
-        }
-      }
-    }
+          chunks: 'all',
+        },
+      },
+    },
   };
 }

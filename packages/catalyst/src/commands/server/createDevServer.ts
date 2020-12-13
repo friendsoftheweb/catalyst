@@ -26,7 +26,7 @@ export default async function createDevServer(options: Options) {
     protocol,
     certificate,
     overlayEnabled,
-    bundleAnalyzerEnabled
+    bundleAnalyzerEnabled,
   } = options;
 
   const { rootPath, tempPath } = new Configuration();
@@ -47,7 +47,7 @@ export default async function createDevServer(options: Options) {
     publicPath: '/',
     clientLogLevel: 'none',
     headers: {
-      'Access-Control-Allow-Origin': '*'
+      'Access-Control-Allow-Origin': '*',
     },
     disableHostCheck: true,
     stats: 'errors-only',
@@ -73,13 +73,14 @@ export default async function createDevServer(options: Options) {
         res.send('// This file left intentially blank.');
       });
 
-      app.get('/frame', (req, res) => {
+      app.get('/frame', (_req, res) => {
         res.set('Content-Type', 'text/html');
         res.set('Access-Control-Allow-Origin', '*');
 
         fs.readFile(
           require.resolve('catalyst-client/lib/frame.js'),
-          (err, data) => {
+          (_error, data) => {
+            // TODO: Handle error
             res.send(
               `<html>
                 <head>
@@ -104,11 +105,11 @@ export default async function createDevServer(options: Options) {
           }
         );
       });
-    }
+    },
   };
 
   const webpackConfig = await getWebpackConfig({
-    bundleAnalyzerEnabled
+    bundleAnalyzerEnabled,
   });
 
   // If the custom error overlay is disabled, add the standard webpack

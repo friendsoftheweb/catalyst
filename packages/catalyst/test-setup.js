@@ -34,7 +34,7 @@ function shouldBuild() {
   return false;
 }
 
-module.exports = async function() {
+module.exports = async function () {
   if (shouldBuild()) {
     const lastBuildTime = new Date();
 
@@ -42,12 +42,12 @@ module.exports = async function() {
       const packagePath = resolve(__dirname, relativePackagePath);
       const packageName = parse(packagePath).name;
 
-      console.log(`\n\nBuilding ${packageName}...\n`);
+      console.log(`\n---> Building ${packageName}...\n`);
 
       execSync('yarn link', { stdio: 'inherit', cwd: packagePath });
       execSync('yarn build', { stdio: 'inherit', cwd: packagePath });
 
-      console.log(`\nLinking ${packageName} into test project...\n`);
+      console.log(`\n---> Linking ${packageName} into test project...\n`);
 
       execSync(`yarn link ${packageName}`, {
         stdio: 'inherit',
@@ -64,7 +64,7 @@ module.exports = async function() {
     utimesSync(lastBuildTimePath, lastBuildTime, lastBuildTime);
   }
 
-  console.log('\nRemoving previous test output...\n');
+  console.log('\n---> Removing previous test output...\n');
 
   execSync('rm -rf dist', {
     stdio: 'inherit',

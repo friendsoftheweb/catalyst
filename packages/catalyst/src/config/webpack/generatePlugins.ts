@@ -10,6 +10,7 @@ import CircularDependencyPlugin from 'circular-dependency-plugin';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import CleanUpStatsPlugin from '../../webpack-plugins/CleanUpStatsPlugin';
 import Configuration from '../../Configuration';
+import { Environment } from '../../Environment';
 import forEachPlugin from '../../utils/forEachPlugin';
 
 interface Options {
@@ -30,28 +31,30 @@ export default function generatePlugins(options?: Options): WebpackPlugin[] {
     ignoredDuplicatePackages,
     devServerProtocol,
     devServerHost,
-    devServerPort
+    devServerPort,
   } = configuration;
 
   const cssFileName =
-    environment === 'production' ? '[name].[contenthash:8].css' : '[name].css';
+    environment === Environment.Production
+      ? '[name].[contenthash:8].css'
+      : '[name].css';
 
   let plugins: WebpackPlugin[] = [];
 
-  if (environment === 'development') {
+  if (environment === Environment.Development) {
     plugins.push(
       new webpack.DllReferencePlugin({
         context: contextPath,
-        manifest: require(path.join(tempPath, 'vendor.json'))
+        manifest: require(path.join(tempPath, 'vendor.json')),
       }),
       new webpack.HotModuleReplacementPlugin()
     );
   }
 
-  if (environment !== 'development') {
+  if (environment !== Environment.Development) {
     plugins.push(
       new MiniCssExtractPlugin({
-        filename: cssFileName
+        filename: cssFileName,
       })
     );
   }
@@ -62,7 +65,7 @@ export default function generatePlugins(options?: Options): WebpackPlugin[] {
       DEV_SERVER_PROTOCOL: devServerProtocol,
       DEV_SERVER_HOST: devServerHost,
       DEV_SERVER_PORT: devServerPort,
-      SERVICE_WORKER_URL: `${publicPath}service-worker.js`
+      SERVICE_WORKER_URL: `${publicPath}service-worker.js`,
     })
   );
 
@@ -70,19 +73,19 @@ export default function generatePlugins(options?: Options): WebpackPlugin[] {
     plugins.push(
       new WorkboxWebpackPlugin.GenerateSW({
         clientsClaim: true,
-        exclude: [/\.map$/, /manifest\.json$/]
+        exclude: [/\.map$/, /manifest\.json$/],
       })
     );
   }
 
-  if (environment !== 'development') {
+  if (environment !== Environment.Development) {
     plugins.push(new ManifestPlugin({ fileName: 'manifest.json' }));
   }
 
-  if (environment === 'production') {
+  if (environment === Environment.Production) {
     plugins.push(
       new CompressionPlugin({
-        test: /\.(js|css)$/
+        test: /\.(js|css)$/,
       })
     );
   }
@@ -91,9 +94,9 @@ export default function generatePlugins(options?: Options): WebpackPlugin[] {
     plugins.push(
       new CircularDependencyPlugin({
         exclude: /.*\/node_modules\/.*/,
-        failOnError: environment !== 'development',
+        failOnError: environment !== Environment.Development,
         allowAsyncCycles: true,
-        cwd: process.cwd()
+        cwd: process.cwd(),
       })
     );
   }
@@ -103,7 +106,7 @@ export default function generatePlugins(options?: Options): WebpackPlugin[] {
       new DuplicatePackageCheckerPlugin({
         exclude(instance) {
           return ignoredDuplicatePackages.includes(instance.name);
-        }
+        },
       })
     );
   }

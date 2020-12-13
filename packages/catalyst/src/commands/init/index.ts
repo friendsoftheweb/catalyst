@@ -15,7 +15,7 @@ export const defaultConfig = {
   contextPath: 'client',
   buildPath: 'public/assets',
   publicPath: '/assets/',
-  plugins: []
+  plugins: [],
 };
 
 const defaultNodePackages = ['react', 'react-dom', 'core-js@3'];
@@ -25,7 +25,7 @@ const defaultNodePackagesDev = [
   '@types/react',
   '@types/react-dom',
   'eslint',
-  '@ftw/eslint-config-ts'
+  '@ftw/eslint-config-ts',
 ];
 
 interface Options {
@@ -60,17 +60,17 @@ export default async function init(options: Options) {
     {
       name: 'contextPath',
       message: 'Context path:',
-      default: currentConfig.contextPath
+      default: currentConfig.contextPath,
     },
     {
       name: 'buildPath',
       message: 'Build path:',
-      default: currentConfig.buildPath
+      default: currentConfig.buildPath,
     },
     {
       name: 'publicPath',
       message: 'Public path:',
-      default: currentConfig.publicPath
+      default: currentConfig.publicPath,
     },
     {
       name: 'plugins',
@@ -78,10 +78,10 @@ export default async function init(options: Options) {
       message: 'Select plugins:',
       choices: [
         'catalyst-plugin-graphql-tag',
-        'catalyst-plugin-styled-components'
+        'catalyst-plugin-styled-components',
       ],
-      default: currentConfig.plugins || []
-    }
+      default: currentConfig.plugins || [],
+    },
   ]);
 
   mkdirp.sync(`${config.contextPath}/bundles`);
@@ -142,7 +142,7 @@ function modifiedFileCount(): number {
     execSync(
       'git status --porcelain --untracked-files=no -- | wc -l | tr -d " "',
       {
-        stdio: ['pipe', 'pipe', 'ignore']
+        stdio: ['pipe', 'pipe', 'ignore'],
       }
     ).toString()
   );

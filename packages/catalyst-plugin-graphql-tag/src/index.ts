@@ -7,8 +7,8 @@ const plugin: Plugin = {
       {
         test: /\.(graphql|gql)$/,
         exclude: /node_modules/,
-        loader: require.resolve('graphql-tag/loader')
-      }
+        loader: require.resolve('graphql-tag/loader'),
+      },
     ];
   },
 
@@ -22,7 +22,7 @@ const plugin: Plugin = {
 
   modifyNodePackagesDev(packages) {
     return [...packages, '@types/graphql'];
-  }
+  },
 };
 
 export default plugin;
