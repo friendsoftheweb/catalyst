@@ -1,4 +1,3 @@
-import { reduce } from 'lodash';
 import { Configuration as WebpackConfiguration } from 'webpack';
 import generateDevtool from './generateDevtool';
 import generateEntryForBundleName from './generateEntryForBundleName';
@@ -8,6 +7,7 @@ import generateRules from './generateRules';
 import generateOptimization from './generateOptimization';
 import bundlePaths from './bundlePaths';
 import Configuration from '../../Configuration';
+import { Environment } from '../../Environment';
 
 interface Options {
   bundleAnalyzerEnabled?: boolean;
@@ -18,20 +18,14 @@ export default function webpackConfig(options?: Options): WebpackConfiguration {
 
   return {
     context: contextPath,
-    mode: environment === 'production' ? 'production' : 'development',
+    mode: environment === Environment.Production ? 'production' : 'development',
     devtool: generateDevtool(),
-    entry: reduce(
-      bundlePaths(),
-      (entry, bundlePath) => {
-        const parts = bundlePath.split('/');
-        const bundleName = parts[parts.length - 1];
+    entry: bundlePaths().reduce((entry, bundlePath) => {
+      const parts = bundlePath.split('/');
+      const bundleName = parts[parts.length - 1];
 
-        return Object.assign({}, entry, {
-          [bundleName]: generateEntryForBundleName(bundleName),
-        });
-      },
-      {}
-    ),
+      return { ...entry, [bundleName]: generateEntryForBundleName(bundleName) };
+    }, {}),
     output: generateOutput(),
     resolve: {
       extensions: ['.wasm', '.mjs', '.js', '.ts', '.tsx', '.json'],

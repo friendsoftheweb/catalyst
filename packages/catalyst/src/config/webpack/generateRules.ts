@@ -1,8 +1,8 @@
 import path from 'path';
 import { RuleSetRule } from 'webpack';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
-import autoprefixer from 'autoprefixer';
 import Configuration from '../../Configuration';
+import { Environment } from '../../Environment';
 import forEachPlugin from '../../utils/forEachPlugin';
 
 export default function generateRules() {
@@ -20,7 +20,7 @@ export default function generateRules() {
   rules.push({
     test: /\.s?css$/,
     use: [
-      environment === 'development'
+      environment === Environment.Development
         ? {
             loader: require.resolve('style-loader'),
           }
@@ -37,8 +37,17 @@ export default function generateRules() {
         loader: require.resolve('postcss-loader'),
         options: {
           sourceMap: true,
-          plugins() {
-            return [autoprefixer({ grid: 'no-autoplace' })];
+          postcssOptions: {
+            plugins: [
+              [
+                'postcss-preset-env',
+                {
+                  autoprefixer: {
+                    grid: 'no-autoplace',
+                  },
+                },
+              ],
+            ],
           },
         },
       },
@@ -52,6 +61,10 @@ export default function generateRules() {
         loader: require.resolve('sass-loader'),
         options: {
           sourceMap: true,
+          implementation: require('sass'),
+          sassOptions: {
+            fiber: require('fibers'),
+          },
         },
       },
     ],
@@ -97,7 +110,7 @@ function generateFileLoaderRule(basePath: string): RuleSetRule {
   const { environment, publicPath } = new Configuration();
 
   const name =
-    environment === 'production'
+    environment === Environment.Production
       ? '[path][name]-[hash].[ext]'
       : '[path][name].[ext]';
 

@@ -1,5 +1,11 @@
 let overlayFramePromise: Promise<{ frame: HTMLIFrameElement }> | null = null;
 
+const {
+  devServerProtocol,
+  devServerPort,
+  devServerHost,
+} = window.__CATALYST_ENV__;
+
 export default function createOverlayFrame(): Promise<{
   frame: HTMLIFrameElement;
 }> {
@@ -10,7 +16,7 @@ export default function createOverlayFrame(): Promise<{
   overlayFramePromise = new Promise((resolve) => {
     const frame = document.createElement('iframe');
 
-    frame.src = 'about:blank';
+    frame.src = `${devServerProtocol}://${devServerHost}:${devServerPort}/frame`;
     frame.style.position = 'fixed';
     frame.style.left = '0';
     frame.style.top = '0';

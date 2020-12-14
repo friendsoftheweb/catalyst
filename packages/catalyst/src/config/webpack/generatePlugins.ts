@@ -10,6 +10,7 @@ import CircularDependencyPlugin from 'circular-dependency-plugin';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import CleanUpStatsPlugin from '../../webpack-plugins/CleanUpStatsPlugin';
 import Configuration from '../../Configuration';
+import { Environment } from '../../Environment';
 import forEachPlugin from '../../utils/forEachPlugin';
 
 interface Options {
@@ -34,11 +35,13 @@ export default function generatePlugins(options?: Options): WebpackPlugin[] {
   } = configuration;
 
   const cssFileName =
-    environment === 'production' ? '[name].[contenthash:8].css' : '[name].css';
+    environment === Environment.Production
+      ? '[name].[contenthash:8].css'
+      : '[name].css';
 
   let plugins: WebpackPlugin[] = [];
 
-  if (environment === 'development') {
+  if (environment === Environment.Development) {
     plugins.push(
       new webpack.DllReferencePlugin({
         context: contextPath,
@@ -48,7 +51,7 @@ export default function generatePlugins(options?: Options): WebpackPlugin[] {
     );
   }
 
-  if (environment !== 'development') {
+  if (environment !== Environment.Development) {
     plugins.push(
       new MiniCssExtractPlugin({
         filename: cssFileName,
@@ -75,11 +78,11 @@ export default function generatePlugins(options?: Options): WebpackPlugin[] {
     );
   }
 
-  if (environment !== 'development') {
+  if (environment !== Environment.Development) {
     plugins.push(new ManifestPlugin({ fileName: 'manifest.json' }));
   }
 
-  if (environment === 'production') {
+  if (environment === Environment.Production) {
     plugins.push(
       new CompressionPlugin({
         test: /\.(js|css)$/,
@@ -91,7 +94,7 @@ export default function generatePlugins(options?: Options): WebpackPlugin[] {
     plugins.push(
       new CircularDependencyPlugin({
         exclude: /.*\/node_modules\/.*/,
-        failOnError: environment !== 'development',
+        failOnError: environment !== Environment.Development,
         allowAsyncCycles: true,
         cwd: process.cwd(),
       })

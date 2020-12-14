@@ -1,11 +1,6 @@
 import path from 'path';
 import fs from 'fs';
-
-type Environment = 'development' | 'test' | 'production';
-
-function isEnvironment(value: any): value is Environment {
-  return ['development', 'test', 'production'].includes(value);
-}
+import { Environment, isEnvironment } from './Environment';
 
 interface CustomConfiguration {
   contextPath: string;
@@ -224,7 +219,7 @@ export default class Configuration {
   }
 
   get publicPath(): string {
-    if (this.environment === 'development') {
+    if (this.environment === Environment.Development) {
       return `${this.devServerProtocol}://${this.devServerHost}:${this.devServerPort}/`;
     }
 
@@ -276,7 +271,10 @@ export default class Configuration {
       return generateServiceWorker;
     }
 
-    return this.environment === 'production' || this.environment === 'test';
+    return (
+      this.environment === Environment.Production ||
+      this.environment === Environment.Test
+    );
   }
 
   get checkForCircularDependencies(): boolean {

@@ -1,7 +1,7 @@
 import webpack, { Stats } from 'webpack';
 import chalk from 'chalk';
-import rebuildNodeSASS from '../../utils/rebuildNodeSASS';
 import Configuration from '../../Configuration';
+import { Environment } from '../../Environment';
 import logVersion from '../../utils/logVersion';
 import getWebpackConfig from '../../utils/getWebpackConfig';
 import logStatus from '../../utils/logStatus';
@@ -13,7 +13,10 @@ interface Options {
 export default async function build(options: Options) {
   const { environment, buildPath } = new Configuration();
 
-  if (!['production', 'test'].includes(environment)) {
+  if (
+    environment !== Environment.Production &&
+    environment !== Environment.Test
+  ) {
     throw new Error(
       [
         'Build environment must be one of: "production", "test".',
@@ -23,8 +26,6 @@ export default async function build(options: Options) {
   }
 
   logVersion();
-
-  await rebuildNodeSASS();
 
   const compiler = webpack(await getWebpackConfig());
 
