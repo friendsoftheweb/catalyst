@@ -1,5 +1,4 @@
 import { h, render } from 'preact';
-
 import Activity from './components/Activity';
 import RuntimeErrors from './components/RuntimeErrors';
 import CompilationError from './components/CompilationError';
@@ -8,6 +7,10 @@ import { FrameState } from './types';
 let state: FrameState = null;
 
 window.addEventListener('message', (event) => {
+  if (typeof event.data !== 'string') {
+    return;
+  }
+
   state = JSON.parse(event.data);
 
   if (state != null) {

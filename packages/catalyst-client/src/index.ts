@@ -16,10 +16,9 @@ declare global {
 }
 
 import SockJS from 'sockjs-client';
-import createOverlayFrame from './createOverlayFrame';
-import formatCompiliationError from './formatCompilationError';
-import { FrameState } from './types';
 import { SourceMapConsumer } from 'source-map';
+import createOverlayFrame from './createOverlayFrame';
+import { FrameState } from './types';
 
 let overlayFrameVisible = true;
 let overlayFramePointerEvents = 'none';
@@ -119,7 +118,6 @@ connection.onmessage = function (event) {
     case 'warnings':
       console.warn(...message.data);
 
-      isBuilding = false;
       tryApplyUpdates();
 
       break;
@@ -131,7 +129,7 @@ connection.onmessage = function (event) {
         {
           component: 'CompilationError',
           props: {
-            message: formatCompiliationError(message.data[0]),
+            message: message.data[0],
           },
         },
         { pointerEvents: 'auto' }
@@ -245,17 +243,27 @@ const getSourceLocation = async (
 };
 
 window.addEventListener('error', (event) => {
+  if (event.message.startsWith('Error: Module build failed')) {
+    return false;
+  }
+
   runtimeErrorCount++;
   runtimeErrorMessage = messageForError(event.error);
 
   showRuntimeErrors();
 
-  getSourceLocation(event).then((position) => {
-    runtimeErrorPath = position.source;
-    runtimeErrorLine = position.line;
+  getSourceLocation(event)
+    .then((position) => {
+      runtimeErrorPath = position.source;
+      runtimeErrorLine = position.line;
 
-    showRuntimeErrors();
-  });
+      showRuntimeErrors();
+    })
+    .catch((error) => {
+      console.warn(
+        `Failed to look up source map location for error:\n\n${error.message}`
+      );
+    });
 
   return false;
 });

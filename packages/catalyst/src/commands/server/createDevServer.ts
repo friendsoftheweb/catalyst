@@ -1,10 +1,13 @@
 import path from 'path';
 import fs from 'fs';
+import util from 'util';
 import webpack from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
 import Configuration from '../../Configuration';
 import getWebpackConfig from '../../utils/getWebpackConfig';
 import readCertificateFiles from './readCertificateFiles';
+
+const readFile = util.promisify(fs.readFile);
 
 interface Options {
   host: string;
@@ -52,16 +55,12 @@ export default async function createDevServer(options: Options) {
     disableHostCheck: true,
     stats: 'errors-only',
     before(app) {
-      app.get('/vendor-dll.js', (_req, res) => {
-        fs.readFile(vendorFilePath, (error, data) => {
-          if (error) {
-            throw error;
-          }
+      app.get('/vendor-dll.js', async (_req, res) => {
+        const data = await readFile(vendorFilePath);
 
-          res.set('Content-Type', 'application/javascript');
-          res.set('Access-Control-Allow-Origin', '*');
-          res.send(data);
-        });
+        res.set('Content-Type', 'application/javascript');
+        res.set('Access-Control-Allow-Origin', '*');
+        res.send(data);
       });
     },
     after(app) {
@@ -73,52 +72,53 @@ export default async function createDevServer(options: Options) {
         res.send('// This file left intentially blank.');
       });
 
-      app.get('/frame', (_req, res) => {
+      app.get('/frame', async (_req, res) => {
         res.set('Content-Type', 'text/html');
         res.set('Access-Control-Allow-Origin', '*');
 
-        fs.readFile(
-          require.resolve('catalyst-client/lib/frame.js'),
-          (_error, data) => {
-            // TODO: Handle error
-            res.send(
-              `<html>
-                <head>
-                  <style>
-                    body {
-                      margin: 0;
-                      position: fixed;
-                      width: 100vw;
-                      height: 100vh;
-                      position: fixed;
-                      box-sizing: border-box;
-                      display: flex;
-                      align-items: center;
-                      justify-content: center;
-                    }
-                  </style>
-                  <script>${data.toString()}</script>
-                </head>
-                <body></body>
-              </html>`
-            );
-          }
+        let scriptTag = '';
+
+        if (process.env.CATALYST_CLIENT_SCRIPT_URL) {
+          scriptTag = `<script src="${process.env.CATALYST_CLIENT_SCRIPT_URL}"></script>`;
+        } else {
+          const data = await readFile(
+            require.resolve('catalyst-client/lib/frame.js')
+          );
+
+          scriptTag = `<script>${data.toString()}</script>`;
+        }
+
+        res.send(
+          `<html>
+             <head>
+               <style>
+                 body {
+                   margin: 0;
+                   position: fixed;
+                   width: 100vw;
+                   height: 100vh;
+                   position: fixed;
+                   box-sizing: border-box;
+                   display: flex;
+                   align-items: center;
+                   justify-content: center;
+                 }
+               </style>
+               ${scriptTag}
+             </head>
+             <body></body>
+           </html>`
         );
       });
 
-      app.get('/mappings.wasm', (_req, res) => {
-        fs.readFile(
+      app.get('/mappings.wasm', async (_req, res) => {
+        const data = readFile(
           require.resolve(
             'catalyst-client/node_modules/source-map/lib/mappings.wasm'
-          ),
-          (error, data) => {
-            if (error) {
-              // TODO: Handle error
-            } else {
-              res.send(data);
-            }
-          }
+          )
         );
+
+        res.send(data);
       });
     },
   };

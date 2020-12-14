@@ -3,4 +3,5 @@
 set -euxo pipefail
 
 rm -rf lib
-yarn run webpack
+
+NODE_ENV=production yarn run webpack

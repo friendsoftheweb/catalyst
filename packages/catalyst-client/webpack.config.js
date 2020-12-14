@@ -1,14 +1,15 @@
 const path = require('path');
 
 module.exports = {
-  mode: 'development',
+  mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
   context: __dirname,
+  devtool:
+    process.env.NODE_ENV === 'production'
+      ? 'source-map'
+      : 'cheap-module-source-map',
   entry: {
     index: ['regenerator-runtime/runtime', './src/index.ts'],
     frame: './src/frame.ts',
-  },
-  node: {
-    fs: 'empty',
   },
   module: {
     rules: [
@@ -17,6 +18,39 @@ module.exports = {
         use: [
           {
             loader: 'babel-loader',
+            options: {
+              sourceMap: true,
+            },
+          },
+        ],
+      },
+      {
+        test: /\.s?css$/i,
+        use: [
+          'style-loader',
+          'css-loader',
+          {
+            loader: 'postcss-loader',
+            options: {
+              postcssOptions: {
+                plugins: [
+                  [
+                    'postcss-preset-env',
+                    {
+                      autoprefixer: {
+                        grid: 'no-autoplace',
+                      },
+                    },
+                  ],
+                ],
+              },
+            },
+          },
+          {
+            loader: 'sass-loader',
+            options: {
+              implementation: require('sass'),
+            },
           },
         ],
       },
@@ -25,8 +59,15 @@ module.exports = {
   resolve: {
     modules: ['node_modules', path.resolve(__dirname, 'src')],
     extensions: ['.js', '.jsx', '.ts', '.tsx'],
+    fallback: {
+      fs: false,
+      path: false,
+    },
   },
   output: {
     path: path.resolve(__dirname, 'lib'),
+  },
+  devServer: {
+    port: 9000,
   },
 };
