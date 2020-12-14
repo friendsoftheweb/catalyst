@@ -3,7 +3,7 @@ let overlayFramePromise: Promise<{ frame: HTMLIFrameElement }> | null = null;
 const {
   devServerProtocol,
   devServerPort,
-  devServerHost
+  devServerHost,
 } = window.__CATALYST_ENV__;
 
 export default function createOverlayFrame(): Promise<{
