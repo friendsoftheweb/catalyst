@@ -1,0 +1,41 @@
+@import '../globals.scss';
+
+.CompilationErrorMessage {
+  flex: 1;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0 $compilation-error-horizontal-padding;
+}
+
+.CompilationErrorMessage-location {
+  font-size: 1.25em;
+  margin-bottom: 1em;
+}
+
+.CompilationErrorMessage-code {
+  box-sizing: border-box;
+  width: 100%;
+  white-space: pre;
+  background-color: #eeeeee;
+  border-radius: 0.25em;
+  padding: 1em 0;
+  margin: 2em 0;
+  line-height: 1.5em;
+  overflow: hidden;
+
+  @media (prefers-color-scheme: dark) {
+    background-color: #222;
+
+    .highlight {
+      background-color: #b71c1c;
+    }
+  }
+}
+
+.CompilationErrorMessage-code div {
+  padding: 0 1em;
+}
+
+.CompilationErrorMessage-stack {
+  line-height: 1.5em;
+}

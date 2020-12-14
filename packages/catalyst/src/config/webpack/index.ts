@@ -1,4 +1,3 @@
-import { reduce } from 'lodash';
 import { Configuration as WebpackConfiguration } from 'webpack';
 import generateDevtool from './generateDevtool';
 import generateEntryForBundleName from './generateEntryForBundleName';
@@ -21,18 +20,12 @@ export default function webpackConfig(options?: Options): WebpackConfiguration {
     context: contextPath,
     mode: environment === Environment.Production ? 'production' : 'development',
     devtool: generateDevtool(),
-    entry: reduce(
-      bundlePaths(),
-      (entry, bundlePath) => {
-        const parts = bundlePath.split('/');
-        const bundleName = parts[parts.length - 1];
+    entry: bundlePaths().reduce((entry, bundlePath) => {
+      const parts = bundlePath.split('/');
+      const bundleName = parts[parts.length - 1];
 
-        return Object.assign({}, entry, {
-          [bundleName]: generateEntryForBundleName(bundleName),
-        });
-      },
-      {}
-    ),
+      return { ...entry, [bundleName]: generateEntryForBundleName(bundleName) };
+    }, {}),
     output: generateOutput(),
     resolve: {
       extensions: ['.wasm', '.mjs', '.js', '.ts', '.tsx', '.json'],
