@@ -11,6 +11,6 @@ fi
 
 yarn types:check
 
-yarn test
+# yarn test
 
 yarn build
