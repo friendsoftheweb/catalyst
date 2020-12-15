@@ -19,10 +19,6 @@ const plugin: Plugin = {
   modifyNodePackages(packages) {
     return [...packages, 'graphql', 'graphql-tag'];
   },
-
-  modifyNodePackagesDev(packages) {
-    return [...packages, '@types/graphql'];
-  },
 };
 
 export default plugin;
