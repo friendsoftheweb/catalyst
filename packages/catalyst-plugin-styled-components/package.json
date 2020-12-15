@@ -28,7 +28,7 @@
     "typescript": "^3.7.4"
   },
   "peerDependencies": {
-    "catalyst": "^1.0.0"
+    "catalyst": "^2.0.0"
   },
   "gitHead": "50c8ea594496b7aea95495cec235ea1d4b4f569d"
 }
