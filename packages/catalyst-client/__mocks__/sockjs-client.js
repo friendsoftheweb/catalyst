@@ -3,11 +3,11 @@ import { EventEmitter } from 'events';
 const emitter = new EventEmitter();
 
 class SockJSMock {
-  static message(data: Record<string, unknown>) {
+  static message(data) {
     emitter.emit('message', JSON.stringify(data));
   }
 
-  private callbacks: Array<(message: { data: string }) => void> = [];
+  callbacks = [];
 
   constructor() {
     emitter.on('message', (data) => {
@@ -17,7 +17,7 @@ class SockJSMock {
     });
   }
 
-  set onmessage(callback: (message: { data: string }) => void) {
+  set onmessage(callback) {
     this.callbacks.push(callback);
   }
 }

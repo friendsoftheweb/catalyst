@@ -18,6 +18,8 @@ declare global {
 import SockJS from 'sockjs-client';
 import { SourceMapConsumer } from 'source-map';
 import createOverlayFrame from './createOverlayFrame';
+import { getSourceLocation } from './getSourceLocation';
+import { messageForError } from './messageForError';
 import { FrameState } from './types';
 
 let overlayFrameVisible = true;
@@ -27,6 +29,9 @@ let runtimeErrorCount = 0;
 let runtimeErrorMessage: string | undefined;
 let runtimeErrorPath: string | undefined;
 let runtimeErrorLine: number | undefined;
+let isBuilding = false;
+let firstCompilationHash: string | null = null;
+let lastCompilationHash: string | null = null;
 
 async function updateOverlayContainer() {
   const { frame } = await createOverlayFrame();
@@ -39,23 +44,23 @@ async function updateOverlayContainer() {
   }
 }
 
-function showNotification(
+const showNotification = (
   state: FrameState,
   options: { pointerEvents: 'auto' | 'none' } = { pointerEvents: 'none' }
-) {
+) => {
   overlayFrameState = state;
   overlayFrameVisible = true;
   overlayFramePointerEvents = options.pointerEvents;
 
   return updateOverlayContainer();
-}
+};
 
-function hideNotification() {
+const hideNotification = () => {
   overlayFrameState = null;
   overlayFrameVisible = false;
 
   return updateOverlayContainer();
-}
+};
 
 const {
   devServerProtocol,
@@ -74,10 +79,6 @@ if (
 const devServerURI = `${devServerProtocol}://${devServerHost}:${devServerPort}`;
 
 const connection = new SockJS(`${devServerURI}/sockjs-node`);
-
-let isBuilding = false;
-let firstCompilationHash: string | null = null;
-let lastCompilationHash: string | null = null;
 
 connection.onmessage = function (event) {
   const message = JSON.parse(event.data);
@@ -147,108 +148,55 @@ connection.onmessage = function (event) {
   }
 };
 
-function tryApplyUpdates(): Promise<unknown> {
+const tryApplyUpdates = async () => {
   if (firstCompilationHash === lastCompilationHash) {
-    return Promise.resolve();
+    return;
   }
 
   if (!module.hot) {
     window.location.reload();
-    return Promise.resolve();
+
+    return;
   }
 
   if (module.hot.status() !== 'idle') {
-    hideNotification();
-    return Promise.resolve();
+    await hideNotification();
+
+    return;
   }
 
-  return module.hot
-    .check(true)
-    .then(hideNotification)
-    .catch((error: Error) => {
-      window.location.reload();
+  try {
+    await module.hot.check(true);
+    await hideNotification();
+  } catch (error) {
+    window.location.reload();
 
-      throw error;
-    });
-}
-
-function showRuntimeErrors() {
-  if (!isBuilding && runtimeErrorCount > 0) {
-    showNotification({
-      component: 'RuntimeErrors',
-      props: {
-        count: runtimeErrorCount,
-        location: `${
-          runtimeErrorPath != null
-            ? runtimeErrorPath.replace('webpack:///', '')
-            : ''
-        }:${runtimeErrorLine}`,
-        message: runtimeErrorMessage,
-      },
-    });
+    throw error;
   }
-}
+};
 
-function messageForError(error: Error): string | undefined {
-  if (error.name === 'ReferenceError') {
-    return error.message;
+const showRuntimeErrors = async () => {
+  if (isBuilding || runtimeErrorCount === 0) {
+    return;
   }
 
-  if (error.message.startsWith('Element type is invalid')) {
-    return error.message;
-  }
-
-  if (error.message.endsWith('is not a function')) {
-    return error.message;
-  }
-
-  return 'other';
-}
+  await showNotification({
+    component: 'RuntimeErrors',
+    props: {
+      count: runtimeErrorCount,
+      location:
+        runtimeErrorPath != null && runtimeErrorLine != null
+          ? `${runtimeErrorPath.replace('webpack:///', '')}:${runtimeErrorLine}`
+          : undefined,
+      message: runtimeErrorMessage,
+    },
+  });
+};
 
 // @ts-expect-error: The types for this library seem to be incorrect
 SourceMapConsumer.initialize({
   'lib/mappings.wasm': `${devServerURI}/mappings.wasm`,
 });
-
-const sourceMapPromises: Record<string, Promise<string>> = {};
-
-const getSourceLocation = async (
-  errorEvent: ErrorEvent
-): Promise<{ source: string; line: number; column: number }> => {
-  const sourceMapURI = `${errorEvent.filename}.map`;
-
-  if (sourceMapPromises[sourceMapURI] == null) {
-    sourceMapPromises[sourceMapURI] = fetch(sourceMapURI)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`Failed to load source map: ${sourceMapURI}`);
-        }
-
-        return response;
-      })
-      .then((response) => response.json());
-  }
-
-  const sourceMap = await sourceMapPromises[sourceMapURI];
-
-  let position;
-
-  await SourceMapConsumer.with(sourceMap, null, (consumer) => {
-    position = consumer.originalPositionFor({
-      line: errorEvent.lineno,
-      column: errorEvent.colno,
-    });
-  });
-
-  // Allow source map content to be garbage-collected
-  delete sourceMapPromises[sourceMapURI];
-
-  if (position == null) {
-    throw new Error('Failed to look up source map location');
-  }
-
-  return position;
-};
 
 window.addEventListener('error', (event) => {
   if (event.message.startsWith('Error: Module build failed')) {
@@ -262,6 +210,10 @@ window.addEventListener('error', (event) => {
 
   getSourceLocation(event)
     .then((position) => {
+      if (position.source == null || position.line == null) {
+        return;
+      }
+
       runtimeErrorPath = position.source;
       runtimeErrorLine = position.line;
 

@@ -5,3 +5,5 @@ set -euxo pipefail
 rm -rf lib
 
 NODE_ENV=production yarn run webpack
+
+yarn run tsc --emitDeclarationOnly
