@@ -63,6 +63,10 @@ jobs:
       - name: Install Node Dependencies
         run: yarn install
 
-      - name: Run Tests
+      - name: Run Tests (catalyst)
         run: yarn test
         working-directory: ./packages/catalyst
+
+      - name: Run Tests (catalyst-client)
+        run: yarn test
+        working-directory: ./packages/catalyst-client

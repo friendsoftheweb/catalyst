@@ -3,19 +3,19 @@ module.exports = {
     [
       '@babel/preset-env',
       {
-        modules: false
-      }
+        modules: process.env.NODE_ENV === 'test' ? 'commonjs' : false,
+      },
     ],
-    ['@babel/preset-typescript', { jsxPragma: 'h' }]
+    ['@babel/preset-typescript', { jsxPragma: 'h' }],
   ],
   plugins: [
     [
       '@babel/plugin-transform-react-jsx',
       {
         pragma: 'h',
-        pragmaFrag: 'Fragment'
-      }
+        pragmaFrag: 'Fragment',
+      },
     ],
-    ['@babel/plugin-proposal-class-properties', { loose: true }]
-  ]
+    ['@babel/plugin-proposal-class-properties', { loose: true }],
+  ],
 };

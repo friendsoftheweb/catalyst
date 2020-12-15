@@ -63,6 +63,14 @@ const {
   devServerPort,
 } = window.__CATALYST_ENV__;
 
+if (
+  devServerProtocol == null ||
+  devServerHost == null ||
+  devServerPort == null
+) {
+  throw new Error('Invalid Catalyst client configuration object');
+}
+
 const devServerURI = `${devServerProtocol}://${devServerHost}:${devServerPort}`;
 
 const connection = new SockJS(`${devServerURI}/sockjs-node`);
