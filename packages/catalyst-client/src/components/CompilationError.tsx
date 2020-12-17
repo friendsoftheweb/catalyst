@@ -1,5 +1,6 @@
 import './CompilationError.scss';
 
+/** @jsx h */
 import { h, FunctionalComponent } from 'preact';
 import CompilationErrorMessage from './CompilationErrorMessage';
 

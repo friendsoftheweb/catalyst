@@ -1,9 +1,9 @@
 @import '../globals.scss';
 
 .CompilationErrorMessage {
+  box-sizing: border-box;
   flex: 1;
   width: 100%;
-  box-sizing: border-box;
   padding: 0 $compilation-error-horizontal-padding;
 }
 
@@ -12,28 +12,69 @@
   margin-bottom: 1em;
 }
 
+.CompilationErrorMessage-lineNumber {
+  color: lighten($black, 24%);
+  background-color: darken($white, 24%);
+  padding: 1em 0;
+  text-align: right;
+  border-radius: 0.25em 0 0 0.25em;
+
+  div {
+    white-space: pre;
+    padding: 0 1em;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    color: darken($white, 8%);
+    background-color: lighten($black, 24%);
+  }
+}
+
+.CompilationErrorMessage-lineText {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1em 0;
+
+  div {
+    white-space: pre;
+    padding: 0 1em;
+  }
+}
+
 .CompilationErrorMessage-code {
   box-sizing: border-box;
   width: 100%;
-  white-space: pre;
-  background-color: #eeeeee;
   border-radius: 0.25em;
-  padding: 1em 0;
   margin: 2em 0;
-  line-height: 1.5em;
-  overflow: hidden;
+  line-height: 1.75em;
+  display: flex;
+  color: lighten($black, 20%);
+  background-color: darken($white, 5%);
+
+  .CompilationErrorMessage-lineNumber .is-highlight {
+    background-color: lighten($red, 18%);
+  }
+
+  .is-highlight {
+    background-color: lighten($red, 36%);
+  }
 
   @media (prefers-color-scheme: dark) {
-    background-color: #222;
+    color: darken($white, 16%);
+    background-color: lighten($black, 5%);
 
-    .highlight {
-      background-color: #b71c1c;
+    .CompilationErrorMessage-lineNumber .is-highlight {
+      background-color: darken($red, 15%);
+    }
+
+    .is-highlight {
+      background-color: darken($red, 20%);
     }
   }
 }
 
-.CompilationErrorMessage-code div {
-  padding: 0 1em;
+.CompilationErrorMessage-code {
+  // padding: 0 1em;
 }
 
 .CompilationErrorMessage-stack {

@@ -1,4 +1,5 @@
 import './Activity.scss';
+/** @jsx h */
 import { h, FunctionalComponent } from 'preact';
 
 export interface Props {

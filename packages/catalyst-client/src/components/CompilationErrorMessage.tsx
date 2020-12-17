@@ -1,5 +1,6 @@
 import './CompilationErrorMessage.scss';
 
+/** @jsx h */
 import { h, FunctionalComponent } from 'preact';
 
 interface Props {
@@ -16,18 +17,52 @@ const CompilationErrorMessage: FunctionalComponent<Props> = (props) => {
       )}
 
       {groups.map((group, index) => {
-        return (
-          <div key={index} className={`CompilationErrorMessage-${group.type}`}>
-            {group.lines.map((line, index) => (
-              <div
-                key={index}
-                className={line.highlight ? 'highlight' : undefined}
-              >
-                {line.text}
+        if (group.type === 'code') {
+          return (
+            <div
+              key={index}
+              className={`CompilationErrorMessage-${group.type}`}
+            >
+              <div className="CompilationErrorMessage-lineNumber">
+                {group.lines.map((line, index) => (
+                  <div
+                    key={index}
+                    className={line.highlight ? 'is-highlight' : undefined}
+                  >
+                    {line.number}
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
-        );
+
+              <div className="CompilationErrorMessage-lineText">
+                {group.lines.map((line, index) => (
+                  <div
+                    key={index}
+                    className={line.highlight ? 'is-highlight' : undefined}
+                  >
+                    {line.text}
+                  </div>
+                ))}
+              </div>
+            </div>
+          );
+        } else {
+          return (
+            <div
+              key={index}
+              className={`CompilationErrorMessage-${group.type}`}
+            >
+              {group.lines.map((line, index) => (
+                <div
+                  key={index}
+                  className={line.highlight ? 'is-highlight' : undefined}
+                >
+                  {line.text}
+                </div>
+              ))}
+            </div>
+          );
+        }
       })}
     </div>
   );
@@ -36,6 +71,7 @@ const CompilationErrorMessage: FunctionalComponent<Props> = (props) => {
 export default CompilationErrorMessage;
 
 interface Line {
+  number?: number;
   text: string;
   highlight?: boolean;
 }
@@ -61,21 +97,27 @@ const parseBuildFailedMessage = (
 
     // Stacktrace
     if (/\w+\.\w+\s+\d+:\d+/.test(line)) {
-      appendLine(groups, 'stack', line);
+      appendLine(groups, 'stack', { text: line });
 
       continue;
     }
 
-    if (/^\s*(\d+)?\s+[|│╷╵]/.test(line)) {
-      appendLine(groups, 'code', line);
+    let matches;
+
+    if ((matches = /^\s*(\d+)\s+[|│](.*)/.exec(line))) {
+      const number = parseInt(matches[1]);
+      const text = matches[2];
+
+      appendLine(groups, 'code', { text, number });
 
       continue;
     }
 
-    if (/^>\s*(\d+)?\s+[|│╷╵]/.test(line)) {
-      line = line.replace(/^>/, ' ');
+    if ((matches = /^>\s*(\d+)\s+[|│](.*)/.exec(line))) {
+      const number = parseInt(matches[1]);
+      const text = matches[2];
 
-      appendLine(groups, 'code', line);
+      appendLine(groups, 'code', { text, number, highlight: true });
 
       continue;
     }
@@ -95,10 +137,10 @@ const parseBuildFailedMessage = (
   };
 };
 
-const appendLine = (groups: LineGroup[], type: LineType, text: string) => {
+const appendLine = (groups: LineGroup[], type: LineType, line: Line) => {
   if (groups[groups.length - 1]?.type === type) {
-    groups[groups.length - 1].lines.push({ text });
+    groups[groups.length - 1].lines.push(line);
   } else {
-    groups.push({ type, lines: [{ text }] });
+    groups.push({ type, lines: [line] });
   }
 };

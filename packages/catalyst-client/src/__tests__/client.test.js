@@ -51,7 +51,7 @@ test('a message is displayed while building', async () => {
     JSON.stringify({
       component: 'Activity',
       props: {
-        message: 'Building…',
+        message: 'Building...',
       },
     }),
     '*'

@@ -24,7 +24,7 @@
 
   @media (prefers-color-scheme: dark) {
     color: #ccc;
-    background-color: #111111;
+    background-color: $black;
   }
 }
 
@@ -38,8 +38,8 @@
   padding: 1em $compilation-error-horizontal-padding;
 
   @media (prefers-color-scheme: dark) {
-    color: #f44336;
-    background-color: #410e0e;
+    color: $red;
+    background-color: darken($red, 40%);
   }
 }
 
@@ -48,11 +48,16 @@
   padding: 1em $compilation-error-horizontal-padding;
 
   @media (prefers-color-scheme: dark) {
-    background-color: #222;
+    background-color: transparent;
   }
 }
 
 .CompilationError-link {
-  color: #999999;
+  color: darken($white, 25%);
   text-decoration: none;
+  transition: color 150ms;
+
+  &:hover {
+    color: darken($white, 15%);
+  }
 }

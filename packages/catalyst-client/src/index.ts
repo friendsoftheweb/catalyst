@@ -91,7 +91,7 @@ connection.onmessage = function (event) {
         showNotification({
           component: 'Activity',
           props: {
-            message: 'Building…',
+            message: 'Building...',
           },
         });
       }
