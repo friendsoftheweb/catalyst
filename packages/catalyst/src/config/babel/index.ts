@@ -16,7 +16,7 @@ export default function babelConfig(options: Options = {}) {
 
   const configuration = new Configuration();
 
-  const { environment, typeScriptEnabled, flowEnabled } = configuration;
+  const { environment, typeScriptEnabled } = configuration;
 
   if (modules == null) {
     modules = environment === Environment.Test ? 'commonjs' : false;
@@ -73,12 +73,6 @@ export default function babelConfig(options: Options = {}) {
       { useESModules: modules === false, absoluteRuntime },
     ],
   ];
-
-  if (flowEnabled) {
-    plugins.unshift(
-      require.resolve('@babel/plugin-transform-flow-strip-types')
-    );
-  }
 
   if (environment === Environment.Production) {
     plugins.push(require.resolve('babel-plugin-lodash'), [

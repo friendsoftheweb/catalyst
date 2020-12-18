@@ -240,10 +240,6 @@ export default class Configuration {
     return fs.existsSync(path.join(this.rootPath, 'tsconfig.json'));
   }
 
-  get flowEnabled(): boolean {
-    return fs.existsSync(path.join(this.rootPath, '.flowconfig'));
-  }
-
   get prebuiltPackages(): string[] {
     const { prebuiltPackages } = this.configuration;
 
