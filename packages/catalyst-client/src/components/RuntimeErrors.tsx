@@ -1,5 +1,6 @@
 /** @jsx h */
 import { h, FunctionalComponent, Fragment } from 'preact';
+import classNames from 'classnames';
 import './RuntimeErrors.scss';
 
 export interface Props {
@@ -25,19 +26,30 @@ const RuntimeErrors: FunctionalComponent<Props> = (props) => {
             {message}
           </div>
 
-          <div className="RuntimeErrorsCount">
-            <span className="RuntimeErrorsCount-number">{count}</span>
-            <span className="RuntimeErrorsCount-symbol">⛔️</span>
-          </div>
+          <RuntimeErrorsCount inline count={count} />
         </div>
       ) : (
-        <div className="RuntimeErrorsCount">
-          <span className="RuntimeErrorsCount-number">{count}</span>
-
-          <span className="RuntimeErrorsCount-symbol">⛔️</span>
-        </div>
+        <RuntimeErrorsCount count={count} />
       )}
     </Fragment>
+  );
+};
+
+const RuntimeErrorsCount: FunctionalComponent<{
+  count: number;
+  inline?: boolean;
+}> = (props) => {
+  const { count, inline } = props;
+
+  return (
+    <div
+      className={classNames('RuntimeErrorsCount', {
+        'RuntimeErrorsCount--inline': inline,
+      })}
+    >
+      <span className="RuntimeErrorsCount-number">{count}</span>
+      <span className="RuntimeErrorsCount-symbol">⛔️</span>
+    </div>
   );
 };
 

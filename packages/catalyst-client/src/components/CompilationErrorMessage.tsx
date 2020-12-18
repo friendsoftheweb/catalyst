@@ -1,7 +1,7 @@
 import './CompilationErrorMessage.scss';
 
 /** @jsx h */
-import { h, FunctionalComponent } from 'preact';
+import { h, FunctionalComponent, Fragment } from 'preact';
 
 interface Props {
   message: string;
@@ -16,13 +16,10 @@ const CompilationErrorMessage: FunctionalComponent<Props> = (props) => {
         <div className="CompilationErrorMessage-location">{location}</div>
       )}
 
-      {groups.map((group, index) => {
-        if (group.type === 'code') {
-          return (
-            <div
-              key={index}
-              className={`CompilationErrorMessage-${group.type}`}
-            >
+      {groups.map((group, index) => (
+        <div key={index} className={`CompilationErrorMessage-${group.type}`}>
+          {group.type === 'code' ? (
+            <Fragment>
               <div className="CompilationErrorMessage-lineNumber">
                 {group.lines.map((line, index) => (
                   <div
@@ -44,14 +41,9 @@ const CompilationErrorMessage: FunctionalComponent<Props> = (props) => {
                   </div>
                 ))}
               </div>
-            </div>
-          );
-        } else {
-          return (
-            <div
-              key={index}
-              className={`CompilationErrorMessage-${group.type}`}
-            >
+            </Fragment>
+          ) : (
+            <Fragment>
               {group.lines.map((line, index) => (
                 <div
                   key={index}
@@ -60,10 +52,10 @@ const CompilationErrorMessage: FunctionalComponent<Props> = (props) => {
                   {line.text}
                 </div>
               ))}
-            </div>
-          );
-        }
-      })}
+            </Fragment>
+          )}
+        </div>
+      ))}
     </div>
   );
 };

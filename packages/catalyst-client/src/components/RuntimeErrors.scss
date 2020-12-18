@@ -5,7 +5,6 @@
 .RuntimeErrors {
   box-sizing: border-box;
   width: 100%;
-  // padding: 1em 5em 1em 1em;
   font-family: 'Fira Code', Menlo, Consolas, monospace;
   font-size: 14px;
   position: absolute;
@@ -19,21 +18,8 @@
   text-overflow: ellipsis;
   animation: slide 150ms;
   box-shadow: 0 0 0.5em 0.25em rgba(0, 0, 0, 0.05);
-
   display: flex;
   justify-content: space-between;
-
-  .RuntimeErrorsCount {
-    position: initial;
-    height: auto;
-    border-radius: 0;
-    box-shadow: none;
-    padding: 0 calc(0.5em + 16px);
-  }
-
-  .RuntimeErrorsCount-number {
-    padding: 0.08em 0.4em 0 0;
-  }
 }
 
 .RuntimeErrors-message {
@@ -58,10 +44,21 @@
 }
 
 .RuntimeErrorsCount-number {
-  // font-weight: bold;
   padding: 0.05em 0.4em 0;
 }
 
 .RuntimeErrorsCount-symbol {
   padding-bottom: 0.05em;
+}
+
+.RuntimeErrorsCount--inline {
+  position: initial;
+  height: auto;
+  border-radius: 0;
+  box-shadow: none;
+  padding: 0 calc(0.5em + 16px);
+
+  .RuntimeErrorsCount-number {
+    padding: 0.08em 0.4em 0 0;
+  }
 }
