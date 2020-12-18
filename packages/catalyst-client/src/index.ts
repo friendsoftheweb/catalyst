@@ -6,13 +6,6 @@ declare global {
       devServerPort: string;
     };
   }
-
-  interface NodeModule {
-    hot: {
-      status(): 'idle';
-      check(autoApply: boolean): Promise<unknown>;
-    };
-  }
 }
 
 import SockJS from 'sockjs-client';
@@ -166,7 +159,14 @@ const tryApplyUpdates = async () => {
   }
 
   try {
-    await module.hot.check(true);
+    if (module.hot != null) {
+      const { check } = module.hot;
+
+      await new Promise((resolve) => {
+        check(true, resolve);
+      });
+    }
+
     await hideNotification();
   } catch (error) {
     window.location.reload();
