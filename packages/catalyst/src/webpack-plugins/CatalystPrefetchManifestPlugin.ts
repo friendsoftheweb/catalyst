@@ -63,7 +63,7 @@ export default class CatalystPrefetchManifestPlugin implements Plugin {
 
 const shouldPrefetchModule = (module: {
   id: string | number;
-  modules?: { source?: string; modules?: unknown }[];
+  modules?: { source?: string }[];
 }): boolean => {
   if (module.modules == null) {
     return false;
