@@ -47,7 +47,7 @@ Certain aspects of Catalyst can be configured by editing the `catalyst.config.js
 | **transformedPackages**          | N/A                   | `string[]`                                               | A list of npm packages which should be [transformed and polyfilled via Babel](https://babeljs.io/docs/en/babel-preset-env).                                                                |
 | **generateServiceWorker**        | N/A                   | `boolean`                                                | Generate a separate file which will be registered as a [SeviceWorker](https://developer.mozilla.org/en-US/docs/Web/API/ServiceWorker) and preload JavaScript, CSS, and other assets.       |
 | **checkForCircularDependencies** | N/A                   | `boolean`                                                | Show warnings in _development_ and errors in other in environments if a circular dependency is detected.                                                                                   |
-| **checkForDuplicatePackages**    | N/A                   | `boolean`                                                | Show warnings if mulitple versions of the same package are required in the webpack dependency tree.                                                                                        |
+| **checkForDuplicatePackages**    | N/A                   | `boolean`                                                | Show warnings if multiple versions of the same package are required in the webpack dependency tree.                                                                                        |
 | **ignoredDuplicatePackages**     | N/A                   | `string[]`                                               | A list of npm packages to ignore when checking for duplicates. This has no effect if **checkForDuplicatePackages** is `false`.                                                             |
 | **devServerHost**                | `DEV_SERVER_HOST`     | `string`                                                 | The host for the development server. Defaults to `"localhost"`.                                                                                                                            |
 | **devServerPort**                | `DEV_SERVER_PORT`     | `number`                                                 | The port for the development server. Defaults to `8080`.                                                                                                                                   |
@@ -95,7 +95,7 @@ _NOTE:_ This will have no effect if the file is included in an "entry" chunk (i.
 
 ### Analyzing Webpack Output
 
-The size of the bundles output by webpack can be vizualized using [webpack-bundle-analyzer](https://github.com/webpack-contrib/webpack-bundle-analyzer). You can open the analyzer by starting Catalyst server with the `--bundle-analyzer` option:
+The size of the bundles output by webpack can be visualized using [webpack-bundle-analyzer](https://github.com/webpack-contrib/webpack-bundle-analyzer). You can open the analyzer by starting Catalyst server with the `--bundle-analyzer` option:
 
 ```
 $ NODE_ENV=development yarn run catalyst server --bundle-analyzer
