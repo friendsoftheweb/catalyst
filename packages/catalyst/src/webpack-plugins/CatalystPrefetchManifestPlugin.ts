@@ -3,7 +3,7 @@ import { RawSource } from 'webpack-sources';
 
 /**
  * Generates a "prefetch.json" file with a list of files to prefetch via
- * <link rel="prefetch" />.
+ * `<link rel="prefetch" />`.
  */
 export default class CatalystPrefetchManifestPlugin implements Plugin {
   apply(compiler: Compiler) {
