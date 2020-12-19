@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+set -euxo pipefail
+
+rm -rf packages/catalyst/node_modules
+rm -rf packages/catalyst/lib
+rm -rf packages/catalyst-client/node_modules
+rm -rf packages/catalyst-client/lib
+rm -rf packages/catalyst-plugin-graphql-tag/node_modules
+rm -rf packages/catalyst-plugin-graphql-tag/lib
+rm -rf packages/catalyst-plugin-styled-components/node_modules
+rm -rf packages/catalyst-plugin-styled-components/lib
+rm -rf packages/catalyst/test-project/node_modules
+
+(cd packages/catalyst && yarn unlink)
+(cd packages/catalyst-client && yarn unlink)
+(cd packages/catalyst-plugin-graphql-tag && yarn unlink)
+(cd packages/catalyst-plugin-styled-components && yarn unlink)
