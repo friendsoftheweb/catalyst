@@ -47,6 +47,7 @@ export default function babelConfig(options: Options = {}) {
         development:
           environment === Environment.Development ||
           environment === Environment.Test,
+        runtime: 'automatic',
       },
     ],
   ];
