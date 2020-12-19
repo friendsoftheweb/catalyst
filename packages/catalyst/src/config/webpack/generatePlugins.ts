@@ -8,7 +8,8 @@ import DuplicatePackageCheckerPlugin from 'duplicate-package-checker-webpack-plu
 import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin';
 import CircularDependencyPlugin from 'circular-dependency-plugin';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
-import CleanUpStatsPlugin from '../../webpack-plugins/CleanUpStatsPlugin';
+import CatalystPrefetchManifestPlugin from '../../webpack-plugins/CatalystPrefetchManifestPlugin';
+import CatalystCleanUpStatsPlugin from '../../webpack-plugins/CatalystCleanUpStatsPlugin';
 import Configuration from '../../Configuration';
 import { Environment } from '../../Environment';
 import forEachPlugin from '../../utils/forEachPlugin';
@@ -79,7 +80,10 @@ export default function generatePlugins(options?: Options): WebpackPlugin[] {
   }
 
   if (environment !== Environment.Development) {
-    plugins.push(new ManifestPlugin({ fileName: 'manifest.json' }));
+    plugins.push(
+      new CatalystPrefetchManifestPlugin(),
+      new ManifestPlugin({ fileName: 'manifest.json' })
+    );
   }
 
   if (environment === Environment.Production) {
@@ -111,7 +115,10 @@ export default function generatePlugins(options?: Options): WebpackPlugin[] {
     );
   }
 
-  plugins.push(new CaseSensitivePathsPlugin(), new CleanUpStatsPlugin());
+  plugins.push(
+    new CaseSensitivePathsPlugin(),
+    new CatalystCleanUpStatsPlugin()
+  );
 
   if (options != null && options.bundleAnalyzerEnabled) {
     plugins.push(new BundleAnalyzerPlugin());

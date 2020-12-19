@@ -67,11 +67,31 @@ const { webpackConfig } = require('catalyst');
 const customConfig = webpackConfig();
 
 customConfig.module.rules.push({
-  loader: 'my-custom-loader'
+  loader: 'my-custom-loader',
 });
 
 module.exports = customConfig;
 ```
+
+### Prefetching Important Assets
+
+Catalyst has experimental support for generating a list of files to [prefetch](https://developer.mozilla.org/en-US/docs/Web/HTTP/Link_prefetching_FAQ) (via `<link rel="prefetch" />`). The files associated with any chunk which includes a JavaScript or TypeScript file with a `// @catalyst-prefetch` comment in it will be added to a `prefetch.json` file that's output during any non-development build.
+
+This file can be used to generate link tags to allow important assets to be fetched before a user navigates to a part of the site that requires them. For example, to start loading the assets required for the checkout process before a user reaches the checkout process, a hypothetical "Checkout" component could be updated to include the `@catalyst-prefetch` directive:
+
+```js
+// @catalyst-prefetch
+
+import React from 'react';
+
+const Checkout = () => {
+  return (
+    // ...
+  )
+}
+```
+
+_NOTE:_ This will have no effect if the file is included in an "entry" chunk (i.e. the file is not part of a [dynamically imported](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import#Dynamic_Imports) chunk).
 
 ### Analyzing Webpack Output
 
