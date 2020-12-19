@@ -10,7 +10,9 @@ export default class CatalystPrefetchManifestPlugin implements Plugin {
     const prefetchChunkIds = new Set<number>();
 
     compiler.hooks.emit.tap('CatalystPrefetchManifestPlugin', (compilation) => {
-      const { modules, chunks, publicPath } = compilation.getStats().toJson();
+      const { modules, chunks } = compilation
+        .getStats()
+        .toJson({ modules: true, chunks: true });
 
       if (modules == null || chunks == null) {
         return;
@@ -53,11 +55,7 @@ export default class CatalystPrefetchManifestPlugin implements Plugin {
       // @ts-expect-error: This method is missing from @types/webpack
       compilation.emitAsset(
         'prefetch.json',
-        new RawSource(
-          JSON.stringify(
-            [...prefetchChunkFiles].map((file) => `${publicPath}${file}`)
-          )
-        )
+        new RawSource(JSON.stringify([...prefetchChunkFiles]))
       );
     });
   }
@@ -72,10 +70,6 @@ const shouldPrefetchModule = (module: {
   }
 
   for (const child of module.modules) {
-    if (child.modules != null) {
-      throw new Error('Deeply nested modules!');
-    }
-
     if (child.source == null) {
       continue;
     }
