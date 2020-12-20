@@ -106,13 +106,6 @@ function isCustomConfiguration(value: any): value is CustomConfiguration {
     return false;
   }
 
-  if (
-    'webpack' in value &&
-    (value.webpack == null || typeof value.webpack !== 'object')
-  ) {
-    return false;
-  }
-
   if ('overlayEnabled' in value && typeof value.overlayEnabled !== 'boolean') {
     return false;
   }
