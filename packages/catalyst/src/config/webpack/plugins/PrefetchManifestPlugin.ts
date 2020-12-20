@@ -5,7 +5,7 @@ import { RawSource } from 'webpack-sources';
  * Generates a "prefetch.json" file with a list of files to prefetch via
  * `<link rel="prefetch" />`.
  */
-export default class CatalystPrefetchManifestPlugin implements Plugin {
+export default class PrefetchManifestPlugin implements Plugin {
   apply(compiler: Compiler) {
     const prefetchChunkIds = new Set<number>();
 

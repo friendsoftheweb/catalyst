@@ -52,10 +52,7 @@ export default function generateRules() {
         },
       },
       {
-        loader: path.resolve(
-          __dirname,
-          '../../webpack-loaders/checkUrlPathsLoader'
-        ),
+        loader: path.resolve(__dirname, './loaders/checkUrlPathsLoader'),
       },
       {
         loader: require.resolve('sass-loader'),
@@ -115,16 +112,22 @@ function generateFileLoaderRule(basePath: string): RuleSetRule {
       : '[path][name].[ext]';
 
   return {
-    test: /\.(jpe?g|gif|png|svg|woff2?|eot|ttf)$/,
+    test: /\.(jpe?g|gif|png|webp|svg|woff2?|eot|ttf)$/i,
     include: basePath,
     use: [
+      {
+        loader: path.resolve(__dirname, './loaders/imageDimensionsLoader'),
+        options: {
+          esModule: true,
+        },
+      },
       {
         loader: require.resolve('file-loader'),
         options: {
           context: basePath,
           name,
           publicPath,
-          esModule: false,
+          esModule: true,
         },
       },
     ],

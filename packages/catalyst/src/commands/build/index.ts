@@ -10,7 +10,7 @@ interface Options {
   watch?: boolean;
 }
 
-export default async function build(options: Options) {
+export default async function build(options: Options): Promise<void> {
   const { environment, buildPath } = new Configuration();
 
   if (

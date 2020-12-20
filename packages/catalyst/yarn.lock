@@ -1535,6 +1535,14 @@
   resolved "https://registry.yarnpkg.com/@types/json-schema/-/json-schema-7.0.6.tgz#f4c7ec43e81b319a9815115031709f26987891f0"
   integrity sha512-3c+yGKvVP5Y9TYBEibGNR+kLtijnj7mYrXRg+WpFb2X9xm04g/DXYkfg4hmzJQosc9snFNUPkbYIhu+KAm6jJw==
 
+"@types/loader-utils@^2.0.1":
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@types/loader-utils/-/loader-utils-2.0.1.tgz#4073425aca25762099823f7b922e86599c2b85ec"
+  integrity sha512-X3jTNi/I2AEd2WrHdSqRppPkYzWkRMNGxJzeMwS0o3hVi8ZB6JCnf/XyQmqpUuCidld5lC/1VxVgTktEweRK+w==
+  dependencies:
+    "@types/node" "*"
+    "@types/webpack" "*"
+
 "@types/lodash@^4.14.135":
   version "4.14.163"
   resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.163.tgz#6026f73c8267a0b7d41c7c8aadacfa2a5255774f"
@@ -5002,6 +5010,13 @@ ignore@^5.1.4:
   resolved "https://registry.yarnpkg.com/ignore/-/ignore-5.1.8.tgz#f150a8b50a34289b33e22f5889abd4d8016f0e57"
   integrity sha512-BMpfD7PpiETpBl/A6S498BaIJ6Y/ABT93ETbby2fP00v4EbvPBXWEoaR1UBPKs3iR53pJY7EtZk5KACI57i1Uw==
 
+image-size@^0.9.3:
+  version "0.9.3"
+  resolved "https://registry.yarnpkg.com/image-size/-/image-size-0.9.3.tgz#f7efce6b0a1649b44b9bc43b9d9a5acf272264b6"
+  integrity sha512-5SakFa79uhUVSjKeQE30GVzzLJ0QNzB53+I+/VD1vIesD6GP6uatWIlgU0uisFNLt1u0d6kBydp7yfk+lLJhLQ==
+  dependencies:
+    queue "6.0.1"
+
 import-fresh@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/import-fresh/-/import-fresh-2.0.0.tgz#d81355c15612d386c61f9ddd3922d4304822a546"
@@ -7924,6 +7939,13 @@ querystringify@^2.1.1:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/querystringify/-/querystringify-2.2.0.tgz#3345941b4153cb9d082d8eee4cda2016a9aef7f6"
   integrity sha512-FIqgj2EUvTa7R50u0rGsyTftzjYmv/a3hO345bZNrqabNqjtgiDMgmo4mkUjd+nzU5oF3dClKqFIPUKybUyqoQ==
+
+queue@6.0.1:
+  version "6.0.1"
+  resolved "https://registry.yarnpkg.com/queue/-/queue-6.0.1.tgz#abd5a5b0376912f070a25729e0b6a7d565683791"
+  integrity sha512-AJBQabRCCNr9ANq8v77RJEv73DPbn55cdTb+Giq4X0AVnNVZvMHlYp7XlQiN+1npCZj1DuSmaA2hYVUUDgxFDg==
+  dependencies:
+    inherits "~2.0.3"
 
 randombytes@^2.0.0, randombytes@^2.0.1, randombytes@^2.0.5, randombytes@^2.1.0:
   version "2.1.0"
