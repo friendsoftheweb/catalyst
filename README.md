@@ -27,7 +27,7 @@ you can start it like this:
 $ DEV_SERVER_HOST=`ipconfig getifaddr en0` yarn start
 ```
 
-Where `en0` is the network device you're using.
+Where "en0" is the identifier for the network device you're using.
 
 ## Integrating with Rails
 
@@ -74,6 +74,48 @@ customConfig.module.rules.push({
 module.exports = customConfig;
 ```
 
+### Analyzing Webpack Output
+
+The size of the bundles output by webpack can be visualized using [webpack-bundle-analyzer](https://github.com/webpack-contrib/webpack-bundle-analyzer). You can open the analyzer by starting Catalyst server with the `--bundle-analyzer` option:
+
+```
+$ NODE_ENV=development yarn run catalyst server --bundle-analyzer
+```
+
+## Using Catalyst
+
+### Importing Images
+
+Images can be imported as URLs via a standard ES import statement:
+
+```js
+import thisIsFineUrl from 'assets/images/this-is-fine.gif';
+
+const Component = () => {
+  return <img src={thisIsFineUrl} />;
+};
+```
+
+The image's dimensions can also be imported as an object:
+
+```js
+import thisIsFineUrl, {
+  dimensions as thisIsFineDimensions,
+} from 'assets/images/this-is-fine.gif';
+
+const Component = () => {
+  return (
+    <img
+      src={thisIsFineUrl}
+      width={thisIsFineDimensions.width}
+      height={thisIsFineDimensions.height}
+    />
+  );
+};
+```
+
+Make sure the assets TypeScript definitions have been added to your project (usually "client/assets.d.ts"). If they're missing, running `yarn run catalyst init` will add them to your project.
+
 ### Prefetching Important Assets
 
 Catalyst has experimental support for generating a list of files to [prefetch](https://developer.mozilla.org/en-US/docs/Web/HTTP/Link_prefetching_FAQ) (via `<link rel="prefetch" />`). The files associated with any chunk which includes a JavaScript or TypeScript file with a `// @catalyst-prefetch` comment in it will be added to a `prefetch.json` file that's output during any non-development build.
@@ -93,11 +135,3 @@ const Checkout = () => {
 ```
 
 _NOTE:_ This will have no effect if the file is included in an "entry" chunk (i.e. the file is not part of a [dynamically imported](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import#Dynamic_Imports) chunk).
-
-### Analyzing Webpack Output
-
-The size of the bundles output by webpack can be visualized using [webpack-bundle-analyzer](https://github.com/webpack-contrib/webpack-bundle-analyzer). You can open the analyzer by starting Catalyst server with the `--bundle-analyzer` option:
-
-```
-$ NODE_ENV=development yarn run catalyst server --bundle-analyzer
-```
