@@ -7,8 +7,10 @@
   "license": "MIT",
   "main": "./lib/index.js",
   "bin": "./lib/index.js",
+  "types": "./catalyst.d.ts",
   "files": [
-    "lib"
+    "lib",
+    "catalyst.d.ts"
   ],
   "engines": {
     "node": ">= 10.13.0"
