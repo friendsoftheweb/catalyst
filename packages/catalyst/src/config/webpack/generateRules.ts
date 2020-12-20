@@ -104,7 +104,11 @@ export default function generateRules() {
 }
 
 function generateFileLoaderRule(basePath: string): RuleSetRule {
-  const { environment, publicPath } = new Configuration();
+  const {
+    environment,
+    publicPath,
+    importAssetsAsESModules,
+  } = new Configuration();
 
   const name =
     environment === Environment.Production
@@ -118,7 +122,7 @@ function generateFileLoaderRule(basePath: string): RuleSetRule {
       {
         loader: path.resolve(__dirname, './loaders/imageDimensionsLoader'),
         options: {
-          esModule: true,
+          esModule: importAssetsAsESModules,
         },
       },
       {
@@ -127,7 +131,7 @@ function generateFileLoaderRule(basePath: string): RuleSetRule {
           context: basePath,
           name,
           publicPath,
-          esModule: true,
+          esModule: importAssetsAsESModules,
         },
       },
     ],
