@@ -45,7 +45,9 @@ export default function imageDimensionsLoader(
   ) {
     callback(
       new Error(
-        'Received unexpected content from previous loader. Make sure "file-loader" runs before "image-dimensions-loader" and both have the same "esModules" option value.'
+        'Received unexpected content from previous loader. ' +
+          'Make sure "file-loader" runs before "image-dimensions-loader" and ' +
+          'both have the same "esModules" option value.'
       )
     );
 
@@ -63,8 +65,10 @@ export default function imageDimensionsLoader(
         null,
         [
           content,
-          `export const width = ${dimensions.width};`,
-          `export const height = ${dimensions.height};`,
+          `export const dimensions = {`,
+          `  width: ${dimensions.width},`,
+          `  height: ${dimensions.height}`,
+          `};`,
         ].join('\n')
       );
     } else {
@@ -72,8 +76,10 @@ export default function imageDimensionsLoader(
         null,
         [
           content,
-          `module.exports.width = ${dimensions.width};`,
-          `module.exports.height = ${dimensions.height};`,
+          `module.exports.dimensions = {`,
+          `  width: ${dimensions.width},`,
+          `  height: ${dimensions.height}`,
+          `};`,
         ].join('\n')
       );
     }
