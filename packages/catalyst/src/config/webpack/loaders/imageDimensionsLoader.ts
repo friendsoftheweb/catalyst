@@ -5,12 +5,10 @@ import sizeOf from 'image-size';
 const OPTIONS_SCHEMA = {
   properties: {
     esModule: {
-      description:
-        'By default, file-loader generates JS modules that use the ES modules syntax.',
-      type: 'boolean' as 'boolean',
+      type: 'boolean' as const,
     },
   },
-  type: 'object' as 'object',
+  type: 'object' as const,
 };
 
 /**
