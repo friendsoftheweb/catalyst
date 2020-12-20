@@ -78,9 +78,6 @@ export default function generateRules() {
     include,
     use: [
       {
-        loader: require.resolve('thread-loader'),
-      },
-      {
         loader: require.resolve('babel-loader'),
         options: {
           cacheDirectory: true,

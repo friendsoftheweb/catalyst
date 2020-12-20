@@ -1,7 +1,7 @@
 import path from 'path';
 import webpack, { Plugin as WebpackPlugin } from 'webpack';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
-import ManifestPlugin from 'webpack-manifest-plugin';
+import { WebpackManifestPlugin } from 'webpack-manifest-plugin';
 import CompressionPlugin from 'compression-webpack-plugin';
 import WorkboxWebpackPlugin from 'workbox-webpack-plugin';
 import DuplicatePackageCheckerPlugin from 'duplicate-package-checker-webpack-plugin';
@@ -82,7 +82,7 @@ export default function generatePlugins(options?: Options): WebpackPlugin[] {
   if (environment !== Environment.Development) {
     plugins.push(
       new PrefetchManifestPlugin(),
-      new ManifestPlugin({ fileName: 'manifest.json' })
+      new WebpackManifestPlugin({ fileName: 'manifest.json' })
     );
   }
 

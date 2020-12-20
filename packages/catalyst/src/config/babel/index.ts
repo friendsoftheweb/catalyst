@@ -16,7 +16,7 @@ export default function babelConfig(options: Options = {}) {
 
   const configuration = new Configuration();
 
-  const { environment, typeScriptEnabled } = configuration;
+  const { environment, typeScriptEnabled, useReactJSXRuntime } = configuration;
 
   if (modules == null) {
     modules = environment === Environment.Test ? 'commonjs' : false;
@@ -47,6 +47,7 @@ export default function babelConfig(options: Options = {}) {
         development:
           environment === Environment.Development ||
           environment === Environment.Test,
+        runtime: useReactJSXRuntime ? 'automatic' : 'classic',
       },
     ],
   ];
