@@ -29,7 +29,7 @@ export default function imageDimensionsLoader(
   const options = getOptions(this as any);
 
   validate(OPTIONS_SCHEMA, options, {
-    name: 'catalyst-image-dimensions-loader',
+    name: 'image-dimensions-loader',
     baseDataPath: 'options',
   });
 
