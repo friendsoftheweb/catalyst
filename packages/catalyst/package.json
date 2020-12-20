@@ -7,7 +7,7 @@
   "license": "MIT",
   "main": "./lib/index.js",
   "bin": "./lib/index.js",
-  "types": "./catalyst.d.ts",
+  "types": "./lib/index.d.ts",
   "files": [
     "lib",
     "catalyst.d.ts"
