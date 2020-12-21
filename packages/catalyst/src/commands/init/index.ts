@@ -102,9 +102,14 @@ export default async function init(options: Options) {
   await writeFileFromTemplate('tsconfig.json', 'tsconfig.json.jst', config);
   await writeFileFromTemplate('jest.config.js', 'jest.config.js.jst', config);
 
+  await writeFileFromTemplate(
+    path.join(config.contextPath, 'assets.d.ts'),
+    'assets.d.ts.jst'
+  );
+
   if (firstRun) {
     await writeFileFromTemplate(
-      `${config.contextPath}/bundles/application/index.ts`,
+      path.join(config.contextPath, 'bundles/application/index.ts'),
       'bundle.ts.jst'
     );
 

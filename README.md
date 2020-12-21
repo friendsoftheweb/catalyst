@@ -27,7 +27,7 @@ you can start it like this:
 $ DEV_SERVER_HOST=`ipconfig getifaddr en0` yarn start
 ```
 
-Where `en0` is the network device you're using.
+Where "en0" is the identifier for the network device you're using.
 
 ## Integrating with Rails
 
@@ -42,12 +42,13 @@ Certain aspects of Catalyst can be configured by editing the `catalyst.config.js
 | **contextPath**                  | N/A                   | `string`                                                 | The path (relative to the root of your project) that webpack should treat as the [context](https://webpack.js.org/configuration/entry-context/#context) when requiring modules and assets. |
 | **buildPath**                    | N/A                   | `string`                                                 | The path (relative to the root of your project) where _test_ and _production_ builds will be output.                                                                                       |
 | **publicPath**                   | N/A                   | `string`                                                 | The the base URI used when generating paths for `<script />` and `<link />` tags.                                                                                                          |
+| **importAssetsAsESModules**      | N/A                   | `boolean`                                                | If set to `false`, assets such as images and fonts will be imported in CommonJS format.                                                                                                    |
 | **overlayEnabled**               | N/A                   | `boolean`                                                | Display a custom overlay that shows build status, build errors, and runtime errors. This only applies to the _development_ environment.                                                    |
 | **prebuiltPackages**             | N/A                   | `string[]`                                               | A list of npm packages which should be pre-built in the _development_ environment. This decreases the time spent on re-building entries by skipping the listed packages.                   |
 | **transformedPackages**          | N/A                   | `string[]`                                               | A list of npm packages which should be [transformed and polyfilled via Babel](https://babeljs.io/docs/en/babel-preset-env).                                                                |
 | **generateServiceWorker**        | N/A                   | `boolean`                                                | Generate a separate file which will be registered as a [SeviceWorker](https://developer.mozilla.org/en-US/docs/Web/API/ServiceWorker) and preload JavaScript, CSS, and other assets.       |
 | **checkForCircularDependencies** | N/A                   | `boolean`                                                | Show warnings in _development_ and errors in other in environments if a circular dependency is detected.                                                                                   |
-| **checkForDuplicatePackages**    | N/A                   | `boolean`                                                | Show warnings if mulitple versions of the same package are required in the webpack dependency tree.                                                                                        |
+| **checkForDuplicatePackages**    | N/A                   | `boolean`                                                | Show warnings if multiple versions of the same package are required in the webpack dependency tree.                                                                                        |
 | **ignoredDuplicatePackages**     | N/A                   | `string[]`                                               | A list of npm packages to ignore when checking for duplicates. This has no effect if **checkForDuplicatePackages** is `false`.                                                             |
 | **devServerHost**                | `DEV_SERVER_HOST`     | `string`                                                 | The host for the development server. Defaults to `"localhost"`.                                                                                                                            |
 | **devServerPort**                | `DEV_SERVER_PORT`     | `number`                                                 | The port for the development server. Defaults to `8080`.                                                                                                                                   |
@@ -67,7 +68,7 @@ const { webpackConfig } = require('catalyst');
 const customConfig = webpackConfig();
 
 customConfig.module.rules.push({
-  loader: 'my-custom-loader'
+  loader: 'my-custom-loader',
 });
 
 module.exports = customConfig;
@@ -75,8 +76,62 @@ module.exports = customConfig;
 
 ### Analyzing Webpack Output
 
-The size of the bundles output by webpack can be vizualized using [webpack-bundle-analyzer](https://github.com/webpack-contrib/webpack-bundle-analyzer). You can open the analyzer by starting Catalyst server with the `--bundle-analyzer` option:
+The size of the bundles output by webpack can be visualized using [webpack-bundle-analyzer](https://github.com/webpack-contrib/webpack-bundle-analyzer). You can open the analyzer by starting Catalyst server with the `--bundle-analyzer` option:
 
 ```
 $ NODE_ENV=development yarn run catalyst server --bundle-analyzer
 ```
+
+## Using Catalyst
+
+### Importing Images
+
+Images can be imported as URLs via a standard ES import statement:
+
+```js
+import thisIsFineUrl from 'assets/images/this-is-fine.gif';
+
+const Component = () => {
+  return <img src={thisIsFineUrl} />;
+};
+```
+
+The image's dimensions can also be imported as an object:
+
+```js
+import thisIsFineUrl, {
+  dimensions as thisIsFineDimensions,
+} from 'assets/images/this-is-fine.gif';
+
+const Component = () => {
+  return (
+    <img
+      src={thisIsFineUrl}
+      width={thisIsFineDimensions.width}
+      height={thisIsFineDimensions.height}
+    />
+  );
+};
+```
+
+Make sure the assets TypeScript definitions have been added to your project (usually "client/assets.d.ts"). If they're missing, running `yarn run catalyst init` will add them to your project.
+
+### Prefetching Important Assets
+
+Catalyst has experimental support for generating a list of files to [prefetch](https://developer.mozilla.org/en-US/docs/Web/HTTP/Link_prefetching_FAQ) (via `<link rel="prefetch" />`). The files associated with any chunk which includes a JavaScript or TypeScript file with a `// @catalyst-prefetch` comment in it will be added to a `prefetch.json` file that's output during any non-development build.
+
+This file can be used to generate link tags to allow important assets to be fetched before a user navigates to a part of the site that requires them. For example, to start loading the assets required for the checkout process before a user reaches the checkout process, a hypothetical "Checkout" component could be updated to include the `@catalyst-prefetch` directive:
+
+```js
+// @catalyst-prefetch
+
+import React from 'react';
+
+const Checkout = () => {
+  return (
+    // ...
+  )
+}
+```
+
+_NOTE:_ This will have no effect if the file is included in an "entry" chunk (i.e. the file is not part of a [dynamically imported](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import#Dynamic_Imports) chunk).

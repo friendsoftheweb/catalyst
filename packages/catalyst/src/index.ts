@@ -5,7 +5,7 @@ import program from 'commander';
 import init from './commands/init';
 import server from './commands/server';
 import build from './commands/build';
-import logStatus from './utils/logStatus';
+import logStatus, { Status } from './utils/logStatus';
 
 export { default as babelConfig } from './config/babel';
 export { default as webpackConfig } from './config/webpack';
@@ -35,7 +35,7 @@ program
     // the same `catch()` logic can be used for all of them.
     server(options).catch((error) => {
       if (error instanceof Error) {
-        logStatus('ERROR', error.message);
+        logStatus(Status.Error, error.message);
       }
 
       process.exit(1);
@@ -52,7 +52,7 @@ program
     // the same `catch()` logic can be used for all of them.
     build(options).catch((error) => {
       if (error instanceof Error) {
-        logStatus('ERROR', error.message);
+        logStatus(Status.Error, error.message);
       }
 
       process.exit(1);

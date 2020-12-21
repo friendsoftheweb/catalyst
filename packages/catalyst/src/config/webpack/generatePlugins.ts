@@ -1,14 +1,15 @@
 import path from 'path';
 import webpack, { Plugin as WebpackPlugin } from 'webpack';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
-import ManifestPlugin from 'webpack-manifest-plugin';
+import { WebpackManifestPlugin } from 'webpack-manifest-plugin';
 import CompressionPlugin from 'compression-webpack-plugin';
 import WorkboxWebpackPlugin from 'workbox-webpack-plugin';
 import DuplicatePackageCheckerPlugin from 'duplicate-package-checker-webpack-plugin';
 import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin';
 import CircularDependencyPlugin from 'circular-dependency-plugin';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
-import CleanUpStatsPlugin from '../../webpack-plugins/CleanUpStatsPlugin';
+import PrefetchManifestPlugin from './plugins/PrefetchManifestPlugin';
+import CleanUpStatsPlugin from './plugins/CleanUpStatsPlugin';
 import Configuration from '../../Configuration';
 import { Environment } from '../../Environment';
 import forEachPlugin from '../../utils/forEachPlugin';
@@ -79,7 +80,10 @@ export default function generatePlugins(options?: Options): WebpackPlugin[] {
   }
 
   if (environment !== Environment.Development) {
-    plugins.push(new ManifestPlugin({ fileName: 'manifest.json' }));
+    plugins.push(
+      new PrefetchManifestPlugin(),
+      new WebpackManifestPlugin({ fileName: 'manifest.json' })
+    );
   }
 
   if (environment === Environment.Production) {

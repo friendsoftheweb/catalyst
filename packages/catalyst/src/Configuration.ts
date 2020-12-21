@@ -1,11 +1,14 @@
 import path from 'path';
 import fs from 'fs';
+import semver from 'semver';
 import { Environment, isEnvironment } from './Environment';
+import logStatus, { Status } from './utils/logStatus';
 
 interface CustomConfiguration {
   contextPath: string;
   buildPath: string;
   publicPath: string;
+  importAssetsAsESModules?: boolean;
   overlayEnabled?: boolean;
   prebuiltPackages?: string[];
   transformedPackages?: string[];
@@ -97,8 +100,8 @@ function isCustomConfiguration(value: any): value is CustomConfiguration {
   }
 
   if (
-    'webpack' in value &&
-    (value.webpack == null || typeof value.webpack !== 'object')
+    'importAssetsAsESModules' in value &&
+    typeof value.importAssetsAsESModules !== 'boolean'
   ) {
     return false;
   }
@@ -202,6 +205,10 @@ export default class Configuration {
     return NODE_ENV;
   }
 
+  /**
+   * The working directory of the catalyst process. This should usually be the
+   * root of the host project.
+   */
   get rootPath(): string {
     return process.cwd();
   }
@@ -230,6 +237,10 @@ export default class Configuration {
     return path.join(this.rootPath, 'tmp', 'catalyst');
   }
 
+  get importAssetsAsESModules(): boolean {
+    return this.configuration.importAssetsAsESModules ?? true;
+  }
+
   get projectName(): string {
     return JSON.parse(
       fs.readFileSync(path.join(this.rootPath, 'package.json')).toString()
@@ -238,6 +249,25 @@ export default class Configuration {
 
   get typeScriptEnabled(): boolean {
     return fs.existsSync(path.join(this.rootPath, 'tsconfig.json'));
+  }
+
+  get useReactJSXRuntime(): boolean {
+    const { dependencies, devDependencies } = JSON.parse(
+      fs.readFileSync(path.join(this.rootPath, 'package.json')).toString()
+    );
+
+    const reactVersion = dependencies.react ?? devDependencies.react;
+
+    if (reactVersion == null) {
+      logStatus(
+        Status.Warning,
+        'Could not automatically determine React version'
+      );
+
+      return false;
+    }
+
+    return semver.satisfies(reactVersion, '^15.7.0 || ^16.14.0 || >=17.0.0');
   }
 
   get prebuiltPackages(): string[] {

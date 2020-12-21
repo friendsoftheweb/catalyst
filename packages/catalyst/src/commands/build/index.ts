@@ -4,13 +4,13 @@ import Configuration from '../../Configuration';
 import { Environment } from '../../Environment';
 import logVersion from '../../utils/logVersion';
 import getWebpackConfig from '../../utils/getWebpackConfig';
-import logStatus from '../../utils/logStatus';
+import logStatus, { Status } from '../../utils/logStatus';
 
 interface Options {
   watch?: boolean;
 }
 
-export default async function build(options: Options) {
+export default async function build(options: Options): Promise<void> {
   const { environment, buildPath } = new Configuration();
 
   if (
@@ -76,13 +76,11 @@ function logStats(stats: Stats) {
   });
 
   if (errors.length > 0) {
-    logStatus('ERROR', `Failed to build:`);
-
-    console.log(`\n${errors.join('\n\n')}`);
+    logStatus(Status.Error, `Failed to build:\n\n${errors.join('\n\n')}`);
   } else {
     if (warnings.length > 0) {
       logStatus(
-        'WARNING',
+        Status.Warning,
         `Built successfully, with ${warnings.length} warning${
           warnings.length > 1 ? 's' : ''
         }:\n`
@@ -91,7 +89,7 @@ function logStats(stats: Stats) {
       console.log(chalk.yellow(warnings.join('\n\n')));
     } else if (stats.endTime != null && stats.startTime != null) {
       logStatus(
-        'SUCCESS',
+        Status.Success,
         `Built successfully in ${(stats.endTime - stats.startTime) / 1000}s`
       );
     }

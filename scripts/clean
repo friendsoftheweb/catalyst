@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+set -euxo pipefail
+
+rm -rf packages/catalyst/node_modules
+rm -rf packages/catalyst/lib
+rm -rf packages/catalyst-client/node_modules
+rm -rf packages/catalyst-client/lib
+rm -rf packages/catalyst-plugin-graphql-tag/node_modules
+rm -rf packages/catalyst-plugin-graphql-tag/lib
+rm -rf packages/catalyst-plugin-styled-components/node_modules
+rm -rf packages/catalyst-plugin-styled-components/lib
+rm -rf packages/catalyst/test-project/node_modules
+
+# Unlinking non-linked packages results in a non-zero exit code, so we need to
+# ignore exit codes after this point.
+set +e
+
+(cd packages/catalyst && yarn unlink &>/dev/null)
+(cd packages/catalyst-client && yarn unlink &>/dev/null)
+(cd packages/catalyst-plugin-graphql-tag && yarn unlink &>/dev/null)
+(cd packages/catalyst-plugin-styled-components && yarn unlink &>/dev/null)
+
+# Unlinking non-linked packages results in a non-zero exit code from the
+# subcommand, so we explicitly `exit 0` if we've made it to the end.
+exit 0
