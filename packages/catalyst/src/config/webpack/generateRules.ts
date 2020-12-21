@@ -87,8 +87,8 @@ export default function generateRules() {
   });
 
   rules.push(
-    generateFileLoaderRule(path.join(contextPath, 'assets')),
-    generateFileLoaderRule(path.join(rootPath, 'node_modules'))
+    ...generateFileLoaderRules(path.join(contextPath, 'assets')),
+    ...generateFileLoaderRules(path.join(rootPath, 'node_modules'))
   );
 
   forEachPlugin((plugin) => {
@@ -100,7 +100,7 @@ export default function generateRules() {
   return rules;
 }
 
-function generateFileLoaderRule(basePath: string): RuleSetRule {
+function generateFileLoaderRules(basePath: string): RuleSetRule[] {
   const {
     environment,
     publicPath,
@@ -112,25 +112,58 @@ function generateFileLoaderRule(basePath: string): RuleSetRule {
       ? '[path][name]-[hash].[ext]'
       : '[path][name].[ext]';
 
-  return {
-    test: /\.(jpe?g|gif|png|webp|svg|woff2?|eot|ttf)$/i,
-    include: basePath,
-    use: [
-      {
-        loader: path.resolve(__dirname, './loaders/imageDimensionsLoader'),
-        options: {
-          esModule: importAssetsAsESModules,
-        },
-      },
-      {
-        loader: require.resolve('file-loader'),
-        options: {
-          context: basePath,
-          name,
-          publicPath,
-          esModule: importAssetsAsESModules,
-        },
-      },
-    ],
+  const fileLoaderOptions = {
+    context: basePath,
+    name,
+    publicPath,
+    esModule: importAssetsAsESModules,
   };
+
+  return [
+    {
+      test: /\.(jpe?g|gif|png|webp|svg)$/i,
+      include: basePath,
+      oneOf: [
+        // Use file-loader and imageDimensionsLoader for any images imported
+        // into JavaScript files that aren't located inside node_modules.
+        {
+          issuer: { and: [/\.(jsx?|tsx?)$/, { not: [/node_modules/] }] },
+          use: [
+            {
+              loader: path.resolve(
+                __dirname,
+                './loaders/imageDimensionsLoader'
+              ),
+              options: {
+                esModule: importAssetsAsESModules,
+              },
+            },
+            {
+              loader: require.resolve('file-loader'),
+              options: fileLoaderOptions,
+            },
+          ],
+        },
+        // Only use file-loader for all other imported images.
+        {
+          use: [
+            {
+              loader: require.resolve('file-loader'),
+              options: fileLoaderOptions,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      test: /\.(woff2?|eot|ttf)$/i,
+      include: basePath,
+      use: [
+        {
+          loader: require.resolve('file-loader'),
+          options: fileLoaderOptions,
+        },
+      ],
+    },
+  ];
 }
