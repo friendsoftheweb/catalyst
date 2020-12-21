@@ -36,5 +36,6 @@ export default function webpackConfig(options?: Options): WebpackConfiguration {
       rules: generateRules(),
     },
     optimization: generateOptimization(),
+    bail: true,
   };
 }

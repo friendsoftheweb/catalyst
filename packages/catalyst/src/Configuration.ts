@@ -8,6 +8,7 @@ interface CustomConfiguration {
   contextPath: string;
   buildPath: string;
   publicPath: string;
+  importAssetsAsESModules?: boolean;
   overlayEnabled?: boolean;
   prebuiltPackages?: string[];
   transformedPackages?: string[];
@@ -99,8 +100,8 @@ function isCustomConfiguration(value: any): value is CustomConfiguration {
   }
 
   if (
-    'webpack' in value &&
-    (value.webpack == null || typeof value.webpack !== 'object')
+    'importAssetsAsESModules' in value &&
+    typeof value.importAssetsAsESModules !== 'boolean'
   ) {
     return false;
   }
@@ -234,6 +235,10 @@ export default class Configuration {
 
   get tempPath(): string {
     return path.join(this.rootPath, 'tmp', 'catalyst');
+  }
+
+  get importAssetsAsESModules(): boolean {
+    return this.configuration.importAssetsAsESModules ?? true;
   }
 
   get projectName(): string {
