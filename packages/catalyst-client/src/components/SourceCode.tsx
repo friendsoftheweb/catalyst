@@ -9,7 +9,11 @@ export const SourceCode: FunctionalComponent<{ lines: Line[] }> = (props) => {
   const { lines } = props;
 
   return (
-    <div className="SourceCode">
+    <div
+      className={classNames('SourceCode', {
+        'is-singleLine': lines.length === 1,
+      })}
+    >
       {lines.map((line) => (
         <Fragment key={line.number}>
           <div

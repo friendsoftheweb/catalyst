@@ -1,7 +1,11 @@
 @import '../globals.scss';
 
-$light-number-bg: darken($white, 24%);
-$dark-number-bg: lighten($black, 24%);
+$number-light-bg: darken($white, 24%);
+$number-dark-bg: lighten($black, 24%);
+$number-highlight-light-bg: lighten($red, 18%);
+$number-highlight-dark-bg: darken($red, 10%);
+$text-highlight-light-bg: lighten($red, 36%);
+$text-highlight-dark-bg: darken($red, 20%);
 
 .SourceCode {
   display: grid;
@@ -14,25 +18,49 @@ $dark-number-bg: lighten($black, 24%);
   overflow: auto;
 
   border-style: solid;
-  border-color: $light-number-bg;
+  border-color: $number-light-bg;
   border-width: 2px 2px 2px 0;
 
   @include media-dark {
-    border-color: $dark-number-bg;
+    border-color: $number-dark-bg;
+  }
+}
+
+.SourceCode.is-singleLine {
+  border-color: $number-highlight-light-bg;
+
+  @include media-dark {
+    border-color: $number-highlight-dark-bg;
+  }
+
+  .SourceCode-number {
+    background-color: $number-highlight-light-bg;
+
+    @include media-dark {
+      background-color: $number-highlight-dark-bg;
+    }
+  }
+
+  .SourceCode-text {
+    background-color: $text-highlight-light-bg;
+
+    @include media-dark {
+      background-color: $text-highlight-dark-bg;
+    }
   }
 }
 
 .SourceCode-number {
   color: lighten($black, 24%);
-  background-color: $light-number-bg;
+  background-color: $number-light-bg;
   padding: 0 1em;
   text-align: right;
 
   &.is-highlight {
-    background-color: lighten($red, 18%);
+    background-color: $number-highlight-light-bg;
 
     @include media-dark {
-      background-color: darken($red, 10%);
+      background-color: $number-highlight-dark-bg;
     }
   }
 
@@ -45,8 +73,8 @@ $dark-number-bg: lighten($black, 24%);
   }
 
   @include media-dark {
-    color: darken($white, 8%);
-    background-color: $dark-number-bg;
+    color: darken($white, 24%);
+    background-color: $number-dark-bg;
   }
 }
 
@@ -57,10 +85,10 @@ $dark-number-bg: lighten($black, 24%);
   padding-right: 1.5em;
 
   &.is-highlight {
-    background-color: lighten($red, 36%);
+    background-color: $text-highlight-light-bg;
 
     @include media-dark {
-      background-color: darken($red, 20%);
+      background-color: $text-highlight-dark-bg;
     }
   }
 
@@ -73,7 +101,7 @@ $dark-number-bg: lighten($black, 24%);
   }
 
   @include media-dark {
-    color: darken($white, 16%);
+    color: darken($white, 20%);
     background-color: lighten($black, 5%);
   }
 }

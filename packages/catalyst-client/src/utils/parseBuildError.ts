@@ -42,7 +42,10 @@ export abstract class BuildError {
 
   abstract get message(): string | null;
   abstract get sourcePath(): string | null;
-  abstract get stackTrace(): Line[];
+
+  get stackTrace(): Line[] {
+    return [];
+  }
 
   get sourceCode(): Line[] {
     const lines: Line[] = [];
