@@ -68,6 +68,7 @@ export default function generatePlugins(
       DEV_SERVER_PROTOCOL: devServerProtocol,
       DEV_SERVER_HOST: devServerHost,
       DEV_SERVER_PORT: devServerPort,
+      CONTEXT_PATH: contextPath,
       SERVICE_WORKER_URL: `${publicPath}service-worker.js`,
     })
   );

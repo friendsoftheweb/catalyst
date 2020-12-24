@@ -1,10 +1,10 @@
 import 'regenerator-runtime';
 import SockJS from 'sockjs-client';
-import createOverlayFrame from '../createOverlayFrame';
+import createOverlayFrame from '../utils/createOverlayFrame';
 
 let mockFrame;
 
-jest.mock('../createOverlayFrame', () => {
+jest.mock('../utils/createOverlayFrame', () => {
   return async () => {
     return {
       frame: mockFrame,
@@ -31,6 +31,7 @@ test('a message is displayed while building', async () => {
     devServerProtocol: 'https',
     devServerHost: 'localhost',
     devServerPort: '8080',
+    contextPath: '/User/example/Projects/project/client',
   };
 
   require('../index');
@@ -51,7 +52,7 @@ test('a message is displayed while building', async () => {
     JSON.stringify({
       component: 'Activity',
       props: {
-        message: 'Building…',
+        message: 'Building...',
       },
     }),
     '*'
@@ -74,6 +75,7 @@ test('a compilation error is displayed', async () => {
     devServerProtocol: 'https',
     devServerHost: 'localhost',
     devServerPort: '8080',
+    contextPath: '/User/example/Projects/project/client',
   };
 
   require('../index');
@@ -96,6 +98,7 @@ test('a compilation error is displayed', async () => {
       component: 'CompilationError',
       props: {
         message: '/this/is/a/filepath.js',
+        contextPath: '/User/example/Projects/project/client',
       },
     }),
     '*'

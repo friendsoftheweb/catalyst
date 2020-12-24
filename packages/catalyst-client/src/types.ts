@@ -47,3 +47,10 @@ export type DevServerEvent =
         message: string;
       }[];
     };
+
+export interface Environment {
+  devServerProtocol: string | undefined;
+  devServerHost: string | undefined;
+  devServerPort: string | undefined;
+  contextPath: string | undefined;
+}

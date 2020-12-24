@@ -18,13 +18,13 @@
   line-height: 1.2em;
   overflow: auto;
 
-  @media screen and (max-width: 600px) {
+  @include media-mobile {
     font-size: 0.8em;
   }
 
-  @media (prefers-color-scheme: dark) {
+  @include media-dark {
     color: #ccc;
-    background-color: #111111;
+    background-color: $black;
   }
 }
 
@@ -35,24 +35,42 @@
   margin-top: 0;
   margin-bottom: 2em;
   font-weight: normal;
-  padding: 1em $compilation-error-horizontal-padding;
+  padding: 1em $horizontal-padding;
 
-  @media (prefers-color-scheme: dark) {
-    color: #f44336;
-    background-color: #410e0e;
+  @include media-mobile {
+    margin-bottom: 1.5em;
+    padding: 1em $horizontal-padding-mobile;
+  }
+
+  @include media-dark {
+    color: $red;
+    background-color: darken($red, 40%);
   }
 }
 
 .CompilationError-footer {
   background-color: #f4f4f4;
-  padding: 1em $compilation-error-horizontal-padding;
+  padding: 1em $horizontal-padding;
 
-  @media (prefers-color-scheme: dark) {
-    background-color: #222;
+  @include media-mobile {
+    padding: 0 $horizontal-padding-mobile;
+  }
+
+  @include media-dark {
+    background-color: transparent;
   }
 }
 
 .CompilationError-link {
-  color: #999999;
+  color: darken($white, 25%);
   text-decoration: none;
+  transition: color 150ms;
+
+  &:hover {
+    color: darken($white, 35%);
+
+    @include media-dark {
+      color: darken($white, 15%);
+    }
+  }
 }
