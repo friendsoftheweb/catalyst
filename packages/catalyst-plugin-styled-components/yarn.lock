@@ -2328,10 +2328,10 @@ catalyst-client@^2.0.0-alpha.1:
   dependencies:
     source-map "^0.7.3"
 
-catalyst@^2.0.0-alpha.3:
-  version "2.0.0-alpha.3"
-  resolved "https://registry.yarnpkg.com/catalyst/-/catalyst-2.0.0-alpha.3.tgz#b51cecb5777b4da6962d06373af8c1de5f1767c1"
-  integrity sha512-TY1n7YtHEtSegNdU9zGiShvGnRPm5kXVnU1sU7hH3z5udwxRpdsPZSykfWmeDIWE7iJEDzCDB7rpJnge686/YA==
+catalyst@^2.0.0-alpha.4:
+  version "2.0.0-alpha.4"
+  resolved "https://registry.yarnpkg.com/catalyst/-/catalyst-2.0.0-alpha.4.tgz#6de7c9c36b8618ab6632d583c5a2a6bae5f34161"
+  integrity sha512-Sett9ttKS1veRCZwqCul0i4ybnbJnrfKsaW1o4FAeFF+24zG9B16XXHqr7Y4BoXW6l46PaN34J/nLX8YbjIarQ==
   dependencies:
     "@babel/core" "^7.4.4"
     "@babel/plugin-proposal-class-properties" "^7.4.4"
@@ -2371,6 +2371,7 @@ catalyst@^2.0.0-alpha.3:
     postcss-preset-env "^6.7.0"
     sass "^1.30.0"
     sass-loader "^10.0.4"
+    schema-utils "^3.0.0"
     semver "^7.3.4"
     style-loader "^2.0.0"
     terser-webpack-plugin "4"
