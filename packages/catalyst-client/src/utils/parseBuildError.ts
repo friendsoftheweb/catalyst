@@ -47,7 +47,7 @@ export abstract class BuildError {
       let matches;
 
       if ((matches = /^\s*(\d+)\s+[|│](.*)/.exec(line))) {
-        const number = parseInt(matches[1]);
+        const number = parseInt(matches[1], 10);
         const text = matches[2];
 
         lines.push({
@@ -59,7 +59,7 @@ export abstract class BuildError {
       }
 
       if ((matches = /^>\s*(\d+)\s+[|│](.*)/.exec(line))) {
-        const number = parseInt(matches[1]);
+        const number = parseInt(matches[1], 10);
         const text = matches[2];
 
         lines.push({
@@ -76,8 +76,9 @@ export abstract class BuildError {
   }
 }
 
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 export class BabelBuildError extends BuildError {
-  get message(): string | null {
+  get message() {
     const match = /^SyntaxError: [^:]+:\s*([^(]+)/m.exec(this.error);
 
     if (match == null) {
@@ -87,7 +88,7 @@ export class BabelBuildError extends BuildError {
     return match[1].replace(/\s+$/, '');
   }
 
-  get sourcePath(): string {
+  get sourcePath() {
     const match = /SyntaxError: ([^:]+)/.exec(this.error);
 
     if (match == null) {
@@ -97,7 +98,7 @@ export class BabelBuildError extends BuildError {
     return match[1].replace(this.contextPath, '').replace(/^\//, '');
   }
 
-  get stackTrace(): Line[] {
+  get stackTrace() {
     return [];
   }
 }
@@ -123,7 +124,7 @@ export class SassBuildError extends BuildError {
     return match[1];
   }
 
-  get sourcePath(): string {
+  get sourcePath() {
     const match = /^\s+([a-z0-9\-_/]+\.scss)\s+\d+:\d+\s+root stylesheet/im.exec(
       this.error
     );
@@ -135,7 +136,7 @@ export class SassBuildError extends BuildError {
     return match[1];
   }
 
-  get stackTrace(): Line[] {
+  get stackTrace() {
     return [];
   }
 }
@@ -161,7 +162,7 @@ export class WebpackBuildError extends BuildError {
     return match[1];
   }
 
-  get sourcePath(): string {
+  get sourcePath() {
     const match = /Can't resolve '[a-z0-9\-_]+' in '([a-z0-9\-_/]+)'$/im.exec(
       this.error
     );
@@ -173,7 +174,8 @@ export class WebpackBuildError extends BuildError {
     return match[1].replace(this.contextPath, '').replace(/^\//, '');
   }
 
-  get stackTrace(): Line[] {
+  get stackTrace() {
     return [];
   }
 }
+/* eslint-enable @typescript-eslint/explicit-module-boundary-types */

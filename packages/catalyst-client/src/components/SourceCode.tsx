@@ -1,11 +1,11 @@
 /** @jsx h */
-import { Fragment, h } from 'preact';
+import { Fragment, FunctionalComponent, h } from 'preact';
 import classNames from 'classnames';
 import './SourceCode.scss';
 
 import { Line } from '../utils/parseBuildError';
 
-export const SourceCode: React.FC<{ lines: Line[] }> = (props) => {
+export const SourceCode: FunctionalComponent<{ lines: Line[] }> = (props) => {
   const { lines } = props;
 
   return (

@@ -25,7 +25,7 @@ const CompilationError: FunctionalComponent<Props> = (props) => {
           className="CompilationError-link"
           href="https://github.com/friendsoftheweb/catalyst"
           target="_blank"
-          rel="noopener"
+          rel="noreferrer"
         >
           🧪 Catalyst
         </a>
