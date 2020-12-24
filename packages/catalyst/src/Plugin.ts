@@ -1,4 +1,4 @@
-import { RuleSetRule, Plugin as WebpackPlugin } from 'webpack';
+import { RuleSetRule, WebpackPluginInstance } from 'webpack';
 
 import Configuration from './Configuration';
 
@@ -19,9 +19,9 @@ interface Plugin {
   ): RuleSetRule[];
 
   modifyWebpackPlugins?(
-    plugins: readonly WebpackPlugin[],
+    plugins: readonly WebpackPluginInstance[],
     configuration: Configuration
-  ): WebpackPlugin[];
+  ): WebpackPluginInstance[];
 
   modifyNodePackages?(packages: readonly string[]): string[];
 

@@ -57,7 +57,7 @@ export default async function build(options: Options): Promise<void> {
         } else {
           logStats(stats);
 
-          if (stats.hasErrors()) {
+          if (stats?.hasErrors()) {
             reject();
           } else {
             resolve();
@@ -68,7 +68,11 @@ export default async function build(options: Options): Promise<void> {
   }
 }
 
-function logStats(stats: Stats) {
+function logStats(stats: Stats | undefined) {
+  if (stats == null) {
+    return;
+  }
+
   const { errors, warnings } = stats.toJson({
     all: false,
     warnings: true,

@@ -54,6 +54,7 @@ export default async function server(
       signals.forEach((signal) => {
         process.on(signal, () => {
           server.close();
+
           process.exit();
         });
       });

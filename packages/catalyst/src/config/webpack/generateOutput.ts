@@ -1,20 +1,15 @@
-import { Output } from 'webpack';
+import { Configuration as WebpackConfiguration } from 'webpack';
 import Configuration from '../../Configuration';
 import { Environment } from '../../Environment';
 
-export default function generateOutput(): Output {
+export default function generateOutput(): WebpackConfiguration['output'] {
   const {
-    projectName,
     environment,
     buildPath,
     publicPath,
     devServerHost,
     devServerPort,
   } = new Configuration();
-
-  // This allows multiple projects built with webpack to coexist in the same
-  // realm.
-  const jsonpFunction = `webpackJsonp${projectName.replace(/[^a-z]+/gi, '_')}`;
 
   if (environment === Environment.Development) {
     return {
@@ -28,7 +23,6 @@ export default function generateOutput(): Output {
       path: buildPath,
       publicPath,
       filename: '[name].js',
-      jsonpFunction,
     };
   }
 
@@ -36,6 +30,5 @@ export default function generateOutput(): Output {
     path: buildPath,
     publicPath,
     filename: '[name].[contenthash:8].js',
-    jsonpFunction,
   };
 }

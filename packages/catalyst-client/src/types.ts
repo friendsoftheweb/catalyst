@@ -16,3 +16,34 @@ export type FrameState =
       props: RuntimeErrorsProps;
     }
   | null;
+
+export type DevServerEvent =
+  | {
+      type: 'invalid';
+    }
+  | {
+      type: 'hash';
+      data: string;
+    }
+  | {
+      type: 'ok';
+    }
+  | {
+      type: 'still-ok';
+    }
+  | {
+      type: 'warnings';
+      data: {
+        moduleName: string;
+        moduleIdentifier: string;
+        message: string;
+      }[];
+    }
+  | {
+      type: 'errors';
+      data: {
+        moduleName: string;
+        moduleIdentifier: string;
+        message: string;
+      }[];
+    };

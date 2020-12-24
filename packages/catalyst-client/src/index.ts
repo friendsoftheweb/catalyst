@@ -6,13 +6,6 @@ declare global {
       devServerPort: string;
     };
   }
-
-  interface NodeModule {
-    hot: {
-      status(): 'idle';
-      check(autoApply: boolean): Promise<unknown>;
-    };
-  }
 }
 
 import SockJS from 'sockjs-client';
@@ -20,7 +13,7 @@ import { SourceMapConsumer } from 'source-map';
 import createOverlayFrame from './createOverlayFrame';
 import { getSourceLocation } from './getSourceLocation';
 import { messageForError } from './messageForError';
-import { FrameState } from './types';
+import { DevServerEvent, FrameState } from './types';
 
 let overlayFrameVisible = true;
 let overlayFramePointerEvents = 'none';
@@ -80,10 +73,10 @@ const devServerURI = `${devServerProtocol}://${devServerHost}:${devServerPort}`;
 
 const connection = new SockJS(`${devServerURI}/sockjs-node`);
 
-connection.onmessage = function (event) {
-  const message = JSON.parse(event.data);
+connection.onmessage = function ({ data }: { data: string }) {
+  const event: DevServerEvent = JSON.parse(data);
 
-  switch (message.type) {
+  switch (event.type) {
     case 'invalid':
       if (!isBuilding) {
         isBuilding = true;
@@ -100,10 +93,10 @@ connection.onmessage = function (event) {
 
     case 'hash':
       if (firstCompilationHash == null) {
-        firstCompilationHash = message.data;
+        firstCompilationHash = event.data;
       }
 
-      lastCompilationHash = message.data;
+      lastCompilationHash = event.data;
       break;
 
     case 'ok':
@@ -125,7 +118,7 @@ connection.onmessage = function (event) {
       break;
 
     case 'warnings':
-      console.warn(...message.data);
+      console.warn(...event.data.map((warning) => warning.message));
 
       tryApplyUpdates();
 
@@ -138,7 +131,7 @@ connection.onmessage = function (event) {
         {
           component: 'CompilationError',
           props: {
-            message: message.data[0],
+            message: event.data[0].message,
           },
         },
         { pointerEvents: 'auto' }
@@ -166,6 +159,7 @@ const tryApplyUpdates = async () => {
   }
 
   try {
+    // @ts-expect-error: Types for this property conflict with "@types/node"
     await module.hot.check(true);
     await hideNotification();
   } catch (error) {

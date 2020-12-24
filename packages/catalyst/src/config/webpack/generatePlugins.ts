@@ -1,5 +1,5 @@
 import path from 'path';
-import webpack, { Plugin as WebpackPlugin } from 'webpack';
+import webpack, { WebpackPluginInstance } from 'webpack';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import { WebpackManifestPlugin } from 'webpack-manifest-plugin';
 import CompressionPlugin from 'compression-webpack-plugin';
@@ -18,7 +18,9 @@ interface Options {
   bundleAnalyzerEnabled?: boolean;
 }
 
-export default function generatePlugins(options?: Options): WebpackPlugin[] {
+export default function generatePlugins(
+  options?: Options
+): WebpackPluginInstance[] {
   const configuration = new Configuration();
 
   const {
@@ -40,7 +42,7 @@ export default function generatePlugins(options?: Options): WebpackPlugin[] {
       ? '[name].[contenthash:8].css'
       : '[name].css';
 
-  let plugins: WebpackPlugin[] = [];
+  let plugins: WebpackPluginInstance[] = [];
 
   if (environment === Environment.Development) {
     plugins.push(

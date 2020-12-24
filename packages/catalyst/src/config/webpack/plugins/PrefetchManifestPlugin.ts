@@ -1,11 +1,11 @@
-import { Compiler, Plugin } from 'webpack';
+import { Compiler, WebpackPluginInstance } from 'webpack';
 import { RawSource } from 'webpack-sources';
 
 /**
  * Generates a "prefetch.json" file with a list of files to prefetch via
  * `<link rel="prefetch" />`.
  */
-export default class PrefetchManifestPlugin implements Plugin {
+export default class PrefetchManifestPlugin implements WebpackPluginInstance {
   apply(compiler: Compiler) {
     const prefetchChunkIds = new Set<number>();
 
@@ -52,7 +52,6 @@ export default class PrefetchManifestPlugin implements Plugin {
         return;
       }
 
-      // @ts-expect-error: This method is missing from @types/webpack
       compilation.emitAsset(
         'prefetch.json',
         new RawSource(JSON.stringify([...prefetchChunkFiles]))

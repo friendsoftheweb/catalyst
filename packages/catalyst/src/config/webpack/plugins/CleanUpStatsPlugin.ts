@@ -1,12 +1,12 @@
-import { Compiler, Plugin } from 'webpack';
+import { Compiler, WebpackPluginInstance } from 'webpack';
 
 /**
  * Removes excessive output from mini-css-extract-plugin.
  * See: https://github.com/webpack-contrib/mini-css-extract-plugin/issues/168#issuecomment-420095982
  */
-export default class CleanUpStatsPlugin implements Plugin {
-  shouldPickStatChild(child: { name: string }) {
-    return child.name.indexOf('mini-css-extract-plugin') !== 0;
+export default class CleanUpStatsPlugin implements WebpackPluginInstance {
+  shouldPickStatChild(child: { name?: string }) {
+    return child.name?.indexOf('mini-css-extract-plugin') !== 0;
   }
 
   apply(compiler: Compiler) {
