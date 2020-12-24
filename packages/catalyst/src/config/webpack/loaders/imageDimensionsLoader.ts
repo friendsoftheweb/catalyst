@@ -12,7 +12,7 @@ const OPTIONS_SCHEMA = {
 };
 
 /**
- * Adds "width" and "height" exports to any image imported into a JavaScript
+ * Add a "dimensions" object export to any image imported into a JavaScript
  * file. Must be run after "file-loader".
  */
 export default function imageDimensionsLoader(

@@ -112,6 +112,18 @@ export default function generatePlugins(options?: Options): WebpackPlugin[] {
         exclude(instance) {
           return ignoredDuplicatePackages.includes(instance.name);
         },
+      }),
+      new DuplicatePackageCheckerPlugin({
+        verbose: true,
+        emitError: true,
+        exclude(instance) {
+          return (
+            ignoredDuplicatePackages.includes(instance.name) ||
+            !['react', 'react-dom', 'graphql', '@apollo/client'].includes(
+              instance.name
+            )
+          );
+        },
       })
     );
   }
