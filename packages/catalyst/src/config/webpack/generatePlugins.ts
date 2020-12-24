@@ -66,6 +66,7 @@ export default function generatePlugins(options?: Options): WebpackPlugin[] {
       DEV_SERVER_PROTOCOL: devServerProtocol,
       DEV_SERVER_HOST: devServerHost,
       DEV_SERVER_PORT: devServerPort,
+      CONTEXT_PATH: contextPath,
       SERVICE_WORKER_URL: `${publicPath}service-worker.js`,
     })
   );

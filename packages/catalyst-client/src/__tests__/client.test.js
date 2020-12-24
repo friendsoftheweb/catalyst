@@ -1,10 +1,10 @@
 import 'regenerator-runtime';
 import SockJS from 'sockjs-client';
-import createOverlayFrame from '../createOverlayFrame';
+import createOverlayFrame from '../utils/createOverlayFrame';
 
 let mockFrame;
 
-jest.mock('../createOverlayFrame', () => {
+jest.mock('../utils/createOverlayFrame', () => {
   return async () => {
     return {
       frame: mockFrame,

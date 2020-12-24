@@ -58,6 +58,10 @@
   transition: color 150ms;
 
   &:hover {
-    color: darken($white, 15%);
+    color: darken($white, 35%);
+
+    @media (prefers-color-scheme: dark) {
+      color: darken($white, 15%);
+    }
   }
 }

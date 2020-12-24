@@ -1,18 +1,19 @@
 declare global {
   interface Window {
     __CATALYST_ENV__: {
-      devServerProtocol: string;
-      devServerHost: string;
-      devServerPort: string;
+      devServerProtocol: string | undefined;
+      devServerHost: string | undefined;
+      devServerPort: string | undefined;
+      contextPath: string | undefined;
     };
   }
 }
 
 import SockJS from 'sockjs-client';
 import { SourceMapConsumer } from 'source-map';
-import createOverlayFrame from './createOverlayFrame';
+import createOverlayFrame from './utils/createOverlayFrame';
 import { getSourceLocation } from './getSourceLocation';
-import { messageForError } from './messageForError';
+import { messageForRuntimeError } from './utils/messageForRuntimeError';
 import { FrameState } from './types';
 
 let overlayFrameVisible = true;
@@ -59,12 +60,14 @@ const {
   devServerProtocol,
   devServerHost,
   devServerPort,
+  contextPath,
 } = window.__CATALYST_ENV__;
 
 if (
   devServerProtocol == null ||
   devServerHost == null ||
-  devServerPort == null
+  devServerPort == null ||
+  contextPath == null
 ) {
   throw new Error('Invalid Catalyst client configuration object');
 }
@@ -132,6 +135,7 @@ connection.onmessage = function (event) {
           component: 'CompilationError',
           props: {
             message: message.data[0],
+            contextPath,
           },
         },
         { pointerEvents: 'auto' }
@@ -204,7 +208,7 @@ window.addEventListener('error', (event) => {
   }
 
   runtimeErrorCount++;
-  runtimeErrorMessage = messageForError(event.error);
+  runtimeErrorMessage = messageForRuntimeError(event.error);
 
   showRuntimeErrors();
 
