@@ -22,7 +22,7 @@ export const parseBuildError = (
     return new WebpackModuleBuildFailed(error, options);
   }
 
-  throw new Error('Failed to parse build error');
+  return new BuildError(error, options);
 };
 
 export interface Line {
@@ -31,7 +31,7 @@ export interface Line {
   highlight?: boolean;
 }
 
-export abstract class BuildError {
+export class BuildError {
   protected readonly error: string;
   protected readonly contextPath: string;
 
@@ -40,8 +40,13 @@ export abstract class BuildError {
     this.contextPath = options.contextPath;
   }
 
-  abstract get message(): string | null;
-  abstract get sourcePath(): string | null;
+  get message(): string | null {
+    return this.error;
+  }
+
+  get sourcePath(): string | null {
+    return null;
+  }
 
   get stackTrace(): Line[] {
     return [];
@@ -104,10 +109,6 @@ export class BabelBuildError extends BuildError {
 
     return match[1].replace(this.contextPath, '').replace(/^\//, '');
   }
-
-  get stackTrace() {
-    return [];
-  }
 }
 
 export class SassBuildError extends BuildError {
@@ -141,10 +142,6 @@ export class SassBuildError extends BuildError {
     }
 
     return match[1];
-  }
-
-  get stackTrace() {
-    return [];
   }
 }
 
@@ -180,10 +177,6 @@ export class WebpackModuleNotFound extends BuildError {
 
     return match[1].replace(this.contextPath, '').replace(/^\//, '');
   }
-
-  get stackTrace() {
-    return [];
-  }
 }
 
 export class WebpackModuleBuildFailed extends BuildError {
@@ -205,10 +198,6 @@ export class WebpackModuleBuildFailed extends BuildError {
     }
 
     return match[1].replace(this.contextPath, '');
-  }
-
-  get stackTrace() {
-    return [];
   }
 }
 /* eslint-enable @typescript-eslint/explicit-module-boundary-types */
