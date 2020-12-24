@@ -2,7 +2,9 @@ import path from 'path';
 import fs from 'fs';
 import util from 'util';
 import webpack from 'webpack';
-import WebpackDevServer from 'webpack-dev-server';
+import WebpackDevServer, {
+  Configuration as WebpackDevServerConfiguration,
+} from 'webpack-dev-server';
 import Configuration from '../../Configuration';
 import getWebpackConfig from '../../utils/getWebpackConfig';
 import readCertificateFiles from './readCertificateFiles';
@@ -26,7 +28,6 @@ export default async function createDevServer(options: Options) {
   const {
     host,
     port,
-    protocol,
     certificate,
     overlayEnabled,
     bundleAnalyzerEnabled,
@@ -36,13 +37,13 @@ export default async function createDevServer(options: Options) {
 
   const vendorFilePath = path.join(tempPath, 'vendor-dll.js');
 
-  let https: WebpackDevServer.Configuration['https'] = protocol === 'https';
+  let https: WebpackDevServerConfiguration['https'];
 
   if (certificate != null) {
     https = await readCertificateFiles(rootPath, certificate);
   }
 
-  const configuration: WebpackDevServer.Configuration = {
+  const configuration: WebpackDevServerConfiguration = {
     host,
     port,
     https,
@@ -66,7 +67,7 @@ export default async function createDevServer(options: Options) {
     after(app) {
       // Add a route to fall back to during development if "common.js" is not
       // generated (because it's unnecessary).
-      app.get('/common.js', (req, res) => {
+      app.get('/common.js', (_req, res) => {
         res.set('Content-Type', 'application/javascript');
         res.set('Access-Control-Allow-Origin', '*');
         res.send('// This file left intentially blank.');

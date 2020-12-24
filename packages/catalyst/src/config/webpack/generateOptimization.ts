@@ -1,41 +1,28 @@
-import { Options } from 'webpack';
+import { Configuration as WebpackConfiguration } from 'webpack';
 import TerserPlugin from 'terser-webpack-plugin';
-import OptimizeCSSAssetsPlugin from 'optimize-css-assets-webpack-plugin';
+import CssMinimizerPlugin from 'css-minimizer-webpack-plugin';
 
-export default function generateOptimization(): Options.Optimization {
+export default function generateOptimization(): WebpackConfiguration['optimization'] {
   return {
     minimizer: [
       new TerserPlugin({
         terserOptions: {
-          parse: {
-            ecma: 8,
-          },
           compress: {
-            warnings: false,
             comparisons: false,
             inline: 2,
           },
           mangle: {
             safari10: true,
           },
-          output: {
+          format: {
             ecma: 5,
             comments: false,
             ascii_only: true,
           },
         },
         parallel: true,
-        cache: true,
-        sourceMap: true,
       }),
-      new OptimizeCSSAssetsPlugin({
-        cssProcessorOptions: {
-          map: {
-            inline: false,
-            annotation: true,
-          },
-        },
-      }),
+      new CssMinimizerPlugin(),
     ],
     splitChunks: {
       minChunks: 2,

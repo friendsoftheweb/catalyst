@@ -1,6 +1,9 @@
 const assertFileContains = require('../assertFileContains');
 
-const content = `/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "dimensions", function() { return dimensions; });
+const content = `__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "dimensions": function() { return /* binding */ dimensions; }
+/* harmony export */ });
 /* harmony default export */ __webpack_exports__["default"] = ("/assets/this-is-fine.jpeg");
 const dimensions = {
   width: 300,

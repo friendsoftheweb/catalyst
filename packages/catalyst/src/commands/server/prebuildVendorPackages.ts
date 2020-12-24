@@ -1,10 +1,10 @@
 import path from 'path';
 import chalk from 'chalk';
-import webpack from 'webpack';
+import webpack, { Stats } from 'webpack';
 import getProjectDependencies from '../../utils/getProjectDependencies';
 import Configuration from '../../Configuration';
 
-export default async function prebuildVendorPackages() {
+export default async function prebuildVendorPackages(): Promise<Stats | void> {
   const { contextPath, tempPath, prebuiltPackages } = new Configuration();
   const projectDependencies = await getProjectDependencies();
 
@@ -49,6 +49,11 @@ export default async function prebuildVendorPackages() {
       if (error != null) {
         reject(error);
       } else {
+        if (stats == null) {
+          resolve();
+          return;
+        }
+
         const { errors, warnings } = stats.toJson({
           all: false,
           warnings: true,
@@ -62,7 +67,7 @@ export default async function prebuildVendorPackages() {
             console.log(chalk.yellow(warnings.join('\n\n')));
           }
 
-          resolve({ stats });
+          resolve(stats);
         }
       }
     });

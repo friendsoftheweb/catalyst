@@ -3,7 +3,7 @@ import { SourceMapConsumer } from 'source-map';
 import createOverlayFrame from './utils/createOverlayFrame';
 import { getSourceLocation } from './getSourceLocation';
 import { messageForRuntimeError } from './utils/messageForRuntimeError';
-import { FrameState, Environment } from './types';
+import { FrameState, DevServerEvent, Environment } from './types';
 
 declare global {
   interface Window {
@@ -71,10 +71,10 @@ const devServerURI = `${devServerProtocol}://${devServerHost}:${devServerPort}`;
 
 const connection = new SockJS(`${devServerURI}/sockjs-node`);
 
-connection.onmessage = function (event) {
-  const message = JSON.parse(event.data);
+connection.onmessage = function ({ data }: { data: string }) {
+  const event: DevServerEvent = JSON.parse(data);
 
-  switch (message.type) {
+  switch (event.type) {
     case 'invalid':
       if (!isBuilding) {
         isBuilding = true;
@@ -91,10 +91,10 @@ connection.onmessage = function (event) {
 
     case 'hash':
       if (firstCompilationHash == null) {
-        firstCompilationHash = message.data;
+        firstCompilationHash = event.data;
       }
 
-      lastCompilationHash = message.data;
+      lastCompilationHash = event.data;
       break;
 
     case 'ok':
@@ -116,7 +116,7 @@ connection.onmessage = function (event) {
       break;
 
     case 'warnings':
-      console.warn(...message.data);
+      console.warn(...event.data.map((warning) => warning.message));
 
       tryApplyUpdates();
 
@@ -129,7 +129,7 @@ connection.onmessage = function (event) {
         {
           component: 'CompilationError',
           props: {
-            message: message.data[0],
+            message: event.data[0].message,
             contextPath,
           },
         },

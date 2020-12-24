@@ -88,7 +88,7 @@ test('a compilation error is displayed', async () => {
 
   SockJS.message({
     type: 'errors',
-    data: ['/this/is/a/filepath.js'],
+    data: [{ message: '/this/is/a/filepath.js' }],
   });
 
   await delay(0);
