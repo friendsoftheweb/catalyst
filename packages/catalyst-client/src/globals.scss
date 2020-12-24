@@ -1,5 +1,20 @@
-$compilation-error-horizontal-padding: 2.5rem;
+$horizontal-padding: 2.5rem;
+$horizontal-padding-mobile: 1.5rem;
 
 $black: #212121;
 $white: #fafafa;
 $red: #ff0000;
+
+$mobile-breakpoint: 600px;
+
+@mixin media-mobile {
+  @media screen and (max-width: $mobile-breakpoint) {
+    @content;
+  }
+}
+
+@mixin media-dark {
+  @media screen and (prefers-color-scheme: dark) {
+    @content;
+  }
+}

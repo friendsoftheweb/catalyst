@@ -9,7 +9,7 @@ $dark-number-bg: lighten($black, 24%);
 
   box-sizing: border-box;
   border-radius: 0.25em;
-  margin: 2em 0;
+  margin: 0.5em 0;
   line-height: 1.6em;
   overflow: auto;
 
@@ -17,7 +17,7 @@ $dark-number-bg: lighten($black, 24%);
   border-color: $light-number-bg;
   border-width: 2px 2px 2px 0;
 
-  @media (prefers-color-scheme: dark) {
+  @include media-dark {
     border-color: $dark-number-bg;
   }
 }
@@ -31,7 +31,7 @@ $dark-number-bg: lighten($black, 24%);
   &.is-highlight {
     background-color: lighten($red, 18%);
 
-    @media (prefers-color-scheme: dark) {
+    @include media-dark {
       background-color: darken($red, 10%);
     }
   }
@@ -44,7 +44,7 @@ $dark-number-bg: lighten($black, 24%);
     padding-bottom: 0.5em;
   }
 
-  @media (prefers-color-scheme: dark) {
+  @include media-dark {
     color: darken($white, 8%);
     background-color: $dark-number-bg;
   }
@@ -59,7 +59,7 @@ $dark-number-bg: lighten($black, 24%);
   &.is-highlight {
     background-color: lighten($red, 36%);
 
-    @media (prefers-color-scheme: dark) {
+    @include media-dark {
       background-color: darken($red, 20%);
     }
   }
@@ -72,7 +72,7 @@ $dark-number-bg: lighten($black, 24%);
     padding-bottom: 0.5em;
   }
 
-  @media (prefers-color-scheme: dark) {
+  @include media-dark {
     color: darken($white, 16%);
     background-color: lighten($black, 5%);
   }

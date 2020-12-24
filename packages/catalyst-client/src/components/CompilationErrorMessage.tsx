@@ -1,5 +1,5 @@
 /** @jsx h */
-import { h, FunctionalComponent } from 'preact';
+import { h, FunctionalComponent, Fragment } from 'preact';
 import { parseBuildError } from '../utils/parseBuildError';
 import { SourceCode } from './SourceCode';
 import './CompilationErrorMessage.scss';
@@ -26,7 +26,13 @@ export const CompilationErrorMessage: FunctionalComponent<Props> = (props) => {
         <div className="CompilationErrorMessage-message">{message}</div>
       )}
 
-      {sourceCode.length > 0 && <SourceCode lines={sourceCode} />}
+      {sourceCode.length > 0 && (
+        <Fragment>
+          <h2>Source</h2>
+
+          <SourceCode lines={sourceCode} />
+        </Fragment>
+      )}
     </div>
   );
 };
