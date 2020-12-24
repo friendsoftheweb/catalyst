@@ -1,4 +1,8 @@
-export const messageForError = (error: Error): string | undefined => {
+export const messageForRuntimeError = (error: Error): string | undefined => {
+  if (error.name === 'TypeError') {
+    return error.message;
+  }
+
   if (error.name === 'ReferenceError') {
     return error.message;
   }

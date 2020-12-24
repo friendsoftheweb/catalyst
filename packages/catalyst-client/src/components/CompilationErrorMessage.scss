@@ -1,10 +1,22 @@
 @import '../globals.scss';
 
 .CompilationErrorMessage {
+  box-sizing: border-box;
   flex: 1;
   width: 100%;
-  box-sizing: border-box;
-  padding: 0 $compilation-error-horizontal-padding;
+  max-width: 80em;
+  padding: 0 $horizontal-padding;
+  line-height: 1.75em;
+
+  h2 {
+    font-size: 1em;
+    margin: 1.75em 0 0.5em;
+    padding: 0;
+  }
+
+  @include media-mobile {
+    padding: 0 $horizontal-padding-mobile;
+  }
 }
 
 .CompilationErrorMessage-location {
@@ -12,30 +24,11 @@
   margin-bottom: 1em;
 }
 
-.CompilationErrorMessage-code {
-  box-sizing: border-box;
-  width: 100%;
-  white-space: pre;
-  background-color: #eeeeee;
-  border-radius: 0.25em;
-  padding: 1em 0;
-  margin: 2em 0;
-  line-height: 1.5em;
-  overflow: hidden;
+.CompilationErrorMessage-message {
+  padding: 0.5em 1em;
+  background-color: darken($white, 5%);
 
-  @media (prefers-color-scheme: dark) {
-    background-color: #222;
-
-    .highlight {
-      background-color: #b71c1c;
-    }
+  @include media-dark {
+    background-color: lighten($black, 5%);
   }
-}
-
-.CompilationErrorMessage-code div {
-  padding: 0 1em;
-}
-
-.CompilationErrorMessage-stack {
-  line-height: 1.5em;
 }

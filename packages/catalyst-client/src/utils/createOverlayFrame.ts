@@ -29,7 +29,7 @@ export default function createOverlayFrame(): Promise<{
     frame.style.display = 'none';
 
     frame.onload = function () {
-      resolve({ frame: frame });
+      resolve({ frame });
     };
 
     document.body.appendChild(frame);
