@@ -1,26 +1,15 @@
-declare global {
-  interface Window {
-    __CATALYST_ENV__: {
-      devServerProtocol: string;
-      devServerHost: string;
-      devServerPort: string;
-    };
-  }
-
-  interface NodeModule {
-    hot: {
-      status(): 'idle';
-      check(autoApply: boolean): Promise<unknown>;
-    };
-  }
-}
-
 import SockJS from 'sockjs-client';
 import { SourceMapConsumer } from 'source-map';
-import createOverlayFrame from './createOverlayFrame';
+import createOverlayFrame from './utils/createOverlayFrame';
 import { getSourceLocation } from './getSourceLocation';
-import { messageForError } from './messageForError';
-import { FrameState } from './types';
+import { messageForRuntimeError } from './utils/messageForRuntimeError';
+import { FrameState, Environment } from './types';
+
+declare global {
+  interface Window {
+    __CATALYST_ENV__: Environment;
+  }
+}
 
 let overlayFrameVisible = true;
 let overlayFramePointerEvents = 'none';
@@ -66,12 +55,14 @@ const {
   devServerProtocol,
   devServerHost,
   devServerPort,
+  contextPath,
 } = window.__CATALYST_ENV__;
 
 if (
   devServerProtocol == null ||
   devServerHost == null ||
-  devServerPort == null
+  devServerPort == null ||
+  contextPath == null
 ) {
   throw new Error('Invalid Catalyst client configuration object');
 }
@@ -91,7 +82,7 @@ connection.onmessage = function (event) {
         showNotification({
           component: 'Activity',
           props: {
-            message: 'Building…',
+            message: 'Building...',
           },
         });
       }
@@ -139,6 +130,7 @@ connection.onmessage = function (event) {
           component: 'CompilationError',
           props: {
             message: message.data[0],
+            contextPath,
           },
         },
         { pointerEvents: 'auto' }
@@ -166,7 +158,14 @@ const tryApplyUpdates = async () => {
   }
 
   try {
-    await module.hot.check(true);
+    if (module.hot != null) {
+      const { check } = module.hot;
+
+      await new Promise((resolve) => {
+        check(true, resolve);
+      });
+    }
+
     await hideNotification();
   } catch (error) {
     window.location.reload();
@@ -204,7 +203,7 @@ window.addEventListener('error', (event) => {
   }
 
   runtimeErrorCount++;
-  runtimeErrorMessage = messageForError(event.error);
+  runtimeErrorMessage = messageForRuntimeError(event.error);
 
   showRuntimeErrors();
 
