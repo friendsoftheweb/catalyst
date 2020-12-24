@@ -22,23 +22,24 @@ declare module 'css-minimizer-webpack-plugin';
 
 declare module 'webpack-dev-server' {
   import { Configuration as WebpackConfiguration } from 'webpack';
+  import { Application } from 'express';
 
   export interface Configuration {
-    https?: boolean;
-
-    before?(app: {
-      get(
-        path: string,
-        callback: (request: any, response: any) => Promise<void> | void
-      ): void;
-    }): void;
-
-    after?(app: {
-      get(
-        path: string,
-        callback: (request: any, response: any) => Promise<void> | void
-      ): void;
-    }): void;
+    host?: string;
+    port?: number;
+    https?: {
+      key: Buffer;
+      cert: Buffer;
+      ca: Buffer;
+    };
+    hot?: boolean;
+    publicPath?: string;
+    clientLogLevel?: 'none';
+    headers?: Record<string, string>;
+    disableHostCheck?: boolean;
+    stats?: 'errors-only';
+    before?(app: Application): void;
+    after?(app: Application): void;
   }
 
   export default class WebpackDevServer {

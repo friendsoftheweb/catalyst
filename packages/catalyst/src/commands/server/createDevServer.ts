@@ -28,7 +28,6 @@ export default async function createDevServer(options: Options) {
   const {
     host,
     port,
-    protocol,
     certificate,
     overlayEnabled,
     bundleAnalyzerEnabled,
@@ -38,7 +37,7 @@ export default async function createDevServer(options: Options) {
 
   const vendorFilePath = path.join(tempPath, 'vendor-dll.js');
 
-  let https: WebpackDevServerConfiguration['https'] = protocol === 'https';
+  let https: WebpackDevServerConfiguration['https'];
 
   if (certificate != null) {
     https = await readCertificateFiles(rootPath, certificate);
@@ -68,7 +67,7 @@ export default async function createDevServer(options: Options) {
     after(app) {
       // Add a route to fall back to during development if "common.js" is not
       // generated (because it's unnecessary).
-      app.get('/common.js', (req, res) => {
+      app.get('/common.js', (_req, res) => {
         res.set('Content-Type', 'application/javascript');
         res.set('Access-Control-Allow-Origin', '*');
         res.send('// This file left intentially blank.');
