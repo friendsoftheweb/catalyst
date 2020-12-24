@@ -13,7 +13,7 @@ import {
 
 test('parsing a Webpack build error', () => {
   const result = parseBuildError(WEBPACK_BUILD_ERROR, {
-    rootPath: '/Users/dan/Projects/lboy-website',
+    contextPath: '/Users/dan/Projects/lboy-website',
   });
 
   expect(result).toBeInstanceOf(WebpackBuildError);
@@ -29,7 +29,7 @@ test('parsing a Webpack build error', () => {
 
 test('parsing a Babel build error', () => {
   const result = parseBuildError(BABEL_BUILD_ERROR, {
-    rootPath: '/Users/dan/Projects/lboy-website',
+    contextPath: '/Users/dan/Projects/lboy-website',
   });
 
   expect(result).toBeInstanceOf(BabelBuildError);
@@ -70,7 +70,7 @@ test('parsing a Babel build error', () => {
 
 test('parsing a SASS build error', () => {
   const result = parseBuildError(SASS_BUILD_ERROR, {
-    rootPath: '/Users/dan/Projects/lboy-website',
+    contextPath: '/Users/dan/Projects/lboy-website',
   });
 
   expect(result).toBeInstanceOf(SassBuildError);

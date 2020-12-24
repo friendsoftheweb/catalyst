@@ -1,20 +1,15 @@
-declare global {
-  interface Window {
-    __CATALYST_ENV__: {
-      devServerProtocol: string | undefined;
-      devServerHost: string | undefined;
-      devServerPort: string | undefined;
-      contextPath: string | undefined;
-    };
-  }
-}
-
 import SockJS from 'sockjs-client';
 import { SourceMapConsumer } from 'source-map';
 import createOverlayFrame from './utils/createOverlayFrame';
 import { getSourceLocation } from './getSourceLocation';
 import { messageForRuntimeError } from './utils/messageForRuntimeError';
-import { FrameState } from './types';
+import { FrameState, Environment } from './types';
+
+declare global {
+  interface Window {
+    __CATALYST_ENV__: Environment;
+  }
+}
 
 let overlayFrameVisible = true;
 let overlayFramePointerEvents = 'none';

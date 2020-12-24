@@ -1,12 +1,9 @@
 declare module 'catalyst' {
+  import { Environment } from 'catalyst-client/lib/types';
+
   global {
     interface Window {
-      __CATALYST_ENV__: {
-        devServerProtocol: string | undefined;
-        devServerHost: string | undefined;
-        devServerPort: string | undefined;
-        contextPath: string | undefined;
-      };
+      __CATALYST_ENV__: Environment;
     }
   }
 }
