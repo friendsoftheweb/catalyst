@@ -10,6 +10,13 @@ at /Users/dan/Projects/catalyst/packages/catalyst/node_modules/enhanced-resolve/
 at /Users/dan/Projects/catalyst/packages/catalyst/node_modules/enhanced-resolve/lib/Resolver.js:285:5
 at eval (eval at create (/Users/dan/Projects/catalyst/packages/catalyst/node_modules/tapable/lib/HookCodeFactory.js:33:10), <anonymous>:15:1)`;
 
+// export const WEBPACK_BUILD_ERROR = `ERROR in ../node_modules/react-stripe-elements/es/index.js
+// Module build failed: Error: ENOENT: no such file or directory, open '/Users/dan/Projects/lboy-website/node_modules/react-stripe-elements/es/index.js'
+//  @ ./components/PosterPayment.tsx 27:0-49 124:42-50
+//  @ ./components/PosterCheckout.tsx
+//  @ ./bundles/application/index.tsx
+//  @ multi /Users/dan/Projects/catalyst/packages/catalyst/lib/dev-environment catalyst-client ./bundles/application/index.tsx`;
+
 export const BABEL_BUILD_ERROR = `ERROR in ./components/PosterCheckout.tsx
 Module build failed (from /Users/dan/Projects/catalyst/packages/catalyst/node_modules/babel-loader/lib/index.js):
 SyntaxError: /Users/dan/Projects/lboy-website/client/components/PosterCheckout.tsx: JSX value should be either an expression or a quoted JSX text (13:23)

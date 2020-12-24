@@ -1,5 +1,5 @@
 import {
-  WebpackBuildError,
+  WebpackModuleNotFound,
   BabelBuildError,
   SassBuildError,
   parseBuildError,
@@ -16,7 +16,7 @@ test('parsing a Webpack build error', () => {
     contextPath: '/Users/dan/Projects/lboy-website',
   });
 
-  expect(result).toBeInstanceOf(WebpackBuildError);
+  expect(result).toBeInstanceOf(WebpackModuleNotFound);
 
   expect(result.message).toEqual('Module not found: missing-package');
 

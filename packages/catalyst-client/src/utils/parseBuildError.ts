@@ -15,7 +15,11 @@ export const parseBuildError = (
   }
 
   if (/^ModuleNotFoundError/m.test(error)) {
-    return new WebpackBuildError(error, options);
+    return new WebpackModuleNotFound(error, options);
+  }
+
+  if (/^Module build failed/m.test(error)) {
+    return new WebpackModuleBuildFailed(error, options);
   }
 
   throw new Error('Failed to parse build error');
@@ -141,7 +145,7 @@ export class SassBuildError extends BuildError {
   }
 }
 
-export class WebpackBuildError extends BuildError {
+export class WebpackModuleNotFound extends BuildError {
   get message() {
     const match = /^ModuleNotFoundError: ([^:\n]+)/im.exec(this.error);
 
@@ -163,7 +167,7 @@ export class WebpackBuildError extends BuildError {
   }
 
   get sourcePath() {
-    const match = /Can't resolve '[a-z0-9\-_]+' in '([a-z0-9\-_/]+)'$/im.exec(
+    const match = /Can't resolve '[a-z0-9\-_]+' in '\.*([a-z0-9\-_/.]+)'$/im.exec(
       this.error
     );
 
@@ -172,6 +176,32 @@ export class WebpackBuildError extends BuildError {
     }
 
     return match[1].replace(this.contextPath, '').replace(/^\//, '');
+  }
+
+  get stackTrace() {
+    return [];
+  }
+}
+
+export class WebpackModuleBuildFailed extends BuildError {
+  get message() {
+    const match = /^Module build failed: ([^\n]+)/im.exec(this.error);
+
+    if (match == null) {
+      return null;
+    }
+
+    return match[1];
+  }
+
+  get sourcePath() {
+    const match = /^\s+@ \.*\/?([a-z0-9\-_/.]+)$/im.exec(this.error);
+
+    if (match == null) {
+      throw new Error('Could not extract source path from build error');
+    }
+
+    return match[1].replace(this.contextPath, '');
   }
 
   get stackTrace() {
