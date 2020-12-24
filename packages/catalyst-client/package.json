@@ -30,7 +30,10 @@
   "jest": {
     "transform": {
       "^.+\\.(t|j)sx?$": "babel-jest"
-    }
+    },
+    "testMatch": [
+      "<rootDir>/src/**/__tests__/**/*.[jt]s?(x)"
+    ]
   },
   "bugs": {
     "url": "https://github.com/friendsoftheweb/catalyst/issues"
