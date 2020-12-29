@@ -8,7 +8,7 @@ import DuplicatePackageCheckerPlugin from 'duplicate-package-checker-webpack-plu
 import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin';
 import CircularDependencyPlugin from 'circular-dependency-plugin';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
-import PrefetchManifestPlugin from './plugins/PrefetchManifestPlugin';
+import CatalystManifestPlugin from './plugins/CatalystManifestPlugin';
 import CleanUpStatsPlugin from './plugins/CleanUpStatsPlugin';
 import Configuration from '../../Configuration';
 import { Environment } from '../../Environment';
@@ -84,7 +84,7 @@ export default function generatePlugins(
 
   if (environment !== Environment.Development) {
     plugins.push(
-      new PrefetchManifestPlugin(),
+      new CatalystManifestPlugin(),
       new WebpackManifestPlugin({ fileName: 'manifest.json' })
     );
   }
