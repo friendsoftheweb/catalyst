@@ -12,7 +12,6 @@
     "strictBindCallApply": true /* Enable strict 'bind', 'call', and 'apply' methods on functions. */,
     "strictPropertyInitialization": true /* Enable strict checking of property initialization in classes. */,
     "noImplicitThis": true /* Raise error on 'this' expressions with an implied 'any' type. */,
-    "noUnusedLocals": true /* Report errors on unused locals. */,
     "noUnusedParameters": false /* Report errors on unused parameters. */,
     "noImplicitReturns": true /* Report error when not all code paths in function return a value. */,
     "noFallthroughCasesInSwitch": true /* Report errors for fallthrough cases in switch statement. */,

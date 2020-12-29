@@ -4,12 +4,15 @@ import { execSync } from 'child_process';
 import mkdirp from 'mkdirp';
 import chalk from 'chalk';
 import inquirer from 'inquirer';
+import { templateSettings } from 'lodash';
 
 import installMissingDependencies from '../../utils/installMissingDependencies';
 import writeFileFromTemplate from '../../utils/writeFileFromTemplate';
 import exitWithError from '../../utils/exitWithError';
 import tryWriteFile from '../../utils/tryWriteFile';
 import forEachPlugin from '../../utils/forEachPlugin';
+
+templateSettings.interpolate = /<%=([\s\S]+?)%>/g;
 
 export const defaultConfig = {
   contextPath: 'client',

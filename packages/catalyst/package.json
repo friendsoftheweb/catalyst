@@ -6,7 +6,7 @@
   "homepage": "https://github.com/friendsoftheweb/catalyst#readme",
   "license": "MIT",
   "main": "./lib/index.js",
-  "bin": "./lib/index.js",
+  "bin": "./lib/bin.js",
   "files": [
     "lib"
   ],
