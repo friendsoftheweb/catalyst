@@ -94,7 +94,6 @@
     "webpack": "^5.11.0",
     "webpack-bundle-analyzer": "^4.3.0",
     "webpack-dev-server": "^3.7.2",
-    "webpack-manifest-plugin": "^3.0.0",
     "webpack-sources": "^2.2.0",
     "workbox-webpack-plugin": "^6.0.2"
   },
