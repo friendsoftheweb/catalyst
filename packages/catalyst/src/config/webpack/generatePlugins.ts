@@ -75,7 +75,7 @@ export default function generatePlugins(
     plugins.push(
       new WorkboxWebpackPlugin.GenerateSW({
         clientsClaim: true,
-        exclude: [/\.map$/, /catalyst\.manifest\.json$/],
+        exclude: [/\.map$/, /manifest\.json$/, /catalyst\.manifest\.json$/],
       })
     );
   }

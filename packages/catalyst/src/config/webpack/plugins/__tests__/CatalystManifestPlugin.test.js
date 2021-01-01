@@ -48,8 +48,8 @@ const compileFixture = (volume, context) => {
   compiler.outputFileSystem.join = path.join.bind(path);
 
   return new Promise((resolve, reject) => {
-    compiler.run((err, stats) => {
-      if (err) reject(err);
+    compiler.run((error, stats) => {
+      if (error) reject(error);
       if (stats.hasErrors()) reject(stats.toJson().errors);
 
       resolve(stats.toJson());
