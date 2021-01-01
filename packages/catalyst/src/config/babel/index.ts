@@ -4,6 +4,7 @@ import { Environment } from '../../Environment';
 import forEachPlugin from '../../utils/forEachPlugin';
 
 interface Options {
+  configuration?: Configuration;
   modules?: 'amd' | 'umd' | 'systemjs' | 'commonjs' | 'cjs' | 'auto' | false;
   targets?: { [key: string]: string };
   corejs?: 2 | 3;
@@ -11,10 +12,14 @@ interface Options {
 }
 
 export default function babelConfig(options: Options = {}) {
-  const { targets, corejs, useBuiltIns = 'usage' } = options;
-  let { modules } = options;
+  const {
+    configuration = Configuration.fromFile(),
+    targets,
+    corejs,
+    useBuiltIns = 'usage',
+  } = options;
 
-  const configuration = new Configuration();
+  let { modules } = options;
 
   const { environment, typeScriptEnabled, useReactJSXRuntime } = configuration;
 
@@ -84,7 +89,7 @@ export default function babelConfig(options: Options = {}) {
     ]);
   }
 
-  forEachPlugin((plugin) => {
+  forEachPlugin(configuration, (plugin) => {
     if (plugin.modifyBabelPresets != null) {
       presets = plugin.modifyBabelPresets(presets, configuration);
     }

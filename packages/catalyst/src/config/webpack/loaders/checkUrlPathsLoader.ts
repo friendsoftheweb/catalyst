@@ -19,7 +19,8 @@ export default function checkUrlPathsLoader(
 ): void {
   const callback = this.async();
 
-  const { rootPath } = new Configuration();
+  const { rootPath } = Configuration.fromFile();
+
   const promises = [];
 
   let match;

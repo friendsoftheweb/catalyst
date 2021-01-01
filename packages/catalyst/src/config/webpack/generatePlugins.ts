@@ -19,10 +19,9 @@ interface Options {
 }
 
 export default function generatePlugins(
+  configuration: Configuration,
   options?: Options
 ): WebpackPluginInstance[] {
-  const configuration = new Configuration();
-
   const {
     environment,
     contextPath,
@@ -136,7 +135,7 @@ export default function generatePlugins(
     plugins.push(new BundleAnalyzerPlugin());
   }
 
-  forEachPlugin((plugin) => {
+  forEachPlugin(configuration, (plugin) => {
     if (plugin.modifyWebpackPlugins != null) {
       plugins = plugin.modifyWebpackPlugins(plugins, configuration);
     }

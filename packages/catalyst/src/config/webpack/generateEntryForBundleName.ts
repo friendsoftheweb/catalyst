@@ -1,10 +1,14 @@
 import fs from 'fs';
 import path from 'path';
+import { Entry } from 'webpack';
 import Configuration from '../../Configuration';
 import generateEntry from './generateEntry';
 
-export default function generateEntryForBundleName(bundleName: string) {
-  const { bundlesPath } = new Configuration();
+export default function generateEntryForBundleName(
+  configuration: Configuration,
+  bundleName: string
+): Entry {
+  const { bundlesPath } = configuration;
 
   const bundlePath = path.join(bundlesPath, bundleName);
 
@@ -12,7 +16,7 @@ export default function generateEntryForBundleName(bundleName: string) {
     const indexPath = path.join(bundlePath, `index.${extension}`);
 
     if (fs.existsSync(indexPath)) {
-      return generateEntry(indexPath);
+      return generateEntry(configuration, indexPath);
     }
   }
 

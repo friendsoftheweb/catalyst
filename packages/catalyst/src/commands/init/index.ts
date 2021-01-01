@@ -10,6 +10,7 @@ import writeFileFromTemplate from '../../utils/writeFileFromTemplate';
 import exitWithError from '../../utils/exitWithError';
 import tryWriteFile from '../../utils/tryWriteFile';
 import forEachPlugin from '../../utils/forEachPlugin';
+import Configuration from '../../Configuration';
 
 export const defaultConfig = {
   contextPath: 'client',
@@ -126,7 +127,8 @@ export default async function init(options: Options) {
   let nodePackages = [...defaultNodePackages, ...config.plugins];
   let nodePackagesDev = [...defaultNodePackagesDev];
 
-  forEachPlugin((plugin) => {
+  // TODO: Make sure this works properly before merging!!!!!!!!!!!!!!!!!!!!!!!
+  forEachPlugin(new Configuration(config), (plugin) => {
     if (plugin.modifyNodePackages != null) {
       nodePackages = plugin.modifyNodePackages(nodePackages);
     }

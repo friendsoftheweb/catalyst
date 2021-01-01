@@ -2,8 +2,8 @@ import fs from 'fs';
 import path from 'path';
 import Configuration from '../../Configuration';
 
-export default function bundlePaths(): string[] {
-  const { bundlesPath } = new Configuration();
+export default function bundlePaths(configuration: Configuration): string[] {
+  const { bundlesPath } = configuration;
 
   return fs
     .readdirSync(bundlesPath)

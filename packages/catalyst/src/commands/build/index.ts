@@ -11,7 +11,7 @@ interface Options {
 }
 
 export default async function build(options: Options): Promise<void> {
-  const { environment, buildPath } = new Configuration();
+  const { environment, buildPath } = Configuration.fromFile();
 
   if (
     environment !== Environment.Production &&

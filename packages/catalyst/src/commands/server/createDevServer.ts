@@ -33,7 +33,7 @@ export default async function createDevServer(options: Options) {
     bundleAnalyzerEnabled,
   } = options;
 
-  const { rootPath, tempPath } = new Configuration();
+  const { rootPath, tempPath } = Configuration.fromFile();
 
   const vendorFilePath = path.join(tempPath, 'vendor-dll.js');
 

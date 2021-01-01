@@ -5,7 +5,8 @@ import getProjectDependencies from '../../utils/getProjectDependencies';
 import Configuration from '../../Configuration';
 
 export default async function prebuildVendorPackages(): Promise<Stats | void> {
-  const { contextPath, tempPath, prebuiltPackages } = new Configuration();
+  const { contextPath, tempPath, prebuiltPackages } = Configuration.fromFile();
+
   const projectDependencies = await getProjectDependencies();
 
   const packagesToPrebuild = prebuiltPackages.filter((prebuiltPackage) =>
