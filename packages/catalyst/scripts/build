@@ -8,7 +8,7 @@ const mkdirp = require('mkdirp');
 
 execSync('rm -rf lib');
 execSync('tsc', { stdio: 'inherit' });
-execSync('chmod +x lib/index.js');
+execSync('chmod +x lib/bin.js');
 
 const templatePaths = glob.sync('src/templates/**/*');
 

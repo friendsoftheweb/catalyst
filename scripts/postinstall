@@ -8,4 +8,4 @@ set -euxo pipefail
 (cd packages/catalyst-plugin-styled-components && yarn install && yarn link catalyst)
 (cd packages/catalyst/test-project && yarn install)
 
-ln -sf ../../../lib/index.js ./packages/catalyst/test-project/node_modules/.bin/catalyst
+ln -sf ../../../lib/bin.js ./packages/catalyst/test-project/node_modules/.bin/catalyst
