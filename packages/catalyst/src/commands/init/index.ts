@@ -130,7 +130,6 @@ export default async function init(options: Options) {
   let nodePackages = [...defaultNodePackages, ...config.plugins];
   let nodePackagesDev = [...defaultNodePackagesDev];
 
-  // TODO: Make sure this works properly before merging!!!!!!!!!!!!!!!!!!!!!!!
   forEachPlugin(new Configuration(config), (plugin) => {
     if (plugin.modifyNodePackages != null) {
       nodePackages = plugin.modifyNodePackages(nodePackages);
