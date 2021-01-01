@@ -1,7 +1,7 @@
 import path from 'path';
 import webpack from 'webpack';
 import { createFsFromVolume, Volume } from 'memfs';
-import { WebpackManifestPlugin } from 'webpack-manifest-plugin';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import CatalystManifestPlugin from '../CatalystManifestPlugin';
 
 const compileFixture = (volume, name) => {
@@ -27,7 +27,7 @@ const compileFixture = (volume, name) => {
           test: /\.css$/i,
           use: [
             {
-              loader: 'style-loader',
+              loader: MiniCssExtractPlugin.loader,
             },
             {
               loader: 'css-loader',
@@ -38,8 +38,9 @@ const compileFixture = (volume, name) => {
     },
     plugins: [
       new CatalystManifestPlugin(),
-
-      // new WebpackManifestPlugin()
+      new MiniCssExtractPlugin({
+        filename: '[name].[contenthash:8].css',
+      }),
     ],
   });
 
@@ -68,8 +69,10 @@ test('catalyst.json contains all assets referenced by chunks that include @catal
 
   expect(catalystManifest).toEqual({
     assets: {
-      'application.js': '/public/application.92002d86.js',
-      '636.d3f45c2e.js': '/public/636.d3f45c2e.js',
+      'application.js': '/public/application.160f4a10.js',
+      'application.css': '/public/application.dc1eaf81.css',
+      '609.e4489107.js': '/public/609.e4489107.js',
+      '609.8c5b220b.css': '/public/609.8c5b220b.css',
       'assets/AdobeBlank.woff':
         '/public/assets/AdobeBlank-c8335fa27107c7db9bab5894e12b2984.woff',
       'assets/this-is-fine.jpeg':
@@ -79,7 +82,11 @@ test('catalyst.json contains all assets referenced by chunks that include @catal
       application: ['assets/AdobeBlank.woff'],
     },
     prefetch: {
-      application: ['assets/this-is-fine.jpeg', '636.d3f45c2e.js'],
+      application: [
+        'assets/this-is-fine.jpeg',
+        '609.e4489107.js',
+        '609.8c5b220b.css',
+      ],
     },
   });
 });

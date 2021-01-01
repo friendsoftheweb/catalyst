@@ -170,9 +170,13 @@ interface Module {
 const nameForAsset = (asset: Asset) => {
   if (/\.js$/.test(asset.name) && asset.chunkNames.length === 1) {
     return `${asset.chunkNames[0]}.js`;
-  } else {
-    return asset.info.sourceFilename ?? asset.name;
   }
+
+  if (/\.css$/.test(asset.name) && asset.chunkNames.length === 1) {
+    return `${asset.chunkNames[0]}.css`;
+  }
+
+  return asset.info.sourceFilename ?? asset.name;
 };
 
 const collectPrefetchChunks = (chunks: Chunk[]) =>
