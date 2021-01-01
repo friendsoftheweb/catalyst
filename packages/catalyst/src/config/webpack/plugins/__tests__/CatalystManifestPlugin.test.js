@@ -61,32 +61,24 @@ test('catalyst.json contains all assets referenced by chunks that include @catal
   const volume = new Volume();
   await compileFixture(volume, 'one');
 
-  const catalystManifest = JSON.parse(
+  const manifest = JSON.parse(
     volume
       .readFileSync(path.join(__dirname, 'catalyst.manifest.json'))
       .toString()
   );
 
-  expect(catalystManifest).toEqual({
-    assets: {
-      'application.js': '/public/application.160f4a10.js',
-      'application.css': '/public/application.dc1eaf81.css',
-      '609.e4489107.js': '/public/609.e4489107.js',
-      '609.8c5b220b.css': '/public/609.8c5b220b.css',
-      'assets/AdobeBlank.woff':
-        '/public/assets/AdobeBlank-c8335fa27107c7db9bab5894e12b2984.woff',
-      'assets/this-is-fine.jpeg':
-        '/public/assets/this-is-fine-c09300d2dc0256f7a52cf6abb616c720.jpeg',
-    },
-    preload: {
-      application: ['assets/AdobeBlank.woff'],
-    },
-    prefetch: {
-      application: [
-        'assets/this-is-fine.jpeg',
-        '609.e4489107.js',
-        '609.8c5b220b.css',
-      ],
-    },
-  });
+  expect(Object.keys(manifest.assets)).toHaveLength(6);
+
+  expect(Object.keys(manifest.assets)).toContain(
+    'application.js',
+    'application.css',
+    'assets/AdobeBlank.woff',
+    'assets/this-is-fine.jpeg'
+  );
+
+  expect(manifest.preload.application).toContain('assets/AdobeBlank.woff');
+
+  expect(manifest.prefetch.application).toContain('assets/this-is-fine.jpeg');
+
+  expect(manifest.prefetch.application).toHaveLength(3);
 });
