@@ -4,7 +4,7 @@ test('build process polyfills symbols', async () => {
   await assertFileContains({
     file: 'symbol-polyfill.js',
     content:
-      '__webpack_require__(/*! core-js/modules/es.symbol */ "../node_modules/core-js/modules/es.symbol.js");',
+      '__webpack_require__(/*! core-js/modules/es.symbol.js */ "../node_modules/core-js/modules/es.symbol.js");',
   });
 
   await assertFileContains({

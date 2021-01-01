@@ -2,13 +2,17 @@ import babelConfig from '../index';
 import Configuration from '../../../Configuration';
 
 jest.mock('../../../Configuration', () => {
-  return function() {
-    return {
-      rootPath: 'ROOT',
-      buildPath: 'BUILD',
-      plugins: []
-    };
-  };
+  class MockConfiguration {
+    static fromFile() {
+      return new MockConfiguration();
+    }
+
+    rootPath = 'ROOT';
+    buildPath = 'BUILD';
+    plugins = [];
+  }
+
+  return MockConfiguration;
 });
 
 describe('babelConfig()', () => {

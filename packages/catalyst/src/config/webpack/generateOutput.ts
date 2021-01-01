@@ -2,14 +2,16 @@ import { Configuration as WebpackConfiguration } from 'webpack';
 import Configuration from '../../Configuration';
 import { Environment } from '../../Environment';
 
-export default function generateOutput(): WebpackConfiguration['output'] {
+export default function generateOutput(
+  configuration: Configuration
+): WebpackConfiguration['output'] {
   const {
     environment,
     buildPath,
     publicPath,
     devServerHost,
     devServerPort,
-  } = new Configuration();
+  } = configuration;
 
   if (environment === Environment.Development) {
     return {

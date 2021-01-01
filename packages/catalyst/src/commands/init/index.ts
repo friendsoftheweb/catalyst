@@ -11,6 +11,7 @@ import writeFileFromTemplate from '../../utils/writeFileFromTemplate';
 import exitWithError from '../../utils/exitWithError';
 import tryWriteFile from '../../utils/tryWriteFile';
 import forEachPlugin from '../../utils/forEachPlugin';
+import Configuration from '../../Configuration';
 
 templateSettings.interpolate = /<%=([\s\S]+?)%>/g;
 
@@ -129,7 +130,7 @@ export default async function init(options: Options) {
   let nodePackages = [...defaultNodePackages, ...config.plugins];
   let nodePackagesDev = [...defaultNodePackagesDev];
 
-  forEachPlugin((plugin) => {
+  forEachPlugin(new Configuration(config), (plugin) => {
     if (plugin.modifyNodePackages != null) {
       nodePackages = plugin.modifyNodePackages(nodePackages);
     }

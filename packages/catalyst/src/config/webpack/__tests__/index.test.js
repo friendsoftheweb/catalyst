@@ -7,16 +7,20 @@ jest.mock('../bundlePaths');
 jest.mock('../generateEntryForBundleName');
 
 jest.mock('../../../Configuration', () => {
-  return function() {
-    return {
-      rootPath: 'ROOT',
-      buildPath: 'BUILD',
-      contextPath: 'CONTEXT',
-      projectName: 'catalyst-test',
-      transformedPackages: [],
-      plugins: []
-    };
-  };
+  class MockConfiguration {
+    static fromFile() {
+      return new MockConfiguration();
+    }
+
+    rootPath = 'ROOT';
+    buildPath = 'BUILD';
+    contextPath = 'CONTEXT';
+    projectName = 'catalyst-test';
+    transformedPackages = [];
+    plugins = [];
+  }
+
+  return MockConfiguration;
 });
 
 describe('webpackConfig()', () => {

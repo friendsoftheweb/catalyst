@@ -11,7 +11,7 @@ interface Options {
 }
 
 export default async function build(options: Options): Promise<void> {
-  const { environment, buildPath } = new Configuration();
+  const { environment, buildPath } = Configuration.fromFile();
 
   if (
     environment !== Environment.Production &&
@@ -51,13 +51,13 @@ export default async function build(options: Options): Promise<void> {
     );
 
     return new Promise((resolve, reject) => {
-      compiler.run((err, stats) => {
-        if (err != null) {
-          reject(err);
+      compiler.run((error, stats) => {
+        if (error != null) {
+          reject(error);
         } else {
           logStats(stats);
 
-          if (stats?.hasErrors()) {
+          if (stats == null || stats.hasErrors()) {
             reject();
           } else {
             resolve();
@@ -80,18 +80,17 @@ function logStats(stats: Stats | undefined) {
   });
 
   if (errors.length > 0) {
-    logStatus(Status.Error, `Failed to build:\n\n${errors.join('\n\n')}`);
+    for (const error of errors) {
+      logStatus(Status.Error, error.message);
+    }
   } else {
     if (warnings.length > 0) {
-      logStatus(
-        Status.Warning,
-        `Built successfully, with ${warnings.length} warning${
-          warnings.length > 1 ? 's' : ''
-        }:\n`
-      );
+      for (const warning of warnings) {
+        logStatus(Status.Warning, warning.message);
+      }
+    }
 
-      console.log(chalk.yellow(warnings.join('\n\n')));
-    } else if (stats.endTime != null && stats.startTime != null) {
+    if (stats.endTime != null && stats.startTime != null) {
       logStatus(
         Status.Success,
         `Built successfully in ${(stats.endTime - stats.startTime) / 1000}s`

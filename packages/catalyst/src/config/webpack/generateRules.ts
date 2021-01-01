@@ -5,9 +5,9 @@ import Configuration from '../../Configuration';
 import { Environment } from '../../Environment';
 import forEachPlugin from '../../utils/forEachPlugin';
 
-export default function generateRules() {
-  const configuration = new Configuration();
-
+export default function generateRules(
+  configuration: Configuration
+): RuleSetRule[] {
   const {
     environment,
     rootPath,
@@ -87,11 +87,14 @@ export default function generateRules() {
   });
 
   rules.push(
-    ...generateFileLoaderRules(path.join(contextPath, 'assets')),
-    ...generateFileLoaderRules(path.join(rootPath, 'node_modules'))
+    ...generateFileLoaderRules(configuration, path.join(contextPath, 'assets')),
+    ...generateFileLoaderRules(
+      configuration,
+      path.join(rootPath, 'node_modules')
+    )
   );
 
-  forEachPlugin((plugin) => {
+  forEachPlugin(configuration, (plugin) => {
     if (plugin.modifyWebpackRules != null) {
       rules = plugin.modifyWebpackRules(rules, configuration);
     }
@@ -100,12 +103,11 @@ export default function generateRules() {
   return rules;
 }
 
-function generateFileLoaderRules(basePath: string): RuleSetRule[] {
-  const {
-    environment,
-    publicPath,
-    importAssetsAsESModules,
-  } = new Configuration();
+function generateFileLoaderRules(
+  configuration: Configuration,
+  basePath: string
+): RuleSetRule[] {
+  const { environment, publicPath, importAssetsAsESModules } = configuration;
 
   const name =
     environment === Environment.Production

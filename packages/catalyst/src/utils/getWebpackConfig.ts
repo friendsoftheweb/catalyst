@@ -12,7 +12,8 @@ interface Options {
 export default async function getWebpackConfig(
   options?: Options
 ): Promise<WebpackConfiguration> {
-  const { rootPath } = new Configuration();
+  const { rootPath } = Configuration.fromFile();
+
   const webpackConfigPath = path.join(rootPath, 'webpack.config.js');
 
   return new Promise((resolve) => {

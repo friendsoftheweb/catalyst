@@ -4,7 +4,9 @@ import semver from 'semver';
 import { Environment, isEnvironment } from './Environment';
 import logStatus, { Status } from './utils/logStatus';
 
-interface CustomConfiguration {
+export interface CustomConfiguration {
+  environment?: Environment;
+  rootPath?: string;
   contextPath: string;
   buildPath: string;
   publicPath: string;
@@ -173,28 +175,48 @@ function isCustomConfiguration(value: any): value is CustomConfiguration {
 }
 
 export default class Configuration {
-  private configuration: CustomConfiguration;
-
-  constructor() {
-    const configurationPath = path.join(this.rootPath, 'catalyst.config.json');
-
+  static fromFile(
+    configurationPath = path.join(process.cwd(), 'catalyst.config.json')
+  ): Configuration {
     if (!fs.existsSync(configurationPath)) {
       throw new Error(
         `Missing Catalyst configuration file. Expected it to be here: ${configurationPath}`
       );
     }
 
-    const configuration = require(configurationPath);
+    const configuration = JSON.parse(
+      fs.readFileSync(configurationPath).toString()
+    );
 
     if (!isCustomConfiguration(configuration)) {
       throw new Error('Configuration is invalid.');
     }
 
+    return new Configuration(configuration);
+  }
+
+  private readonly configuration: CustomConfiguration;
+
+  constructor(configuration: CustomConfiguration) {
     this.configuration = configuration;
   }
 
   get environment(): Environment {
+    const { environment } = this.configuration;
     const { NODE_ENV } = process.env;
+
+    if (environment != null) {
+      if (
+        NODE_ENV === Environment.Production &&
+        environment !== Environment.Production
+      ) {
+        throw new Error(
+          `NODE_ENV is set to "production", but configuration environment is set to "${environment}"`
+        );
+      }
+
+      return environment;
+    }
 
     if (!isEnvironment(NODE_ENV)) {
       throw new Error(
@@ -210,7 +232,7 @@ export default class Configuration {
    * root of the host project.
    */
   get rootPath(): string {
-    return process.cwd();
+    return this.configuration.rootPath ?? process.cwd();
   }
 
   get contextPath(): string {

@@ -18,7 +18,7 @@ export default async function server(
     devServerProtocol,
     devServerCertificate,
     overlayEnabled,
-  } = new Configuration();
+  } = Configuration.fromFile();
 
   await checkPortAvailability(devServerPort);
   await prebuildVendorPackages();

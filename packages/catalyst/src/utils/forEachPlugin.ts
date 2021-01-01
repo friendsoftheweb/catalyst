@@ -4,9 +4,10 @@ import Configuration from '../Configuration';
 import Plugin from '../Plugin';
 
 export default function forEachPlugin(
+  configuration: Configuration,
   predicate: (plugin: Plugin) => void
 ): void {
-  const { plugins } = new Configuration();
+  const { plugins } = configuration;
 
   for (const plugin of plugins) {
     const pluginPath = path.resolve(process.cwd(), `node_modules/${plugin}`);

@@ -1,14 +1,13 @@
 import path from 'path';
 import webpack, { WebpackPluginInstance } from 'webpack';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
-import { WebpackManifestPlugin } from 'webpack-manifest-plugin';
 import CompressionPlugin from 'compression-webpack-plugin';
 import WorkboxWebpackPlugin from 'workbox-webpack-plugin';
 import DuplicatePackageCheckerPlugin from 'duplicate-package-checker-webpack-plugin';
 import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin';
 import CircularDependencyPlugin from 'circular-dependency-plugin';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
-import PrefetchManifestPlugin from './plugins/PrefetchManifestPlugin';
+import CatalystManifestPlugin from './plugins/CatalystManifestPlugin';
 import CleanUpStatsPlugin from './plugins/CleanUpStatsPlugin';
 import Configuration from '../../Configuration';
 import { Environment } from '../../Environment';
@@ -19,10 +18,9 @@ interface Options {
 }
 
 export default function generatePlugins(
+  configuration: Configuration,
   options?: Options
 ): WebpackPluginInstance[] {
-  const configuration = new Configuration();
-
   const {
     environment,
     contextPath,
@@ -77,16 +75,13 @@ export default function generatePlugins(
     plugins.push(
       new WorkboxWebpackPlugin.GenerateSW({
         clientsClaim: true,
-        exclude: [/\.map$/, /manifest\.json$/],
+        exclude: [/\.map$/, /manifest\.json$/, /catalyst\.manifest\.json$/],
       })
     );
   }
 
   if (environment !== Environment.Development) {
-    plugins.push(
-      new PrefetchManifestPlugin(),
-      new WebpackManifestPlugin({ fileName: 'manifest.json' })
-    );
+    plugins.push(new CatalystManifestPlugin());
   }
 
   if (environment === Environment.Production) {
@@ -136,7 +131,7 @@ export default function generatePlugins(
     plugins.push(new BundleAnalyzerPlugin());
   }
 
-  forEachPlugin((plugin) => {
+  forEachPlugin(configuration, (plugin) => {
     if (plugin.modifyWebpackPlugins != null) {
       plugins = plugin.modifyWebpackPlugins(plugins, configuration);
     }
