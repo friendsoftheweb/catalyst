@@ -8,8 +8,8 @@ interface Manifest {
 }
 
 /**
- * Generates a "catalyst.json" file with a list of files to prefetch via
- * `<link rel="prefetch" />`.
+ * Generates a "catalyst.manifest.json" file with a list of files to preload
+ * (via`<link rel="preload" />`) and prefetch (via`<link rel="prefetch" />`).
  */
 export default class CatalystManifestPlugin implements WebpackPluginInstance {
   apply(compiler: Compiler): void {
@@ -131,6 +131,12 @@ export default class CatalystManifestPlugin implements WebpackPluginInstance {
           compilation.emitAsset(
             'catalyst.manifest.json',
             new RawSource(JSON.stringify(manifest, null, 2))
+          );
+
+          // Also generate a "manifest.json" for backwards compatibility
+          compilation.emitAsset(
+            'manifest.json',
+            new RawSource(JSON.stringify(manifest.assets, null, 2))
           );
         }
       );
