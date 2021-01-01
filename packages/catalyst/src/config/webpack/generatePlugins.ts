@@ -1,7 +1,6 @@
 import path from 'path';
 import webpack, { WebpackPluginInstance } from 'webpack';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
-import { WebpackManifestPlugin } from 'webpack-manifest-plugin';
 import CompressionPlugin from 'compression-webpack-plugin';
 import WorkboxWebpackPlugin from 'workbox-webpack-plugin';
 import DuplicatePackageCheckerPlugin from 'duplicate-package-checker-webpack-plugin';
@@ -76,16 +75,13 @@ export default function generatePlugins(
     plugins.push(
       new WorkboxWebpackPlugin.GenerateSW({
         clientsClaim: true,
-        exclude: [/\.map$/, /manifest\.json$/],
+        exclude: [/\.map$/, /catalyst\.manifest\.json$/],
       })
     );
   }
 
   if (environment !== Environment.Development) {
-    plugins.push(
-      new CatalystManifestPlugin(),
-      new WebpackManifestPlugin({ fileName: 'manifest.json' })
-    );
+    plugins.push(new CatalystManifestPlugin());
   }
 
   if (environment === Environment.Production) {

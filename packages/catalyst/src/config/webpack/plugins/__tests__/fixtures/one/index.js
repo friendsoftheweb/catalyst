@@ -1,8 +1,6 @@
-import thisIsFine from './assets/this-is-fine-2.jpeg';
+import './styles.css';
 
 export default function helloWorld() {
-  console.log(thisIsFine);
-
   import('./dynamic').then((dynamic) => {
     dynamic();
   });

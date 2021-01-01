@@ -74,6 +74,11 @@ module.exports = async function () {
       cwd: testProjectRoot,
     });
 
+    execSync('ln -sf ../../../lib/bin.js ./node_modules/.bin/catalyst', {
+      stdio: 'inherit',
+      cwd: testProjectRoot,
+    });
+
     writeFileSync(lastBuildTimePath, '');
     utimesSync(lastBuildTimePath, lastBuildTime, lastBuildTime);
   }

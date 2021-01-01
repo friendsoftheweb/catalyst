@@ -1,6 +1,12 @@
 import { Compiler, Compilation, WebpackPluginInstance } from 'webpack';
 import { RawSource } from 'webpack-sources';
 
+interface Manifest {
+  assets: Record<string, string>;
+  preload: Record<string, string[]>;
+  prefetch: Record<string, string[]>;
+}
+
 /**
  * Generates a "catalyst.json" file with a list of files to prefetch via
  * `<link rel="prefetch" />`.
@@ -19,16 +25,33 @@ export default class CatalystManifestPlugin implements WebpackPluginInstance {
             return;
           }
 
-          const stats = compilation.getStats().toJson({ source: true }) as {
+          const stats = compilation.getStats().toJson({
+            source: true,
+            publicPath: true,
+          }) as {
             entrypoints: Record<string, Entrypoint>;
             chunks: Chunk[];
             assets: Asset[];
+            publicPath: string;
           };
+
+          if (stats.publicPath === 'auto') {
+            throw new Error('Please configure webpack\'s "output.publicPath"');
+          }
 
           const initialChunks = stats.chunks.filter(({ initial }) => initial);
 
-          const preload: Record<string, string[]> = {};
-          const prefetch: Record<string, string[]> = {};
+          const manifest: Manifest = {
+            assets: stats.assets.reduce(
+              (reduction, asset) => ({
+                ...reduction,
+                [nameForAsset(asset)]: `${stats.publicPath}${asset.name}`,
+              }),
+              {}
+            ),
+            preload: {},
+            prefetch: {},
+          };
 
           for (const chunk of initialChunks) {
             const entrypoint = Object.values(
@@ -52,17 +75,17 @@ export default class CatalystManifestPlugin implements WebpackPluginInstance {
               ) {
                 // Fonts should almost always be preloaded
                 if (/\.(woff2?|ttf|eot)$/.test(assetName)) {
-                  if (preload[entrypoint.name] == null) {
-                    preload[entrypoint.name] = [];
+                  if (manifest.preload[entrypoint.name] == null) {
+                    manifest.preload[entrypoint.name] = [];
                   }
 
-                  preload[entrypoint.name].push(assetName);
+                  manifest.preload[entrypoint.name].push(assetName);
                 } else {
-                  if (prefetch[entrypoint.name] == null) {
-                    prefetch[entrypoint.name] = [];
+                  if (manifest.prefetch[entrypoint.name] == null) {
+                    manifest.prefetch[entrypoint.name] = [];
                   }
 
-                  prefetch[entrypoint.name].push(assetName);
+                  manifest.prefetch[entrypoint.name].push(assetName);
                 }
               }
             }
@@ -89,25 +112,25 @@ export default class CatalystManifestPlugin implements WebpackPluginInstance {
               const assetName = asset.info.sourceFilename ?? asset.name;
 
               if (
-                preload[entrypoint.name]?.includes(assetName) ||
-                prefetch[entrypoint.name]?.includes(assetName)
+                manifest.preload[entrypoint.name]?.includes(assetName) ||
+                manifest.prefetch[entrypoint.name]?.includes(assetName)
               ) {
                 continue;
               }
 
               if (chunksReferenceAsset(prefetchChunks, asset)) {
-                if (prefetch[entrypoint.name] == null) {
-                  prefetch[entrypoint.name] = [];
+                if (manifest.prefetch[entrypoint.name] == null) {
+                  manifest.prefetch[entrypoint.name] = [];
                 }
 
-                prefetch[entrypoint.name].push(assetName);
+                manifest.prefetch[entrypoint.name].push(assetName);
               }
             }
           }
 
           compilation.emitAsset(
-            'catalyst.json',
-            new RawSource(JSON.stringify({ preload, prefetch }, null, 2))
+            'catalyst.manifest.json',
+            new RawSource(JSON.stringify(manifest, null, 2))
           );
         }
       );
@@ -123,6 +146,7 @@ interface Entrypoint {
 interface Asset {
   name: string;
   chunks: number[];
+  chunkNames: string[];
   auxiliaryChunks: number[];
   info: {
     sourceFilename?: string;
@@ -142,6 +166,14 @@ interface Module {
   source?: string;
   modules?: Module[];
 }
+
+const nameForAsset = (asset: Asset) => {
+  if (/\.js$/.test(asset.name) && asset.chunkNames.length === 1) {
+    return `${asset.chunkNames[0]}.js`;
+  } else {
+    return asset.info.sourceFilename ?? asset.name;
+  }
+};
 
 const collectPrefetchChunks = (chunks: Chunk[]) =>
   chunks.filter(
