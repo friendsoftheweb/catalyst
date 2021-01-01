@@ -4,10 +4,10 @@ import { createFsFromVolume, Volume } from 'memfs';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import CatalystManifestPlugin from '../CatalystManifestPlugin';
 
-const compileFixture = (volume, name) => {
+const compileFixture = (volume, context) => {
   const compiler = webpack({
     mode: 'production',
-    context: path.join(__dirname, 'fixtures', name),
+    context,
     entry: { application: `./index.js` },
     output: {
       path: path.resolve(__dirname),
@@ -59,7 +59,7 @@ const compileFixture = (volume, name) => {
 
 test('catalyst.json contains all assets referenced by chunks that include @catalyst-prefetch comments', async () => {
   const volume = new Volume();
-  await compileFixture(volume, 'one');
+  await compileFixture(volume, path.resolve(__dirname, './fixtures/manifest'));
 
   const manifest = JSON.parse(
     volume
