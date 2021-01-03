@@ -1,4 +1,5 @@
 import { Compiler, WebpackError, WebpackPluginInstance } from 'webpack';
+import { IMAGE_FILE_PATTERN } from '../../../patterns';
 import formatBytes from '../../../utils/formatBytes';
 
 interface Options {
@@ -29,7 +30,7 @@ export default class AssertMaxAssetSizePlugin implements WebpackPluginInstance {
             for (const [name, source] of Object.entries(assets)) {
               const size = source.size();
 
-              if (/\.js$/.test(name)) {
+              if (/\.js$/i.test(name)) {
                 if (size > this.maxScriptAssetSize) {
                   largeScriptAssets[name] = size;
 
@@ -37,7 +38,7 @@ export default class AssertMaxAssetSizePlugin implements WebpackPluginInstance {
                     largestScriptAssetSize = size;
                   }
                 }
-              } else if (/\.(png|jpe?g|gif|svg|webp)$/.test(name)) {
+              } else if (IMAGE_FILE_PATTERN.test(name)) {
                 if (size > this.maxImageAssetSize) {
                   largeImageAssets[name] = size;
 

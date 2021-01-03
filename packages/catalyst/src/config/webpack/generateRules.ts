@@ -4,6 +4,7 @@ import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import Configuration from '../../Configuration';
 import { Environment } from '../../Environment';
 import forEachPlugin from '../../utils/forEachPlugin';
+import { IMAGE_FILE_PATTERN } from '../../patterns';
 
 export default function generateRules(
   configuration: Configuration
@@ -123,7 +124,7 @@ function generateFileLoaderRules(
 
   return [
     {
-      test: /\.(jpe?g|gif|png|webp|svg)$/i,
+      test: IMAGE_FILE_PATTERN,
       include: basePath,
       oneOf: [
         // Use file-loader and imageDimensionsLoader for any images imported
