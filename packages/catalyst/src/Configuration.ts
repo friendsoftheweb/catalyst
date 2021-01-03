@@ -3,6 +3,7 @@ import fs from 'fs';
 import semver from 'semver';
 import { Environment, isEnvironment } from './Environment';
 import logStatus, { Status } from './utils/logStatus';
+import { type } from 'os';
 
 export interface CustomConfiguration {
   environment?: Environment;
@@ -14,6 +15,8 @@ export interface CustomConfiguration {
   overlayEnabled?: boolean;
   prebuiltPackages?: string[];
   transformedPackages?: string[];
+  optimizeCommonMinChunks?: number;
+  optimizeCommonExcludedChunks?: string[];
   generateServiceWorker?: boolean;
   checkForCircularDependencies?: boolean;
   checkForDuplicatePackages?: boolean;
@@ -113,6 +116,27 @@ function isCustomConfiguration(value: any): value is CustomConfiguration {
   }
 
   if ('prebuiltPackages' in value && !Array.isArray(value.prebuiltPackages)) {
+    return false;
+  }
+
+  if (
+    'transformedPackages' in value &&
+    !Array.isArray(value.transformedPackages)
+  ) {
+    return false;
+  }
+
+  if (
+    'optimizeCommonMinChunks' in value &&
+    typeof value.optimizeCommonMinChunks !== 'number'
+  ) {
+    return false;
+  }
+
+  if (
+    'optimizeCommonExcludedChunks' in value &&
+    !Array.isArray(value.optimizeCommonExcludedChunks)
+  ) {
     return false;
   }
 
@@ -290,6 +314,20 @@ export default class Configuration {
     }
 
     return semver.satisfies(reactVersion, '^15.7.0 || ^16.14.0 || >=17.0.0');
+  }
+
+  get optimizeCommonMinChunks(): number {
+    return this.configuration.optimizeCommonMinChunks ?? 2;
+  }
+
+  get optimizeCommonExcludedChunks(): string[] {
+    return (
+      this.configuration.optimizeCommonExcludedChunks ?? [
+        'admin',
+        'administration',
+        'management',
+      ]
+    );
   }
 
   get prebuiltPackages(): string[] {
