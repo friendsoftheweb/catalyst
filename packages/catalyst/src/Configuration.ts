@@ -11,9 +11,13 @@ export interface CustomConfiguration {
   buildPath: string;
   publicPath: string;
   importAssetsAsESModules?: boolean;
+  maxScriptAssetSizeKB?: number;
+  maxImageAssetSizeKB?: number;
   overlayEnabled?: boolean;
   prebuiltPackages?: string[];
   transformedPackages?: string[];
+  optimizeCommonMinChunks?: number;
+  optimizeCommonExcludedChunks?: string[];
   generateServiceWorker?: boolean;
   checkForCircularDependencies?: boolean;
   checkForDuplicatePackages?: boolean;
@@ -108,11 +112,46 @@ function isCustomConfiguration(value: any): value is CustomConfiguration {
     return false;
   }
 
+  if (
+    'maxScriptAssetSizeKB' in value &&
+    typeof value.maxScriptAssetSizeKB !== 'number'
+  ) {
+    return false;
+  }
+
+  if (
+    'maxImageAssetSizeKB' in value &&
+    typeof value.maxImageAssetSizeKB !== 'number'
+  ) {
+    return false;
+  }
+
   if ('overlayEnabled' in value && typeof value.overlayEnabled !== 'boolean') {
     return false;
   }
 
   if ('prebuiltPackages' in value && !Array.isArray(value.prebuiltPackages)) {
+    return false;
+  }
+
+  if (
+    'transformedPackages' in value &&
+    !Array.isArray(value.transformedPackages)
+  ) {
+    return false;
+  }
+
+  if (
+    'optimizeCommonMinChunks' in value &&
+    typeof value.optimizeCommonMinChunks !== 'number'
+  ) {
+    return false;
+  }
+
+  if (
+    'optimizeCommonExcludedChunks' in value &&
+    !Array.isArray(value.optimizeCommonExcludedChunks)
+  ) {
     return false;
   }
 
@@ -263,6 +302,14 @@ export default class Configuration {
     return this.configuration.importAssetsAsESModules ?? true;
   }
 
+  get maxScriptAssetSize(): number {
+    return (this.configuration.maxScriptAssetSizeKB ?? 256) * 1024;
+  }
+
+  get maxImageAssetSize(): number {
+    return (this.configuration.maxImageAssetSizeKB ?? 1024) * 1024;
+  }
+
   get projectName(): string {
     return JSON.parse(
       fs.readFileSync(path.join(this.rootPath, 'package.json')).toString()
@@ -290,6 +337,20 @@ export default class Configuration {
     }
 
     return semver.satisfies(reactVersion, '^15.7.0 || ^16.14.0 || >=17.0.0');
+  }
+
+  get optimizeCommonMinChunks(): number {
+    return this.configuration.optimizeCommonMinChunks ?? 2;
+  }
+
+  get optimizeCommonExcludedChunks(): string[] {
+    return (
+      this.configuration.optimizeCommonExcludedChunks ?? [
+        'admin',
+        'administration',
+        'management',
+      ]
+    );
   }
 
   get prebuiltPackages(): string[] {

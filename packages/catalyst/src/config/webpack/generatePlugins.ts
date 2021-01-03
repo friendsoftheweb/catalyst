@@ -7,6 +7,7 @@ import DuplicatePackageCheckerPlugin from 'duplicate-package-checker-webpack-plu
 import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin';
 import CircularDependencyPlugin from 'circular-dependency-plugin';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
+import AssertMaxAssetSizePlugin from './plugins/AssertMaxFileSizePlugin';
 import CatalystManifestPlugin from './plugins/CatalystManifestPlugin';
 import CleanUpStatsPlugin from './plugins/CleanUpStatsPlugin';
 import Configuration from '../../Configuration';
@@ -26,6 +27,8 @@ export default function generatePlugins(
     contextPath,
     publicPath,
     tempPath,
+    maxScriptAssetSize,
+    maxImageAssetSize,
     generateServiceWorker,
     checkForCircularDependencies,
     checkForDuplicatePackages,
@@ -126,6 +129,15 @@ export default function generatePlugins(
   }
 
   plugins.push(new CaseSensitivePathsPlugin(), new CleanUpStatsPlugin());
+
+  if (environment === Environment.Production) {
+    plugins.push(
+      new AssertMaxAssetSizePlugin({
+        maxScriptAssetSize,
+        maxImageAssetSize,
+      })
+    );
+  }
 
   if (options != null && options.bundleAnalyzerEnabled) {
     plugins.push(new BundleAnalyzerPlugin());

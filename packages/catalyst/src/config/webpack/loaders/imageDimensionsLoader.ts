@@ -1,6 +1,7 @@
 import { getOptions } from 'loader-utils';
 import { validate } from 'schema-utils';
 import sizeOf from 'image-size';
+import { IMAGE_FILE_PATTERN } from '../../../patterns';
 
 const OPTIONS_SCHEMA = {
   properties: {
@@ -22,7 +23,7 @@ export default function imageDimensionsLoader(
   },
   content: string
 ): string | void {
-  if (!/\.(png|jpe?g|gif|webp|svg)$/i.test(this.resourcePath)) {
+  if (!IMAGE_FILE_PATTERN.test(this.resourcePath)) {
     return content;
   }
 

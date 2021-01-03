@@ -1,8 +1,16 @@
 import { Configuration as WebpackConfiguration } from 'webpack';
 import TerserPlugin from 'terser-webpack-plugin';
 import CssMinimizerPlugin from 'css-minimizer-webpack-plugin';
+import Configuration from '../../Configuration';
 
-export default function generateOptimization(): WebpackConfiguration['optimization'] {
+export default function generateOptimization(
+  configuration: Configuration
+): WebpackConfiguration['optimization'] {
+  const {
+    optimizeCommonMinChunks,
+    optimizeCommonExcludedChunks,
+  } = configuration;
+
   return {
     minimizer: [
       new TerserPlugin({
@@ -25,12 +33,14 @@ export default function generateOptimization(): WebpackConfiguration['optimizati
       new CssMinimizerPlugin(),
     ],
     splitChunks: {
-      minChunks: 2,
+      minChunks: optimizeCommonMinChunks,
       cacheGroups: {
         common: {
           test: /[\\/]node_modules[\\/]/,
           name: 'common',
-          chunks: 'all',
+          chunks(chunk) {
+            return !optimizeCommonExcludedChunks.includes(chunk.name);
+          },
         },
       },
     },
