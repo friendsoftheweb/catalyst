@@ -15,6 +15,8 @@ export default class AssertMaxAssetSizePlugin implements WebpackPluginInstance {
   }
 
   apply(compiler: Compiler): void {
+    const { maxScriptAssetSize, maxImageAssetSize } = this.options;
+
     compiler.hooks.compilation.tap(
       'AssertMaxAssetSizePlugin',
       (compilation) => {
@@ -31,7 +33,7 @@ export default class AssertMaxAssetSizePlugin implements WebpackPluginInstance {
               const size = source.size();
 
               if (/\.js$/i.test(name)) {
-                if (size > this.maxScriptAssetSize) {
+                if (size > maxScriptAssetSize) {
                   largeScriptAssets[name] = size;
 
                   if (size > largestScriptAssetSize) {
@@ -39,7 +41,7 @@ export default class AssertMaxAssetSizePlugin implements WebpackPluginInstance {
                   }
                 }
               } else if (IMAGE_FILE_PATTERN.test(name)) {
-                if (size > this.maxImageAssetSize) {
+                if (size > maxImageAssetSize) {
                   largeImageAssets[name] = size;
 
                   if (size > largestImageAssetSize) {
@@ -54,7 +56,7 @@ export default class AssertMaxAssetSizePlugin implements WebpackPluginInstance {
                 new WebpackError(
                   [
                     `Some script assets are larger than the maximum allowable size (${formatBytes(
-                      this.maxScriptAssetSize
+                      maxScriptAssetSize
                     )}):`,
                     ...Object.entries(largeScriptAssets).map(
                       ([name, size]) => `  - ${name} (${formatBytes(size)})`
@@ -79,7 +81,7 @@ export default class AssertMaxAssetSizePlugin implements WebpackPluginInstance {
                 new WebpackError(
                   [
                     `Some image assets are larger than the maximum allowable size (${formatBytes(
-                      this.maxImageAssetSize
+                      maxImageAssetSize
                     )}):`,
                     ...Object.entries(largeImageAssets).map(
                       ([name, size]) => `  - ${name} (${formatBytes(size)})`
@@ -102,13 +104,5 @@ export default class AssertMaxAssetSizePlugin implements WebpackPluginInstance {
         );
       }
     );
-  }
-
-  private get maxScriptAssetSize(): number {
-    return this.options.maxScriptAssetSize;
-  }
-
-  private get maxImageAssetSize(): number {
-    return this.options.maxImageAssetSize;
   }
 }
