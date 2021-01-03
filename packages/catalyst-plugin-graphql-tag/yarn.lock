@@ -2293,10 +2293,10 @@ catalyst-client@^2.0.0-alpha.5:
   dependencies:
     source-map "^0.7.3"
 
-catalyst@^2.0.0-alpha.5:
-  version "2.0.0-alpha.5"
-  resolved "https://registry.yarnpkg.com/catalyst/-/catalyst-2.0.0-alpha.5.tgz#312ffbaaf9a26e38134d45620c0dd6eb1ab47490"
-  integrity sha512-ochuA2AXl9UKZLL68DnFFTG4GCMQp6JNspfXD5qtK85sbo1v5HGb9JyMNbUaXUApCR9May39WaGOAZQVafhiSg==
+catalyst@^2.0.0-alpha.6:
+  version "2.0.0-alpha.6"
+  resolved "https://registry.yarnpkg.com/catalyst/-/catalyst-2.0.0-alpha.6.tgz#aade3abe16a6ba072e71f6f4ec70ff144bf50f22"
+  integrity sha512-HOANvQ/3Djo/TmoaLjBKyw7eH9oncHXkr2iEDNcI3iQ1rbnCxqJ5CV+sJUXC1AyiJJNCf1uMaIzCWBfjKz1LXA==
   dependencies:
     "@babel/core" "^7.4.4"
     "@babel/plugin-proposal-class-properties" "^7.4.4"
@@ -2343,7 +2343,6 @@ catalyst@^2.0.0-alpha.5:
     webpack "^5.11.0"
     webpack-bundle-analyzer "^4.3.0"
     webpack-dev-server "^3.7.2"
-    webpack-manifest-plugin "^3.0.0"
     webpack-sources "^2.2.0"
     workbox-webpack-plugin "^6.0.2"
 
@@ -7055,7 +7054,7 @@ table@^5.2.3:
     slice-ansi "^2.1.0"
     string-width "^3.0.0"
 
-tapable@^2.0.0, tapable@^2.1.1, tapable@^2.2.0:
+tapable@^2.1.1, tapable@^2.2.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/tapable/-/tapable-2.2.0.tgz#5c373d281d9c672848213d0e037d1c4165ab426b"
   integrity sha512-FBk4IesMV1rBxX2tfiK8RAmogtWn53puLOQlvO8XuwlgxcYbP4mVPS9Ph4aeamSyyVjOl24aYWAuc8U5kCVwMw==
@@ -7514,14 +7513,6 @@ webpack-log@^2.0.0:
   dependencies:
     ansi-colors "^3.0.0"
     uuid "^3.3.2"
-
-webpack-manifest-plugin@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/webpack-manifest-plugin/-/webpack-manifest-plugin-3.0.0.tgz#426644300e5dc41a75a9c996c4d4f876eb3c2b5b"
-  integrity sha512-nbORTdky2HxD8XSaaT+zrsHb30AAgyWAWgCLWaAeQO21VGCScGb52ipqlHA/njix1Z8OW8IOlo4+XK0OKr1fkw==
-  dependencies:
-    tapable "^2.0.0"
-    webpack-sources "^2.2.0"
 
 webpack-sources@^1.1.0, webpack-sources@^1.4.3:
   version "1.4.3"

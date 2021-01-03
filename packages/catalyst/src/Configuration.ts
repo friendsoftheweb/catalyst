@@ -3,7 +3,6 @@ import fs from 'fs';
 import semver from 'semver';
 import { Environment, isEnvironment } from './Environment';
 import logStatus, { Status } from './utils/logStatus';
-import { type } from 'os';
 
 export interface CustomConfiguration {
   environment?: Environment;
@@ -12,6 +11,8 @@ export interface CustomConfiguration {
   buildPath: string;
   publicPath: string;
   importAssetsAsESModules?: boolean;
+  maxScriptAssetSizeKB?: number;
+  maxImageAssetSizeKB?: number;
   overlayEnabled?: boolean;
   prebuiltPackages?: string[];
   transformedPackages?: string[];
@@ -107,6 +108,20 @@ function isCustomConfiguration(value: any): value is CustomConfiguration {
   if (
     'importAssetsAsESModules' in value &&
     typeof value.importAssetsAsESModules !== 'boolean'
+  ) {
+    return false;
+  }
+
+  if (
+    'maxScriptAssetSizeKB' in value &&
+    typeof value.maxScriptAssetSizeKB !== 'number'
+  ) {
+    return false;
+  }
+
+  if (
+    'maxImageAssetSizeKB' in value &&
+    typeof value.maxImageAssetSizeKB !== 'number'
   ) {
     return false;
   }
@@ -285,6 +300,14 @@ export default class Configuration {
 
   get importAssetsAsESModules(): boolean {
     return this.configuration.importAssetsAsESModules ?? true;
+  }
+
+  get maxScriptAssetSize(): number {
+    return (this.configuration.maxScriptAssetSizeKB ?? 256) * 1024;
+  }
+
+  get maxImageAssetSize(): number {
+    return (this.configuration.maxImageAssetSizeKB ?? 1024) * 1024;
   }
 
   get projectName(): string {
