@@ -86,7 +86,11 @@ function logStats(stats: Stats | undefined) {
   }
 
   for (const error of errors) {
-    logStatus(Status.Error, error.message, error.moduleName);
+    logStatus(
+      Status.Error,
+      cleanUpErrorMessage(error.message),
+      error.moduleName
+    );
   }
 
   if (errors.length === 0 && stats.endTime != null && stats.startTime != null) {
@@ -96,3 +100,14 @@ function logStats(stats: Stats | undefined) {
     );
   }
 }
+
+const cleanUpErrorMessage = (message: string) => {
+  if (/^SassError/m.test(message)) {
+    return message
+      .split('\n')
+      .filter((line) => !/^\s+at\s/.test(line))
+      .join('\n');
+  }
+
+  return message;
+};
