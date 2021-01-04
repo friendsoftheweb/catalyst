@@ -89,6 +89,7 @@
     "sass-loader": "^10.0.4",
     "schema-utils": "^3.0.0",
     "semver": "^7.3.4",
+    "strip-ansi": "^6.0.0",
     "style-loader": "^2.0.0",
     "terser-webpack-plugin": "^5.0.3",
     "webpack": "^5.11.0",
