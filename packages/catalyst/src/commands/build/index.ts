@@ -31,7 +31,9 @@ export default async function build(options: Options): Promise<void> {
 
   if (options.watch) {
     console.log(
-      `A new ${chalk.cyan(environment)} build will be created in ${chalk.cyan(
+      `   A new ${chalk.cyan(
+        environment
+      )} build will be created in ${chalk.cyan(
         buildPath
       )} whenever a file changes.`
     );
@@ -45,7 +47,7 @@ export default async function build(options: Options): Promise<void> {
     });
   } else {
     console.log(
-      `Creating a ${chalk.cyan(environment)} build in ${chalk.cyan(
+      `   Creating a ${chalk.cyan(environment)} build in ${chalk.cyan(
         buildPath
       )}...\n`
     );
@@ -79,22 +81,33 @@ function logStats(stats: Stats | undefined) {
     errors: true,
   });
 
-  if (errors.length > 0) {
-    for (const error of errors) {
-      logStatus(Status.Error, error.message);
-    }
-  } else {
-    if (warnings.length > 0) {
-      for (const warning of warnings) {
-        logStatus(Status.Warning, warning.message);
-      }
-    }
+  for (const warning of warnings) {
+    logStatus(Status.Warning, warning.message, warning.moduleName);
+  }
 
-    if (stats.endTime != null && stats.startTime != null) {
-      logStatus(
-        Status.Success,
-        `Built successfully in ${(stats.endTime - stats.startTime) / 1000}s`
-      );
-    }
+  for (const error of errors) {
+    logStatus(
+      Status.Error,
+      cleanUpErrorMessage(error.message),
+      error.moduleName
+    );
+  }
+
+  if (errors.length === 0 && stats.endTime != null && stats.startTime != null) {
+    logStatus(
+      Status.Success,
+      `Built successfully in ${(stats.endTime - stats.startTime) / 1000}s`
+    );
   }
 }
+
+const cleanUpErrorMessage = (message: string) => {
+  if (/^SassError/m.test(message)) {
+    return message
+      .split('\n')
+      .filter((line) => !/^\s+at\s/.test(line))
+      .join('\n');
+  }
+
+  return message;
+};
