@@ -67,7 +67,7 @@ export default class CatalystManifestPlugin implements WebpackPluginInstance {
             );
 
             for (const asset of stats.assets) {
-              const assetName = asset.info.sourceFilename ?? asset.name;
+              const assetName = nameForAsset(asset);
 
               if (
                 !/\.(js|css)(\.map)?$/.test(assetName) &&
@@ -109,7 +109,7 @@ export default class CatalystManifestPlugin implements WebpackPluginInstance {
             }
 
             for (const asset of stats.assets) {
-              const assetName = asset.info.sourceFilename ?? asset.name;
+              const assetName = nameForAsset(asset);
 
               if (
                 manifest.preload[entrypoint.name]?.includes(assetName) ||
@@ -182,7 +182,7 @@ const nameForAsset = (asset: Asset) => {
     return `${asset.chunkNames[0]}.css`;
   }
 
-  return asset.info.sourceFilename ?? asset.name;
+  return asset.info.sourceFilename?.replace(/^assets\//, '') ?? asset.name;
 };
 
 const collectPrefetchChunks = (chunks: Chunk[]) =>
