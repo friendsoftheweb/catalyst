@@ -7,6 +7,7 @@ import {
 } from './utils';
 import { Stats, Chunk, Module } from './types';
 import { debugBuild } from '../../../debug';
+import formatBytes from '../../../utils/formatBytes';
 
 interface Manifest {
   assets: Record<string, string>;
@@ -14,12 +15,24 @@ interface Manifest {
   prefetch: Record<string, string[]>;
 }
 
+interface Options {
+  maxPrefetchAssetSize: number;
+}
+
 /**
  * Generates a "catalyst.manifest.json" file with a list of files to preload
  * (via`<link rel="preload" />`) and prefetch (via`<link rel="prefetch" />`).
  */
 export default class CatalystManifestPlugin implements WebpackPluginInstance {
+  private readonly options: Options;
+
+  constructor(options: Options) {
+    this.options = options;
+  }
+
   apply(compiler: Compiler): void {
+    const { maxPrefetchAssetSize } = this.options;
+
     compiler.hooks.compilation.tap('CatalystManifestPlugin', (compilation) => {
       compilation.hooks.processAssets.tapPromise(
         {
@@ -131,6 +144,16 @@ export default class CatalystManifestPlugin implements WebpackPluginInstance {
                 manifest.preload[entrypoint.name]?.includes(assetName) ||
                 manifest.prefetch[entrypoint.name]?.includes(assetName)
               ) {
+                continue;
+              }
+
+              if (asset.size > maxPrefetchAssetSize) {
+                debugBuild(
+                  `Skipping asset "${assetName}" because it is larger than the size limit by ${formatBytes(
+                    asset.size - maxPrefetchAssetSize
+                  )}`
+                );
+
                 continue;
               }
 

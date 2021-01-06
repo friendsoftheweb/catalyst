@@ -31,6 +31,7 @@ export default function generatePlugins(
     tempPath,
     maxScriptAssetSize,
     maxImageAssetSize,
+    maxPrefetchAssetSize,
     generateServiceWorker,
     checkForCircularDependencies,
     checkForDuplicatePackages,
@@ -90,7 +91,7 @@ export default function generatePlugins(
   }
 
   if (environment !== Environment.Development) {
-    plugins.push(new CatalystManifestPlugin());
+    plugins.push(new CatalystManifestPlugin({ maxPrefetchAssetSize }));
   }
 
   if (environment === Environment.Production) {
