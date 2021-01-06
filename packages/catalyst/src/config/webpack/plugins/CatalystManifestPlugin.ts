@@ -84,6 +84,23 @@ export default class CatalystManifestPlugin implements WebpackPluginInstance {
             for (const asset of stats.assets) {
               const assetName = nameForAsset(asset);
 
+              if (asset.size > maxPrefetchAssetSize) {
+                debugBuild(
+                  `Skipping asset "${assetName}" because it is larger than the size limit by ${formatBytes(
+                    asset.size - maxPrefetchAssetSize
+                  )}`
+                );
+
+                continue;
+              }
+
+              if (
+                manifest.preload[entrypoint.name]?.includes(assetName) ||
+                manifest.prefetch[entrypoint.name]?.includes(assetName)
+              ) {
+                continue;
+              }
+
               if (
                 !/\.(js|css)(\.map)?$/.test(assetName) &&
                 chunksReferenceAsset(entrypointChunks, asset)
