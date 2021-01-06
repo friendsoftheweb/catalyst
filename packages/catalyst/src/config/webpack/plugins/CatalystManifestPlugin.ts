@@ -108,52 +108,52 @@ export default class CatalystManifestPlugin implements WebpackPluginInstance {
 
           const prefetchChunks = collectPrefetchChunks(stats.chunks);
 
-          for (const chunk of prefetchChunks) {
-            const ancestors = collectChunkAncestors(stats.chunks, chunk);
-
-            if (ancestors.length === 0) {
+          for (const asset of stats.assets) {
+            if (asset.chunkNames.length > 0) {
               continue;
             }
 
-            const entrypoint = Object.values(
-              stats.entrypoints
-            ).find(({ chunks }) =>
-              chunks.some((chunkId) =>
-                ancestors.some(({ id }) => id === chunkId)
-              )
-            );
+            const assetName = nameForAsset(asset);
 
-            if (entrypoint == null) {
+            if (asset.size > maxPrefetchAssetSize) {
               debugBuild(
-                `Skipping chunk ${chunk.id} (${chunk.files.join(
-                  ', '
-                )}) because an entrypoint could not be found`
+                `Skipping asset "${assetName}" because it is larger than the size limit by ${formatBytes(
+                  asset.size - maxPrefetchAssetSize
+                )}`
               );
 
               continue;
             }
 
-            for (const asset of stats.assets) {
-              if (asset.chunkNames.length > 0) {
+            for (const chunk of prefetchChunks) {
+              const ancestors = collectChunkAncestors(stats.chunks, chunk);
+
+              if (ancestors.length === 0) {
                 continue;
               }
 
-              const assetName = nameForAsset(asset);
+              const entrypoint = Object.values(
+                stats.entrypoints
+              ).find(({ chunks }) =>
+                chunks.some((chunkId) =>
+                  ancestors.some(({ id }) => id === chunkId)
+                )
+              );
+
+              if (entrypoint == null) {
+                debugBuild(
+                  `Skipping chunk ${chunk.id} (${chunk.files.join(
+                    ', '
+                  )}) because an entrypoint could not be found`
+                );
+
+                continue;
+              }
 
               if (
                 manifest.preload[entrypoint.name]?.includes(assetName) ||
                 manifest.prefetch[entrypoint.name]?.includes(assetName)
               ) {
-                continue;
-              }
-
-              if (asset.size > maxPrefetchAssetSize) {
-                debugBuild(
-                  `Skipping asset "${assetName}" because it is larger than the size limit by ${formatBytes(
-                    asset.size - maxPrefetchAssetSize
-                  )}`
-                );
-
                 continue;
               }
 
