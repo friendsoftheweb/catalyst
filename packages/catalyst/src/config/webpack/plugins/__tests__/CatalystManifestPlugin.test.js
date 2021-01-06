@@ -82,5 +82,5 @@ test('catalyst.json contains all assets referenced by chunks that include @catal
 
   expect(manifest.prefetch.application).toContain('images/this-is-fine.jpeg');
 
-  expect(manifest.prefetch.application).toHaveLength(6);
+  expect(manifest.prefetch.application).toHaveLength(4);
 });
