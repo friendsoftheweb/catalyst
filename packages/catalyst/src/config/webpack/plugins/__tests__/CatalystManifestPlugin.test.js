@@ -11,7 +11,7 @@ const compileFixture = (volume, context) => {
     entry: { application: `./index.js` },
     output: {
       path: path.resolve(__dirname),
-      publicPath: '/public/',
+      publicPath: '/assets/',
       filename: '[name].[contenthash:8].js',
     },
     module: {
@@ -21,6 +21,8 @@ const compileFixture = (volume, context) => {
           loader: 'file-loader',
           options: {
             name: '[path][name]-[hash].[ext]',
+            context: path.join(context, 'assets'),
+            publicPath: '/assets/',
           },
         },
         {
@@ -67,18 +69,18 @@ test('catalyst.json contains all assets referenced by chunks that include @catal
       .toString()
   );
 
-  expect(Object.keys(manifest.assets)).toHaveLength(6);
+  expect(Object.keys(manifest.assets)).toHaveLength(7);
 
   expect(Object.keys(manifest.assets)).toContain(
     'application.js',
     'application.css',
-    'assets/AdobeBlank.woff',
-    'assets/this-is-fine.jpeg'
+    'fonts/AdobeBlank.woff',
+    'images/this-is-fine.jpeg'
   );
 
-  expect(manifest.preload.application).toContain('assets/AdobeBlank.woff');
+  expect(manifest.preload.application).toContain('fonts/AdobeBlank.woff');
 
-  expect(manifest.prefetch.application).toContain('assets/this-is-fine.jpeg');
+  expect(manifest.prefetch.application).toContain('images/this-is-fine.jpeg');
 
-  expect(manifest.prefetch.application).toHaveLength(3);
+  expect(manifest.prefetch.application).toHaveLength(4);
 });

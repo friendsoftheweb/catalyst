@@ -1,5 +1,11 @@
 import { Compiler, Compilation, WebpackPluginInstance } from 'webpack';
 import { RawSource } from 'webpack-sources';
+import {
+  nameForAsset,
+  collectChunkAncestors,
+  chunksReferenceAsset,
+} from './utils';
+import { Stats, Chunk, Module } from './types';
 
 interface Manifest {
   assets: Record<string, string>;
@@ -28,12 +34,7 @@ export default class CatalystManifestPlugin implements WebpackPluginInstance {
           const stats = compilation.getStats().toJson({
             source: true,
             publicPath: true,
-          }) as {
-            entrypoints: Record<string, Entrypoint>;
-            chunks: Chunk[];
-            assets: Asset[];
-            publicPath: string;
-          };
+          }) as Stats;
 
           if (stats.publicPath === 'auto') {
             throw new Error('Please configure webpack\'s "output.publicPath"');
@@ -67,7 +68,7 @@ export default class CatalystManifestPlugin implements WebpackPluginInstance {
             );
 
             for (const asset of stats.assets) {
-              const assetName = asset.info.sourceFilename ?? asset.name;
+              const assetName = nameForAsset(asset);
 
               if (
                 !/\.(js|css)(\.map)?$/.test(assetName) &&
@@ -94,22 +95,28 @@ export default class CatalystManifestPlugin implements WebpackPluginInstance {
           const prefetchChunks = collectPrefetchChunks(stats.chunks);
 
           for (const chunk of prefetchChunks) {
-            const parentChunk = findParentChunk(stats.chunks, chunk);
+            const ancestors = collectChunkAncestors(stats.chunks, chunk);
 
-            if (parentChunk == null) {
+            if (ancestors.length === 0) {
               continue;
             }
 
             const entrypoint = Object.values(
               stats.entrypoints
-            ).find(({ chunks }) => chunks.includes(parentChunk.id));
+            ).find(({ chunks }) =>
+              chunks.includes(ancestors[ancestors.length - 1].id)
+            );
 
             if (entrypoint == null) {
               continue;
             }
 
             for (const asset of stats.assets) {
-              const assetName = asset.info.sourceFilename ?? asset.name;
+              if (asset.chunkNames.length > 0) {
+                continue;
+              }
+
+              const assetName = nameForAsset(asset);
 
               if (
                 manifest.preload[entrypoint.name]?.includes(assetName) ||
@@ -118,7 +125,7 @@ export default class CatalystManifestPlugin implements WebpackPluginInstance {
                 continue;
               }
 
-              if (chunksReferenceAsset(prefetchChunks, asset)) {
+              if (chunksReferenceAsset([chunk, ...ancestors], asset)) {
                 if (manifest.prefetch[entrypoint.name] == null) {
                   manifest.prefetch[entrypoint.name] = [];
                 }
@@ -144,47 +151,6 @@ export default class CatalystManifestPlugin implements WebpackPluginInstance {
   }
 }
 
-interface Entrypoint {
-  name: string;
-  chunks: number[];
-}
-
-interface Asset {
-  name: string;
-  chunks: number[];
-  chunkNames: string[];
-  auxiliaryChunks: number[];
-  info: {
-    sourceFilename?: string;
-  };
-}
-
-interface Chunk {
-  id: number;
-  initial: boolean;
-  modules: Module[];
-  parents: number[];
-}
-
-interface Module {
-  id: number;
-  chunks: number[];
-  source?: string;
-  modules?: Module[];
-}
-
-const nameForAsset = (asset: Asset) => {
-  if (/\.js$/.test(asset.name) && asset.chunkNames.length === 1) {
-    return `${asset.chunkNames[0]}.js`;
-  }
-
-  if (/\.css$/.test(asset.name) && asset.chunkNames.length === 1) {
-    return `${asset.chunkNames[0]}.css`;
-  }
-
-  return asset.info.sourceFilename ?? asset.name;
-};
-
 const collectPrefetchChunks = (chunks: Chunk[]) =>
   chunks.filter(
     (chunk) => !chunk.initial && chunk.modules.some(shouldPrefetchModule)
@@ -203,29 +169,4 @@ const shouldPrefetchModule = (module: Module): boolean => {
   }
 
   return false;
-};
-
-const findParentChunk = (chunks: Chunk[], chunk: Chunk): Chunk | undefined => {
-  if (chunk.parents.length === 0) {
-    return chunk;
-  }
-
-  const parent = chunks.find(({ id }) => chunk.parents.includes(id));
-
-  if (parent == null) {
-    return;
-  }
-
-  return findParentChunk(chunks, parent);
-};
-
-const chunksReferenceAsset = (chunks: Chunk[], asset: Asset) => {
-  return (
-    asset.chunks.some((chunkId: number) =>
-      chunks.find((chunk) => chunk.id === chunkId)
-    ) ||
-    asset.auxiliaryChunks.some((chunkId: number) =>
-      chunks.find((chunk) => chunk.id === chunkId)
-    )
-  );
 };
