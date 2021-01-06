@@ -1,7 +1,6 @@
 import webpackConfig from '../index';
 import bundlePaths from '../bundlePaths';
 import generateEntryForBundleName from '../generateEntryForBundleName';
-import Configuration from '../../../Configuration';
 
 jest.mock('../bundlePaths');
 jest.mock('../generateEntryForBundleName');

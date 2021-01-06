@@ -6,6 +6,7 @@ import {
   chunksReferenceAsset,
 } from './utils';
 import { Stats, Chunk, Module } from './types';
+import { debugBuild } from '../../../debug';
 
 interface Manifest {
   assets: Record<string, string>;
@@ -104,10 +105,18 @@ export default class CatalystManifestPlugin implements WebpackPluginInstance {
             const entrypoint = Object.values(
               stats.entrypoints
             ).find(({ chunks }) =>
-              chunks.includes(ancestors[ancestors.length - 1].id)
+              chunks.some((chunkId) =>
+                ancestors.some(({ id }) => id === chunkId)
+              )
             );
 
             if (entrypoint == null) {
+              debugBuild(
+                `Skipping chunk ${chunk.id} (${chunk.files.join(
+                  ', '
+                )}) because an entrypoint could not be found`
+              );
+
               continue;
             }
 

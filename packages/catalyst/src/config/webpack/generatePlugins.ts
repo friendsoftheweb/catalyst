@@ -13,6 +13,8 @@ import CleanUpStatsPlugin from './plugins/CleanUpStatsPlugin';
 import Configuration from '../../Configuration';
 import { Environment } from '../../Environment';
 import forEachPlugin from '../../utils/forEachPlugin';
+import LogProgressPlugin from './plugins/LogProgressPlugin';
+import { debugBuild } from '../../debug';
 
 interface Options {
   bundleAnalyzerEnabled?: boolean;
@@ -44,6 +46,10 @@ export default function generatePlugins(
       : '[name].css';
 
   let plugins: WebpackPluginInstance[] = [];
+
+  if (debugBuild.enabled) {
+    plugins.push(new LogProgressPlugin());
+  }
 
   if (environment === Environment.Development) {
     plugins.push(

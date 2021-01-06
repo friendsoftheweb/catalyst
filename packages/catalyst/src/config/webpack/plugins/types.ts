@@ -24,6 +24,7 @@ export interface Chunk {
   id: number;
   initial: boolean;
   modules: Module[];
+  files: string[];
   parents: number[];
 }
 
