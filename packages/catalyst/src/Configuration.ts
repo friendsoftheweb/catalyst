@@ -374,16 +374,13 @@ export default class Configuration {
   }
 
   get generateServiceWorker(): boolean {
-    const { generateServiceWorker } = this.configuration;
-
-    if (generateServiceWorker != null) {
-      return generateServiceWorker;
+    if (this.environment === Environment.Development) {
+      return false;
     }
 
-    return (
-      this.environment === Environment.Production ||
-      this.environment === Environment.Test
-    );
+    const { generateServiceWorker } = this.configuration;
+
+    return generateServiceWorker ?? false;
   }
 
   get checkForCircularDependencies(): boolean {
