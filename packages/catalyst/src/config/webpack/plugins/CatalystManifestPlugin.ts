@@ -112,6 +112,10 @@ export default class CatalystManifestPlugin implements WebpackPluginInstance {
             }
 
             for (const asset of stats.assets) {
+              if (asset.chunkNames.length > 0) {
+                continue;
+              }
+
               const assetName = nameForAsset(asset);
 
               if (
