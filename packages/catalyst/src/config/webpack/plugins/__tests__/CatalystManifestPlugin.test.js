@@ -11,7 +11,7 @@ const compileFixture = (volume, context) => {
     entry: { application: `./index.js` },
     output: {
       path: path.resolve(__dirname),
-      publicPath: '/public/',
+      publicPath: '/assets/',
       filename: '[name].[contenthash:8].js',
     },
     module: {
@@ -69,7 +69,7 @@ test('catalyst.json contains all assets referenced by chunks that include @catal
       .toString()
   );
 
-  expect(Object.keys(manifest.assets)).toHaveLength(6);
+  expect(Object.keys(manifest.assets)).toHaveLength(7);
 
   expect(Object.keys(manifest.assets)).toContain(
     'application.js',
@@ -82,5 +82,5 @@ test('catalyst.json contains all assets referenced by chunks that include @catal
 
   expect(manifest.prefetch.application).toContain('images/this-is-fine.jpeg');
 
-  expect(manifest.prefetch.application).toHaveLength(3);
+  expect(manifest.prefetch.application).toHaveLength(6);
 });

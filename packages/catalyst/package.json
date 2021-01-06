@@ -1,7 +1,7 @@
 {
   "name": "catalyst",
   "version": "2.0.0-alpha.8",
-  "description": "Sets up Webpack, React, GraphQL, and more!",
+  "description": "Sets up webpack, TypeScript, React, GraphQL, SASS, and more!",
   "author": "Dan Martens <dan@friendsoftheweb.com>",
   "homepage": "https://github.com/friendsoftheweb/catalyst#readme",
   "license": "MIT",
@@ -11,7 +11,7 @@
     "lib"
   ],
   "engines": {
-    "node": ">= 10.13.0"
+    "node": ">= 11.0.0"
   },
   "repository": {
     "type": "git",
