@@ -39,7 +39,7 @@ const compileFixture = (volume, context) => {
       ],
     },
     plugins: [
-      new CatalystManifestPlugin(),
+      new CatalystManifestPlugin({ maxPrefetchAssetSize: 512 * 1024 }),
       new MiniCssExtractPlugin({
         filename: '[name].[contenthash:8].css',
       }),
