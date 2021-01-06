@@ -12,6 +12,7 @@ export interface Entrypoint {
 
 export interface Asset {
   name: string;
+  size: number;
   chunks: number[];
   chunkNames: string[];
   auxiliaryChunks: number[];
@@ -24,6 +25,7 @@ export interface Chunk {
   id: number;
   initial: boolean;
   modules: Module[];
+  files: string[];
   parents: number[];
 }
 

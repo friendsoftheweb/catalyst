@@ -13,6 +13,7 @@ export interface CustomConfiguration {
   importAssetsAsESModules?: boolean;
   maxScriptAssetSizeKB?: number;
   maxImageAssetSizeKB?: number;
+  maxPrefetchAssetSizeKB?: number;
   overlayEnabled?: boolean;
   prebuiltPackages?: string[];
   transformedPackages?: string[];
@@ -122,6 +123,13 @@ function isCustomConfiguration(value: any): value is CustomConfiguration {
   if (
     'maxImageAssetSizeKB' in value &&
     typeof value.maxImageAssetSizeKB !== 'number'
+  ) {
+    return false;
+  }
+
+  if (
+    'maxPrefetchAssetSizeKB' in value &&
+    typeof value.maxPrefetchAssetSizeKB !== 'number'
   ) {
     return false;
   }
@@ -308,6 +316,10 @@ export default class Configuration {
 
   get maxImageAssetSize(): number {
     return (this.configuration.maxImageAssetSizeKB ?? 1024) * 1024;
+  }
+
+  get maxPrefetchAssetSize(): number {
+    return (this.configuration.maxPrefetchAssetSizeKB ?? 256) * 1024;
   }
 
   get projectName(): string {

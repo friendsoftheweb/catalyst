@@ -6,6 +6,8 @@ import {
   chunksReferenceAsset,
 } from './utils';
 import { Stats, Chunk, Module } from './types';
+import { debugBuild } from '../../../debug';
+import formatBytes from '../../../utils/formatBytes';
 
 interface Manifest {
   assets: Record<string, string>;
@@ -13,12 +15,24 @@ interface Manifest {
   prefetch: Record<string, string[]>;
 }
 
+interface Options {
+  maxPrefetchAssetSize: number;
+}
+
 /**
  * Generates a "catalyst.manifest.json" file with a list of files to preload
  * (via`<link rel="preload" />`) and prefetch (via`<link rel="prefetch" />`).
  */
 export default class CatalystManifestPlugin implements WebpackPluginInstance {
+  private readonly options: Options;
+
+  constructor(options: Options) {
+    this.options = options;
+  }
+
   apply(compiler: Compiler): void {
+    const { maxPrefetchAssetSize } = this.options;
+
     compiler.hooks.compilation.tap('CatalystManifestPlugin', (compilation) => {
       compilation.hooks.processAssets.tapPromise(
         {
@@ -70,6 +84,23 @@ export default class CatalystManifestPlugin implements WebpackPluginInstance {
             for (const asset of stats.assets) {
               const assetName = nameForAsset(asset);
 
+              if (asset.size > maxPrefetchAssetSize) {
+                debugBuild(
+                  `Skipping asset "${assetName}" because it is larger than the size limit by ${formatBytes(
+                    asset.size - maxPrefetchAssetSize
+                  )}`
+                );
+
+                continue;
+              }
+
+              if (
+                manifest.preload[entrypoint.name]?.includes(assetName) ||
+                manifest.prefetch[entrypoint.name]?.includes(assetName)
+              ) {
+                continue;
+              }
+
               if (
                 !/\.(js|css)(\.map)?$/.test(assetName) &&
                 chunksReferenceAsset(entrypointChunks, asset)
@@ -94,29 +125,47 @@ export default class CatalystManifestPlugin implements WebpackPluginInstance {
 
           const prefetchChunks = collectPrefetchChunks(stats.chunks);
 
-          for (const chunk of prefetchChunks) {
-            const ancestors = collectChunkAncestors(stats.chunks, chunk);
-
-            if (ancestors.length === 0) {
+          for (const asset of stats.assets) {
+            if (asset.chunkNames.length > 0) {
               continue;
             }
 
-            const entrypoint = Object.values(
-              stats.entrypoints
-            ).find(({ chunks }) =>
-              chunks.includes(ancestors[ancestors.length - 1].id)
-            );
+            const assetName = nameForAsset(asset);
 
-            if (entrypoint == null) {
+            if (asset.size > maxPrefetchAssetSize) {
+              debugBuild(
+                `Skipping asset "${assetName}" because it is larger than the size limit by ${formatBytes(
+                  asset.size - maxPrefetchAssetSize
+                )}`
+              );
+
               continue;
             }
 
-            for (const asset of stats.assets) {
-              if (asset.chunkNames.length > 0) {
+            for (const chunk of prefetchChunks) {
+              const ancestors = collectChunkAncestors(stats.chunks, chunk);
+
+              if (ancestors.length === 0) {
                 continue;
               }
 
-              const assetName = nameForAsset(asset);
+              const entrypoint = Object.values(
+                stats.entrypoints
+              ).find(({ chunks }) =>
+                chunks.some((chunkId) =>
+                  ancestors.some(({ id }) => id === chunkId)
+                )
+              );
+
+              if (entrypoint == null) {
+                debugBuild(
+                  `Skipping chunk ${chunk.id} (${chunk.files.join(
+                    ', '
+                  )}) because an entrypoint could not be found`
+                );
+
+                continue;
+              }
 
               if (
                 manifest.preload[entrypoint.name]?.includes(assetName) ||
