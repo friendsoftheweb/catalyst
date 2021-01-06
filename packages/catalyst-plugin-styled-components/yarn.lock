@@ -2328,10 +2328,10 @@ catalyst-client@^2.0.0-alpha.5:
   dependencies:
     source-map "^0.7.3"
 
-catalyst@^2.0.0-alpha.8:
-  version "2.0.0-alpha.8"
-  resolved "https://registry.yarnpkg.com/catalyst/-/catalyst-2.0.0-alpha.8.tgz#92cee24b532bd980a660431a96d3ea5384ba0021"
-  integrity sha512-82C4js/bWq2S9uNWsQF52/WDvq1svh7VcBias4ONvEEwe6MjeEdhdsaIWN5z3XjMmvNXUYjEqWJYRi63R1oaDA==
+catalyst@^2.0.0-beta.0:
+  version "2.0.0-beta.0"
+  resolved "https://registry.yarnpkg.com/catalyst/-/catalyst-2.0.0-beta.0.tgz#a7e720cbba5ee76460b5d4125462017b6f07df4d"
+  integrity sha512-9FY5uffcebgFIcaCJ5QVQDGtedWAoO5VC6JjlT5BixF/aa4igXx16XQ1FkIM8PvyGZkxjnuVfpUL9Ehp2P7fkQ==
   dependencies:
     "@babel/core" "^7.4.4"
     "@babel/plugin-proposal-class-properties" "^7.4.4"
