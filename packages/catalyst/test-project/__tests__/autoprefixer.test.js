@@ -1,15 +1,20 @@
 const assertFileContains = require('../assertFileContains');
 
 const content = `::-webkit-input-placeholder {
-  color: gray; }
+  color: gray;
+}
 ::-moz-placeholder {
-  color: gray; }
+  color: gray;
+}
 :-ms-input-placeholder {
-  color: gray; }
+  color: gray;
+}
 ::-ms-input-placeholder {
-  color: gray; }
+  color: gray;
+}
 ::placeholder {
-  color: gray; }
+  color: gray;
+}
 `;
 
 test('build process transpiles dynamic import', async () => {

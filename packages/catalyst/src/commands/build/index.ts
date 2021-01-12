@@ -1,6 +1,5 @@
 import webpack, { Stats } from 'webpack';
 import chalk from 'chalk';
-import rebuildNodeSASS from '../../utils/rebuildNodeSASS';
 import Configuration from '../../Configuration';
 import logVersion from '../../utils/logVersion';
 import getWebpackConfig from '../../utils/getWebpackConfig';
@@ -23,8 +22,6 @@ export default async function build(options: Options) {
   }
 
   logVersion();
-
-  await rebuildNodeSASS();
 
   const compiler = webpack(await getWebpackConfig());
 
