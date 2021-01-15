@@ -1,5 +1,6 @@
 import { Compiler, Compilation, WebpackPluginInstance } from 'webpack';
 import { RawSource } from 'webpack-sources';
+import Manifest from './Manifest';
 import {
   nameForAsset,
   collectChunkAncestors,
@@ -8,12 +9,7 @@ import {
 import { Stats, Chunk, Module } from './types';
 import { debugBuild } from '../../../debug';
 import formatBytes from '../../../utils/formatBytes';
-
-interface Manifest {
-  assets: Record<string, string>;
-  preload: Record<string, string[]>;
-  prefetch: Record<string, string[]>;
-}
+import { IMAGE_FILE_PATTERN } from '../../../patterns';
 
 interface Options {
   maxPrefetchAssetSize: number;
@@ -54,19 +50,17 @@ export default class CatalystManifestPlugin implements WebpackPluginInstance {
             throw new Error('Please configure webpack\'s "output.publicPath"');
           }
 
-          const initialChunks = stats.chunks.filter(({ initial }) => initial);
-
-          const manifest: Manifest = {
-            assets: stats.assets.reduce(
+          const manifest = new Manifest(
+            stats.assets.reduce(
               (reduction, asset) => ({
                 ...reduction,
                 [nameForAsset(asset)]: `${stats.publicPath}${asset.name}`,
               }),
               {}
-            ),
-            preload: {},
-            prefetch: {},
-          };
+            )
+          );
+
+          const initialChunks = stats.chunks.filter(({ initial }) => initial);
 
           for (const chunk of initialChunks) {
             const entrypoint = Object.values(
@@ -84,6 +78,10 @@ export default class CatalystManifestPlugin implements WebpackPluginInstance {
             for (const asset of stats.assets) {
               const assetName = nameForAsset(asset);
 
+              if (IMAGE_FILE_PATTERN.test(assetName)) {
+                continue;
+              }
+
               if (asset.size > maxPrefetchAssetSize) {
                 debugBuild(
                   `Skipping asset "${assetName}" because it is larger than the size limit by ${formatBytes(
@@ -95,29 +93,14 @@ export default class CatalystManifestPlugin implements WebpackPluginInstance {
               }
 
               if (
-                manifest.preload[entrypoint.name]?.includes(assetName) ||
-                manifest.prefetch[entrypoint.name]?.includes(assetName)
-              ) {
-                continue;
-              }
-
-              if (
                 !/\.(js|css)(\.map)?$/.test(assetName) &&
                 chunksReferenceAsset(entrypointChunks, asset)
               ) {
                 // Fonts should almost always be preloaded
                 if (/\.(woff2?|ttf|eot)$/.test(assetName)) {
-                  if (manifest.preload[entrypoint.name] == null) {
-                    manifest.preload[entrypoint.name] = [];
-                  }
-
-                  manifest.preload[entrypoint.name].push(assetName);
+                  manifest.addPreloadAsset(entrypoint, asset);
                 } else {
-                  if (manifest.prefetch[entrypoint.name] == null) {
-                    manifest.prefetch[entrypoint.name] = [];
-                  }
-
-                  manifest.prefetch[entrypoint.name].push(assetName);
+                  manifest.addPrefetchAsset(entrypoint, asset);
                 }
               }
             }
@@ -131,6 +114,10 @@ export default class CatalystManifestPlugin implements WebpackPluginInstance {
             }
 
             const assetName = nameForAsset(asset);
+
+            if (IMAGE_FILE_PATTERN.test(assetName)) {
+              continue;
+            }
 
             if (asset.size > maxPrefetchAssetSize) {
               debugBuild(
@@ -167,32 +154,15 @@ export default class CatalystManifestPlugin implements WebpackPluginInstance {
                 continue;
               }
 
-              if (
-                manifest.preload[entrypoint.name]?.includes(assetName) ||
-                manifest.prefetch[entrypoint.name]?.includes(assetName)
-              ) {
-                continue;
-              }
-
               if (chunksReferenceAsset([chunk, ...ancestors], asset)) {
-                if (manifest.prefetch[entrypoint.name] == null) {
-                  manifest.prefetch[entrypoint.name] = [];
-                }
-
-                manifest.prefetch[entrypoint.name].push(assetName);
+                manifest.addPrefetchAsset(entrypoint, asset);
               }
             }
           }
 
           compilation.emitAsset(
             'catalyst.manifest.json',
-            new RawSource(JSON.stringify(manifest, null, 2))
-          );
-
-          // Also generate a "manifest.json" for backwards compatibility
-          compilation.emitAsset(
-            'manifest.json',
-            new RawSource(JSON.stringify(manifest.assets, null, 2))
+            new RawSource(manifest.toJSON())
           );
         }
       );

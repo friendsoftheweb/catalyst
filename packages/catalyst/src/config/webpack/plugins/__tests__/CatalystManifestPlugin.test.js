@@ -80,7 +80,5 @@ test('catalyst.json contains all assets referenced by chunks that include @catal
 
   expect(manifest.preload.application).toContain('fonts/AdobeBlank.woff');
 
-  expect(manifest.prefetch.application).toContain('images/this-is-fine.jpeg');
-
-  expect(manifest.prefetch.application).toHaveLength(4);
+  expect(manifest.prefetch.application).toHaveLength(3);
 });
