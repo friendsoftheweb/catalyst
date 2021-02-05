@@ -75,7 +75,7 @@ export default function generateRules(
   include.push(contextPath);
 
   rules.push({
-    test: /\.(ts|js)x?$/,
+    test: /\.(js|jsx|ts|tsx|mjs)$/,
     include,
     use: [
       {

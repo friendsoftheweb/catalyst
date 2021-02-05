@@ -139,3 +139,21 @@ const Checkout = () => {
 ```
 
 _NOTE:_ This will have no effect if the file is included in an "entry" chunk (i.e. the file is not part of a [dynamically imported](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import#Dynamic_Imports) chunk).
+
+## Common Issues
+
+### Requiring an MJS module causes the webpack build process to fail
+
+If you see a message like this during a webpack build:
+
+```
+BREAKING CHANGE: The request './version' failed to resolve only because it was resolved as fully specified
+(probably because the origin is a '*.mjs' file or a '*.js' file where the package.json contains '"type": "module"').
+The extension in the request is mandatory for it to be fully specified.
+Add the extension to the request.
+```
+
+You should make sure that every version of `@babel/runtime` used in your project
+is at least `7.12.0`. You can check this by running `yarn why "@babel/runtime"`.
+If any versions are lower than `7.12.0`, either update the parent dependency or
+add `@babel/runtime` to the ["resolutions"](https://classic.yarnpkg.com/en/docs/selective-version-resolutions) section of your `package.json`.
