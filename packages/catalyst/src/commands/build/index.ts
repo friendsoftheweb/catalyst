@@ -81,19 +81,27 @@ function logStats(stats: Stats | undefined) {
     errors: true,
   });
 
-  for (const warning of warnings) {
-    logStatus(Status.Warning, warning.message, warning.moduleName);
+  if (warnings != null) {
+    for (const warning of warnings) {
+      logStatus(Status.Warning, warning.message, warning.moduleName);
+    }
   }
 
-  for (const error of errors) {
-    logStatus(
-      Status.Error,
-      cleanUpErrorMessage(error.message),
-      error.moduleName
-    );
+  if (errors != null) {
+    for (const error of errors) {
+      logStatus(
+        Status.Error,
+        cleanUpErrorMessage(error.message),
+        error.moduleName
+      );
+    }
   }
 
-  if (errors.length === 0 && stats.endTime != null && stats.startTime != null) {
+  if (
+    (errors == null || errors.length === 0) &&
+    stats.endTime != null &&
+    stats.startTime != null
+  ) {
     logStatus(
       Status.Success,
       `Built successfully in ${(stats.endTime - stats.startTime) / 1000}s`

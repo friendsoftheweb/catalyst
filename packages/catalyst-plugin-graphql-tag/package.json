@@ -16,7 +16,7 @@
     "lint": "eslint \"src/**/*.ts\""
   },
   "dependencies": {
-    "babel-plugin-graphql-tag": "^2.4.0"
+    "babel-plugin-graphql-tag": "^3.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.5.5",
@@ -27,7 +27,7 @@
     "graphql": "^15.4.0",
     "graphql-tag": "^2.11.0",
     "prettier": "^2.2.1",
-    "typescript": "^3.5.3"
+    "typescript": "^4.1.5"
   },
   "peerDependencies": {
     "catalyst": "^2.0.0",

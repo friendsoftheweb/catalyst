@@ -53,9 +53,6 @@ export default function generateRules(
         },
       },
       {
-        loader: path.resolve(__dirname, './loaders/checkUrlPathsLoader'),
-      },
-      {
         loader: require.resolve('sass-loader'),
         options: {
           sourceMap: true,
