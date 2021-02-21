@@ -48,9 +48,19 @@ export type DevServerEvent =
       }[];
     };
 
-export interface Environment {
-  devServerProtocol: string | undefined;
-  devServerHost: string | undefined;
-  devServerPort: string | undefined;
-  contextPath: string | undefined;
+export interface Configuration {
+  devServerProtocol: string;
+  devServerHost: string;
+  devServerPort: number;
+  contextPath: string;
+  ignoredRuntimeErrors: string[];
+}
+
+export interface Logger {
+  error(message: string): void;
+  error(options: { message: string; location: string }): void;
+}
+
+export interface CatalystClient extends Configuration {
+  logger: Logger;
 }

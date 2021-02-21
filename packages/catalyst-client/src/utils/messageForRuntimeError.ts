@@ -1,4 +1,10 @@
-export const messageForRuntimeError = (error: Error): string | undefined => {
+export const messageForRuntimeError = (
+  error: Error | undefined
+): string | undefined => {
+  if (error == null) {
+    return;
+  }
+
   if (error.name === 'TypeError') {
     return error.message;
   }

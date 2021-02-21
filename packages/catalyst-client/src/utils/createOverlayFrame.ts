@@ -1,10 +1,10 @@
-let overlayFramePromise: Promise<{ frame: HTMLIFrameElement }> | null = null;
-
-const {
+import {
   devServerProtocol,
-  devServerPort,
   devServerHost,
-} = window.__CATALYST_ENV__;
+  devServerPort,
+} from '../configuration';
+
+let overlayFramePromise: Promise<{ frame: HTMLIFrameElement }> | null = null;
 
 export default function createOverlayFrame(): Promise<{
   frame: HTMLIFrameElement;
