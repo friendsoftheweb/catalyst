@@ -3,11 +3,18 @@ import { SourceMapConsumer } from 'source-map';
 import createOverlayFrame from './utils/createOverlayFrame';
 import { getSourceLocation } from './getSourceLocation';
 import { messageForRuntimeError } from './utils/messageForRuntimeError';
-import { FrameState, DevServerEvent, Environment } from './types';
+import {
+  contextPath,
+  devServerProtocol,
+  devServerHost,
+  devServerPort,
+  ignoredRuntimeErrors,
+} from './configuration';
+import { FrameState, DevServerEvent, CatalystClient } from './types';
 
 declare global {
   interface Window {
-    __CATALYST_ENV__: Environment;
+    __CATALYST__?: CatalystClient;
   }
 }
 
@@ -15,9 +22,8 @@ let overlayFrameVisible = true;
 let overlayFramePointerEvents = 'none';
 let overlayFrameState: FrameState = null;
 let runtimeErrorCount = 0;
+let runtimeErrorLocation: string | undefined;
 let runtimeErrorMessage: string | undefined;
-let runtimeErrorPath: string | undefined;
-let runtimeErrorLine: number | undefined;
 let isBuilding = false;
 let firstCompilationHash: string | null = null;
 let lastCompilationHash: string | null = null;
@@ -50,13 +56,6 @@ const hideNotification = () => {
 
   return updateOverlayContainer();
 };
-
-const {
-  devServerProtocol,
-  devServerHost,
-  devServerPort,
-  contextPath,
-} = window.__CATALYST_ENV__;
 
 if (
   devServerProtocol == null ||
@@ -183,11 +182,8 @@ const showRuntimeErrors = async () => {
     component: 'RuntimeErrors',
     props: {
       count: runtimeErrorCount,
-      location:
-        runtimeErrorPath != null && runtimeErrorLine != null
-          ? `${runtimeErrorPath.replace('webpack:///', '')}:${runtimeErrorLine}`
-          : undefined,
       message: runtimeErrorMessage,
+      location: runtimeErrorLocation,
     },
   });
 };
@@ -202,8 +198,13 @@ window.addEventListener('error', (event) => {
     return false;
   }
 
+  if (ignoredRuntimeErrors.some((regexp) => regexp.test(event.message))) {
+    return false;
+  }
+
   runtimeErrorCount++;
   runtimeErrorMessage = messageForRuntimeError(event.error);
+  runtimeErrorLocation = undefined;
 
   showRuntimeErrors();
 
@@ -213,8 +214,10 @@ window.addEventListener('error', (event) => {
         return;
       }
 
-      runtimeErrorPath = position.source;
-      runtimeErrorLine = position.line;
+      const errorPath = position.source.replace('webpack:///', '');
+      const errorLine = position.line;
+
+      runtimeErrorLocation = `${errorPath}:${errorLine}`;
 
       showRuntimeErrors();
     })
@@ -233,3 +236,21 @@ window.addEventListener('unhandledrejection', () => {
 
   return false;
 });
+
+if (window.__CATALYST__ != null) {
+  window.__CATALYST__.logger = {
+    error(messageOrOptions: string | { message: string; location: string }) {
+      runtimeErrorCount++;
+
+      if (typeof messageOrOptions === 'string') {
+        runtimeErrorMessage = messageOrOptions;
+        runtimeErrorLocation = undefined;
+      } else {
+        runtimeErrorMessage = messageOrOptions.message;
+        runtimeErrorLocation = messageOrOptions.location;
+      }
+
+      showRuntimeErrors();
+    },
+  };
+}

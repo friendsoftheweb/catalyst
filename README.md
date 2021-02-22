@@ -140,6 +140,45 @@ const Checkout = () => {
 
 _NOTE:_ This will have no effect if the file is included in an "entry" chunk (i.e. the file is not part of a [dynamically imported](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/import#Dynamic_Imports) chunk).
 
+### Logging Apollo Client Errors During Development
+
+Catalyst provides a global error logger method (`window.__CATALYST__.logger.error()`) that can be used to display an error message at the bottom of the browser window during development. This can be used to display GraphQL and network errors by adding a [custom "link"](https://www.apollographql.com/docs/react/data/error-handling/#network-errors) to your `@apollo/client` configuration:
+
+```jsx
+import { ApolloClient, createHttpLink, from } from '@apollo/client';
+import { onError } from '@apollo/client/link/error';
+
+const link = from([
+  onError(({ operation, graphQLErrors, networkError }) => {
+    if (process.env.NODE_ENV === 'development') {
+      if (graphQLErrors != null) {
+        for (const error of graphQLErrors) {
+          window.__CATALYST__?.logger?.error({
+            location: operation.operationName,
+            message: error.message,
+          });
+        }
+      }
+
+      if (networkError != null) {
+        window.__CATALYST__?.logger?.error({
+          location: operation.operationName,
+          message: networkError.message,
+        });
+      }
+    }
+  }),
+  createHttpLink({
+    // ...
+  }),
+]);
+
+const client = new ApolloClient({
+  link,
+  // ...
+});
+```
+
 ## Common Issues
 
 ### Requiring an MJS module causes the webpack build process to fail

@@ -12,7 +12,7 @@ export default function generateEntry(
   const entry = [];
 
   if (environment === Environment.Development && overlayEnabled) {
-    entry.push(path.resolve(__dirname, '../../../lib/dev-environment'));
+    entry.push(path.resolve(__dirname, '../../../lib/catalyst-client'));
     entry.push('catalyst-client');
   }
 

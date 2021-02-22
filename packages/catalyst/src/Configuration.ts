@@ -27,6 +27,7 @@ export interface CustomConfiguration {
   devServerHost?: string;
   devServerPort?: number;
   devServerCertificate?: DevServerCertificate;
+  ignoredRuntimeErrors?: string[];
   plugins?: string[];
 }
 
@@ -481,6 +482,12 @@ export default class Configuration {
     const { devServerCertificate } = this.configuration;
 
     return devServerCertificate || null;
+  }
+
+  get ignoredRuntimeErrors(): string[] {
+    const { ignoredRuntimeErrors } = this.configuration;
+
+    return ignoredRuntimeErrors ?? [];
   }
 
   get overlayEnabled(): boolean {
