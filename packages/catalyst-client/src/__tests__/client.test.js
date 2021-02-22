@@ -27,7 +27,7 @@ const delay = (ms) =>
   });
 
 test('a message is displayed while building', async () => {
-  window.__CATALYST_ENV__ = {
+  window.__CATALYST__ = {
     devServerProtocol: 'https',
     devServerHost: 'localhost',
     devServerPort: '8080',
@@ -71,7 +71,7 @@ test('a message is displayed while building', async () => {
 });
 
 test('a compilation error is displayed', async () => {
-  window.__CATALYST_ENV__ = {
+  window.__CATALYST__ = {
     devServerProtocol: 'https',
     devServerHost: 'localhost',
     devServerPort: '8080',

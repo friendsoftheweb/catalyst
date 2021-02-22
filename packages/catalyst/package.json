@@ -4,19 +4,21 @@
   "description": "Sets up webpack, TypeScript, React, GraphQL, SASS, and more!",
   "author": "Dan Martens <dan@friendsoftheweb.com>",
   "homepage": "https://github.com/friendsoftheweb/catalyst#readme",
-  "license": "MIT",
-  "main": "./lib/index.js",
-  "bin": "./lib/bin.js",
-  "files": [
-    "lib"
-  ],
-  "engines": {
-    "node": ">= 11.0.0"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/friendsoftheweb/catalyst.git"
   },
+  "engines": {
+    "node": ">= 11.0.0"
+  },
+  "license": "MIT",
+  "files": [
+    "lib",
+    "catalyst.d.ts"
+  ],
+  "main": "./lib/index.js",
+  "bin": "./lib/bin.js",
+  "types": "./lib/index.d.ts",
   "scripts": {
     "prepack": "scripts/prepack",
     "build": "scripts/build",

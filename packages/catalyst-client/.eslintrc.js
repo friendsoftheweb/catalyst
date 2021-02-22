@@ -3,6 +3,7 @@ module.exports = {
     es2021: true,
     node: true,
   },
+  parser: '@typescript-eslint/parser',
   plugins: ['@typescript-eslint'],
   extends: [
     'eslint:recommended',
@@ -10,12 +11,12 @@ module.exports = {
     'plugin:@typescript-eslint/recommended',
     'preact',
   ],
-  parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaVersion: 12,
     sourceType: 'module',
   },
   rules: {
     '@typescript-eslint/no-var-requires': 'off',
+    'no-unused-vars': 'off',
   },
 };

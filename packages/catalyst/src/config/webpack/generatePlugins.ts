@@ -7,6 +7,7 @@ import DuplicatePackageCheckerPlugin from 'duplicate-package-checker-webpack-plu
 import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin';
 import CircularDependencyPlugin from 'circular-dependency-plugin';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
+import { Configuration as ClientConfiguration } from 'catalyst-client/lib/types';
 import AssertMaxAssetSizePlugin from './plugins/AssertMaxFileSizePlugin';
 import CatalystManifestPlugin from './plugins/CatalystManifestPlugin';
 import CleanUpStatsPlugin from './plugins/CleanUpStatsPlugin';
@@ -39,6 +40,7 @@ export default function generatePlugins(
     devServerProtocol,
     devServerHost,
     devServerPort,
+    ignoredRuntimeErrors,
   } = configuration;
 
   const cssFileName =
@@ -73,13 +75,25 @@ export default function generatePlugins(
   plugins.push(
     new webpack.EnvironmentPlugin({
       NODE_ENV: process.env.NODE_ENV,
-      DEV_SERVER_PROTOCOL: devServerProtocol,
-      DEV_SERVER_HOST: devServerHost,
-      DEV_SERVER_PORT: devServerPort,
-      CONTEXT_PATH: contextPath,
       SERVICE_WORKER_URL: `${publicPath}service-worker.js`,
     })
   );
+
+  if (environment === Environment.Development) {
+    const clientConfiguration: ClientConfiguration = {
+      devServerProtocol,
+      devServerHost,
+      devServerPort,
+      contextPath,
+      ignoredRuntimeErrors,
+    };
+
+    plugins.push(
+      new webpack.EnvironmentPlugin({
+        CATALYST_CONFIGURATION: JSON.stringify(clientConfiguration),
+      })
+    );
+  }
 
   if (generateServiceWorker) {
     plugins.push(
