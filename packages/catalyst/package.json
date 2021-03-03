@@ -21,6 +21,7 @@
   "types": "./lib/index.d.ts",
   "scripts": {
     "prepack": "scripts/prepack",
+    "postpublish": "scripts/postpublish",
     "build": "scripts/build",
     "test": "jest",
     "test:watch": "jest --watch",
