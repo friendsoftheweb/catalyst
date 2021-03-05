@@ -203,8 +203,13 @@ window.addEventListener('error', (event) => {
   }
 
   runtimeErrorCount++;
-  runtimeErrorMessage = messageForRuntimeError(event.error);
-  runtimeErrorLocation = undefined;
+
+  const message = messageForRuntimeError(event.error);
+
+  if (message != null) {
+    runtimeErrorMessage = message;
+    runtimeErrorLocation = undefined;
+  }
 
   showRuntimeErrors();
 
