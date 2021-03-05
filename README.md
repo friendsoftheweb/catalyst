@@ -50,7 +50,7 @@ Certain aspects of Catalyst can be configured by editing the `catalyst.config.js
 | **optimizationCommonExcludedChunks** | N/A                   | `string[]`                                               | Names of chunks whose dependencies should be excluded from the "common" chunk. Defaults to `["admin", "administration", "management"]`.                                                    |
 | **prebuiltPackages**                 | N/A                   | `string[]`                                               | A list of npm packages which should be pre-built in the _development_ environment. This decreases the time spent on re-building entries by skipping the listed packages.                   |
 | **transformedPackages**              | N/A                   | `string[]`                                               | A list of npm packages which should be [transformed and polyfilled via Babel](https://babeljs.io/docs/en/babel-preset-env).                                                                |
-| **generateServiceWorker**            | N/A                   | `boolean`                                                | Generate a separate file which will be registered as a [SeviceWorker](https://developer.mozilla.org/en-US/docs/Web/API/ServiceWorker) and preload JavaScript, CSS, and other assets.       |
+| **generateServiceWorker**            | N/A                   | `boolean`                                                | Generate a separate file which will be registered as a [ServiceWorker](https://developer.mozilla.org/en-US/docs/Web/API/ServiceWorker) and preload JavaScript, CSS, and other assets.      |
 | **checkForCircularDependencies**     | N/A                   | `boolean`                                                | Show warnings in _development_ and errors in other in environments if a circular dependency is detected.                                                                                   |
 | **checkForDuplicatePackages**        | N/A                   | `boolean`                                                | Show warnings if multiple versions of the same package are required in the webpack dependency tree.                                                                                        |
 | **ignoredDuplicatePackages**         | N/A                   | `string[]`                                               | A list of npm packages to ignore when checking for duplicates. This has no effect if **checkForDuplicatePackages** is `false`.                                                             |
@@ -145,12 +145,19 @@ _NOTE:_ This will have no effect if the file is included in an "entry" chunk (i.
 Catalyst provides a global error logger method (`window.__CATALYST__.logger.error()`) that can be used to display an error message at the bottom of the browser window during development. This can be used to display GraphQL and network errors by adding a [custom "link"](https://www.apollographql.com/docs/react/data/error-handling/#network-errors) to your `@apollo/client` configuration:
 
 ```jsx
-import { ApolloClient, createHttpLink, from } from '@apollo/client';
+import { ApolloClient, HttpLink, from } from '@apollo/client';
 import { onError } from '@apollo/client/link/error';
 
 const link = from([
   onError(({ operation, graphQLErrors, networkError }) => {
     if (process.env.NODE_ENV === 'development') {
+      if (networkError != null) {
+        window.__CATALYST__?.logger?.error({
+          location: operation.operationName,
+          message: networkError.message,
+        });
+      }
+
       if (graphQLErrors != null) {
         for (const error of graphQLErrors) {
           window.__CATALYST__?.logger?.error({
@@ -159,16 +166,9 @@ const link = from([
           });
         }
       }
-
-      if (networkError != null) {
-        window.__CATALYST__?.logger?.error({
-          location: operation.operationName,
-          message: networkError.message,
-        });
-      }
     }
   }),
-  createHttpLink({
+  new HttpLink({
     // ...
   }),
 ]);
