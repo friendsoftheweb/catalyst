@@ -10,7 +10,9 @@
     "prettier:check": "lerna run prettier:check",
     "lint": "lerna run lint",
     "clean": "scripts/clean",
-    "postinstall": "scripts/postinstall"
+    "postinstall": "scripts/postinstall",
+    "lerna:publish": "lerna publish",
+    "lerna:publish:next": "lerna publish --dist-tag next"
   },
   "devDependencies": {
     "lerna": "^3.14.1"
