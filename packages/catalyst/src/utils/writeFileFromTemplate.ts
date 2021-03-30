@@ -15,14 +15,7 @@ export default async function writeFileFromTemplate(
     mkdirp.sync(outputDirname);
   }
 
-  const absoluteFilePath = path.resolve(
-    __dirname,
-    `../templates/${templatePath}`
-  );
-
-  const fileContent = template(fs.readFileSync(absoluteFilePath, 'utf8'))(
-    context
-  );
+  const fileContent = template(fs.readFileSync(templatePath, 'utf8'))(context);
 
   return tryWriteFile(outputPath, fileContent);
 }

@@ -6,8 +6,13 @@ import { Environment } from '../../Environment';
 import forEachPlugin from '../../utils/forEachPlugin';
 import { IMAGE_FILE_PATTERN } from '../../patterns';
 
+interface Options {
+  publicPath?: string;
+}
+
 export default function generateRules(
-  configuration: Configuration
+  configuration: Configuration,
+  options: Options = {}
 ): RuleSetRule[] {
   const {
     environment,
@@ -88,10 +93,15 @@ export default function generateRules(
   });
 
   rules.push(
-    ...generateFileLoaderRules(configuration, path.join(contextPath, 'assets')),
     ...generateFileLoaderRules(
       configuration,
-      path.join(rootPath, 'node_modules')
+      path.join(contextPath, 'assets'),
+      options
+    ),
+    ...generateFileLoaderRules(
+      configuration,
+      path.join(rootPath, 'node_modules'),
+      options
     )
   );
 
@@ -106,7 +116,8 @@ export default function generateRules(
 
 function generateFileLoaderRules(
   configuration: Configuration,
-  basePath: string
+  basePath: string,
+  options: Options
 ): RuleSetRule[] {
   const { environment, publicPath, importAssetsAsESModules } = configuration;
 
@@ -118,7 +129,7 @@ function generateFileLoaderRules(
   const fileLoaderOptions = {
     context: basePath,
     name,
-    publicPath,
+    publicPath: options.publicPath ?? publicPath,
     esModule: importAssetsAsESModules,
   };
 

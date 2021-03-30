@@ -1,0 +1,18 @@
+const path = require('path');
+const { Configuration } = require('catalyst');
+const { modifyStorybookWebpackConfig } = require('catalyst-plugin-story-book');
+
+const catalystConfig = Configuration.fromFile();
+
+module.exports = {
+  stories: [
+    path.join(
+      catalystConfig.contextPath,
+      '**/__stories__/**/*.@(js|jsx|ts|tsx)'
+    ),
+  ],
+  addons: ['@storybook/addon-links', '@storybook/addon-essentials'],
+  webpackFinal: async (config) => {
+    return modifyStorybookWebpackConfig(config);
+  },
+};
