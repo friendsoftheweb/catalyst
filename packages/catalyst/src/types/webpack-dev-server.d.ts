@@ -7,19 +7,19 @@ declare module 'webpack-dev-server' {
   export interface Configuration {
     host?: string;
     port?: number;
+    hot?: boolean;
+    headers?: Record<string, string>;
     https?: {
       key: Buffer;
       cert: Buffer;
       ca: Buffer;
     };
-    hot?: boolean;
-    publicPath?: string;
-    clientLogLevel?: 'none';
-    headers?: Record<string, string>;
-    disableHostCheck?: boolean;
-    stats?: 'errors-only';
-    before?(app: Application): void;
-    after?(app: Application): void;
+    client?: {
+      logging?: 'none' | 'error' | 'warn' | 'info' | 'log' | 'verbose';
+      overlay?: boolean | { errors?: boolean; warnings?: boolean };
+    };
+    onBeforeSetupMiddleware?(args: { app: Application }): void;
+    onAfterSetupMiddleware?(args: { app: Application }): void;
   }
 
   export default class WebpackDevServer {

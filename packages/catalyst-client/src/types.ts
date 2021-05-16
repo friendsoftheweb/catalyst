@@ -26,6 +26,12 @@ export type DevServerEvent =
       data: string;
     }
   | {
+      type: 'hot';
+    }
+  | {
+      type: 'liveReload';
+    }
+  | {
       type: 'ok';
     }
   | {

@@ -1,5 +1,4 @@
 import 'regenerator-runtime';
-import SockJS from 'sockjs-client';
 import createOverlayFrame from '../utils/createOverlayFrame';
 
 let mockFrame;

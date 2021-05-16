@@ -48,34 +48,46 @@ export default async function createDevServer(options: Options) {
     port,
     https,
     hot: true,
-    publicPath: '/',
-    clientLogLevel: 'none',
-    headers: {
-      'Access-Control-Allow-Origin': '*',
+    client: {
+      logging: 'error',
+      overlay: false,
     },
-    disableHostCheck: true,
-    stats: 'errors-only',
-    before(app) {
+    headers: {
+      'Access-Control-Allow-Credentials': 'true',
+    },
+
+    onBeforeSetupMiddleware({ app }) {
+      app.use((req, res, next) => {
+        if (
+          req.headers.referer != null &&
+          /^https?:\/\/localhost:\d+\//.test(req.headers.referer)
+        ) {
+          res.setHeader(
+            'Access-Control-Allow-Origin',
+            new URL(req.headers.referer).origin
+          );
+        }
+
+        next();
+      });
+
       app.get('/vendor-dll.js', async (_req, res) => {
         const data = await readFile(vendorFilePath);
 
         res.set('Content-Type', 'application/javascript');
-        res.set('Access-Control-Allow-Origin', '*');
         res.send(data);
       });
     },
-    after(app) {
+    onAfterSetupMiddleware({ app }) {
       // Add a route to fall back to during development if "common.js" is not
       // generated (because it's unnecessary).
       app.get('/common.js', (_req, res) => {
         res.set('Content-Type', 'application/javascript');
-        res.set('Access-Control-Allow-Origin', '*');
         res.send('// This file left intentially blank.');
       });
 
       app.get('/frame', async (_req, res) => {
         res.set('Content-Type', 'text/html');
-        res.set('Access-Control-Allow-Origin', '*');
 
         let scriptTag = '';
 

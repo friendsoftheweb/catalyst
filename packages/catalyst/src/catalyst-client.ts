@@ -1,3 +1,5 @@
+/// <reference lib="DOM" />
+
 if (window.__CATALYST__ == null) {
   if (process.env.CATALYST_CONFIGURATION == null) {
     throw new Error('Catalyst client configuration is missing');

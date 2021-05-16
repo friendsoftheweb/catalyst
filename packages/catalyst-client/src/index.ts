@@ -1,4 +1,3 @@
-import SockJS from 'sockjs-client';
 import { SourceMapConsumer } from 'source-map';
 import createOverlayFrame from './utils/createOverlayFrame';
 import { getSourceLocation } from './getSourceLocation';
@@ -68,7 +67,7 @@ if (
 
 const devServerURI = `${devServerProtocol}://${devServerHost}:${devServerPort}`;
 
-const connection = new SockJS(`${devServerURI}/sockjs-node`);
+const connection = new WebSocket(`ws://${devServerHost}:${devServerPort}/ws`);
 
 connection.onmessage = function ({ data }: { data: string }) {
   const event: DevServerEvent = JSON.parse(data);
@@ -240,6 +239,10 @@ window.addEventListener('unhandledrejection', () => {
   showRuntimeErrors();
 
   return false;
+});
+
+window.addEventListener('DOMContentLoaded', () => {
+  createOverlayFrame();
 });
 
 if (window.__CATALYST__ != null) {
