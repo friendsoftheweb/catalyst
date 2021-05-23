@@ -1,3 +1,5 @@
+/// <reference lib="DOM" />
+
 const SERVICE_WORKER_URL = process.env.SERVICE_WORKER_URL;
 
 if (SERVICE_WORKER_URL != null && 'serviceWorker' in navigator) {
