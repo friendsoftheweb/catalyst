@@ -41,8 +41,8 @@ export default function imageDimensionsLoader(
 
   if (
     esModule
-      ? !/^export default ".+";$/.test(content)
-      : !/^module\.exports = ".+";$/.test(content)
+      ? !/^export default (__webpack_public_path__ \+ )?".+";$/.test(content)
+      : !/^module\.exports = (__webpack_public_path__ \+ )?".+";$/.test(content)
   ) {
     callback(
       new Error(

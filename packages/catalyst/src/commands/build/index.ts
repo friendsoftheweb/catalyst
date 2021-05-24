@@ -75,7 +75,7 @@ function logStats(stats: Stats | undefined) {
     return;
   }
 
-  const { errors, warnings } = stats.toJson({
+  const { errors = [], warnings = [] } = stats.toJson({
     all: false,
     warnings: true,
     errors: true,

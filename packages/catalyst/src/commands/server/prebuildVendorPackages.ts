@@ -55,14 +55,14 @@ export default async function prebuildVendorPackages(): Promise<Stats | void> {
           return;
         }
 
-        const { errors, warnings } = stats.toJson({
+        const { errors = [], warnings = [] } = stats.toJson({
           all: false,
           warnings: true,
           errors: true,
         });
 
         if (errors.length > 0) {
-          reject(new Error(errors[0]));
+          reject(new Error(errors[0].message));
         } else {
           if (warnings.length > 0) {
             console.log(chalk.yellow(warnings.join('\n\n')));

@@ -26,6 +26,14 @@ interface Plugin {
   modifyNodePackages?(packages: readonly string[]): string[];
 
   modifyNodePackagesDev?(packages: readonly string[]): string[];
+
+  afterInit?(params: {
+    firstRun: boolean;
+    writeFileFromTemplate(
+      outputPath: string,
+      templatePath: string
+    ): Promise<void>;
+  }): Promise<void>;
 }
 
 export default Plugin;

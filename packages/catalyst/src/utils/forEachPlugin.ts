@@ -3,10 +3,10 @@ import path from 'path';
 import Configuration from '../Configuration';
 import Plugin from '../Plugin';
 
-export default function forEachPlugin(
+export default async function forEachPlugin(
   configuration: Configuration,
-  predicate: (plugin: Plugin) => void
-): void {
+  callbackFn: (plugin: Plugin) => void | Promise<void>
+): Promise<void> {
   const { plugins } = configuration;
 
   for (const plugin of plugins) {
@@ -18,6 +18,6 @@ export default function forEachPlugin(
       );
     }
 
-    predicate(require(pluginPath).default);
+    await callbackFn(require(pluginPath).default);
   }
 }
