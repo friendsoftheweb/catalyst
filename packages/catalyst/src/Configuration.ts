@@ -19,7 +19,6 @@ export interface CustomConfiguration {
   transformedPackages?: string[];
   optimizeCommonMinChunks?: number;
   optimizeCommonExcludedChunks?: string[];
-  generateServiceWorker?: boolean;
   checkForCircularDependencies?: boolean;
   checkForDuplicatePackages?: boolean;
   ignoredDuplicatePackages?: string[];
@@ -160,13 +159,6 @@ function isCustomConfiguration(value: any): value is CustomConfiguration {
   if (
     'optimizeCommonExcludedChunks' in value &&
     !Array.isArray(value.optimizeCommonExcludedChunks)
-  ) {
-    return false;
-  }
-
-  if (
-    'generateServiceWorker' in value &&
-    typeof value.generateServiceWorker !== 'boolean'
   ) {
     return false;
   }
@@ -384,16 +376,6 @@ export default class Configuration {
     }
 
     return defaultTransformedPackages;
-  }
-
-  get generateServiceWorker(): boolean {
-    if (this.environment === Environment.Development) {
-      return false;
-    }
-
-    const { generateServiceWorker } = this.configuration;
-
-    return generateServiceWorker ?? false;
   }
 
   get checkForCircularDependencies(): boolean {

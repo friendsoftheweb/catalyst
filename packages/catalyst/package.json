@@ -99,8 +99,7 @@
     "webpack": "^5.11.0",
     "webpack-bundle-analyzer": "^4.3.0",
     "webpack-dev-server": "^3.7.2",
-    "webpack-sources": "^2.2.0",
-    "workbox-webpack-plugin": "^6.0.2"
+    "webpack-sources": "^2.2.0"
   },
   "devDependencies": {
     "@types/autoprefixer": "^9.5.0",
