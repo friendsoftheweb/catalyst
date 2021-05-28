@@ -2321,17 +2321,17 @@ case-sensitive-paths-webpack-plugin@^2.2.0:
   resolved "https://registry.yarnpkg.com/case-sensitive-paths-webpack-plugin/-/case-sensitive-paths-webpack-plugin-2.3.0.tgz#23ac613cc9a856e4f88ff8bb73bbb5e989825cf7"
   integrity sha512-/4YgnZS8y1UXXmC02xD5rRrBEu6T5ub+mQHLNRj0fzTRbgdBYhsNo2V5EqwgqrExjxsjtF/OpAKAMkKsxbD5XQ==
 
-catalyst-client@^2.0.0-beta.6:
-  version "2.0.0-beta.6"
-  resolved "https://registry.yarnpkg.com/catalyst-client/-/catalyst-client-2.0.0-beta.6.tgz#92e8c1c046cfc3a74091b2e757a3350f48d0aa48"
-  integrity sha512-9qSfhO71SvQ7sTJnFWQeZBSHWdTHx2oWygiqw9QHjjTnU5hda1mF6sshymG4o2QypXUQ+lPw0UOEPH+/nXMW3Q==
+catalyst-client@^2.0.0-beta.7:
+  version "2.0.0-beta.7"
+  resolved "https://registry.yarnpkg.com/catalyst-client/-/catalyst-client-2.0.0-beta.7.tgz#089d9a2902d967cc3873009e0bfdbc747914586d"
+  integrity sha512-gTdFX4EsY35JaPH6Lq8TFKwpXQH2tRGn21zfpPLhfNy++XrvsBWCuTPA0JCFtR0Aj4GtNpj2kO8Qj1wp5PanfQ==
   dependencies:
     source-map "^0.7.3"
 
-catalyst@^2.0.0-beta.6:
-  version "2.0.0-beta.6"
-  resolved "https://registry.yarnpkg.com/catalyst/-/catalyst-2.0.0-beta.6.tgz#b470ec9da0bbcd1393b754810c23e775fe119fa9"
-  integrity sha512-OBsH/5IFgZ6JaUnIqlNli/ay1mIco4Q6ezqZvEENspAH1dM1tg/ibdQWfDlr+VaPPmdTJ/REYiOcyHDtIFWTbA==
+catalyst@^2.0.0-beta.7:
+  version "2.0.0-beta.7"
+  resolved "https://registry.yarnpkg.com/catalyst/-/catalyst-2.0.0-beta.7.tgz#fa2138fc114f0b1457e4a03785312bb95e6a0d19"
+  integrity sha512-RPlsMQYPAvCnLr1WWuXS4ZMdvB8Fl/UTfSBHx5DVGMizWzizZJxPGLh6K8knfjH1gf37U8xo1CJnifv5TyHzCA==
   dependencies:
     "@babel/core" "^7.4.4"
     "@babel/plugin-proposal-class-properties" "^7.4.4"
@@ -2349,7 +2349,7 @@ catalyst@^2.0.0-beta.6:
     babel-plugin-lodash "^3.3.4"
     babel-plugin-transform-react-remove-prop-types "^0.4.24"
     case-sensitive-paths-webpack-plugin "^2.2.0"
-    catalyst-client "^2.0.0-beta.6"
+    catalyst-client "^2.0.0-beta.7"
     chalk "^4.1.0"
     circular-dependency-plugin "^5.0.2"
     commander "^6.2.0"
@@ -7474,9 +7474,9 @@ urix@^0.1.0:
   integrity sha1-2pN/emLiH+wf0Y1Js1wpNQZ6bHI=
 
 url-parse@^1.4.3:
-  version "1.4.7"
-  resolved "https://registry.yarnpkg.com/url-parse/-/url-parse-1.4.7.tgz#a8a83535e8c00a316e403a5db4ac1b9b853ae278"
-  integrity sha512-d3uaVyzDB9tQoSXFvuSUNFibTd9zxd2bkVrDRvF5TmvWWQwqE4lgYJ5m+x1DbecWkw+LK4RNl2CU1hHuOKPVlg==
+  version "1.5.1"
+  resolved "https://registry.yarnpkg.com/url-parse/-/url-parse-1.5.1.tgz#d5fa9890af8a5e1f274a2c98376510f6425f6e3b"
+  integrity sha512-HOfCOUJt7iSYzEx/UqgtwKRMC6EU91NFhsCHMv9oM03VJcVo2Qrp8T8kI9D7amFf1cu+/3CEhgb3rF9zL7k85Q==
   dependencies:
     querystringify "^2.1.1"
     requires-port "^1.0.0"
