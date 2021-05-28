@@ -1,6 +1,6 @@
 {
   "name": "catalyst",
-  "version": "2.0.0-beta.6",
+  "version": "2.0.0-beta.7",
   "description": "Sets up webpack, TypeScript, React, GraphQL, SASS, and more!",
   "author": "Dan Martens <dan@friendsoftheweb.com>",
   "homepage": "https://github.com/friendsoftheweb/catalyst#readme",
@@ -68,7 +68,7 @@
     "babel-plugin-lodash": "^3.3.4",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
     "case-sensitive-paths-webpack-plugin": "^2.2.0",
-    "catalyst-client": "^2.0.0-beta.6",
+    "catalyst-client": "^2.0.0-beta.7",
     "chalk": "^4.1.0",
     "circular-dependency-plugin": "^5.0.2",
     "commander": "^6.2.0",
