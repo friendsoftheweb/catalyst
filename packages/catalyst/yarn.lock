@@ -2539,10 +2539,10 @@ caseless@~0.12.0:
   resolved "https://registry.yarnpkg.com/caseless/-/caseless-0.12.0.tgz#1b681c21ff84033c826543090689420d187151dc"
   integrity sha1-G2gcIf+EAzyCZUMJBolCDRhxUdw=
 
-catalyst-client@^2.0.0-beta.6:
-  version "2.0.0-beta.6"
-  resolved "https://registry.yarnpkg.com/catalyst-client/-/catalyst-client-2.0.0-beta.6.tgz#92e8c1c046cfc3a74091b2e757a3350f48d0aa48"
-  integrity sha512-9qSfhO71SvQ7sTJnFWQeZBSHWdTHx2oWygiqw9QHjjTnU5hda1mF6sshymG4o2QypXUQ+lPw0UOEPH+/nXMW3Q==
+catalyst-client@^2.0.0-beta.7:
+  version "2.0.0-beta.7"
+  resolved "https://registry.yarnpkg.com/catalyst-client/-/catalyst-client-2.0.0-beta.7.tgz#089d9a2902d967cc3873009e0bfdbc747914586d"
+  integrity sha512-gTdFX4EsY35JaPH6Lq8TFKwpXQH2tRGn21zfpPLhfNy++XrvsBWCuTPA0JCFtR0Aj4GtNpj2kO8Qj1wp5PanfQ==
   dependencies:
     source-map "^0.7.3"
 
@@ -5630,9 +5630,9 @@ lodash.uniq@^4.5.0:
   integrity sha1-0CJTc662Uq3BvILklFM5qEJ1R3M=
 
 lodash@^4.17.10, lodash@^4.17.11, lodash@^4.17.13, lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.19, lodash@^4.17.20, lodash@^4.17.4:
-  version "4.17.20"
-  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.20.tgz#b44a9b6297bcb698f1c51a3545a2b3b368d59c52"
-  integrity sha512-PlhdFcillOINfeV7Ni6oF1TAEayyZBoZ8bcshTHqOYJYlrqzRK5hagpagky5o4HfCzzd1TRkXPMFq6cKk9rGmA==
+  version "4.17.21"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.21.tgz#679591c564c3bffaae8454cf0b3df370c3d6911c"
+  integrity sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==
 
 loglevel@^1.6.8:
   version "1.7.0"
