@@ -2539,10 +2539,10 @@ caseless@~0.12.0:
   resolved "https://registry.yarnpkg.com/caseless/-/caseless-0.12.0.tgz#1b681c21ff84033c826543090689420d187151dc"
   integrity sha1-G2gcIf+EAzyCZUMJBolCDRhxUdw=
 
-catalyst-client@^2.0.0-beta.6:
-  version "2.0.0-beta.6"
-  resolved "https://registry.yarnpkg.com/catalyst-client/-/catalyst-client-2.0.0-beta.6.tgz#92e8c1c046cfc3a74091b2e757a3350f48d0aa48"
-  integrity sha512-9qSfhO71SvQ7sTJnFWQeZBSHWdTHx2oWygiqw9QHjjTnU5hda1mF6sshymG4o2QypXUQ+lPw0UOEPH+/nXMW3Q==
+catalyst-client@^2.0.0-beta.7:
+  version "2.0.0-beta.7"
+  resolved "https://registry.yarnpkg.com/catalyst-client/-/catalyst-client-2.0.0-beta.7.tgz#089d9a2902d967cc3873009e0bfdbc747914586d"
+  integrity sha512-gTdFX4EsY35JaPH6Lq8TFKwpXQH2tRGn21zfpPLhfNy++XrvsBWCuTPA0JCFtR0Aj4GtNpj2kO8Qj1wp5PanfQ==
   dependencies:
     source-map "^0.7.3"
 
@@ -8044,9 +8044,9 @@ sshpk@^1.7.0:
     tweetnacl "~0.14.0"
 
 ssri@^8.0.0:
-  version "8.0.0"
-  resolved "https://registry.yarnpkg.com/ssri/-/ssri-8.0.0.tgz#79ca74e21f8ceaeddfcb4b90143c458b8d988808"
-  integrity sha512-aq/pz989nxVYwn16Tsbj1TqFpD5LLrQxHf5zaHuieFV+R0Bbr4y8qUsOA45hXT/N4/9UNXTarBjnjVmjSOVaAA==
+  version "8.0.1"
+  resolved "https://registry.yarnpkg.com/ssri/-/ssri-8.0.1.tgz#638e4e439e2ffbd2cd289776d5ca457c4f51a2af"
+  integrity sha512-97qShzy1AiyxvPNIkLWoGua7xoQzzPjQ0HAH4B0rWKo7SZ6USuPcrUiAFrws0UH8RrbWmgq3LMTObhPIHbbBeQ==
   dependencies:
     minipass "^3.1.1"
 
