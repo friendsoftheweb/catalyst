@@ -2539,10 +2539,10 @@ caseless@~0.12.0:
   resolved "https://registry.yarnpkg.com/caseless/-/caseless-0.12.0.tgz#1b681c21ff84033c826543090689420d187151dc"
   integrity sha1-G2gcIf+EAzyCZUMJBolCDRhxUdw=
 
-catalyst-client@^2.0.0-beta.6:
-  version "2.0.0-beta.6"
-  resolved "https://registry.yarnpkg.com/catalyst-client/-/catalyst-client-2.0.0-beta.6.tgz#92e8c1c046cfc3a74091b2e757a3350f48d0aa48"
-  integrity sha512-9qSfhO71SvQ7sTJnFWQeZBSHWdTHx2oWygiqw9QHjjTnU5hda1mF6sshymG4o2QypXUQ+lPw0UOEPH+/nXMW3Q==
+catalyst-client@^2.0.0-beta.7:
+  version "2.0.0-beta.7"
+  resolved "https://registry.yarnpkg.com/catalyst-client/-/catalyst-client-2.0.0-beta.7.tgz#089d9a2902d967cc3873009e0bfdbc747914586d"
+  integrity sha512-gTdFX4EsY35JaPH6Lq8TFKwpXQH2tRGn21zfpPLhfNy++XrvsBWCuTPA0JCFtR0Aj4GtNpj2kO8Qj1wp5PanfQ==
   dependencies:
     source-map "^0.7.3"
 
@@ -8642,9 +8642,9 @@ urix@^0.1.0:
   integrity sha1-2pN/emLiH+wf0Y1Js1wpNQZ6bHI=
 
 url-parse@^1.4.3, url-parse@^1.4.7:
-  version "1.4.7"
-  resolved "https://registry.yarnpkg.com/url-parse/-/url-parse-1.4.7.tgz#a8a83535e8c00a316e403a5db4ac1b9b853ae278"
-  integrity sha512-d3uaVyzDB9tQoSXFvuSUNFibTd9zxd2bkVrDRvF5TmvWWQwqE4lgYJ5m+x1DbecWkw+LK4RNl2CU1hHuOKPVlg==
+  version "1.5.1"
+  resolved "https://registry.yarnpkg.com/url-parse/-/url-parse-1.5.1.tgz#d5fa9890af8a5e1f274a2c98376510f6425f6e3b"
+  integrity sha512-HOfCOUJt7iSYzEx/UqgtwKRMC6EU91NFhsCHMv9oM03VJcVo2Qrp8T8kI9D7amFf1cu+/3CEhgb3rF9zL7k85Q==
   dependencies:
     querystringify "^2.1.1"
     requires-port "^1.0.0"
