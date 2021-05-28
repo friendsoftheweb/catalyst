@@ -11,8 +11,8 @@
     "lint": "lerna run lint",
     "clean": "scripts/clean",
     "postinstall": "scripts/postinstall",
-    "lerna:publish": "lerna publish",
-    "lerna:publish:next": "lerna publish --dist-tag next"
+    "lerna:publish": "lerna publish --force-publish",
+    "lerna:publish:next": "lerna publish --force-publish --dist-tag next"
   },
   "devDependencies": {
     "lerna": "^3.14.1"
