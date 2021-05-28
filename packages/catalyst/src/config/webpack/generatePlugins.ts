@@ -11,7 +11,6 @@ import { Configuration as ClientConfiguration } from 'catalyst-client/lib/types'
 import AssertMaxAssetSizePlugin from './plugins/AssertMaxFileSizePlugin';
 import CatalystManifestPlugin from './plugins/CatalystManifestPlugin';
 import CleanUpStatsPlugin from './plugins/CleanUpStatsPlugin';
-import WatchMissingNodeModulesPlugin from './plugins/WatchMissingNodeModulesPlugin';
 import Configuration from '../../Configuration';
 import { Environment } from '../../Environment';
 import forEachPlugin from '../../utils/forEachPlugin';
@@ -28,7 +27,6 @@ export default function generatePlugins(
 ): WebpackPluginInstance[] {
   const {
     environment,
-    rootPath,
     contextPath,
     publicPath,
     tempPath,
@@ -62,8 +60,7 @@ export default function generatePlugins(
         context: contextPath,
         manifest: require(path.join(tempPath, 'vendor.json')),
       }),
-      new webpack.HotModuleReplacementPlugin(),
-      new WatchMissingNodeModulesPlugin(path.join(rootPath, 'node_modules'))
+      new webpack.HotModuleReplacementPlugin()
     );
   }
 

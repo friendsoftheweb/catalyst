@@ -2539,10 +2539,10 @@ caseless@~0.12.0:
   resolved "https://registry.yarnpkg.com/caseless/-/caseless-0.12.0.tgz#1b681c21ff84033c826543090689420d187151dc"
   integrity sha1-G2gcIf+EAzyCZUMJBolCDRhxUdw=
 
-catalyst-client@^2.0.0-beta.5:
-  version "2.0.0-beta.5"
-  resolved "https://registry.yarnpkg.com/catalyst-client/-/catalyst-client-2.0.0-beta.5.tgz#c0e03c2c92d5d614d0d48b330e305c2538bc5de8"
-  integrity sha512-G/NhFZ3L9dtINNpZ2YvZJampZMmlfggV3eYnDwvR6Soj+gIZ7cZ+hz4wZhYTb/7GVWk3gaqWW/f4OOpqVTfRaQ==
+catalyst-client@^2.0.0-beta.6:
+  version "2.0.0-beta.6"
+  resolved "https://registry.yarnpkg.com/catalyst-client/-/catalyst-client-2.0.0-beta.6.tgz#92e8c1c046cfc3a74091b2e757a3350f48d0aa48"
+  integrity sha512-9qSfhO71SvQ7sTJnFWQeZBSHWdTHx2oWygiqw9QHjjTnU5hda1mF6sshymG4o2QypXUQ+lPw0UOEPH+/nXMW3Q==
   dependencies:
     source-map "^0.7.3"
 
