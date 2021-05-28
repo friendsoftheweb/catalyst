@@ -2,7 +2,6 @@ import path from 'path';
 import webpack, { WebpackPluginInstance } from 'webpack';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import CompressionPlugin from 'compression-webpack-plugin';
-import WorkboxWebpackPlugin from 'workbox-webpack-plugin';
 import DuplicatePackageCheckerPlugin from 'duplicate-package-checker-webpack-plugin';
 import CaseSensitivePathsPlugin from 'case-sensitive-paths-webpack-plugin';
 import CircularDependencyPlugin from 'circular-dependency-plugin';
@@ -35,7 +34,6 @@ export default function generatePlugins(
     maxScriptAssetSize,
     maxImageAssetSize,
     maxPrefetchAssetSize,
-    generateServiceWorker,
     checkForCircularDependencies,
     checkForDuplicatePackages,
     ignoredDuplicatePackages,
@@ -94,15 +92,6 @@ export default function generatePlugins(
     plugins.push(
       new webpack.EnvironmentPlugin({
         CATALYST_CONFIGURATION: JSON.stringify(clientConfiguration),
-      })
-    );
-  }
-
-  if (generateServiceWorker) {
-    plugins.push(
-      new WorkboxWebpackPlugin.GenerateSW({
-        clientsClaim: true,
-        exclude: [/\.map$/, /manifest\.json$/, /catalyst\.manifest\.json$/],
       })
     );
   }

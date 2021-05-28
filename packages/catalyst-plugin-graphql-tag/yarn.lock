@@ -2286,17 +2286,17 @@ case-sensitive-paths-webpack-plugin@^2.2.0:
   resolved "https://registry.yarnpkg.com/case-sensitive-paths-webpack-plugin/-/case-sensitive-paths-webpack-plugin-2.3.0.tgz#23ac613cc9a856e4f88ff8bb73bbb5e989825cf7"
   integrity sha512-/4YgnZS8y1UXXmC02xD5rRrBEu6T5ub+mQHLNRj0fzTRbgdBYhsNo2V5EqwgqrExjxsjtF/OpAKAMkKsxbD5XQ==
 
-catalyst-client@^2.0.0-beta.5:
-  version "2.0.0-beta.5"
-  resolved "https://registry.yarnpkg.com/catalyst-client/-/catalyst-client-2.0.0-beta.5.tgz#c0e03c2c92d5d614d0d48b330e305c2538bc5de8"
-  integrity sha512-G/NhFZ3L9dtINNpZ2YvZJampZMmlfggV3eYnDwvR6Soj+gIZ7cZ+hz4wZhYTb/7GVWk3gaqWW/f4OOpqVTfRaQ==
+catalyst-client@^2.0.0-beta.6:
+  version "2.0.0-beta.6"
+  resolved "https://registry.yarnpkg.com/catalyst-client/-/catalyst-client-2.0.0-beta.6.tgz#92e8c1c046cfc3a74091b2e757a3350f48d0aa48"
+  integrity sha512-9qSfhO71SvQ7sTJnFWQeZBSHWdTHx2oWygiqw9QHjjTnU5hda1mF6sshymG4o2QypXUQ+lPw0UOEPH+/nXMW3Q==
   dependencies:
     source-map "^0.7.3"
 
-catalyst@^2.0.0-beta.5:
-  version "2.0.0-beta.5"
-  resolved "https://registry.yarnpkg.com/catalyst/-/catalyst-2.0.0-beta.5.tgz#3a71e210886fcf9a3145aa64ca8a63716ca8b92e"
-  integrity sha512-Yc6+jOoj8nRAn8VjHLRLYRkT9y6hUVWMjh5JuqchdA0T/m2Fmr29yeU02A+yPbSa7/N9LhvmuXx03/2wiw8qhg==
+catalyst@^2.0.0-beta.6:
+  version "2.0.0-beta.6"
+  resolved "https://registry.yarnpkg.com/catalyst/-/catalyst-2.0.0-beta.6.tgz#b470ec9da0bbcd1393b754810c23e775fe119fa9"
+  integrity sha512-OBsH/5IFgZ6JaUnIqlNli/ay1mIco4Q6ezqZvEENspAH1dM1tg/ibdQWfDlr+VaPPmdTJ/REYiOcyHDtIFWTbA==
   dependencies:
     "@babel/core" "^7.4.4"
     "@babel/plugin-proposal-class-properties" "^7.4.4"
@@ -2314,7 +2314,7 @@ catalyst@^2.0.0-beta.5:
     babel-plugin-lodash "^3.3.4"
     babel-plugin-transform-react-remove-prop-types "^0.4.24"
     case-sensitive-paths-webpack-plugin "^2.2.0"
-    catalyst-client "^2.0.0-beta.5"
+    catalyst-client "^2.0.0-beta.6"
     chalk "^4.1.0"
     circular-dependency-plugin "^5.0.2"
     commander "^6.2.0"

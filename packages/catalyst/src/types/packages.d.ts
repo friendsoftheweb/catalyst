@@ -9,4 +9,3 @@ declare module 'mini-css-extract-plugin';
 declare module 'webpack-bundle-analyzer';
 declare module 'webpack-manifest-plugin';
 declare module 'webpack-sources';
-declare module 'workbox-webpack-plugin';

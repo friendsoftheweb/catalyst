@@ -7,7 +7,7 @@ export default function generateEntry(
   configuration: Configuration,
   entryPath: string
 ): Entry {
-  const { environment, overlayEnabled, generateServiceWorker } = configuration;
+  const { environment, overlayEnabled } = configuration;
 
   const entry = [];
 
@@ -17,10 +17,6 @@ export default function generateEntry(
   }
 
   entry.push(entryPath);
-
-  if (generateServiceWorker) {
-    entry.push(path.resolve(__dirname, '../../../lib/workbox'));
-  }
 
   return entry;
 }
