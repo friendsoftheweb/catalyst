@@ -11,6 +11,7 @@ import {
   ignoredRuntimeErrors,
 } from './configuration';
 import { FrameState, DevServerEvent, CatalystClient } from './types';
+import './updateImageOverlays';
 
 declare global {
   interface Window {

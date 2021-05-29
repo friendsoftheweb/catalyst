@@ -4,7 +4,6 @@ import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import Configuration from '../../Configuration';
 import { Environment } from '../../Environment';
 import forEachPlugin from '../../utils/forEachPlugin';
-import { IMAGE_FILE_PATTERN } from '../../patterns';
 
 export default function generateRules(
   configuration: Configuration
@@ -88,7 +87,7 @@ export default function generateRules(
   });
 
   rules.push(
-    ...generateFileLoaderRules(configuration, path.join(contextPath, 'assets')),
+    ...generateFileLoaderRules(configuration, contextPath),
     ...generateFileLoaderRules(
       configuration,
       path.join(rootPath, 'node_modules')
@@ -110,61 +109,42 @@ function generateFileLoaderRules(
 ): RuleSetRule[] {
   const { environment, publicPath, importAssetsAsESModules } = configuration;
 
-  const name =
-    environment === Environment.Production
-      ? '[path][name]-[hash].[ext]'
-      : '[path][name].[ext]';
-
-  const fileLoaderOptions = {
-    context: basePath,
-    name,
+  const options = {
+    // context: basePath,
     publicPath,
     esModule: importAssetsAsESModules,
   };
 
   return [
     {
-      test: IMAGE_FILE_PATTERN,
+      test: /\.(jpe?g|png|webp)$/i,
       include: basePath,
-      oneOf: [
-        // Use file-loader and imageDimensionsLoader for any images imported
-        // into JavaScript files that aren't located inside node_modules.
-        {
-          issuer: { and: [/\.(jsx?|tsx?)$/, { not: [/node_modules/] }] },
-          use: [
-            {
-              loader: path.resolve(
-                __dirname,
-                './loaders/imageDimensionsLoader'
-              ),
-              options: {
-                esModule: importAssetsAsESModules,
-              },
-            },
-            {
-              loader: require.resolve('file-loader'),
-              options: fileLoaderOptions,
-            },
-          ],
+      use: {
+        loader: require.resolve('responsive-loader'),
+        options: {
+          ...options,
+          name:
+            environment === Environment.Production
+              ? '[path][name]-[hash]-[width].[ext]'
+              : '[path][name]-[width].[ext]',
+          adapter: require('responsive-loader/sharp'),
+          disable: environment === Environment.Test,
         },
-        // Only use file-loader for all other imported images.
-        {
-          use: [
-            {
-              loader: require.resolve('file-loader'),
-              options: fileLoaderOptions,
-            },
-          ],
-        },
-      ],
+      },
     },
     {
-      test: /\.(woff2?|eot|ttf)$/i,
+      test: /\.(gif|svg|woff2?|eot|ttf)$/i,
       include: basePath,
       use: [
         {
           loader: require.resolve('file-loader'),
-          options: fileLoaderOptions,
+          options: {
+            ...options,
+            name:
+              environment === Environment.Production
+                ? '[path][name]-[hash].[ext]'
+                : '[path][name].[ext]',
+          },
         },
       ],
     },
