@@ -11,7 +11,7 @@ import {
   ignoredRuntimeErrors,
 } from './configuration';
 import { FrameState, DevServerEvent, CatalystClient } from './types';
-import './updateImageOverlays';
+import { enableImageOverlays, disableImageOverlays } from './image-overlay';
 
 declare global {
   interface Window {
@@ -28,6 +28,7 @@ let runtimeErrorMessage: string | undefined;
 let isBuilding = false;
 let firstCompilationHash: string | null = null;
 let lastCompilationHash: string | null = null;
+let imageOverlaysEnabled = false;
 
 async function updateOverlayContainer() {
   const { frame } = await createOverlayFrame();
@@ -241,6 +242,40 @@ window.addEventListener('unhandledrejection', () => {
   showRuntimeErrors();
 
   return false;
+});
+
+const CATALYST_IMAGE_DEBUGGING_KEY = 'catalyst-image-debugging';
+
+window.addEventListener('keypress', (event) => {
+  if (event.ctrlKey && event.key === 'd') {
+    event.preventDefault();
+
+    imageOverlaysEnabled = !imageOverlaysEnabled;
+
+    if (imageOverlaysEnabled) {
+      enableImageOverlays();
+
+      try {
+        sessionStorage.setItem(CATALYST_IMAGE_DEBUGGING_KEY, 'enabled');
+      } catch {}
+    } else {
+      disableImageOverlays();
+
+      try {
+        sessionStorage.removeItem(CATALYST_IMAGE_DEBUGGING_KEY);
+      } catch {}
+    }
+  }
+});
+
+window.addEventListener('DOMContentLoaded', () => {
+  try {
+    if (sessionStorage.getItem(CATALYST_IMAGE_DEBUGGING_KEY)) {
+      imageOverlaysEnabled = true;
+
+      enableImageOverlays();
+    }
+  } catch {}
 });
 
 if (window.__CATALYST__ != null) {
