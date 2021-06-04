@@ -61,10 +61,10 @@ export default async function prebuildVendorPackages(): Promise<Stats | void> {
           errors: true,
         });
 
-        if (errors.length > 0) {
-          reject(new Error(errors[0]));
+        if (errors != null && errors.length > 0) {
+          reject(errors[0]);
         } else {
-          if (warnings.length > 0) {
+          if (warnings != null && warnings.length > 0) {
             console.log(chalk.yellow(warnings.join('\n\n')));
           }
 
