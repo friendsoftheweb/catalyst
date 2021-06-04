@@ -63,9 +63,9 @@ export default class CatalystManifestPlugin implements WebpackPluginInstance {
           const initialChunks = stats.chunks.filter(({ initial }) => initial);
 
           for (const chunk of initialChunks) {
-            const entrypoint = Object.values(
-              stats.entrypoints
-            ).find(({ chunks }) => chunks.includes(chunk.id));
+            const entrypoint = Object.values(stats.entrypoints).find(
+              ({ chunks }) => chunks.includes(chunk.id)
+            );
 
             if (entrypoint == null) {
               continue;
@@ -136,12 +136,11 @@ export default class CatalystManifestPlugin implements WebpackPluginInstance {
                 continue;
               }
 
-              const entrypoint = Object.values(
-                stats.entrypoints
-              ).find(({ chunks }) =>
-                chunks.some((chunkId) =>
-                  ancestors.some(({ id }) => id === chunkId)
-                )
+              const entrypoint = Object.values(stats.entrypoints).find(
+                ({ chunks }) =>
+                  chunks.some((chunkId) =>
+                    ancestors.some(({ id }) => id === chunkId)
+                  )
               );
 
               if (entrypoint == null) {

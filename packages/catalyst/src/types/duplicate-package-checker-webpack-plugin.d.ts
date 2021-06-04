@@ -4,7 +4,8 @@ declare module 'duplicate-package-checker-webpack-plugin' {
   import { WebpackPluginInstance } from 'webpack';
 
   export default class DuplicatePackageCheckerPlugin
-    implements WebpackPluginInstance {
+    implements WebpackPluginInstance
+  {
     constructor(options: {
       verbose?: boolean;
       emitError?: boolean;
