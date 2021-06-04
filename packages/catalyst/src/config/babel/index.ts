@@ -66,14 +66,6 @@ export default function babelConfig(options: Options = {}) {
   );
 
   let plugins: Array<string | [string, Record<string, unknown>]> = [
-    require.resolve('@babel/plugin-proposal-object-rest-spread'),
-    [
-      require.resolve('@babel/plugin-proposal-class-properties'),
-      { loose: true },
-    ],
-    require.resolve('@babel/plugin-proposal-optional-chaining'),
-    require.resolve('@babel/plugin-proposal-nullish-coalescing-operator'),
-    require.resolve('@babel/plugin-syntax-dynamic-import'),
     [
       require.resolve('@babel/plugin-transform-runtime'),
       { useESModules: modules === false, absoluteRuntime },

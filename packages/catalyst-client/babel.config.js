@@ -16,6 +16,5 @@ module.exports = {
         pragmaFrag: 'Fragment',
       },
     ],
-    ['@babel/plugin-proposal-class-properties', { loose: true }],
   ],
 };
