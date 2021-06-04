@@ -5,13 +5,8 @@ import { Environment } from '../../Environment';
 export default function generateOutput(
   configuration: Configuration
 ): WebpackConfiguration['output'] {
-  const {
-    environment,
-    buildPath,
-    publicPath,
-    devServerHost,
-    devServerPort,
-  } = configuration;
+  const { environment, buildPath, publicPath, devServerHost, devServerPort } =
+    configuration;
 
   if (environment === Environment.Development) {
     return {

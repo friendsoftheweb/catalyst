@@ -4,12 +4,8 @@ if (window.__CATALYST__ == null) {
   );
 }
 
-const {
-  contextPath,
-  devServerProtocol,
-  devServerHost,
-  devServerPort,
-} = window.__CATALYST__;
+const { contextPath, devServerProtocol, devServerHost, devServerPort } =
+  window.__CATALYST__;
 
 const ignoredRuntimeErrors = (
   window.__CATALYST__.ignoredRuntimeErrors ?? []

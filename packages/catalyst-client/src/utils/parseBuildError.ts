@@ -133,9 +133,10 @@ export class SassBuildError extends BuildError {
   }
 
   get sourcePath() {
-    const match = /^\s+([a-z0-9\-_/]+\.scss)\s+\d+:\d+\s+root stylesheet/im.exec(
-      this.error
-    );
+    const match =
+      /^\s+([a-z0-9\-_/]+\.scss)\s+\d+:\d+\s+root stylesheet/im.exec(
+        this.error
+      );
 
     if (match == null) {
       throw new Error('Could not extract source path from build error');
@@ -167,9 +168,10 @@ export class WebpackModuleNotFound extends BuildError {
   }
 
   get sourcePath() {
-    const match = /Can't resolve '[a-z0-9\-_]+' in '\.*([a-z0-9\-_/.]+)'$/im.exec(
-      this.error
-    );
+    const match =
+      /Can't resolve '[a-z0-9\-_]+' in '\.*([a-z0-9\-_/.]+)'$/im.exec(
+        this.error
+      );
 
     if (match == null) {
       throw new Error('Could not extract source path from build error');

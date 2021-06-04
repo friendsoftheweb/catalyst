@@ -6,10 +6,8 @@ import Configuration from '../../Configuration';
 export default function generateOptimization(
   configuration: Configuration
 ): WebpackConfiguration['optimization'] {
-  const {
-    optimizeCommonMinChunks,
-    optimizeCommonExcludedChunks,
-  } = configuration;
+  const { optimizeCommonMinChunks, optimizeCommonExcludedChunks } =
+    configuration;
 
   return {
     minimizer: [

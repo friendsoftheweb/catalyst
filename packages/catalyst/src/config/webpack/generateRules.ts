@@ -9,12 +9,8 @@ import { IMAGE_FILE_PATTERN } from '../../patterns';
 export default function generateRules(
   configuration: Configuration
 ): RuleSetRule[] {
-  const {
-    environment,
-    rootPath,
-    contextPath,
-    transformedPackages,
-  } = configuration;
+  const { environment, rootPath, contextPath, transformedPackages } =
+    configuration;
 
   let rules: RuleSetRule[] = [];
 

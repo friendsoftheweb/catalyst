@@ -25,13 +25,8 @@ interface Options {
 }
 
 export default async function createDevServer(options: Options) {
-  const {
-    host,
-    port,
-    certificate,
-    overlayEnabled,
-    bundleAnalyzerEnabled,
-  } = options;
+  const { host, port, certificate, overlayEnabled, bundleAnalyzerEnabled } =
+    options;
 
   const { rootPath, tempPath } = Configuration.fromFile();
 
