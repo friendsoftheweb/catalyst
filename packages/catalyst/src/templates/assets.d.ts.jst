@@ -1,59 +1,102 @@
-declare module '*.gif' {
-  const src: string;
-  export default src;
-
-  export const dimensions: {
-    width: number;
-    height: number;
-  };
-}
-
 declare module '*.jpg' {
-  const src: string;
-  export default src;
-
-  export const dimensions: {
+  const image: {
+    src: string;
+    srcSet: string;
     width: number;
     height: number;
+    images: { src: string; width: number; height: number }[];
+    toString(): string;
   };
+
+  export default image;
 }
 
 declare module '*.jpeg' {
-  const src: string;
-  export default src;
-
-  export const dimensions: {
+  const image: {
+    src: string;
+    srcSet: string;
     width: number;
     height: number;
+    images: { src: string; width: number; height: number }[];
+    toString(): string;
   };
+
+  export default image;
 }
 
 declare module '*.png' {
-  const src: string;
-  export default src;
-
-  export const dimensions: {
+  const image: {
+    src: string;
+    srcSet: string;
     width: number;
     height: number;
+    images: { src: string; width: number; height: number }[];
+    toString(): string;
   };
+
+  export default image;
 }
 
 declare module '*.webp' {
-  const src: string;
-  export default src;
-
-  export const dimensions: {
+  const image: {
+    src: string;
+    srcSet: string;
     width: number;
     height: number;
+    images: { src: string; width: number; height: number }[];
+    toString(): string;
   };
+
+  export default image;
+}
+
+declare module '*format=jpg' {
+  const image: {
+    src: string;
+    srcSet: string;
+    width: number;
+    height: number;
+    images: { src: string; width: number; height: number }[];
+    toString(): string;
+  };
+
+  export default image;
+}
+
+declare module '*format=png' {
+  const image: {
+    src: string;
+    srcSet: string;
+    width: number;
+    height: number;
+    images: { src: string; width: number; height: number }[];
+    toString(): string;
+  };
+
+  export default image;
+}
+
+declare module '*format=webp' {
+  const image: {
+    src: string;
+    srcSet: string;
+    width: number;
+    height: number;
+    images: { src: string; width: number; height: number }[];
+    toString(): string;
+  };
+
+  export default image;
+}
+
+declare module '*.gif' {
+  const src: string;
+
+  export default src;
 }
 
 declare module '*.svg' {
   const src: string;
-  export default src;
 
-  export const dimensions: {
-    width: number;
-    height: number;
-  };
+  export default src;
 }
