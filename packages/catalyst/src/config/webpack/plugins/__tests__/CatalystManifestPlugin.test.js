@@ -18,12 +18,7 @@ const compileFixture = (volume, context) => {
       rules: [
         {
           test: /\.(jpe?g|gif|png|webp|svg|woff2?)$/i,
-          loader: 'file-loader',
-          options: {
-            name: '[path][name]-[hash].[ext]',
-            context: path.join(context, 'assets'),
-            publicPath: '/assets/',
-          },
+          type: 'asset/resource',
         },
         {
           test: /\.css$/i,
@@ -59,7 +54,7 @@ const compileFixture = (volume, context) => {
   });
 };
 
-test('catalyst.json contains all assets referenced by chunks that include @catalyst-prefetch comments', async () => {
+test('catalyst.manifest.json contains all assets referenced by chunks that include @catalyst-prefetch comments', async () => {
   const volume = new Volume();
   await compileFixture(volume, path.resolve(__dirname, './fixtures/manifest'));
 

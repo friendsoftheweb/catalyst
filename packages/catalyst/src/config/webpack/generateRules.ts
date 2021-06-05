@@ -8,12 +8,8 @@ import forEachPlugin from '../../utils/forEachPlugin';
 export default function generateRules(
   configuration: Configuration
 ): RuleSetRule[] {
-  const {
-    environment,
-    rootPath,
-    contextPath,
-    transformedPackages,
-  } = configuration;
+  const { environment, rootPath, contextPath, transformedPackages } =
+    configuration;
 
   let rules: RuleSetRule[] = [];
 
@@ -105,12 +101,11 @@ export default function generateRules(
 
 function generateFileLoaderRules(
   configuration: Configuration,
-  basePath: string
+  include: string
 ): RuleSetRule[] {
   const { environment, publicPath, importAssetsAsESModules } = configuration;
 
   const options = {
-    // context: basePath,
     publicPath,
     esModule: importAssetsAsESModules,
   };
@@ -118,7 +113,7 @@ function generateFileLoaderRules(
   return [
     {
       test: /\.(jpe?g|png|webp)$/i,
-      include: basePath,
+      include,
       use: {
         loader: require.resolve('responsive-loader'),
         options: {
@@ -134,19 +129,15 @@ function generateFileLoaderRules(
     },
     {
       test: /\.(gif|svg|woff2?|eot|ttf)$/i,
-      include: basePath,
-      use: [
-        {
-          loader: require.resolve('file-loader'),
-          options: {
-            ...options,
-            name:
-              environment === Environment.Production
-                ? '[path][name]-[hash].[ext]'
-                : '[path][name].[ext]',
-          },
-        },
-      ],
+      type: 'asset/resource',
+      include,
+      generator: {
+        filename:
+          environment === Environment.Production
+            ? '[path][name]-[hash].[ext]'
+            : '[path][name].[ext]',
+        publicPath,
+      },
     },
   ];
 }

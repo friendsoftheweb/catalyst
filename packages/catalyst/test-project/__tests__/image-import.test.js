@@ -1,14 +1,11 @@
 const assertFileContains = require('../assertFileContains');
 
-const content = `__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "dimensions": function() { return /* binding */ dimensions; }
-/* harmony export */ });
-/* harmony default export */ __webpack_exports__["default"] = ("/assets/this-is-fine.jpeg");
-const dimensions = {
-  width: 300,
-  height: 168
-};`;
+const content = `/* harmony default export */ __webpack_exports__["default"] = ({
+        srcSet:"/assets/assets/this-is-fine-100.jpeg",
+        images:[{path:"/assets/assets/this-is-fine-100.jpeg",width:100,height:100}],
+        src: "/assets/assets/this-is-fine-100.jpeg",
+        toString:function(){return "/assets/assets/this-is-fine-100.jpeg"}
+      });`;
 
 test('assets are required using ES module syntax', async () => {
   await assertFileContains({
