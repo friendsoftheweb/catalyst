@@ -114,18 +114,21 @@ function generateFileLoaderRules(
     {
       test: /\.(jpe?g|png|webp)$/i,
       include,
-      use: {
-        loader: require.resolve('responsive-loader'),
-        options: {
-          ...options,
-          name:
-            environment === Environment.Production
-              ? '[path][name]-[hash]-[width].[ext]'
-              : '[path][name]-[width].[ext]',
-          adapter: require('responsive-loader/sharp'),
-          disable: environment === Environment.Test,
+      use: [
+        { loader: require.resolve('./loaders/modifyResponsiveLoader') },
+        {
+          loader: require.resolve('responsive-loader'),
+          options: {
+            ...options,
+            name:
+              environment === Environment.Production
+                ? '[path][name]-[hash]-[width].[ext]'
+                : '[path][name]-[width].[ext]',
+            adapter: require('responsive-loader/sharp'),
+            disable: environment === Environment.Test,
+          },
         },
-      },
+      ],
     },
     {
       test: /\.(gif|svg|woff2?|eot|ttf)$/i,
