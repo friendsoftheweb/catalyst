@@ -2185,25 +2185,25 @@ case-sensitive-paths-webpack-plugin@^2.2.0:
   resolved "https://registry.yarnpkg.com/case-sensitive-paths-webpack-plugin/-/case-sensitive-paths-webpack-plugin-2.2.0.tgz#3371ef6365ef9c25fa4b81c16ace0e9c7dc58c3e"
   integrity sha512-u5ElzokS8A1pm9vM3/iDgTcI3xqHxuCao94Oz8etI3cf0Tio0p8izkDYbTIn09uP3yUUr6+veaE6IkjnTYS46g==
 
-catalyst-client@^2.0.0-beta.7:
-  version "2.0.0-beta.7"
-  resolved "https://registry.yarnpkg.com/catalyst-client/-/catalyst-client-2.0.0-beta.7.tgz#089d9a2902d967cc3873009e0bfdbc747914586d"
-  integrity sha512-gTdFX4EsY35JaPH6Lq8TFKwpXQH2tRGn21zfpPLhfNy++XrvsBWCuTPA0JCFtR0Aj4GtNpj2kO8Qj1wp5PanfQ==
+catalyst-client@^2.0.0-beta.9:
+  version "2.0.0-beta.9"
+  resolved "https://registry.yarnpkg.com/catalyst-client/-/catalyst-client-2.0.0-beta.9.tgz#7a141cdd538855389895ac6d4dc4017af7e65c9a"
+  integrity sha512-8Ate+Hh1a/GbHys5/YMdUihOp27EtL3uLyRzoqsryTg6sjdXbL05VknIlfy6AvMTlahxkpJahMynS6Xct2wBFQ==
   dependencies:
     source-map "^0.7.3"
 
 "catalyst-plugin-graphql-tag@file:../../catalyst-plugin-graphql-tag":
-  version "2.0.0-beta.7"
+  version "2.0.0-beta.9"
   dependencies:
     babel-plugin-graphql-tag "^2.4.0"
 
 "catalyst-plugin-styled-components@file:../../catalyst-plugin-styled-components":
-  version "2.0.0-beta.7"
+  version "2.0.0-beta.9"
   dependencies:
     babel-plugin-styled-components "^1.10.6"
 
 "catalyst@file:..":
-  version "2.0.0-beta.7"
+  version "2.0.0-beta.9"
   dependencies:
     "@babel/core" "^7.4.4"
     "@babel/plugin-proposal-class-properties" "^7.4.4"
@@ -2221,7 +2221,7 @@ catalyst-client@^2.0.0-beta.7:
     babel-plugin-lodash "^3.3.4"
     babel-plugin-transform-react-remove-prop-types "^0.4.24"
     case-sensitive-paths-webpack-plugin "^2.2.0"
-    catalyst-client "^2.0.0-beta.7"
+    catalyst-client "^2.0.0-beta.9"
     chalk "^4.1.0"
     circular-dependency-plugin "^5.0.2"
     commander "^6.2.0"
@@ -7390,9 +7390,9 @@ write-file-atomic@^3.0.0:
     typedarray-to-buffer "^3.1.5"
 
 ws@^7.3.1:
-  version "7.4.2"
-  resolved "https://registry.yarnpkg.com/ws/-/ws-7.4.2.tgz#782100048e54eb36fe9843363ab1c68672b261dd"
-  integrity sha512-T4tewALS3+qsrpGI/8dqNMLIVdq/g/85U98HPMa6F0m6xTbvhXU6RCQLqPH3+SlomNV/LdY6RXEbBpMH6EOJnA==
+  version "7.5.5"
+  resolved "https://registry.yarnpkg.com/ws/-/ws-7.5.5.tgz#8b4bc4af518cfabd0473ae4f99144287b33eb881"
+  integrity sha512-BAkMFcAzl8as1G/hArkxOxq3G7pjUqQ3gzYbLL0/5zNkph70e+lCoxBGnm6AW1+/aiNeV4fnKqZ8m4GZewmH2w==
 
 "y18n@^3.2.1 || ^4.0.0":
   version "4.0.0"
