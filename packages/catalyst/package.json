@@ -9,7 +9,7 @@
     "url": "git+https://github.com/friendsoftheweb/catalyst.git"
   },
   "engines": {
-    "node": ">= 11.0.0"
+    "node": ">= 12.13.0"
   },
   "license": "MIT",
   "files": [
@@ -87,7 +87,7 @@
     "lodash": "^4.17.11",
     "mini-css-extract-plugin": "^1.2.1",
     "postcss": "^8.1.4",
-    "postcss-loader": "^4.1.0",
+    "postcss-loader": "^6.1.1",
     "postcss-preset-env": "^6.7.0",
     "sass": "^1.30.0",
     "sass-loader": "^10.0.4",
