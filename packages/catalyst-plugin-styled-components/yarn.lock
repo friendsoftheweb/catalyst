@@ -2118,17 +2118,17 @@ case-sensitive-paths-webpack-plugin@^2.2.0:
   resolved "https://registry.yarnpkg.com/case-sensitive-paths-webpack-plugin/-/case-sensitive-paths-webpack-plugin-2.3.0.tgz#23ac613cc9a856e4f88ff8bb73bbb5e989825cf7"
   integrity sha512-/4YgnZS8y1UXXmC02xD5rRrBEu6T5ub+mQHLNRj0fzTRbgdBYhsNo2V5EqwgqrExjxsjtF/OpAKAMkKsxbD5XQ==
 
-catalyst-client@^2.0.0-beta.9:
-  version "2.0.0-beta.9"
-  resolved "https://registry.yarnpkg.com/catalyst-client/-/catalyst-client-2.0.0-beta.9.tgz#7a141cdd538855389895ac6d4dc4017af7e65c9a"
-  integrity sha512-8Ate+Hh1a/GbHys5/YMdUihOp27EtL3uLyRzoqsryTg6sjdXbL05VknIlfy6AvMTlahxkpJahMynS6Xct2wBFQ==
+catalyst-client@^2.0.0-beta.12:
+  version "2.0.0-beta.12"
+  resolved "https://registry.yarnpkg.com/catalyst-client/-/catalyst-client-2.0.0-beta.12.tgz#45f566cf02efc07b5c38b6e78dfe4d2fea194708"
+  integrity sha512-SjkcQ5AKHFCNdcEr1Akq1o6Owp4nbAC3xBG3XK6QbCmP3Un5JCQdGk9wmG3r6f5EItHki9KpJhuL2GRQfj+9Vg==
   dependencies:
     source-map "^0.7.3"
 
-catalyst@^2.0.0-beta.9:
-  version "2.0.0-beta.9"
-  resolved "https://registry.yarnpkg.com/catalyst/-/catalyst-2.0.0-beta.9.tgz#f0ae170313714558d67b9f4c189d1caa4547068c"
-  integrity sha512-KHAkfZIsx8bYAwWZXy4f9Ly2ZCOOTAk3t84Jc4TQ/DXYtmbqMPsfI1RAkoP88iJvBzeLeUHcaawf+V3DXRobcw==
+catalyst@^2.0.0-beta.12:
+  version "2.0.0-beta.12"
+  resolved "https://registry.yarnpkg.com/catalyst/-/catalyst-2.0.0-beta.12.tgz#be654cfe0b3d3c0097630759d8b3c3ff05a7bffa"
+  integrity sha512-Z+LCbgtO48EMrZxLk+aH9a28Ch6ZsF7rC8t6ET4IKr9vHpQqbaGFby8IZfMwrzIXWJ9gixn3lXxX/zc9gAQLXg==
   dependencies:
     "@babel/core" "^7.4.4"
     "@babel/plugin-proposal-class-properties" "^7.4.4"
@@ -2146,7 +2146,7 @@ catalyst@^2.0.0-beta.9:
     babel-plugin-lodash "^3.3.4"
     babel-plugin-transform-react-remove-prop-types "^0.4.24"
     case-sensitive-paths-webpack-plugin "^2.2.0"
-    catalyst-client "^2.0.0-beta.9"
+    catalyst-client "^2.0.0-beta.12"
     chalk "^4.1.0"
     circular-dependency-plugin "^5.0.2"
     commander "^6.2.0"
@@ -2164,7 +2164,7 @@ catalyst@^2.0.0-beta.9:
     loader-utils "^2.0.0"
     lodash "^4.17.11"
     mini-css-extract-plugin "^1.2.1"
-    postcss "^8.1.4"
+    postcss "^7.0.35"
     postcss-loader "^6.1.1"
     postcss-preset-env "^6.7.0"
     sass "^1.30.0"
@@ -5837,6 +5837,15 @@ postcss@^7.0.0, postcss@^7.0.1, postcss@^7.0.14, postcss@^7.0.17, postcss@^7.0.2
   version "7.0.35"
   resolved "https://registry.yarnpkg.com/postcss/-/postcss-7.0.35.tgz#d2be00b998f7f211d8a276974079f2e92b970e24"
   integrity sha512-3QT8bBJeX/S5zKTTjTCIjRF3If4avAT6kqxcASlTWEtAFCb9NH0OUxNDfgZSWdP5fJnBYCMEWkIFfWeugjzYMg==
+  dependencies:
+    chalk "^2.4.2"
+    source-map "^0.6.1"
+    supports-color "^6.1.0"
+
+postcss@^7.0.35:
+  version "7.0.36"
+  resolved "https://registry.yarnpkg.com/postcss/-/postcss-7.0.36.tgz#056f8cffa939662a8f5905950c07d5285644dfcb"
+  integrity sha512-BebJSIUMwJHRH0HAQoxN4u1CN86glsrwsW0q7T+/m44eXOUAxSNdHRkNZPYz5vVUbg17hFgOQDE7fZk7li3pZw==
   dependencies:
     chalk "^2.4.2"
     source-map "^0.6.1"
