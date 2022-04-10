@@ -2449,10 +2449,10 @@ caseless@~0.12.0:
   resolved "https://registry.yarnpkg.com/caseless/-/caseless-0.12.0.tgz#1b681c21ff84033c826543090689420d187151dc"
   integrity sha1-G2gcIf+EAzyCZUMJBolCDRhxUdw=
 
-catalyst-client@^2.0.0-beta.13:
-  version "2.0.0-beta.13"
-  resolved "https://registry.yarnpkg.com/catalyst-client/-/catalyst-client-2.0.0-beta.13.tgz#af973d1ecf839bc882a465e260310bd2eceb2061"
-  integrity sha512-O+GsIRrcYnTbNhEnXQnNIPWe9hm0f4AtUDiduBeJOoUxYrgykrRh9XqtZrfC42suzfLwnOQmAYIXvRJA4+mNmg==
+catalyst-client@^2.0.0-beta.14:
+  version "2.0.0-beta.14"
+  resolved "https://registry.yarnpkg.com/catalyst-client/-/catalyst-client-2.0.0-beta.14.tgz#a73ce0312b9fbf9b740d58fd21ee61b2486fa090"
+  integrity sha512-89gzTCQoy+mWEBKibkWkC1zOkDMjN0ul6SxcjUe9K4dY31DFGYvvGME18uP0ECJyh3eiK+9b3Slh6XL+HLszmw==
   dependencies:
     source-map "^0.7.3"
 
@@ -5679,9 +5679,9 @@ minimatch@^3.0.4:
     brace-expansion "^1.1.7"
 
 minimist@^1.1.1, minimist@^1.2.0, minimist@^1.2.5:
-  version "1.2.5"
-  resolved "https://registry.yarnpkg.com/minimist/-/minimist-1.2.5.tgz#67d66014b66a6a8aaa0c083c5fd58df4e4e97602"
-  integrity sha512-FM9nNUYrRBAELZQT3xeZQ7fmMOBg6nWNmJKTcgsJeaLstP/UODVpGsr5OhXhhXg6f+qtJ8uiZ+PUxkDWcgIXLw==
+  version "1.2.6"
+  resolved "https://registry.yarnpkg.com/minimist/-/minimist-1.2.6.tgz#8637a5b759ea0d6e98702cfb3a9283323c93af44"
+  integrity sha512-Jsjnk4bw3YJqYzbdyBiNsPWHPfO++UGG749Cxs6peCu5Xg4nrena6OVxOYxrQTqww0Jmwt+Ref8rggumkTLz9Q==
 
 minipass-collect@^1.0.2:
   version "1.0.2"
