@@ -2449,10 +2449,10 @@ caseless@~0.12.0:
   resolved "https://registry.yarnpkg.com/caseless/-/caseless-0.12.0.tgz#1b681c21ff84033c826543090689420d187151dc"
   integrity sha1-G2gcIf+EAzyCZUMJBolCDRhxUdw=
 
-catalyst-client@^2.0.0-beta.13:
-  version "2.0.0-beta.13"
-  resolved "https://registry.yarnpkg.com/catalyst-client/-/catalyst-client-2.0.0-beta.13.tgz#af973d1ecf839bc882a465e260310bd2eceb2061"
-  integrity sha512-O+GsIRrcYnTbNhEnXQnNIPWe9hm0f4AtUDiduBeJOoUxYrgykrRh9XqtZrfC42suzfLwnOQmAYIXvRJA4+mNmg==
+catalyst-client@^2.0.0-beta.14:
+  version "2.0.0-beta.14"
+  resolved "https://registry.yarnpkg.com/catalyst-client/-/catalyst-client-2.0.0-beta.14.tgz#a73ce0312b9fbf9b740d58fd21ee61b2486fa090"
+  integrity sha512-89gzTCQoy+mWEBKibkWkC1zOkDMjN0ul6SxcjUe9K4dY31DFGYvvGME18uP0ECJyh3eiK+9b3Slh6XL+HLszmw==
   dependencies:
     source-map "^0.7.3"
 
@@ -7029,9 +7029,9 @@ qs@6.7.0:
   integrity sha512-VCdBRNFTX1fyE7Nb6FYoURo/SPe62QCaAyzJvUjwRaIsc+NePBEniHlvxFmmX56+HZphIGtV0XeCirBtpDrTyQ==
 
 qs@~6.5.2:
-  version "6.5.2"
-  resolved "https://registry.yarnpkg.com/qs/-/qs-6.5.2.tgz#cb3ae806e8740444584ef154ce8ee98d403f3e36"
-  integrity sha512-N5ZAX4/LxJmF+7wN74pUD6qAh9/wnvdQcjq9TZjevvXzSUo7bfmw91saqMjzGS2xq91/odN2dW/WOl7qQHNDGA==
+  version "6.5.3"
+  resolved "https://registry.yarnpkg.com/qs/-/qs-6.5.3.tgz#3aeeffc91967ef6e35c0e488ef46fb296ab76aad"
+  integrity sha512-qxXIEh4pCGfHICj1mAJQ2/2XVZkjCDTcEgfoSQxc/fYivUZxTkk7L3bDBJSoNrEzXI17oUO5Dp07ktqE5KzczA==
 
 querystring@0.2.0:
   version "0.2.0"
